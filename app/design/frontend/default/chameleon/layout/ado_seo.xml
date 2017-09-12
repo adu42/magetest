@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.1.0">
+    <catalog_viewed_index translate="label">
+        <reference name="head">
+            <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/configurable.js</script></action>
+         <!--   <action method="addItem"><type>js_css</type><name>calendar/calendar2.css</name><params/></action>
+            <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params/></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar_as.js</name></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar.en.js</name></action>
+            <action method="addItem"><type>js</type><name>jquery/jquery-1.8.3.min.js</name></action>
+            <action method="addItem"><type>js</type><name>jquery/no-conflict.js</name></action>
+		-->
+        </reference>
+        <reference name="content">
+        <!-- Add New Product list Block  cart/product_list Add New Product list Block End -->
+		<block type="bmproducts/product_viewed" name="catalog.product.viewed" as="catalog_product_viewed" template="bmproducts/product/catalogrecommend.phtml" />
+        </reference>        
+    </catalog_viewed_index>
+	
+	<catalog_viewed_review_ajax>
+		<label>Review Details</label>
+			<remove name="right"/>
+			<remove name="left"/>
+			<update handle="formkey"/>
+			<block name="root" output="toHtml" type="review/product_view" template="review/review_ajax.phtml">
+				<block type="page/html_pager" name="product_review_list.toolbar" template="page/html/pager_review_ajax.phtml">
+					<action method="setQueryMode">
+						<value>q|review</value>
+					</action>
+					<action method="setCustomUrl">
+						<value>catalog/viewed/help</value>
+					</action>
+					<action method="setLimit">
+						<value>10</value>
+					</action>
+				</block>
+				<block type="core/template" name="product_review_list.count" template="review/product/view/count.phtml"/>
+				<block type="review/product_view_list" name="product.info.product_additional_data" as="product_additional_data" template="review/product/view/list.phtml">
+			<!--	<block type="review/form" name="product.review.form" as="review_form" template="review/form_ajax.phtml"> -->
+					<block type="reviewimage/review_edit_form" name="review_custom_form"  as="review_form" template="reviewimage/custom_form.phtml">
+						<block type="page/html_wrapper" name="product.review.form.fields.before" as="form_fields_before" translate="label">
+							<label>Review Form Fields Before</label>
+							<action method="setMayBeInvisible">
+								<value>1</value>
+							</action>
+						</block>
+					</block>
+				</block>
+			</block>
+		</catalog_viewed_review_ajax>
+	<catalog_viewed_history_ajax>
+		<label>History</label>
+		<remove name="right"/>
+		<remove name="left"/>
+		<block type="bmproducts/product_viewed" name="root" output="toHtml" template="bmproducts/product/catalogrecommend.phtml" />
+	</catalog_viewed_history_ajax>
+</layout>

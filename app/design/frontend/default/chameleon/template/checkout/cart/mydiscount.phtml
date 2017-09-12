@@ -1,0 +1,7 @@
+<?php  
+    $_mytotal=$this->getMyTotal();
+	if($_mytotal>0):
+ ?>
+<strong class="cart_left " id="cart_left_save"><?php echo $this->__('YOUR TOTAL SAVINGS') ?></strong>
+<strong id="_save_price" class="cart_right"><?php echo $this->helper('checkout')->formatPrice(0-$this->getMyTotal()) ?></strong>
+<?php endif; ?>

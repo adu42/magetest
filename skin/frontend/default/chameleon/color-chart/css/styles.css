@@ -1,0 +1,178 @@
+.color-chart-title, .color-chart-content {
+    font-size: 12px;
+    font-family: Tahoma,Verdana,Arial,Helvetica,sans-serif;
+    line-height: 25px;
+text-transform: capitalize; 
+padding-left:10px;
+}
+dl.color-chart-content dt, dl.color-chart-content dd {
+    float: left;
+}
+dl.color-chart-content dt {
+    width: 180px;
+    height: 180px;
+    text-align: center;
+    position: absolute;
+    display: none;
+    z-index: 9999;
+}
+dl.color-chart-content dt img {
+    display: block;
+    width: 157px;
+    height: 157px;
+    padding:5px;
+    border: 1px solid #cccccc;
+}
+dd.color-chart-focus {
+    position: relative;
+    margin-left: 0px;
+}
+dd.color-chart-focus div {
+    background-color: #ffffff;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    position: absolute;
+}
+
+.ctab{
+	margin:20px 0  20px 0;
+	float:left;
+	border-bottom:1px solid #e4e4e4;
+	width:100%;
+	padding-bottom:20px;
+}
+
+.ctab-title{
+	width:100%;
+	float:left;
+	color:#333;
+}
+.ctab-title strong{
+	color:#000;
+}
+.color-desc{
+	background-color: #fff;
+    border: 1px solid #000;
+    min-width: 100px;
+    padding: 4px;
+    position: absolute;
+    text-align: center;
+    top: 34px;
+    z-index: 8;
+	left:-10px;
+	font-size:14px;
+}
+.color-desc span{
+	 border-bottom: 10px solid #000;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    height: 0;
+    left: 15px;
+    position: absolute;
+    top: -10px;
+    width: 0;
+}
+.select{
+	border:2px solid #333 !important;
+	height: 23px;
+    left: -3px;
+    overflow: hidden;
+    position: absolute;
+    top: -3px;
+    width: 23px;
+}
+.select:hover{
+border:2px solid #333 !important;
+	height: 23px;
+    left: -3px;
+    overflow: hidden;
+    position: absolute;
+    top: -3px;
+    width: 23px;
+}
+.colorsizetab{
+	margin:0;
+	padding:0;
+	float:left;
+	width:100%;
+}
+.colorsizetab li{
+	border: 1px solid #ccc;
+    border-radius: 0;
+    display: block;
+    float: left;
+    height: 21px;
+    margin-right: 8px;
+    position: relative;
+    width: 21px;
+
+}
+/* em{
+	border: 1px solid #fff;
+    height: 25px;
+    left: -3px;
+    overflow: hidden;
+    position: absolute;
+    top: -3px;
+    width: 25px;
+}
+em:hover{
+	border: 1px solid #333;
+    height: 25px;
+    left: -3px;
+    overflow: hidden;
+    position: absolute;
+    top: -3px;
+    width: 25px;
+} */
+.tab-content{
+	margin-top:20px;
+	float:left;
+}
+.radio{
+	width:15px;
+	height:10px;
+	float:left;
+	margin:10px;
+}
+
+
+.colorsize{
+	width:25px;
+	height:20px;
+	line-height:20px;
+	border:1px solid;
+	border-radius:5px;
+	text-align:center;
+	font-size:14px;
+
+}
+.active{
+	border:1px solid #ccc;
+}
+
+.colorsActive {
+   
+}
+
+
+/** color **/
+.red{
+	background-color:red;
+}
+.green{
+	background-color:green;
+}
+.blue{
+	background-color:blue;
+}
+.white{
+	background-color:white;
+}
+#color-chart-block > div {
+    float: left;
+}
+#helper-size {
+    clear: both;
+}

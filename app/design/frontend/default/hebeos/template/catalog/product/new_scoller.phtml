@@ -1,0 +1,61 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php if (($_products = $this->getProductCollection()) && $_products->getSize()): ?>
+<div class="new_arrival_zone">
+<div>
+  <div class="slideshow-wrapper">
+	<div class="slideshow-wrapper-inner">
+	    <div id="slideshow" class="slideshow">
+		<div class="slideshow-box">
+		<ul style="width: 2844px; top: 0px; left: 0pt;">
+	<?php if (($_products = $this->getProductCollection()) && $_products->getSize()): ?>
+	    <?php $_items = $_products->getItems(); shuffle($_items); ?>
+	    <?php $i=0; foreach ($_items as $_product): ?>
+
+		    <li class="item">
+		        <div class="products-col-1">
+			<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img class="product-image" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(235,320) ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" /></a>
+			<div class="tab-other-info">
+				<h3 class="product-name" ><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h3>
+				<?php echo $this->getPriceHtml($_product, true, '-new') ?>
+			</div>
+			</div>
+		    </li>
+
+	    <?php endforeach; ?>
+	  <?php endif; ?>
+	 </ul>
+	</div>
+	<a href="#" class="previous">Previous</a>
+	<a href="#" class="next">Next</a>
+    </div>
+    </div>
+    </div>
+
+</div>
+</div>
+<?php endif; ?>

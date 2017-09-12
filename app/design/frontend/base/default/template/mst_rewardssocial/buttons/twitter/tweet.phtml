@@ -1,0 +1,55 @@
+<?php
+/** @var Mirasvit_RewardsSocial_Block_Buttons_Twitter_Tweet $this */
+$currentUrl = $this->getCurrentUrl();
+?>
+<div class="buttons-twitter-like rewardssocial-buttons">
+	<a href="https://twitter.com/share" class="twitter-share-button mst-rewardssocial-tweet" data-url="<?php echo $this->getEncodedUrl($currentUrl) ?>" data-count="none" data-text="<?php echo $this->__('Check this out!') ?> <?php echo $currentUrl ?>"><?php echo $this->__('Tweet')?></a>
+
+	<?php if ($this->getEstimatedEarnPoints() > 0): ?>
+		<?php if ($this->isAuthorized() && !$this->isLiked()): ?>
+  			<div id='twitter-message'>
+	  			<?php echo $this->__('Tweet this page and earn %s',  Mage::helper('rewards')->formatPoints($this->getEstimatedEarnPoints())); ?>
+	  		</div>
+		<?php endif; ?>
+	<?php endif; ?>
+</div>
+<script type="text/javascript">
+	var rewardsTwitterUrl = '<?php echo $this->getTweetUrl(); ?>';
+	var rewardsCurrentTwiiterUrl = '<?php echo $this->getEncodedUrl($currentUrl); ?>';
+	window.onload = function() {
+		window.twttr = (function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0],
+				t = window.twttr || {};
+			if (d.getElementById(id)) {
+				return t;
+			}
+			js = d.createElement(s);
+			js.id = id;
+			js.src = "https://platform.twitter.com/widgets.js";
+			fjs.parentNode.insertBefore(js, fjs);
+
+			t._e = [];
+			t.ready = function(f) {
+				t._e.push(f);
+			};
+
+			return t;
+		}(document, "script", "twitter-wjs"));
+
+		twttr.ready(function (twttr) {
+			twttr.events.bind('tweet', function (a) {
+				if (!a) {
+					return;
+				}
+				if (a.target.parentElement.hasClassName('rewardssocial-buttons')) {
+					new Ajax.Request(rewardsTwitterUrl + '?url=' + rewardsCurrentTwiiterUrl, {
+						onSuccess: function(response) {
+							$('status-message').update(response.responseText);
+							$('twitter-message').update('');
+						}
+					});
+				}
+			});
+		});
+	}
+</script>

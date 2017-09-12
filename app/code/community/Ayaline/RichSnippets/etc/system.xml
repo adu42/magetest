@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * created : 23/02/2012
+ * 
+ * @category Ayaline
+ * @package Ayaline_RichSnippets
+ * @author aYaline
+ * @copyright Ayaline - 2012 - http://magento-shop.ayaline.com
+ * @license http://shop.ayaline.com/magento/fr/conditions-generales-de-vente.html
+ */
+-->
+<config>
+	<sections>
+		<ayalinerichsnippets translate="label" module="ayalinerichsnippets">
+			<label>Rich Snippets</label>
+			<tab>ado</tab>
+			<header_css>ayaline-header</header_css>
+			<frontend_type>text</frontend_type>
+			<sort_order>800</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+				<product translate="label">
+					<label>Product</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>10</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+						<enabled translate="label">
+							<label>Enabled</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>	
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>
+						</enabled>
+						<image>
+							<label>Image</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>	
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>						
+						</image>
+						<description>
+							<label>Description</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>	
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>						
+						</description>
+						<brand>
+							<label>Brand</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<comment>Manufacturer</comment>	
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>						
+						</brand>
+						<category>
+							<label>Category</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>50</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>						
+						</category>
+						<review>
+							<label>Review</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>						
+						</review>
+						<sku>
+							<label>Sku</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>70</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>0</show_in_store>						
+						</sku>												
+					</fields>
+				</product>
+			</groups>
+		</ayalinerichsnippets>
+	</sections>
+</config>

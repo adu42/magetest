@@ -1,0 +1,27 @@
+<?php 
+		
+		$block = Mage::app()->getLayout()->createBlock('directory/currency');
+
+		$currencies = $block->getCurrencies();
+		$currencyCode =   $block->getCurrentCurrencyCode();
+		//Mage::app()->getStore()->getCurrentCurrency()->getCode();//
+		$mtp = '<option value="%s">%s</option>';
+		 $hmtp = '<option value="%s" selected="selected">%s</option>'; 
+		 $shmtp='<select id="cursel" class="text-arrow-bg">%s</select>';
+		 $urlTmp=$this->getUrl('').'directory/currency/switch/currency/%s/uenc/'.Mage::helper('core')->urlEncode(Mage::helper('core/url')->getCurrentUrl()).',,/';
+		$_langStr='';
+		foreach($currencies as $code => $name){
+			$url = vsprintf($urlTmp,array($code));
+			if($currencyCode == $code){
+				$_langStr.=vsprintf($hmtp,array($url,$name));
+			}else{
+				$_langStr.=vsprintf($mtp,array($url,$name));
+			}
+		}
+		echo vsprintf($shmtp,array($_langStr));
+		?>
+        <script type="text/javascript">
+		jQuery("#cursel").change(function(){
+			window.location.href=jQuery(this).attr("value");
+		});
+		</script>

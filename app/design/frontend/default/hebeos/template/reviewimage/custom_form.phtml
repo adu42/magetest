@@ -1,0 +1,175 @@
+<?php
+$helper = Mage::helper("reviewimage");
+$canRating = false;
+
+
+?>
+<?php if($this->getProductInfo()):
+		$_product =$this->getProductInfo();
+		?>
+	<div class="back_to_prod"> <a href="<?php echo $helper->getProductUrlByProduct($_product); ?>"><?php echo $this->__('Back to product page'); ?> </a> </div>	
+ <?php  endif;  ?>
+<div class="form-add custom-review-form">
+    <?php if ($this->getAllowWriteReviewFlag()): ?>
+        <div class="custom-review-form-left">
+		<div class="order-comment-title">Post My Product Review</div>
+        <form  action="<?php echo $this->getAction() ?>" method="post" id="review-form" enctype="multipart/form-data">
+            <?php echo $this->getBlockHtml('formkey'); ?>
+
+            <?php if($this->getCatalogInfo()): ?>
+                <input name="review_catalog" type="hidden" value="<?php echo $this->getCatalogInfo()->getId(); ?>" />
+            <?php  endif;  ?>
+            <!--product title image -->
+
+            <?php if($this->getProductInfo()):
+			$_product =$this->getProductInfo();$canRating=true;  ?>
+                <?php   list($catalogId,$storeId)  = $helper->getCatalogId($_product); ?>
+              <div class="product-review-left">
+                <input name="review_catalog" type="hidden" value="<?php echo $catalogId; ?>" />
+                  <input name="entity_pk_value" type="hidden" value="<?php echo $_product->getId(); ?>" />
+                <div class="product-name">
+                    <h1><?php echo $_product->getName() ?></h1>
+                </div>
+                <p class="product-image">
+                    <?php
+                    $_img = '<img src="'.Mage::helper('catalog/image')->init($_product, 'image')->resize(128).'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel()).'" />';
+                    echo Mage::helper('catalog/output')->productAttribute($_product, $_img, 'image');
+                    ?>
+                </p>
+            </div>
+            <?php  endif;  ?>
+            <!--end product title image-->
+
+            <fieldset<?php echo $canRating?' class="fieldset-write-form"':'';?>>
+                <span><?php echo $this->__('Share My Look') ?></span>
+                <?php echo $this->getChildHtml('form_fields_before')?>
+                <ul class="form-list">
+                    <?php foreach ($this->getRatings() as $_rating): ?>
+                        <li id="ratings_input_li" class="<?php echo $canRating?'':'hidden'; ?>">
+                            <label class="required"><em>*</em><?php echo $this->escapeHtml($_rating->getRatingCode()) ?></label>
+                            <div class="input-box">
+                                <?php $option_num=count($_rating->getOptions()); ?>
+                                <?php foreach ($_rating->getOptions() as $i=> $_option){ ?>
+                                    <?php $checked=($i==$option_num)?' checked="checked"':''; ?>
+                                    <input type="radio" name="ratings[<?php echo $_rating->getId() ?>]" id="<?php echo $this->escapeHtml($_rating->getRatingCode()) ?>_<?php echo $_option->getValue() ?>" value="<?php echo $_option->getId() ?>"<?php echo $checked; ?> class="radio star" />
+                                <?php } ?>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                    <li>
+                        <label for="nickname_field" class="required"><em>*</em><?php echo $this->__('Nickname') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="nickname" id="nickname_field" class="input-text required-entry" value="<?php echo $this->escapeHtml($data->getNickname()) ?>" />
+                        </div>
+                    </li>
+                    <?php if($helper->enableSku() && !$canRating): ?>
+                        <li>
+                            <label for="sku_field" class="required"><?php echo $this->__('Product Sku') ?></label>
+                            <div class="input-box">
+                                <input type="text" name="sku" id="sku_field" class="input-text" value="<?php echo $this->escapeHtml($data->getSku()) ?>" />
+                            </div>
+                        </li>
+                    <?php endif; ?>
+                    <?php if($helper->useTitle()): ?>
+                        <li>
+                            <label for="summary_field" class="required"><em>*</em><?php echo $this->__('Title') ?></label>
+                            <div class="input-box">
+                                <input type="text" name="title" id="summary_field" class="input-text required-entry" value="<?php echo $this->escapeHtml($data->getTitle()) ?>" />
+                            </div>
+                        </li>
+                    <?php endif; ?>
+                    
+                    <li>
+                        <label for="review_field" class="required"><em>*</em><?php echo $this->__('Review') ?></label>
+                        <div class="input-box">
+                            <textarea name="detail" id="review_field" cols="5" rows="3" class="required-entry"><?php echo $this->escapeHtml($data->getDetail()) ?></textarea>
+                        </div>
+                    </li>
+					<?php if($helper->getActive() == '1' && $helper->useUpload()):?>
+                        <?php    $nums = $helper->maxImages(); $imageRequired=$helper->imageRequired();  ?>
+                        <li>
+                            <label for="review_image_a" class="required"><?php echo $this->__('UPLOAD PHOTOS:') ?></label>
+                            <div class="input-box reviewimagediv" id="reviewimageuploaddiv">
+                            <SPAN class=" btn-5 btn-c">
+                            <A id="addPhoto">
+                                UPLOAD A PHOTO
+                            </A>
+                                <?php
+                                foreach($nums as $i=>$n):
+                                    $field = 'review_image_'.$n;
+                                    $required_file= ($i==0 && $imageRequired)?'required-file ':'';
+                                    ?>
+                                    <input type="file" id="file<?php echo ($i+1);?>" name="<?php echo $field; ?>" class="<?php echo $required_file; ?>input-text review_image_files" onChange="validField(this)"/>
+                                <?php  endforeach; ?>
+                            </SPAN>
+                                <span class="liar-label"></span>
+                            </div>
+                            <div class="reviewimagediv-description"><?php echo $this->__('%s images max, 2MB max per image.',count($nums)); ?> </div>
+                        </li>
+                    <?php endif;?>
+                </ul>
+            </fieldset>
+            <div class="buttons-set">
+                <button type="submit" title="<?php echo $this->__('Submit Review') ?>" class="button"><span><span><?php echo $this->__('Submit Review') ?></span></span></button>
+            </div>
+        </form>
+        <script type="text/javascript">
+            //<![CDATA[
+            var dataForm = new VarienForm('review-form');
+            Validation.addAllThese(
+                [
+                    ['validate-rating', '<?php echo $this->__('Please select ratings above') ?>', function(v) {
+                        var trs = $('ratings_input_li').select('div.input-box');
+                        var inputs;
+                        var error = 1;
+                        for( var j=0; j < trs.length; j++ ) {
+                            var tr = trs[j];
+                            if( j >= 0 ) {
+                                inputs = tr.select('input');
+                                if(inputs.length>0){
+                                    for( i in inputs) {
+                                        if( inputs[i].checked == true ) {
+                                            error = 0;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if( error == 1 ) {
+                                    return false;
+                                }else{
+                                    error = 1;
+                                }
+                            }
+                        }
+                        return true;
+                    }], ['required-file', '<?php echo $this->__('Please select a file') ?>', function(v, elm) {
+                    var _files = $('reviewimageuploaddiv').select('input');
+                    var result = false;
+                    for( var j=0; j < _files.length; j++ ) {
+                        var _file = _files[j];
+                        if(_file.value!=undefined && _file.value!=''){
+                            result=true;
+                            break;
+                        }
+                    }
+                    return result;
+                }]
+
+
+                ]
+            );
+          //  jQuery('.star').rating();
+            //]]>
+        </script>
+        </div>
+		
+        
+         <?php echo $this->getChildHtml('review_custom_form_tips'); ?>
+        
+    <?php else: ?>
+        <p class="review-nologged" id="review-form">
+            <?php echo $this->__('Only registered users can write reviews. Please, <a href="%s">log in</a> or <a href="%s">register</a>', $this->getLoginLink(), Mage::helper('customer')->getRegisterUrl()) ?>
+        </p>
+    <?php endif ?>
+</div>
+

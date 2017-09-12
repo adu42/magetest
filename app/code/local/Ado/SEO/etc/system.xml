@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <tabs>
+        <ado translate="label" module="ado_seo">
+            <label>Ado</label>
+            <sort_order>300</sort_order>
+        </ado>
+    </tabs>
+    <sections>
+        <ado_seo translate="label" module="ado_seo">
+            <label>Ado SEO</label>
+            <tab>ado</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <catalog translate="label">
+                    <label>Catalog Layered Navigation</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enabled translate="label">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>ado_seo/system_config_backend_seo_catalog</backend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <ajax_enabled translate="label">
+                            <label>Enable AJAX</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>ado_seo/system_config_backend_seo_catalog</backend_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </ajax_enabled>
+                        <price_slider translate="label">
+                            <label>Enable Price Slider</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>ado_seo/system_config_backend_seo_catalog</backend_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </price_slider>
+                        <price_slider_submit_type translate="label">
+                            <label>Price Slider Submit Type</label>
+                            <frontend_type>select</frontend_type>
+                            <comment>in seconds</comment>
+                            <source_model>ado_seo/system_config_source_slider_submit_type</source_model>
+                            <backend_model>ado_seo/system_config_backend_seo_catalog</backend_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <price_slider>1</price_slider>
+                            </depends>
+                        </price_slider_submit_type>
+                        <price_slider_delay translate="label">
+                            <label>Price Slider Delay</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>in seconds</comment>
+                            <backend_model>ado_seo/system_config_backend_seo_catalog</backend_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <price_slider_submit_type>1</price_slider_submit_type>
+                            </depends>
+                        </price_slider_delay>
+                        <title_template translate="label">
+                            <label>Default Mata Title Template</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>Will replace words [filter,catalog,siteurl] to result,just use in catalog page
+                            </comment>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </title_template>
+                        <keyword_template translate="label">
+                            <label>Default Mata Keywords Template</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>Same as Mata Title Template</comment>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </keyword_template>
+                        <desc_template translate="label">
+                            <label>Default Mata Description Template</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>Same as Mata Title Template</comment>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </desc_template>
+                        <over_template translate="label">
+                            <label>Use Catalog Meta Keyword/Description Replaced</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>
+                                <![CDATA[Same as Mata Description Template rule<br>Yes:1.use catalog meta data,if catalog meta then.use this template;<br>No:just use this template]]></comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </over_template>
+                        <jscached translate="label">
+                            <label>Close Js Client Cache</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>
+                                <![CDATA[if mobile menu,helpers block change,Set Yes then Client reload it.]]></comment>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </jscached>
+                        <sizetype translate="label">
+                            <label>Size Split</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ado_seo/system_config_source_sizetype</source_model>
+                            <comment><![CDATA[product view options type size type]]></comment>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </sizetype>
+                        <sizetypeprex translate="label">
+                            <label>Hide Size Prex</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment><![CDATA[Hide size prex like 6 not US6]]></comment>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </sizetypeprex>
+                        <shipping_days_total_template translate="label">
+                            <label>Delivery:Standard Total Time</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipping_days_total_template>
+                        <shipping_days_tailoring_template translate="label">
+                            <label>Delivery:Tailoring Time</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipping_days_tailoring_template>
+                        <shipping_days_shipping_template translate="label">
+                            <label>Delivery:Shipping Time</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipping_days_shipping_template>
+                        <shipping_days_note_template translate="label">
+                            <label>Delivery Description Note</label>
+                            <frontend_type>textarea</frontend_type>
+                            <comment>
+                                <![CDATA[Note for Delivery Description, Format [12] will be replace to =taday+12 days.]]></comment>
+                            <sort_order>23</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipping_days_note_template>
+                        <url_nrewrite_flag translate="label">
+                            <label>No Rewrite Url Tags</label>
+                            <frontend_type>textarea</frontend_type>
+                            <comment><![CDATA[commas-separated list Or New line list]]></comment>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </url_nrewrite_flag>
+                        <conversion_code translate="label">
+                            <label>Conversion Code 1</label>
+                            <frontend_type>textarea</frontend_type>
+                            <comment><![CDATA[Variable #total# will be replaced]]></comment>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </conversion_code>
+                        <conversion_code_pages translate="label">
+                            <label>Conversion Code 1 In Pages</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>ado_seo/system_config_source_conversion</source_model>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </conversion_code_pages>
+                        <conversion_code_other translate="label">
+                            <label>Conversion Code 2</label>
+                            <frontend_type>textarea</frontend_type>
+                            <comment><![CDATA[Variable #total# will be replaced]]></comment>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </conversion_code_other>
+                        <conversion_code_other_pages translate="label">
+                            <label>Conversion Code 2 In Pages</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>ado_seo/system_config_source_conversion</source_model>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </conversion_code_other_pages>
+                        <conversion_code_third translate="label">
+                            <label>Conversion Code 3</label>
+                            <frontend_type>textarea</frontend_type>
+                            <comment><![CDATA[Variable #total# will be replaced]]></comment>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </conversion_code_third>
+                        <conversion_code_third_pages translate="label">
+                            <label>Conversion Code 3 In Pages</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>ado_seo/system_config_source_conversion</source_model>
+                            <sort_order>160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </conversion_code_third_pages>
+                    </fields>
+                </catalog>
+            </groups>
+        </ado_seo>
+    </sections>
+</config>

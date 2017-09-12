@@ -1,0 +1,33 @@
+<?php
+    $nofollow='';
+	$_filters = $this->getLayer()->getState()->getFilters();
+    if(count($_filters)>2)
+    $nofollow=' rel="nofollow"';
+   
+   $_filerName =  $this->getName();
+   
+
+?>
+<ol>
+    <?php foreach ($this->getItems() as $_item): ?>
+        <li>
+            <?php if ($_item->getCount() > 0): ?>
+                <?php if(false): ?>
+                <input type="checkbox"<?php if ($_item->isSelected()): ?> checked="checked" <?php endif; ?>
+                <?php if ($this->helper('ado_seo')->isAjaxEnabled()): ?>
+                           onclick="$(this).next().click()"
+                       <?php else: ?>
+                           onclick="setLocation('<?php  echo ($_item->isSelected()) ? $this->urlEscape($_item->getRemoveUrl()) : $this->urlEscape($_item->getUrl()) ?>')"
+                       <?php endif; ?>
+                       />
+                <?php endif; ?>
+                <a<?php if ($_item->isSelected()): ?> onclick="$(this).previous().checked = false;"<?php else: ?> onclick="$(this).previous().checked = true;" 
+                    <?php endif; ?>                            
+                    href="<?php echo ($_item->isSelected()) ? $_item->getRemoveUrl() : $_item->getUrl() ?>"<?php echo $nofollow;?>><span class="checkSpan<?php echo (stripos($_filerName,'color')!==false)?' '.strtolower(str_replace(array(' ','/'),'-',$_item->getLabel())):''; ?>"></span><?php echo $this->__($_item->getLabel()) ?></a>
+                <?php else: ?>
+                    <?php echo $this->__($_item->getLabel()) ?>
+                <?php endif; ?>
+            (<?php echo $_item->getCount() ?>)
+        </li>
+    <?php endforeach ?>
+</ol>

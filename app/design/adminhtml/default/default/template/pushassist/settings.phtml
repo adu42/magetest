@@ -1,0 +1,404 @@
+<?php 
+$check_api_key=Mage::app()->getStore()->getConfig('pushassistsection/general/apikey');
+$check_secret_key=Mage::app()->getStore()->getConfig('pushassistsection/general/secretkey');
+
+$pushassist_js_restrict=Mage::app()->getStore()->getConfig('pushassistsection/general/pushassist_js_restrict');
+$pushassist_setting_post_message=Mage::app()->getStore()->getConfig('pushassistsection/general/pushassist_setting_post_message');
+
+$account_response = Mage::helper('pushassist')->get_account_details();
+if(isset($account_response['account_name'])){
+$account_url='https://'.$account_response['account_name'].'.pushassist.com/allsites/';
+}
+if($check_api_key!='' && $check_secret_key != '' && (!isset($account_response['error'] )) && $account_response ) {
+
+?>
+<div id="Psidebar" >
+  <ul>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_dashboard'); ?>"><?php echo $this->__('Dashboard')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_notificationmain'); ?>"><?php echo $this->__('Notifications')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_notificationsend'); ?>"><?php echo $this->__('Send Notification')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_segments'); ?>"><?php echo $this->__('Segments')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_createsegments'); ?>"><?php echo $this->__('Create Segments')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_subscribers'); ?>"><?php echo $this->__('Subscribers')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_settings'); ?>"><?php echo $this->__('Settings')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_campaign'); ?>"><?php echo $this->__('Campaigns')?></a></li>
+  </ul>
+  </div>
+<!-- Content Start -->
+    <div id="pushassist" class="content dashboard clearfix">
+        <!-- Start Page Header -->
+        <div class="page-header">
+            <h1 class="title"><?php echo $this->__('Settings / Account Information')?></h1>
+        </div>
+        <!-- End Page Header -->
+    
+	<div class="container-widget clearfix">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+
+                <div class="panel-body">
+
+                    <form class="form-horizontal" autocomplete="off" id="pushassist_template_setting_form" name="pushassist_template_setting_form" enctype="multipart/form-data" action="<?php echo $this->getUrl('*/*/settings'); ?>" method="post">
+		      <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label margin-r-5 padding-t-10">
+			      <?php echo $this->__('Ask for permission after')?></label>
+
+                            <input type="number" id="pushassist_timeinterval" name="pushassist_timeinterval" placeholder="Interval" min="0" style="width: 10%" max="30" maxlength="2" value="<?php echo $account_response['notification_interval']; ?>">
+                            <label class="control-label form-label margin-l-10 padding-t-0"> 
+			    <?php echo $this->__('seconds on your website.')?></label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label"><?php echo $this->__('Opt-In Box Title')?></label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control" name="pushassist_opt_in_title" id="pushassist_opt_in_title" 
+				value="<?php echo stripslashes($account_response['opt_in_title']); ?>" placeholder="Opt-In Box Title" maxlength="80" required="">
+                                <span class="float-r"><?php echo $this->__('Limit 80 Characters')?></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label"><?php echo $this->__('Opt-In Box Subtitle')?></label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control" name="pushassist_opt_in_subtitle" id="pushassist_opt_in_subtitle"
+				    value="<?php echo stripslashes($account_response['opt_in_subtitle']); ?>" placeholder="Opt-In Box Subtitle" maxlength="105" required="">
+                                <span class="float-r"><?php echo $this->__('Limit 105 Characters')?></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label"><?php echo $this->__('Allow Button Text')?></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="pushassist_allow_button_text" id="pushassist_allow_button_text" 
+				  value="<?php echo stripslashes($account_response['allow_button']); ?>" placeholder="Allow Button Text" maxlength="25" required="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label"><?php echo $this->__('Don\'t Allow Button')?></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="pushassist_disallow_button_text" id="pushassist_disallow_button_text" 
+				value="<?php echo stripslashes($account_response['disallow_button']); ?>" placeholder="Don't Allow Button" maxlength="25" required="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label padding-l-0"><?php echo $this->__('Notification Template')?></label>
+                            <div class="col-sm-9">
+                                <select class="selectpicker col-sm-12" id="template" name="template">
+                                                                       <?php
+
+                                    $template = array('1' => 'Default', '2' => 'Template 1', '3' => 'Template 2', '4' => 'Template 3', '5' => 'Template 4', '6' => 'Template 5', '7' => 'Template 6', '8' => 'Template 7'); //
+
+                                    while (list($key, $val) = each($template)) {
+
+                                    if ($key == $account_response['template']) {
+                                         ?>
+                                            <option value="<?php echo $key;  ?>" data-title="<?php echo $key; ?>"
+                                                    selected> <?php echo $val;  ?></option>
+                                        <?php } else {
+                                             ?>
+                                    <option data-title="<?php echo $key; ?>" value="<?php echo $key; ?>"> <?php echo $val; ?></option>
+                                    <?php }
+                                    } ?>
+                                                                    </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label"><?php echo $this->__('Location')?></label>
+
+                            <?php
+                            $location = array('1' => 'Top Left', '2' => 'Top Right', '3' => 'Top Center', '4' => 'Bottom Left', '5' => 'Bottom Right', '6' => 'Bottom Center');
+                            $location_2 = array('1' => 'Top Left', '2' => 'Top Right', '4' => 'Bottom Left', '5' => 'Bottom Right');
+                            $location_3 = array('7' => 'Top', '8' => 'Bottom');
+                            ?>
+                           <input type="hidden" name="psa_template_location" id="psa_template_location" value="<?php if(isset($account_response['opt_in_location'])){ echo $account_response['opt_in_location']; } else { echo 1; } ?>">
+
+                            <div class="col-sm-9" id="psa_list_1" style="display: <?php if($account_response['template'] < 7 ||  $account_response['template'] == '1') { echo 'block'; } else { echo 'none'; }?>;">
+                                <select class="selectpicker col-sm-12" id="location" name="location">
+
+                                    <?php
+
+                                    while (list($key, $val) = each($location)) {
+
+                                        if ($key == $account_response['opt_in_location']) {
+                                            ?>
+                                            <option value="<?php echo $key;  ?>"
+                                                    selected> <?php echo $val;  ?></option>
+                                        <?php } else {
+                                            ?>
+                                            <option value="<?php echo $key; ?>"> <?php echo $val; ?></option>
+                                        <?php }
+                                    } ?>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-9" id="psa_list_2" style="display: <?php if($account_response['template'] == 7) { echo 'block'; } else { echo 'none'; }?>;">
+                                <select class="selectpicker col-sm-12" id="location_1" name="location_1">
+
+                                    <?php
+
+                                    while (list($key, $val) = each($location_2)) {
+
+                                        if ($key == $account_response['opt_in_location']) {
+                                            ?>
+                                            <option value="<?php echo $key;  ?>"
+                                                    selected> <?php echo $val;  ?></option>
+                                        <?php } else {
+                                            ?>
+                                            <option value="<?php echo $key; ?>"> <?php echo $val; ?></option>
+                                        <?php }
+                                    } ?>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-9" id="psa_list_3" style="display: <?php if($account_response['template'] == 8) { echo 'block'; } else { echo 'none'; }?>;">
+                                <select class="selectpicker col-sm-12" id="location_2" name="location_2">
+
+                                    <?php
+
+                                    while (list($key, $val) = each($location_3)) {
+
+                                        if ($key == $account_response['opt_in_location']) {
+                                            ?>
+                                            <option value="<?php echo $key;  ?>"
+                                                    selected> <?php echo $val;  ?></option>
+                                        <?php } else {
+                                            ?>
+                                            <option value="<?php echo $key; ?>"> <?php echo $val; ?></option>
+                                        <?php }
+                                    } ?>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group margin-b-0">
+                            <label for="focusedinput" class="col-sm-2 control-label form-label"><?php echo $this->__('Site Logo')?></label>
+                            <div class="col-sm-9" style="padding-bottom:6px;">
+                                <span class="btn btn-success fileinput-button margin-b-10">
+                                    <span><?php echo $this->__('Site Logo')?></span>
+                                    <input id="fileupload" type="file" name="fileupload">
+                                </span>
+                                <br>
+                                <span><?php echo $this->__('Image size must be exactly 250x250px.')?></span>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <h5 class="col-sm-offset-2 title margin-t-0 margin-b-20" style="padding-top:8px;">
+			      <?php echo $this->__('Notification Subscription Setting')?></h5>
+			<div class="form-group">
+                            <label class="col-sm-2 control-label form-label"><?php echo $this->__('Opt-In Text')?></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="pushassist_child_window_text" id="pushassist_child_window_text" 
+				  value="<?php echo stripslashes($account_response['child_text']); ?>" placeholder="Would Like to Send You Push Notifications. Click Allow to receive notifications." maxlength="100" required="">
+                                <span class="float-r">Limit 100 Characters</span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label"><?php echo $this->__('Opt-In Title')?></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="pushassist_child_window_title" id="pushassist_child_window_title" 
+				  value="<?php echo stripslashes($account_response['child_title']); ?>" placeholder="Opt-In Title" maxlength="45" required="">
+                                <span class="float-r">Limit 45 Characters</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label"><?php echo $this->__('Opt-In Message')?></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="pushassist_child_window_message" id="pushassist_child_window_message" 
+				value="<?php echo stripslashes($account_response['child_message']); ?>" placeholder="Opt-In Message" maxlength="73" required="">
+                                <span class="float-r">Limit 73 Characters</span>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <h5 class="col-sm-offset-2 title margin-t-0 margin-b-20" style="padding-top:8px;"><?php echo $this->__('Welcome Message for first time subscribers')?></h5>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label"><?php echo $this->__('Notification Title')?></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="pushassist_setting_title" id="pushassist_setting_title" 
+				  value="<?php echo stripslashes($account_response['title']); ?>" placeholder="Notification Title" maxlength="45">
+				 <span class="float-r">Limit 45 Characters</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label"><?php echo $this->__('Notification Message')?></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="pushassist_setting_message" id="pushassist_setting_message" 
+				value="<?php echo stripslashes($account_response['message']); ?>" placeholder="Notification Message" maxlength="73">
+				 <span class="float-r">Limit 73 Characters</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label"><?php echo $this->__('Redirect URL')?></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="pushassist_redirect_url" id="pushassist_redirect_url"
+				  value="<?php echo stripslashes($account_response['redirect_url']); ?>" placeholder="Redirect URL" maxlength="250">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+			  
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-8">
+                                <button type="submit" class="btn btn-default" value="Save Settings" name="psa-advance-settings"><?php echo $this->__('Save Settings')?></button>
+                            </div>
+                        </div>
+  
+                    </form>
+		    <hr>
+		   <form class="form-horizontal"  autocomplete="off" id="pushassist_auto_send_form" name="pushassist_auto_send_form" enctype="multipart/form-data" action="<?php echo $this->getUrl('*/*/autosendproduct'); ?>" method="post">
+			<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+			    <div class="form-group" style="margin-top:10px">
+			      <div class="col-sm-2"></div>
+			      <div class="col-sm-10">
+				    <input type="checkbox" value="1" <?php echo ($pushassist_js_restrict==1 ? 'checked' : '');?> name="pushassist_js_restrict" id="pushassist_js_restrict">
+                                    <label class="form-label checkbox_title margin-l-10 margin-t-5"><?php echo $this->__('Stop Automatic Script Inclusion. In That Case You Have to Manually Install our Script.')?></label>
+                              </div>
+			    </div>
+
+			  <div class="form-group">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-10">
+                               <label><?php echo $this->__('Notification Message When a Product is Added')?></label>
+			    <input type="text" value="<?php echo $pushassist_setting_post_message;?>" name="pushassist_setting_post_message" placeholder="Notification Message When a Product is Published" maxlength="138" id="pushassist_setting_post_message" class="form-control margin-t-10 clearfix" required="">
+                            </div>
+                        </div>
+			 
+			  <div class="form-group">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-8">
+                                <button type="submit" class="btn btn-default" value="Save Settings" name="psa-gcm-settings"><?php echo $this->__('Save Settings')?></button>
+                            </div>
+                        </div>
+		    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <p><strong>What is a GCM Key? How do I get export my subscribers, What if I want to switch to other vendor.</strong></p>
+                    <p class="margin-b-15 margin-t-15">At the time of installation, you have to provide your GCM (Google Cloud Messaging) API Key for Chrome and Certificate Details for Safari that is used.</p>
+                    <p>We need this information to export your subscriber’s ID’s. Please note that only premium accounts can export the subscribers.</p>
+                    <p class="margin-b-15 margin-t-15"> Please read                        <a href="https://pushassist.com/adding-your-own-gcm-key-project-id-in-pushassist/" style="color: #0000ff;" target="_blank"> GCM registration</a> guidelines here.                    </p>
+
+                    <form class="form-horizontal margin-t-40" autocomplete="off" id="pushassist_gcm_setting_form" name="pushassist_gcm_setting_form" enctype="multipart/form-data" action="<?php echo $this->getUrl('*/*/gsmsetting'); ?>" method="post">
+			<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label"><?php echo $this->__('GCM Project No.')?></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="pushassist_gcm_project_no" id="pushassist_gcm_project_no" 
+				value="<?php echo stripslashes($account_response['gcm_project_number']); ?>" placeholder="GCM Project No." maxlength="20" required="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label form-label"><?php echo $this->__('GCM API Key')?></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="pushassist_gcm_api_key" id="pushassist_gcm_api_key" 
+				  value="<?php echo stripslashes($account_response['gcm_api_key']); ?>" placeholder="GCM API Key" maxlength="250" required="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-8">
+                                <button type="submit" class="btn btn-default" value="Save Settings" name="psa-gcm-settings"><?php echo $this->__('Save Settings')?></button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <hr>
+
+                    <p style="padding-top:10px;"><?php echo $this->__('Screenshot of advance configurations that are possible with your PushAssist account.')?>&nbsp;&nbsp;&nbsp;
+                        <a href="<?php echo $account_url;?>" class="btn btn-default margin-t-0" target="_blank">Customize Now</a>
+                    </p>
+
+                    <div class="margin-t-15 image_wrapper">
+                        <img src="<?php echo $this->getSkinUrl('pushassist/pushassist_opt_in_box_setting.png') ?>" alt="Notification Opt-in Box Setting">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+<script language="javascript">
+jQuery.noConflict();
+    jQuery("#template").on("change", function () {
+
+        if(jQuery(this).val() == 8){
+
+            jQuery('#psa_list_3').show();
+            jQuery('#psa_list_2').hide();
+            jQuery('#psa_list_1').hide();
+
+            jQuery('#psa_template_location').val(jQuery('#location_2').val());
+
+        }
+
+        if(jQuery(this).val() == 7){
+
+            jQuery('#psa_list_3').hide();
+            jQuery('#psa_list_2').show();
+            jQuery('#psa_list_1').hide();
+
+            jQuery('#psa_template_location').val(jQuery('#location_1').val());
+
+        }
+
+        if(jQuery(this).val() < 7){
+
+            jQuery('#psa_list_3').hide();
+            jQuery('#psa_list_2').hide();
+            jQuery('#psa_list_1').show();
+
+            jQuery('#psa_template_location').val(jQuery('#location').val());
+        }
+    });
+
+    jQuery("#location").on("change", function () {
+
+        var template_location = jQuery(this).val();
+
+        jQuery('#psa_template_location').val(template_location);
+    });
+
+    jQuery("#location_1").on("change", function () {
+
+        var template_location = jQuery(this).val();
+
+        jQuery('#psa_template_location').val(template_location);
+    });
+
+    jQuery("#location_2").on("change", function () {
+
+        var template_location = jQuery(this).val();
+
+        jQuery('#psa_template_location').val(template_location);
+    });
+
+</script>
+
+       
+    </div>
+    <!-- Content End -->
+<?php 
+}else{
+ Mage::app()->getResponse()->setRedirect(Mage::helper("adminhtml")->getUrl("adminhtml/pushassist_createaccount/index/"));
+} ?>

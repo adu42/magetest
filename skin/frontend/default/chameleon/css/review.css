@@ -1,0 +1,153 @@
+.product-view .product-img-box {
+    float: left;
+    width: 28%;
+}
+.copyright-img {
+    font-size: 1.4em;
+    margin-top: 20px;
+    text-indent: 1em;
+}
+.buttons-set {
+    clear: both;
+    margin: 2em 0 0;
+    padding: 8px 0 0;
+    border-top: 1px solid #e4e4e4;
+    text-align: left;
+}
+.product-view .product-shop {
+    float: right;
+    width: 520px;
+    margin: 0 15px;
+    position: relative;
+}
+.pager {
+    background-color: #EEE;
+    padding:5px 10px 10px 10px;
+   
+}
+div#customer-reviews dl dt {
+    font-size: 1.3em;
+    line-height: 30px;
+}
+div#customer-reviews dl dd {
+    line-height: 28px;
+}
+.data-table {
+    width: 50%;
+    float: none;
+}
+.data-table tbody th, .data-table tbody td {
+    border-right: 1px solid #ccc;
+    vertical-align: middle;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+tr.last.odd {
+    border-bottom: 1px solid #ccc;
+}
+.buttons-set {
+    text-align: left;
+}
+.buttons-set button.button {
+    float:none; 
+}
+.buttons-set .back-link {
+    font-size: 14px;
+	margin-top:15px;
+}
+.buttons-set .back-link a{
+    text-decoration: underline;
+}
+
+product-view .product-essential {
+    margin: 0 auto;
+    max-width: 640px;
+    width: 100%;
+}
+
+.product-view .product-shop {
+    float: right;
+    margin: 0 10px;
+    position: relative;
+    width: 60% !important;
+}
+
+.discount-propage {
+    padding: 0 0 5px;
+}
+
+.discount-propage > strong {
+    font-size: 16px;
+    padding-right: 5px;
+	color:#db0400;
+}
+
+.additionals > h2 {
+    padding-bottom: 5px;
+}
+#product-attribute-specs-table 
+.first .label {
+    border-top: 1px solid #ccc;
+}
+.data-table tbody th {
+    border-right: 0 none;
+}
+.data-table .label {
+    height: 22px;
+    line-height: 22px;
+    padding: 0 10px;
+}
+
+.data-table .first .data {
+    border-top: 1px solid #ccc;
+}
+.data-table  .data {
+    padding: 0 10px;
+}
+
+#tabs-detail {
+    clear: both;
+	margin:0 10px;
+}
+
+.product-essential {
+    margin: 0 auto;
+    max-width: 640px;
+    width: 100%;
+}
+#product-review-table tbody th{padding:5px !important;}
+#product-review-table tbody  .first th{ border-top:1px solid #ccc;}
+#product-review-table tbody  .first td{border-top:1px solid #ccc;}
+
+.pages li {
+    width: 15%;
+}
+
+@media all and (min-width:0px)and (max-width:640px){
+	.pager .limiter{
+    float:none !important;
+}	
+}
+
+
+.pager .limiter {
+    float: left;
+    padding-top: 10px;
+}
+.pager select{height:20px;}
+
+
+.product-view-review .product-name  h1 {
+    display: none;
+}
+#customer-reviews  h2 {
+    background: #000 none repeat scroll 0 0;
+    color: #fff;
+    font-size: 15px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+#customer-reviews  dl {
+    margin: 0 5px;
+}

@@ -1,0 +1,37 @@
+<?php
+/**
+ * This is the part of 'BmProducts' module for Magento,
+ * which allows easy access to product collection
+ * with flexible filters
+ */
+?>
+<?php if (($_products = $this->getProductCollection()) && $_collectionSize = $_products->getSize()): ?>
+<div class="top_selling_d">
+        <h3>
+			<div>Recommended Products in Wedding Dresses</div>
+		</h3>
+    <div class="block-content">
+     <?php $_productCollection=$this->getProductCollection() ?>
+     <?php $_collectionSize = $_productCollection->count() ?>
+   <ul class="sidelist">
+    <?php $i = 1; foreach ($_products->getItems() as $_product): ?>
+        <li <?php if($i==$_collectionSize) {echo ' class="last"'; } ?>>
+                <a class="product-img" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+                   <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(70, 70) ?>" width="70" height="70" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" /> </a>
+	       <div class="other-info">
+	       <div class="home-name"><h3 class="product-name"><a  href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h3></div>
+               <?php echo $this->getPriceHtml($_product, true, $this->getPriceSuffix()) ?>
+               <?php $old_price = $_product->getPrice();  ?>
+							 <?php $special_price = $_product->getFinalPrice();?>
+							 <?php $percent = ceil((($old_price-$special_price)/$old_price)*100)?>
+							 <?php if($percent){?>
+							 <span class="red">save:<?php echo $percent ?>% off</span>
+							 <?php }?>
+ 
+	       </div>
+        </li>
+     <?php $i++; endforeach; ?>
+     </ul>
+    </div>
+</div>
+<?php endif; ?>

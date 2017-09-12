@@ -1,0 +1,222 @@
+<?php 
+$check_api_key=Mage::app()->getStore()->getConfig('pushassistsection/general/apikey');
+$check_secret_key=Mage::app()->getStore()->getConfig('pushassistsection/general/secretkey');
+$dashboard_response = Mage::helper('pushassist')->get_dashboard();
+$account_response = Mage::helper('pushassist')->get_account_details();
+if(isset($account_response['account_name'])){
+$account_url='https://'.$account_response['account_name'].'.pushassist.com/dashboard/';
+}
+$get_subscribers = Mage::helper('pushassist')->get_subscribers();
+
+if($check_api_key!='' && $check_secret_key != '' && (!isset($account_response['error'] )) && $account_response) {
+
+?>
+<?php if(count($get_subscribers) < 1) {  ?>
+
+<div id="messages"><ul class="messages"><li class="success-msg"><ul><li><span>PushAssist is installed, no additional step is needed. Completely <a href="<?php echo $this->getUrl('*/cache'); ?>" target="_blank">Purge Cache</a> once to see it in action.
+Your Account Details have already been emailed to you. Also check under SPAM if you don't find it.</span></li></ul></li></ul></div>
+<?php } ?>
+<!-- Content Start -->
+<div id="Psidebar" >
+ <ul>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_dashboard'); ?>"><?php echo $this->__('Dashboard')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_notificationmain'); ?>"><?php echo $this->__('Notifications')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_notificationsend'); ?>"><?php echo $this->__('Send Notification')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_segments'); ?>"><?php echo $this->__('Segments')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_createsegments'); ?>"><?php echo $this->__('Create Segments')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_subscribers'); ?>"><?php echo $this->__('Subscribers')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_settings'); ?>"><?php echo $this->__('Settings')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_campaign'); ?>"><?php echo $this->__('Campaigns')?></a></li>
+ </ul>
+  </div>
+
+    <div id="pushassist" class="content dashboard clearfix">
+  
+        <!-- Start Page Header -->
+        <div class="page-header">
+            <h1 class="title"><?php echo $this->__('Dashboard');?></h1>
+	    <div class="sub_count"><span><?php echo $account_response['subscribers_remain'];?> <?php echo $this->__('subscribers left');?></span>
+		  <a href="<?php echo $account_url;?>" target="_blank"><?php echo $this->__('Upgrade to Premium');?></a>
+	    </div>
+        </div>
+        <!-- End Page Header -->
+
+        <!-- Container Start -->
+        <div class="container-widget clearfix">
+            <!-- Top Stats Start -->
+            <div class="col-md-12">
+                <ul class="topstats clearfix">
+
+		    <li class="col-xs-6 col-lg-2">
+                        <span class="title"><i class="fa  fa-users"></i> <?php echo $this->__('Subscribers');?> </span>
+                        <h3><?php echo $dashboard_response['total_subscribers']; ?></h3>
+			<span class="diff">
+                            <?php if ($dashboard_response['subscribers_change'] == 'negative') { ?>
+                            <b class="color-down"><i class="fa fa-caret-down"></i> <?php echo $dashboard_response['subscribers_percentage']; ?>
+                                <?php } if ($dashboard_response['subscribers_change'] == 'positive') { ?>
+                                <b class="color-up"><i class="fa fa-caret-up"></i> <?php echo $dashboard_response['subscribers_percentage']; ?>
+                                    <?php } ?>%
+                                    
+                                </b> <?php echo $this->__('from last week');?></span>
+                    </li>
+		    <li class="col-xs-6 col-lg-2">
+                        <span class="title"><i class="fa  fa-bell"></i> <?php echo $this->__('Active');?> </span>
+                        <h3><?php echo $dashboard_response['active_subscribers']; ?></h3>
+			<span class="diff">
+                            <?php if ($dashboard_response['active_subscribers_change'] == 'negative') { ?>
+                            <b class="color-down"><i class="fa fa-caret-down"></i> <?php echo $dashboard_response['active_subscribers_percentage']; ?>
+                                <?php } if ($dashboard_response['active_subscribers_change'] == 'positive') { ?>
+                                <b class="color-up"><i class="fa fa-caret-up"></i> <?php echo $dashboard_response['active_subscribers_percentage']; ?>
+                                    <?php } ?>%
+                                    
+                                </b> <?php echo $this->__('from last week');?></span>
+                    </li>
+		    <li class="col-xs-6 col-lg-2">
+                        <span class="title"><i class="fa fa-bell-slash"></i> <?php echo $this->__('Unsubscribed');?> </span>
+                        <h3><?php echo $dashboard_response['unsubscribed']; ?></h3>
+                        <span class="diff">
+						<?php if ($dashboard_response['unsubscribed_change'] == 'negative') { ?>
+						<b class="color-down"><i class="fa fa-caret-down"></i> <?php echo $dashboard_response['unsubscribed_percentage']; ?>
+						<?php }
+						if ($dashboard_response['unsubscribed_change'] == 'positive') { ?>
+						<b class="color-up"><i class="fa fa-caret-up"></i> <?php echo $dashboard_response['unsubscribed_percentage']; ?>
+							<?php } ?>%
+
+						
+						</b> <?php echo $this->__('from last week');?></span>
+                    </li>
+                    <li class="col-xs-6 col-lg-2">
+                        <span class="title"><i class="fa fa-send"></i> <?php echo $this->__('Sent');?> </span>
+                        <h3><?php echo $dashboard_response['total_delivered']; ?></h3>
+                        <span class="diff">
+						<?php if ($dashboard_response['delivered_change'] == 'negative') { ?>
+						<b class="color-down"><i class="fa fa-caret-down"></i> <?php echo $dashboard_response['delivered_percentage']; ?>
+						<?php }
+						if ($dashboard_response['delivered_change'] == 'positive') { ?>
+						<b class="color-up"><i class="fa fa-caret-up"></i> <?php echo $dashboard_response['delivered_percentage']; ?>
+							<?php } ?>%
+
+						
+						</b> <?php echo $this->__('from last week');?></span>
+                    </li>
+
+                    <li class="col-xs-6 col-lg-2">
+                        <span class="title"><i class="fa fa-check-square-o"></i> <?php echo $this->__('Clicked');?> </span>
+                        <h3 class="color-up"><?php echo $dashboard_response['total_clicks']; ?></h3>
+                        <span class="diff">
+                            <?php if ($dashboard_response['clicks_change'] == 'negative') { ?>
+                            <b class="color-down"><i class="fa fa-caret-down"></i> <?php echo $dashboard_response['clicks_percentage']; ?>
+                                <?php } if ($dashboard_response['clicks_change'] == 'positive') { ?>
+                                <b class="color-up"><i class="fa fa-caret-up"></i> <?php echo $dashboard_response['clicks_percentage']; ?>
+                                    <?php } ?>%
+                                    
+                                </b> <?php echo $this->__('from last week');?></span>
+                    </li>
+
+                    
+
+                    
+<?php if($account_response['planType']=='Paid'){ ?>
+                    <li class="col-xs-6 col-lg-2">
+                        <span class="title"><i class="fa  fa-cogs"></i> <?php echo $this->__('Campaigns');?> </span>
+                        <h3 class="color-up"><?php echo $dashboard_response['campaign_count']; ?></h3>
+                        <span class="diff"><b class="color-down"></b> <?php echo $this->__('active this week');?></span>
+                    </li>
+			<?php }else{?>		
+                    <li class="col-xs-6 col-lg-2">
+                        <span class="title"><i class="fa  fa-send"></i> <?php echo $this->__('Viewed');?> </span>
+                        <h3 class="color-up"><?php echo $dashboard_response['total_delivered']; ?></h3>
+						<span class="diff"><b class="color-down"></b> <?php echo $this->__('created');?> </span>
+                    </li>
+<?php } ?>
+                   
+                </ul>
+            </div>
+            <!-- Top Stats End -->
+	    <?php 
+
+?>
+	    
+            <!-- Project Stats Start -->
+            <div class="col-md-12 col-lg-12">
+                <div class="panel panel-widget">
+		  <?php if(count($dashboard_response['last_notifications']) > 0){?>
+                   
+                    <div class="panel-search">
+                        <form>
+                            <input type="text" class="form-control" placeholder="Search...">
+                            <i class="fa fa-search icon"></i>
+                        </form>
+                    </div>
+                    <div class="panel-body table-responsive">
+			
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <td>#</td>
+                                <td><?php echo $this->__('Site');?></td>
+                                <td><?php echo $this->__('Message');?></td>
+				<td><?php echo $this->__('Total Sent');?></td>
+                                <td><?php echo $this->__('Delivered');?></td>
+                                <td><?php echo $this->__('Unsubscribed');?></td>
+                                <td><?php echo $this->__('Clicked');?></td>
+				<td><?php echo $this->__('Created Date');?></td>
+				<td><?php echo $this->__('Is Campaign');?></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+			    <?php $i=1;
+			      foreach( $dashboard_response['last_notifications'] as $get_notifications_list){ 
+
+				  $clicked_percentage=@($get_notifications_list['total_clicked']/$get_notifications_list['total_sent'])*100;
+
+			      ?>
+                                <tr>
+                                    <td><?php echo $i;?></td>
+                                    <td><?php echo $get_notifications_list['siteURL']?></td>	
+				     <td class="message">
+					<div class="col-sm-10">
+					    <h5 class="margin-t-0 font-bold">
+						<?php echo  $get_notifications_list['title'];?> 
+					    </h5>
+					    <p class="margin-b-5"><?php echo  $get_notifications_list['message'];?></p>
+					    <a target="_blank" href="<?php echo  $get_notifications_list['url'];?>">
+						<?php echo  $get_notifications_list['url'];?>
+					    </a>
+					  </div>
+                                    </td> 
+
+				   
+				    <td><?php echo $get_notifications_list['total_sent']+$get_notifications_list['failed'];?></td>
+                                    <td><?php echo $get_notifications_list['total_sent']?></td>
+                                    <td><?php echo $get_notifications_list['failed'];?></td>
+                                    <td><?php echo $get_notifications_list['total_clicked'];?> 
+					<?php if($clicked_percentage>0){
+					?>	
+					  <b class="color-up margin-l-10"> <?php echo (int)$clicked_percentage; } else { ?> <b class="color-up margin-l-10">0 <?php } ?> %</b>
+				    </td>
+				    <td><?php echo date("M d, Y H:i:s",strtotime($get_notifications_list['created_at']));?></td>
+				    <td><?php if($get_notifications_list['campaign_flag']==0){ echo "No";}else{ echo "Yes";}?></td>
+                                </tr>
+                              <?php 
+				      $i++;
+			      } ?>  
+                                                             
+                            </tbody>
+                        </table>
+                    </div>
+
+
+		      <?php }else{ echo  $this->__('No result Found');} ?>
+                </div>
+            </div>
+            <!-- Project Stats End -->
+	  
+        </div>
+        <!-- Container End -->
+    </div>
+    <!-- Content End -->
+<?php }else{
+
+        Mage::app()->getResponse()->setRedirect(Mage::helper("adminhtml")->getUrl("adminhtml/pushassist_createaccount/index/"));
+}?>

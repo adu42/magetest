@@ -1,0 +1,219 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Shopping cart template
+ *
+ * @see Mage_Checkout_Block_Cart
+ */
+?>
+<div class="cart">
+	<div class="we_accept"><span><?php echo $this->__('We accept:') ?></span> <img src="<?php echo $this->getSkinUrl('images/we_accept.jpg') ?>"></div>
+    <div class="breadcrumbs">
+			<ul>
+                <li class="home">
+                    <a href="<?php echo $this->getUrl('') ?>" title="Go to Home Page">&nbsp;</a><span>&nbsp;</span>
+                </li>
+                <li class="category last">
+                    <a href="javascript:void(0);"><?php echo $this->__('Shopping Cart') ?></a><span>&nbsp;</span>
+                </li>
+            </ul>
+	</div>
+		<?php //echo $this->getMessagesBlock()->getGroupedHtml() ?>
+	<div class="checkout-cart">	
+		<div class="shopping-type">
+			<ul class="continue-shopping">
+				<li>
+					<?php if($this->getContinueShoppingUrl()): ?>
+                        <button type="button" title="<?php echo $this->__('Continue Shopping') ?>" class="button btn-continue" onclick="setLocation('<?php echo $this->getContinueShoppingUrl() ?>')"><span><?php echo $this->__('Continue Shopping') ?></span></button>
+                    <?php endif; ?>
+				</li>
+			</ul>
+			<?php if(!$this->hasError()): ?>
+			<ul class="checkout-types">
+				<?php foreach ($this->getMethods('top_methods') as $method): ?>
+					<?php if ($methodHtml = $this->getMethodHtml($method)): ?>
+					<li><?php echo $methodHtml; ?></li>
+				<?php endif; ?>
+			<?php endforeach; ?>
+			</ul>
+			<?php endif; ?>
+		</div>
+   
+    <?php echo $this->getChildHtml('form_before') ?>
+    <form action="<?php echo $this->getUrl('checkout/cart/updatePost') ?>" method="post">
+        <fieldset>
+            <table id="shopping-cart-table" class="data-table cart-table">
+                <col width="1" />
+                <col />
+                <col width="1" />
+            <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
+                <col width="1" />
+            <?php endif ?>
+            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+                <col width="1" />
+            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+                <col width="1" />
+
+            <?php $mergedCells = ($this->helper('tax')->displayCartBothPrices() ? 2 : 1); ?>
+                <thead>
+                    <tr>
+                        <th width="55%;" rowspan="<?php echo $mergedCells; ?>"><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
+                        <!--<th rowspan="<?php //echo $mergedCells; ?>"></th>-->
+                        <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
+                        <th rowspan="<?php echo $mergedCells; ?>" class="a-center"><span class="nobr"><?php echo $this->__('Move to Wishlist') ?></span></th>
+                        <?php endif ?>
+                        <th width="15%;" class="a-center" colspan="<?php echo $mergedCells; ?>"><span class="nobr"><?php echo $this->__('Unit Price') ?></span></th>
+                        <th width="15%;" rowspan="<?php echo $mergedCells; ?>" class="a-center"><?php echo $this->__('Qty') ?></th>
+                        <th width="15%;" class="a-center" colspan="<?php echo $mergedCells; ?>"><?php echo $this->__('Subtotal') ?></th>
+                    </tr>
+                    <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
+                    <tr>
+                        <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+                        <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+                        <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+                        <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+                    </tr>
+                    <?php endif; ?>
+                </thead>
+                <tfoot>
+                    <tr>
+						<td>&nbsp;</td>
+                        <td colspan="50" class="a-right">
+							<?php echo $this->getChildHtml('totals'); ?>
+                            
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                <?php foreach($this->getItems() as $_item): ?>
+                    <?php echo $this->getItemHtml($_item) ?>
+                <?php endforeach ?>
+                </tbody>
+            </table>
+			<div class="cart_action">
+				<?php if($this->getContinueShoppingUrl()): ?>
+                    <button type="button" title="<?php echo $this->__('Continue Shopping') ?>" class="button btn-continue" onclick="setLocation('<?php echo $this->getContinueShoppingUrl() ?>')"><span><?php echo $this->__('Continue Shopping') ?></span></button>
+                <?php endif; ?>
+				<button type="submit" name="update_cart_action" value="update_qty" style="margin-left:15px;" title="<?php echo $this->__('Update Shopping Cart'); ?>" class="button btn-update"><span><?php echo $this->__('Update Shopping Cart'); ?></span></button>
+			</div>
+            <script type="text/javascript">decorateTable('shopping-cart-table')</script>
+        </fieldset>
+    </form>
+		<div class="cart-collaterals">
+            <?php //echo $this->getChildHtml('totals'); ?>
+            <?php if(!$this->hasError()): ?>
+            <ul class="checkout-types">
+            <?php foreach ($this->getMethods('methods') as $method): ?>
+                <?php if ($methodHtml = $this->getMethodHtml($method)): ?>
+                <li><?php echo $methodHtml; ?></li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            </ul>
+            <?php endif; ?>
+		</div>
+	</div>
+</div>
+<!-- // product list --->
+<div class="product-list">
+<?php echo $this->getChildHtml('productlist') ?>
+</div>
+<!-- // product list end --->
+
+
+<!-- TCG Facebook Conversion Code for Cart -->
+<script>(function() {
+  var _fbq = window._fbq || (window._fbq = []);
+  if (!_fbq.loaded) {
+    var fbds = document.createElement('script');
+    fbds.async = true;
+    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(fbds, s);
+    _fbq.loaded = true;
+  }
+})();
+window._fbq = window._fbq || [];
+window._fbq.push(['track', '6021179374888', {'value':'0.00','currency':'USD'}]);
+</script>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6021179374888&amp;cd[value]=0.00&amp;cd[currency]=USD&amp;noscript=1" /></noscript>
+<!-- TCG Facebook Conversion Code for Cart -->
+
+<!-- BEGIN PZ Facebook Conversion Code for shopping cart -->
+<script type="text/javascript">
+var fb_param = {};
+fb_param.pixel_id = '6017142722314';
+fb_param.value = '0.00';
+fb_param.currency = 'USD';
+(function(){
+  var fpw = document.createElement('script');
+  fpw.async = true;
+  fpw.src = '//connect.facebook.net/en_US/fp.js';
+  var ref = document.getElementsByTagName('script')[0];
+  ref.parentNode.insertBefore(fpw, ref);
+})();
+</script>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/offsite_event.php?id=6017142722314&amp;value=0&amp;currency=USD" /></noscript>
+<!-- END PZ Facebook Conversion Code for shopping cart -->
+
+<!-- Google Code for sales Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 972798139;
+var google_conversion_language = "en";
+var google_conversion_format = "2";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "kP2xCP2NkgoQu_HuzwM";
+var google_conversion_value = 0;
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/972798139/?value=0&label=kP2xCP2NkgoQu_HuzwM&guid=ON&script=0"/>
+</div>
+</noscript>
+<!--Google Code End-->
+
+<!--Bing Code Start-->
+<script type="text/javascript"> if (!window.mstag) mstag = {loadTag : function(){},time : (new Date()).getTime()};</script> <script id="mstag_tops" type="text/javascript" src="//flex.msn.com/mstag/site/b2a0aaf4-3b4b-4697-b7d4-7c3f6501d2c4/mstag.js"></script> <script type="text/javascript"> mstag.loadTag("analytics", {dedup:"1",domainId:"2901307",type:"1",actionid:"228121"})</script> <noscript> <iframe src="//flex.msn.com/mstag/tag/b2a0aaf4-3b4b-4697-b7d4-7c3f6501d2c4/analytics.html?dedup=1&domainId=2901307&type=1&actionid=228121" frameborder="0" scrolling="no" width="1" height="1" style="visibility:hidden;display:none"> </iframe> </noscript>
+<!--Bing Code End-->
+
+
+

@@ -1,0 +1,35 @@
+<?php if (($_products = $this->getProductCollection()) && $_collectionSize = $_products->getSize()): ?>
+<div class="box tab tab-highlight">
+    <div class="head head_bg">	
+		<h3><span><?php echo $this->__($this->getTitle()) ?></span></h3>
+	</div>
+    <div class="catalog-listing <?php echo $this->getClassName() ?>">
+    <?php $_columnCount = $this->getColumnsCount(); ?>
+    <?php $i = 0; foreach ($_products->getItems() as $_product): ?>
+    <?php if($i++%$_columnCount == 0) : ?>
+    <ol class="products-tab">
+    <?php endif; ?>
+        <li  class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+			<div class="tab-product-img">
+				<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+					<img class="product-image" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(231,308) ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" /></a>
+			</div>
+			<div class="tab-other-info">
+				<h3 class="product-name" ><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h3>
+				<?php $price=$this->getPriceHtml($_product, true, $this->getPriceSuffix()); 
+					$price=str_replace('class="price-box"','class="price-box-list"',$price);
+					$price=str_replace('class="old-price"','class="old-price-list"',$price);
+					$price=str_replace('class="special-price"','class="special-price-list"',$price);
+					echo $price;
+				 ?>
+				 
+			</div>
+        </li>
+    <?php if($i%$_columnCount == 0 || $i == count($_products)): ?>
+    </ol>
+    <?php endif; ?>
+    <?php endforeach; ?>
+    </div>
+    <script type="text/javascript">decorateGeneric($$('.grid-row'), ['first', 'last', 'odd', 'even']);</script>
+</div>
+<?php endif; ?>

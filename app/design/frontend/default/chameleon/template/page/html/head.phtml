@@ -1,0 +1,46 @@
+<?php
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+ <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0,user-scalable = no, maximum-scale=1.0,minimal-ui, target-densityDpi=device-dpi" />
+ */
+?>
+<title><?php echo $this->getTitle() ?></title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="description" content="<?php echo htmlspecialchars($this->getDescription()) ?>" />
+<meta name="keywords" content="<?php echo htmlspecialchars($this->getKeywords()) ?>" />
+<meta name="robots" content="<?php echo htmlspecialchars($this->getRobots()) ?>" />
+<link rel="icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<link rel="shortcut icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<?php
+//js全局变量初始化
+$_public_js_var = '<script type="text/javascript">';
+if(Mage::getSingleton('customer/session')->isLoggedIn()){
+    $_public_js_var.='var isLogind = true;';
+}else{
+    $_public_js_var.='var isLogind = false;';
+}
+if(Mage::helper('ado_seo')->jsCached())$_public_js_var.='var belvg_debug = true;';
+$_public_js_var .= '</script>';
+echo $_public_js_var;
+?>
+<?php echo $this->getCssJsHtml() ?>
+<?php echo $this->getChildHtml() ?>
+<?php echo $this->helper('core/js')->getTranslatorScript() ?>
+<?php echo $this->getIncludes() ?>
+

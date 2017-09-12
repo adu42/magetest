@@ -1,0 +1,116 @@
+<?php
+/**
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<?php
+
+function _cutDotStr($str,$len=60,$substr='',$splitChar=','){
+        if(strlen($str)>$len){
+            $_str=explode($splitChar,$str);
+            foreach($_str as &$v){  
+                $v=trim($v);
+            }
+            if(!empty($substr)){
+                $substr.=','.array_pop($_str);
+            }else{
+                $substr.=array_pop($_str);    
+            }
+            $str=implode($splitChar,$_str); 
+            if(strlen($str)>$len){
+               list($str,$substr)=_cutDotStr($str,$len,$substr,$splitChar);
+            }
+        }
+        return array($str,$substr);
+}
+
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');
+   $_current_id='';
+   $_uri=$_SERVER["REQUEST_URI"];
+if(stripos($_uri,'search')===false){
+ if(stripos($_uri,'tag/')===false){
+    $_categoryId=Mage::registry('current_category')->getId();
+    if($_categoryId)$_current_id='?catid='.$_categoryId.'&user_device=mobile';
+  }else{
+         $__uri=explode('/',$_uri);
+        $_current_id='?catid=tags'.end($__uri);
+  }  }
+?>
+<?php if(!$_productCollection->count()): ?>
+    <p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+	<?php //echo $this->getToolbarHtml() ?>
+	<?php echo $this->getToolbarBlock()->setTemplate('catalog/product/list/toolbar-top.phtml')->toHtml(); ?>
+    <div class="category-products">
+        <?php $_collectionSize = $_productCollection->count() ?>
+        <?php $_columnCount = $this->getColumnCount(); ?>
+        <ul class="c-list">
+            <?php $i=0; foreach ($_productCollection as $_product): ?>
+                <li>
+				<div class="c-list-img">
+                    <a href="<?php echo $_product->getProductUrl().$_current_id;?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>">
+                        <div class="wrap"> 
+                            <div class="product-image">
+                                <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(300,400); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+								<?php if($_product->getIsoff()){
+									$old_price = $_product->getPrice();  ?>
+									<?php $special_price = $_product->getFinalPrice();?>
+									<?php $percent = ceil((($old_price-$special_price)/$old_price)*100)?>
+									<?php if($percent){?>
+										<em class="m-discount" style="background:url(<?php echo $this->getSkinUrl('images/save_off_'.(Mage::app()->getStore()->getCode()).'.png') ?>) -41px -45px repeat;<?php if(Mage::app()->getStore()->getCode() == 'fr') {  echo "padding-left:13px;padding-top:3px;"; } ?><?php if(Mage::app()->getStore()->getCode() == 'es') {  echo "padding-left:10px;padding-top:3px;"; } ?>"><?php echo $percent ?></em>
+								<?php }} ?>
+                            </div>
+                            
+                        </div>
+                    </a>
+					</div>
+					<div class="c-list-text">  
+					<div class="product-shop">
+                                <div class="product-name">
+                                    <?php echo $_product->getName(); ?>
+                                </div>
+								<!--<div class="product-sku">
+                                    #<?php //echo $_product->getSku();  ?>
+                                </div>-->
+                                <header>
+                                    <?php echo $this->getPriceHtml($_product, true) ?>
+									<div class="favorite">
+            <a id="favorite-product-mobile" rel="nofollow" href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="fav-atc">
+			(<?php
+			$resource = Mage::getSingleton('core/resource');
+			$readConnection = $resource->getConnection('core_read');
+			$productid = $_product->getId();
+			$total_wishlist = $readConnection->fetchOne("SELECT count(*) as aa FROM wishlist_item where product_id = '$productid' limit 1");
+			echo ''.$total_wishlist;
+			?>)</a>
+		</div>
+                                </header>
+                            </div>
+		    <?php if($_product->getRatingSummary()): ?>
+		<?php $summary= $this->getReviewsSummaryHtml($_product, 'short') ?>
+                <?php $product_url=$_product->getProductUrl();
+                $summary= preg_replace('/href=\"\s*http(s):\/\/(\S+)/',"href=\" ".$product_url."#",$summary);
+                $summary= preg_replace('/review\//',"",$summary);
+			echo  $summary;
+		?>
+                <?php endif; ?>
+		
+		</div>
+                </li>
+            <?php endforeach ?>
+        </ul>
+    </div>
+    <?php //echo $this->getToolbarHtml() ?>
+	<?php echo $this->getToolbarBlock()->setTemplate('catalog/product/list/toolbar-bottom.phtml')->toHtml(); ?>
+<?php endif; ?>

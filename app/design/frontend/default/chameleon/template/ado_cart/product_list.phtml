@@ -1,0 +1,93 @@
+<?php
+/**
+ * @by ado
+ * @114458473@qq.com
+ */
+?>
+<?php 
+if($this->isEnabled()):
+if (($_products = $this->getProductCollection()) && $_collectionSize = $_products->getSize()): 
+ $storeCode = Mage::app()->getStore()->getCode();
+ echo $this->helper('core/js')->includeScript("jquery/$storeCode/custom-by-ado.js"); 
+ $buttonTitle = $this->__('Add to Cart'); 
+ $_columnCount=5;
+?>
+<script type="text/javascript">
+    //<![CDATA[
+        function customValidateProductOptions(id){
+            var _flag=true;
+            jQuery('#'+id).find('input.required-entry,select.required-entry,textarea.required-entry,input.datetime-picker').each(function(){
+                if(jQuery(this).val()==''){
+                    jQuery(this).css('border','1px solid #ff0000');
+                    _flag=false;
+                }else{
+                    jQuery(this).css('border','1px solid #009B00');
+                }
+            });
+            return _flag;
+        }
+    //]]>
+    </script> 
+<style type="text/css">
+.product-details-img img{width:100%;}
+</style>
+<div class="block block-related">
+  <div class="block-title"> <strong><span><?php echo $this->__('Related Products') ?></span></strong> </div>
+  <div class="block-content">
+    <input type="hidden" name="sizeUnit" id="sizeUnit" value="inch" />
+    <?php $i=0; foreach($_products as $k=>$_item):  ?>
+      <?php if ($i++%$_columnCount==0): ?>
+    <ul class="mini-products-list-in-cart" id="block-related">
+      <?php endif ?>
+      <li class="item"> 
+        <!--// show product detail //-->
+        <form action="<?php echo $this->getSubmitUrl($_item) ?>" method="post" id="product_addtocart_form<?php echo $_item->getId() ?>" enctype="multipart/form-data">
+          <div class="no-display">
+            <input type="hidden" name="product" value="<?php echo $_item->getId() ?>" />
+            <input type="hidden" name="related_product" id="related-products-field" value="" />
+          </div>
+          <div class="product">
+            <div class="product-details-img"> <a href="<?php echo $_item->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_item->getName()) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(174,232) ?>" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" /></a> </div>
+            <div class="product-details">
+             <!-- <p class="product-name"><a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a></p> -->
+              <?php echo $this->getPriceHtml($_item, true, '-related') ?> </div>
+            <div class="product-details-options-list" id="product-details-options-<?php echo $_item->getId(); ?>"> <?php echo $this->getOptionsHtml($_item->getId()); ?> </div>
+            <!-- add to cart button-->
+            <?php if($_item->isSaleable()): ?>
+            <div class="add-to-cart">
+              <?php if(!$_item->isGrouped()): ?>
+              <label for="qty"><?php echo $this->__('Qty:') ?></label>
+              <input type="text" name="qty" id="qty" maxlength="12" value="<?php echo $this->getProductDefaultQty() * 1 ?>" title="<?php echo $this->__('Qty') ?>" class="input-text qty" />
+              <?php endif; ?>
+              <button type="button" title="<?php echo $buttonTitle ?>" class="button btn-cart" onclick="productAddToCartForm<?php echo $_item->getId() ?>.submitLight(this)"><span><span><?php echo $buttonTitle ?></span></span></button>
+              <?php echo $this->getChildHtml('', true, true) ?> </div>
+            <?php endif; ?>
+            <!-- add to cart button end  --> 
+          </div>
+        </form>
+        <!--// show product detail end//--> 
+        <!--// add to cart js //--> 
+        <script type="text/javascript">
+    //<![CDATA[
+        var productAddToCartForm<?php echo $_item->getId() ?> = new VarienForm('product_addtocart_form<?php echo $_item->getId() ?>');
+        productAddToCartForm<?php echo $_item->getId() ?>.submitLight = function(button){
+		  if (customValidateProductOptions('product_addtocart_form<?php echo $_item->getId() ?>')) {
+				   this.form.submit();
+					if (button && button != 'undefined') {
+						button.disabled = true;
+					}
+		 }
+        }.bind(productAddToCartForm<?php echo $_item->getId() ?>);
+    //]]>
+    </script> 
+        <!--// add to cart js end//--> 
+      </li>
+    <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </ul>
+    <?php endif ?>
+    <?php endforeach ?>
+    <script type="text/javascript">decorateGeneric($$('ul.mini-products-list-in-cart'), ['odd','even','first','last'])</script>
+  </div>
+</div>
+<?php endif ?>
+<?php endif ?>

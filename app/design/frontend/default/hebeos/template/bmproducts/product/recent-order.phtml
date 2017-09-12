@@ -1,0 +1,50 @@
+<?php
+/**
+ * This is the part of 'BmProducts' module for Magento,
+ * which allows easy access to product collection
+ * with flexible filters
+ */
+?>
+<?php if (($_products = Mage::helper('catalog/product')->getSoldProducts())): ?>
+<div class="block recent-block">
+<div class="block-title"><?php echo $this->__($this->getTitle()) ?></div>
+<div class="block-content">
+   <div class="recent-content">
+     <div style="position: relative; height: 600px; overflow: hidden; padding: 0pt; margin: 0pt;" id="recentorder">
+            <?php $_iterator=0; ?>
+	    <div id="recentorder1">
+				<ul class="top-list">
+				<?php foreach ($_products as $_product): ?>
+					<li style="padding-bottom:5px;">
+					<span class="recent_order_icon">&nbsp;</span>
+						 <a href="<?php echo Mage::getBaseUrl().$_product['url'] ?>" title="<?php echo $_product['name'] ?>"><?php echo $_product['name'] ?></a>
+					<!--<br /><span style="color:#666;">ship to <?php //echo $_product['address'];?></span>-->
+					</li>
+										<?php if(++$_iterator>10) {break;} ?>
+						<?php endforeach ?>
+				</ul>
+	    </div>
+	    <div id="recentorder2">	    </div>
+    </div>
+    
+ </div>
+</div></div>
+<script type="text/javascript">
+//top deals
+var speeda=80;
+var recentorder2=document.getElementById("recentorder2");
+var recentorder1=document.getElementById("recentorder1");
+var recentorder=document.getElementById("recentorder");
+recentorder2.innerHTML=recentorder1.innerHTML;
+function Marquee(){
+if(recentorder2.offsetTop-recentorder.scrollTop<=0){
+recentorder.scrollTop-=recentorder1.offsetHeight+10;
+}else{
+recentorder.scrollTop++;
+}
+}
+var MyMar=setInterval(Marquee,speeda);
+recentorder.onmouseover=function() {clearInterval(MyMar)}
+recentorder.onmouseout=function() {MyMar=setInterval(Marquee,speeda)}
+</script>
+<?php endif; ?>

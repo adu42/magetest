@@ -1,0 +1,92 @@
+<div class="buttons-referral-like">
+  <a onclick="showReferralLink(true);" class="referral"><span><span><?php echo $this->__('Refer friends')?></span></span></a>
+
+  <div id="referral-popup" name="referral-popup" class="referral-popup" style="display:none">
+    <div class="close" onclick="showReferralLink(false);">×</div>
+    <?php if ($this->isAuthorized()): ?>
+      <form action="<?php echo Mage::getUrl('rewards/referral/post')?>" method="POST" enctype="multipart/form-data" id="referralForm" >
+        <h2 id="refer-friends"><span class="h1"><?php echo $this->__('Your product referral link') ?></span></h2>
+
+        <ul class="form-list">
+          <li>
+            <div class="input-box">
+              <input name="share-url" id="share-url" readonly class="input-text" value="<?php echo $this->getShareUrl(); ?>" />
+              <input type="hidden" name="front" id="share-front"  class="input-text" value="1" />
+            </div>
+          </li>
+          <li>
+            <label for="email"><?php echo $this->__('Contacts of your friends to invite them') ?></label>
+            <div class="input-box">
+              <input name="email" id="share-email" class="input-text" placeholder="<?php echo $this->__('Enter comma-separated email list') ?>" />
+            </div>
+          </li>
+        </ul>
+        <div class="buttons-set">
+          <a onclick="ajaxPostReferral();"  title="<?php echo $this->__('Send Invitations') ?>" class="button"><span><span><?php echo $this->__('Send Invitations') ?></span></span></a>
+        </div>
+      </form>
+    <?php else: ?>
+      <?php echo $this->__('Register or Login to share link and invite friends'); ?>
+    <?php endif; ?>
+  </div>
+
+  <?php if ($this->getEstimatedEarnPoints() > 0): ?>
+    <?php if ($this->isAuthorized()): ?>
+    <div id='referral-message'>
+  	<?php echo $this->__('Refer friend and earn %s. More friends more points!',  Mage::helper('rewards')->getPointsName()); ?>
+    </div>
+    <?php endif; ?>
+  <?php endif; ?>
+</div>
+
+<script>
+  function showReferralLink(status) {
+    var popup = jQuery('#referral-popup');
+    if(status) {
+      popup.css({'display':'block'});
+    } else {
+      popup.css({'display':'none'});
+    }
+  }
+
+  function ajaxPostReferral(){
+    var param = {
+      'share-url' : jQuery('#share-url').val(),
+      'email'     : jQuery('#share-email').val(),
+      'front'     : jQuery('#share-front').val(),
+    };
+    var url   = "<?php echo Mage::getUrl('rewards/referral/post')?>";
+    if(verifyReferral()){
+      jQuery.post(url,param,function(data){
+          if(data.code){
+             layer.msg(data.info);
+            jQuery('#referral-popup .close').trigger('click');
+          }
+          
+      },'json');    
+    }    
+  }
+
+  function verifyReferral(){
+     var status = 0;
+     var email = jQuery('#share-email').val();
+     var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+     if(email.length == 0) {
+              layer.msg("<?php echo $this->__('Email Not Empty!') ?>");
+              return status;      
+     }else{
+
+        if(!myreg.test(email))
+        {
+                layer.msg("<?php echo $this->__('Email Is Wrong!') ?>");
+                return status;
+        }else{
+              status = 1 ;
+              return status;
+        }      
+     }
+
+   
+     
+  }
+</script>

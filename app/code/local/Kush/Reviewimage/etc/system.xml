@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    Community
+ * @package     Clarion_Bannerresponsive
+ * @copyright   Copyright magento@clariontechnologies.co.in
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<config>
+    <sections>
+        <reviewimage translate="label" module="reviewimage">
+            <label>Reviews</label>
+            <tab>ado</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>677</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <reimage translate="label" module="reviewimage">
+                    <label>Enable or Disable</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>140</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <reimagefield translate="label">
+                            <label>Enable:</label>
+                            <comment></comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>210</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </reimagefield>
+                        <mincatalog translate="label">
+                            <label>Min Catalog ID</label>
+                            <comment>Use to find root catalog product in.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>220</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mincatalog>
+                        <imageresolutionnormal translate="label">
+                            <label>Image Normal Size</label>
+                            <comment>Hight And Width For Review Image,480x640</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                        </imageresolutionnormal>
+                        <imageresolution translate="label">
+                            <label>Image Small Size</label>
+                            <comment>Hight And Width For Review Image,180x240</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                        </imageresolution>
+                        <imageresolutionsmall translate="label">
+                            <label>Image Thumbnail Size</label>
+                            <comment>Hight And Width For Review Image,80x120</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                        </imageresolutionsmall>
+
+
+                        <imageresolutionvideo translate="label">
+                            <label>Video Size</label>
+                            <comment>Hight And Width For Review Image,90xauto</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                        </imageresolutionvideo>
+
+
+                        <maximages translate="label">
+                            <label>Upload Images Numbers</label>
+                            <comment>&lt;=7</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </maximages>
+                        <imagepath translate="label">
+                            <label>Images Dir</label>
+                            <comment>Directory in /media/</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>250</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </imagepath>
+                        <reimagetitle translate="label">
+                            <label>Enable Title</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>260</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </reimagetitle>
+                        <reimageupload translate="label">
+                            <label>Frontend Can Upload</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>211</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </reimageupload>
+                        <reimageshow translate="label">
+                            <label>Submit Then Enabled</label>
+                            <comment>Post to enable</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>212</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </reimageshow>
+                        <reimageshowsku translate="label">
+                            <label>Sku Field Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>270</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </reimageshowsku>
+                        <reimagemust translate="label">
+                            <label>Image Field Required</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>265</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </reimagemust>
+                        <imagesharetitle translate="label">
+                            <label>Share Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>280</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </imagesharetitle>
+                        <imagesharedescription translate="label">
+                            <label>Share Title Description</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>281</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </imagesharedescription>
+                        <imagehometitle translate="label">
+                            <label>Home Label</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>290</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </imagehometitle>
+                        <imagehomedescription translate="label">
+                            <label>Home Label Description</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </imagehomedescription>
+                        <imagelisttitle translate="label">
+                            <label>Gallery Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>310</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </imagelisttitle>
+                        <imagelistkeyword translate="label">
+                            <label>Gallery Keywords</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>320</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </imagelistkeyword>
+                        <imagelistdescription translate="label">
+                            <label>Gallery Description</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>330</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </imagelistdescription>
+                        <ratingcode translate="label">
+                            <label>Rating Label</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>340</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </ratingcode>
+                        <imageformtitle translate="label">
+                            <label>Form Page Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>360</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </imageformtitle>
+                        <imageformkeyword translate="label">
+                            <label>Form Page Keywords</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>370</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </imageformkeyword>
+                        <imageformdescription translate="label">
+                            <label>Form Page Description</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>380</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </imageformdescription>
+                    </fields>
+                </reimage>
+            </groups>
+        </reviewimage>
+    </sections>
+</config>

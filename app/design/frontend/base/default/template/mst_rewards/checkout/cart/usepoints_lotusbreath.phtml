@@ -1,0 +1,148 @@
+<?php
+if (!$this->getMaxPointsNumberToSpent() || !$this->getIsSpendAllowed()) {
+    return;
+}
+?>
+<h3 class="ptitle">Reward Points</h3>
+<div class="discount">
+    <div class="points-code-form">
+        <label for="points_amount"><?php echo $this->__('You have <b>%s</b> available.', Mage::helper('rewards')->formatPoints($this->getBalancePoints())) ?><br>
+            <?php echo $this->__('Enter amount of points to spend:'); ?>
+        </label>
+        <input type="hidden" name="remove-points" id="remove-points" value="0" />
+        <div class="input-box field-row">
+            <input class="input-text with-buttons" id="points_amount" name="points_amount" value="<?php echo $this->getPointsAmount() ? $this->htmlEscape($this->getPointsAmount()) : '' ?>" style="width: 90%;"/>
+        </div>
+        <div class="input-box">
+            <input type='checkbox' id="points_all" name="points_all"
+                <?php echo $this->getPointsAmount() == $this->getMaxPointsNumberToSpent() ? 'checked' : ''?> />
+            <label for="points_all"><?php echo $this->__('Use maximum %s', Mage::helper('rewards')->formatPoints($this->getMaxPointsNumberToSpent()))?></label>
+        </div>
+        <div class="ac-button">
+            <button type="button" class="button disabled" id="apply-points" onclick="return false;">
+                <span><span><?php echo $this->__('Apply Points') ?></span></span>
+            </button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //<![CDATA[
+    var rewardsForm = new VarienForm('reward-points-form');
+    $j = jQuery.noConflict();
+    Event.observe($('points_all'), 'click', function(){
+        if ($('points_amount').value == <?php echo $this->getMaxPointsNumberToSpent() ?>) {
+            $('points_amount').value = '';
+        } else {
+            $('points_amount').value = <?php echo $this->getMaxPointsNumberToSpent() ?>;
+            $j('#apply-points').removeClass('disabled');
+            $j('#apply-points').removeAttr('disabled');
+        }
+    });
+    Event.observe($('points_amount'), 'keyup', function(){
+        var val = parseInt($('points_amount').value);
+        if (isNaN(val) || val < <?php echo $this->getMaxPointsNumberToSpent() ?>) {
+            $('points_all').checked = false;
+        } else {
+            $('points_all').checked = true;
+            $('points_amount').value = <?php echo $this->getMaxPointsNumberToSpent() ?>;
+        }
+    });
+
+
+    $j(document).ready(function () {
+        (function($, window) {
+            'use strict';
+            $.widget('lotusbreath.onestepcheckout', $.lotusbreath.onestepcheckout, {
+                options : {
+                    points : {
+                        applyPointsBtn : "#apply-points",
+                        cancelPointsBtn : "#remove-points",
+                        pointsInput : "#points_amount"
+                    }
+                },
+                _submitPoints : function(isRemove){
+                    var _this = this;
+                    var params = $("#checkout_form").serializeArray();
+                    params[params.length] =  {'name' : 'points_amount', 'value': $(_this.options.points.pointsInput).val()} ;
+                    params[params.length] =  {'name' : 'remove', 'value': ((isRemove) ? 1  : 0)  } ;
+                    $.ajax({
+                        url : '<?php echo $this->getUrl('rewards/checkout_lotusbreath/applyPoints', array('_secure' => true)) ?>',
+                        type : 'POST',
+                        data : params,
+                        //async : false,
+                        beforeSend : function(){
+                            //$("#shippingmethod-error").html("");
+                            _this._loadWait('review_partial');
+                            _this._loadWait('payment_partial');
+                            _this._loadWait('shipping_partial');
+                            $("#points-success-msg").html('');
+                            $("#points-error-msg").html('');
+                        },
+                        complete : function (response){
+                            try{
+                                var responseObject = $.parseJSON(response.responseText);
+
+                            }catch(ex){
+
+                                _this._removeWait();
+                                return false;
+                            }
+
+
+                            if (responseObject.results.success == true){
+                                $("#points-success-msg").html(responseObject.results.message);
+                                if(isRemove) {
+                                    $(_this.options.points.cancelPointsBtn).addClass('hidden');
+                                    $(_this.options.points.pointsInput).val('')
+                                }else{
+                                    $(_this.options.points.cancelPointsBtn).removeClass('hidden');
+
+                                }
+                                $(_this.options.points.applyPointsBtn).addClass('disabled');
+                                $(_this.options.points.applyPointsBtn).attr('disabled', 'disabled');
+                            }
+                            if (responseObject.results.success == false){
+
+                                $("#points-error-msg").html(responseObject.results.message);
+                            }
+                            _this._updateHtml(responseObject);
+
+                        }
+
+                    });
+                },
+                _create : function() {
+                    this._super();
+                    var _this = this;
+                    this.element
+                        .on( 'click', _this.options.points.applyPointsBtn  ,
+                        function (event){
+                            _this._submitPoints();
+
+                        })
+                        .on ('click', _this.options.points.cancelPointsBtn ,function(){
+                        //_this.options.points.cancelPointsBtn
+                        _this._submitPoints(true);
+                    })
+                        .on ('keyup', _this.options.pointsInput, function(){
+                        var btnApply = $(_this.options.points.applyPointsBtn);
+
+                        if (!$("#points_amount").val()) {
+                            btnApply.addClass('disabled');
+                            btnApply.attr('disabled', 'disabled');
+                        }else {
+                            btnApply.removeClass('disabled');
+                            //btnApply.attr('disabled', '');
+                            btnApply.removeAttr('disabled');
+                        }
+                    })
+                    ;
+                }
+
+            });
+
+        })(jQuery, window);
+    });
+
+    //]]>
+</script>

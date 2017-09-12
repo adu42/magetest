@@ -1,0 +1,341 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Checkout') ?></h1>
+</div>
+<script type="text/javascript" src="<?php echo $this->getJsUrl('varien/accordion.js') ?>"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/opcheckout.js') ?>"></script>
+<ol class="opc" id="checkoutSteps">
+<?php $i=0; foreach($this->getSteps() as $_stepId => $_stepInfo): ?>
+<?php if (!$this->getChild($_stepId) || !$this->getChild($_stepId)->isShow()): continue; endif; $i++ ?>
+    <li id="opc-<?php echo $_stepId ?>" class="section<?php echo !empty($_stepInfo['allow'])?' allow':'' ?><?php echo !empty($_stepInfo['complete'])?' saved':'' ?>">
+        <div class="step-title">
+            <span class="number"><?php echo $i ?></span>
+            <h2><?php echo $_stepInfo['label'] ?></h2>
+            <a href="#"><?php echo $this->__('Edit') ?></a>
+        </div>
+        <div id="checkout-step-<?php echo $_stepId ?>" class="step a-item" style="display:none;">
+            <?php echo $this->getChildHtml($_stepId) ?>
+        </div>
+    </li>
+<?php endforeach ?>
+</ol>
+<script type="text/javascript">
+//<![CDATA[
+    var accordion = new Accordion('checkoutSteps', '.step-title', true);
+    <?php if($this->getActiveStep()): ?>
+    accordion.openSection('opc-<?php echo $this->getActiveStep() ?>');
+    <?php endif ?>
+    var checkout = new Checkout(accordion,{
+        progress: '<?php echo $this->getUrl('checkout/onepage/progress') ?>',
+        review: '<?php echo $this->getUrl('checkout/onepage/review') ?>',
+        saveMethod: '<?php echo $this->getUrl('checkout/onepage/saveMethod') ?>',
+        failure: '<?php echo $this->getUrl('checkout/cart') ?>'}
+    );
+//]]>
+</script>
+
+
+<?php
+   
+   //google codes
+
+   $total=$this->getQuote()->getBaseGrandTotal();
+   if(!$total)$total='180.00';
+?>
+
+<script>(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"4001834"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
+
+<?php 
+    $_storeCode=Mage::App()->getStore()->getCode();
+    switch($_storeCode) : 
+    	 case 'de':
+  ?>
+  <script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 963153683;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "K-ETCPaU9FcQk56iywM";
+var google_conversion_value = <?php echo $total; ?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/963153683/?value=<?php echo $total; ?>&amp;currency_code=USD&amp;label=K-ETCPaU9FcQk56iywM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<?php         
+          
+          break;
+         case 'dk':
+  ?>
+  <script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 963004114;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "yBZlCP6W9FcQ0o2ZywM";
+var google_conversion_value = <?php echo $total; ?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/963004114/?value=<?php echo $total; ?>&amp;currency_code=USD&amp;label=yBZlCP6W9FcQ0o2ZywM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<?php         
+          
+          break;
+         case 'es':
+  ?>
+  <script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 963056914;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "OZ47COyW9FcQkqqcywM";
+var google_conversion_value = <?php echo $total; ?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/963056914/?value=<?php echo $total; ?>&amp;currency_code=USD&amp;label=OZ47COyW9FcQkqqcywM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<?php         
+          
+          break;
+         case 'fi':
+  ?>
+  <script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 961580016;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "owvZCMql9FcQ8JfCygM";
+var google_conversion_value = <?php echo $total; ?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/961580016/?value=<?php echo $total; ?>&amp;currency_code=USD&amp;label=owvZCMql9FcQ8JfCygM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<?php         
+          
+          break;
+         case 'fr':
+  ?>
+  <script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 960940204;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "kDh3CKbe9FcQrJGbygM";
+var google_conversion_value = <?php echo $total; ?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/960940204/?value=<?php echo $total; ?>&amp;currency_code=USD&amp;label=kDh3CKbe9FcQrJGbygM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<?php         
+          
+          break;
+         case 'it':
+  ?>
+  <script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 960897688;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "OpOdCIWW9lcQmMWYygM";
+var google_conversion_value = <?php echo $total; ?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/960897688/?value=<?php echo $total; ?>&amp;currency_code=USD&amp;label=OpOdCIWW9lcQmMWYygM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<?php         
+          
+          break;
+         case 'nl':
+  ?>
+  <script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 975715516;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "Nt7UCODk9VcQvPmg0QM";
+var google_conversion_value = <?php echo $total; ?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/975715516/?value=<?php echo $total; ?>&amp;currency_code=USD&amp;label=Nt7UCODk9VcQvPmg0QM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<?php         
+          
+          break;
+         case 'no':
+   ?>
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 958296015;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "YA0dCKD49FcQz9_5yAM";
+var google_conversion_value = <?php echo $total; ?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/958296015/?value=<?php echo $total; ?>&amp;currency_code=USD&amp;label=YA0dCKD49FcQz9_5yAM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<?php        
+          
+          break;
+         case 'pt':
+  ?>
+  <script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 961511760;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "WR2XCOjn9FcQ0IK-ygM";
+var google_conversion_value = <?php echo $total; ?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/961511760/?value=<?php echo $total; ?>&amp;currency_code=USD&amp;label=WR2XCOjn9FcQ0IK-ygM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<?php         
+          
+          break;
+		 case 'se':
+ ?>
+ <script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 961698621;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "6cw6CPGB9VcQvbbJygM";
+var google_conversion_value = <?php echo $total; ?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/961698621/?value=<?php echo $total; ?>&amp;currency_code=USD&amp;label=6cw6CPGB9VcQvbbJygM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<?php          
+          
+          break;
+    	 default:	 
+   ?>
+ <script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 972798139;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "leG3CJ2O-gsQu_HuzwM";
+var google_conversion_value = <?php echo $total; ?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/972798139/?value=<?php echo $total; ?>&amp;currency_code=USD&amp;label=leG3CJ2O-gsQu_HuzwM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+ <?php    	  
+    		//break; 
+    endswitch;
+ ?>
+

@@ -1,0 +1,15 @@
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct();?>
+<div class="product-view-review">
+    <div class="product-essential">
+        <div class="product-shop">
+            <div class="product-name">
+                <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+            </div>     
+            <div class="clearer"></div>
+		 </div>
+    </div>
+		<div id="tabs-detail-review">
+			<?php echo $this->getChildHtml('product_additional_data') ?>
+		</div>
+ </div>

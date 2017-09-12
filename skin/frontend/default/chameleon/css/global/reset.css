@@ -1,0 +1,191 @@
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+html, body, header, footer,
+h1, h2, h3, h4, h5, h6, p,
+form, fieldset,
+ul, li, dl, dt, dd { background:transparent; border:0; font-size:100%; margin:0; outline:0; padding:0; vertical-align:baseline; }
+img { vertical-align:bottom; }
+ul { list-style:none; }
+a {
+	color:#000;
+	text-decoration:none;
+	}
+.darkblue a {
+	color:#0e356a;
+	}
+.brown a {
+	color:#658412;
+	}
+.green a{
+	color:#357424;
+	}
+ .red a{
+	color:#8f885e;
+	}
+/* Page
+-----------------------------*/
+html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none;}
+html, body {height:100%; }
+
+body {background:#fff;font:normal 11px/1.2 verdana 'Arial';min-height:100%; }
+
+legend {display:none;}
+
+.std { 
+	clear:both;
+ line-height:22px;
+ margin:0 10px 10px;
+	}
+
+.a-left {text-align:left; }
+.a-center {text-align:center; }
+.a-right {text-align:right; }
+
+.global-site-notice { background:#444; border-bottom:1px solid #333; color:#fff; font-size:13px; padding:10px; text-shadow:0 1px 0 #111; }
+.global-site-notice p { margin:0 0 10px; }
+.global-site-notice a { color:#f90; text-decoration:underline; text-shadow:none; }
+.global-site-notice .actions { text-align:center; } 
+.global-site-notice .actions button { background:none; border:1px solid #ccc; color:#fff; cursor:pointer; padding:5px 10px; text-shadow:0 1px 0 #333; }
+
+/* Content
+-----------------------------*/
+body > section:before, body > section:after { content: ""; display: table; }
+body > section:after { clear:both; }
+body > section img { max-width:100%; }
+body > section > .category-image { margin:0 -10px; }
+body > section > .category-image img { min-width:100%; }
+body {
+    line-height:1;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section { 
+    display:block;
+}
+
+nav ul {
+    list-style:none;
+}
+ul, ol, li {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+.search-form .form-alt{overflow:hidden;padding:0 10px;}
+.search-form .form-alt li{padding:5px 0 5px 0;overflow:hidden;}
+blockquote, q {
+    quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content:'';
+    content:none;
+}
+
+a {
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+abbr[title], dfn[title] {
+    border-bottom:1px dotted;
+    cursor:help;
+}
+
+table {
+    border-spacing:0;
+}
+
+input, select {
+    vertical-align:middle;
+	background-color:#fff;
+	height:40px;
+	line-height:40px;
+	border:1px solid #ccc;font-size:14px;
+}
+.checkout-onepage-index select{width:100%;height:40px;line-height:40px;border:1px solid #ccc;font-size:14px;}
+input[type="radio"]{
+height:auto;
+}
+.a-right {
+    text-align: right !important;
+}
+.a-center {
+    text-align: center !important;
+}
+p	{padding-bottom:10px;}
+.category-products .more{display:none;}
+
+
+.cms-index-index .content_row_styled.fn-clear{display:none;}  
+
+
+  .mini-products-list-in-cart  > li.item{
+		width:50%;
+		-webkit-box-sizing:border-box;
+		box-sizing:border-box;
+		float:left;
+		padding:0 5px;
+		background:#fff;
+		}
+
+@media screen and (max-width: 800px) and (min-width: 476px) {
+    .mini-products-list-in-cart  > li.item{
+		width:33.3%;
+		}
+}
+@media screen and (min-width: 801px){
+	.mini-products-list-in-cart > li.item{
+		width:33.3%;
+		width:25%;
+		}
+}
+.content-about-title{ display:none;}
+
+
+
+#product_sendtofriend_form {
+    margin: 0 10px;
+}
+
+.copyright > a {
+    display: none;
+}

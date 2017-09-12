@@ -1,0 +1,79 @@
+<?php
+if (!$this->getMaxPointsNumberToSpent() || !$this->getIsSpendAllowed()) {
+    return;
+}
+?>
+<form id="reward-points-form" action="<?php echo $this->getUsePointsUrl() ?>" method="post">
+    <div class="discount">
+        <h2 <?php if ($this->getIsIntensoTheme()): ?>onclick="overrideIntenso();"<?php endif; ?> class="cart-reward-header" ><?php echo $this->__('Reward Points') ?></h2>
+        <div class="discount-form">
+            <input type="hidden" name="remove-points" id="remove-points" value="0" />
+            <div class="input-box">
+                <input placeholder="<?php echo $this->__('%s available.', Mage::helper('rewards')->formatPoints($this->getBalancePoints())) ?>" <?php echo($this->getIsSpendBlocked()) ? 'disabled style="background: #d9d9d9;"' : '' ?> class="input-text" id="points_amount" name="points_amount" value="<?php echo $this->getPointsAmount() ? $this->htmlEscape($this->getPointsAmount()) : '' ?>" />
+            </div>
+            <div class="buttons-set">
+			<?php if ($this->getPointsAmount()): ?>
+                    &nbsp; <button type="button" title="<?php echo $this->__('Cancel Points') ?>" class="button" onclick="rewardsForm.submit(true)" value="<?php echo $this->__('Cancel Points') ?>"><span><span><?php echo $this->__('Cancel') ?></span></span></button>
+                <?php endif;?>
+                <button type="button" title="<?php echo $this->__('Apply Points') ?>" class="button" onclick="rewardsForm.submit(false)" value="<?php echo $this->__('Apply Points') ?>"><span><span><?php echo $this->__('Apply') ?></span></span></button>
+            </div>
+            <label for="points_amount"><?php echo($this->getIsSpendBlocked()) ? '<font color="red">'.$this->__('You can not spend points while using coupon.').'</font>' : ''; ?>
+            </label>			
+        </div>
+    </div>
+</form>
+
+<!-- additional CSS to gray coupon box -->
+<?php if ($this->getIsCouponBlocked()): ?>
+    <style>
+        input#coupon_code.input-text {
+            background: #d9d9d9;
+            pointer-events: none;
+        }
+    </style>
+<?php endif ?>
+
+<script type="text/javascript">
+//<![CDATA[
+var rewardsForm = new VarienForm('reward-points-form');
+rewardsForm.submit = function (isRemove) {
+    if (isRemove) {
+        $('points_amount').removeClassName('required-entry');
+        $('remove-points').value = "1";
+    } else {
+        $('points_amount').addClassName('required-entry');
+        $('remove-points').value = "0";
+    }
+    return VarienForm.prototype.submit.bind(rewardsForm)();
+}
+
+// Event.observe($('points_all'), 'click', function(){
+//     if ($('points_amount').value == <?php echo $this->getMaxPointsNumberToSpent() ?>) {
+//         $('points_amount').value = '';
+//     } else {
+//         $('points_amount').value = <?php echo $this->getMaxPointsNumberToSpent() ?>;
+//     }
+// });
+// Event.observe($('points_amount'), 'keyup', function(){
+//     var val = parseInt($('points_amount').value);
+//     if (isNaN(val) || val < <?php echo $this->getMaxPointsNumberToSpent() ?>) {
+//         $('points_all').checked = false;
+//     } else {
+//         $('points_all').checked = true;
+//         $('points_amount').value = <?php echo $this->getMaxPointsNumberToSpent() ?>;
+//     }
+// });
+
+<?php if ($this->getIsIntensoTheme()): ?>
+function overrideIntenso()
+{
+    var block = $('reward-points-form').getElementsByClassName('discount')[0].getElementsByClassName('discount-form')[0];
+    if(block.style.display == 'none') {
+        block.style.display = 'block';
+    } else {
+        block.style.display = 'none';
+    }
+}
+<?php endif; ?>
+//]]>
+</script>

@@ -1,0 +1,93 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: ado
+ * Date: 2016/4/9
+ * Time: 9:29
+ */
+?>
+<?php
+$collections = $this->getReviewCollection();
+$_columnCount = 5;
+$_collectionSize =  $collections->count();
+if($collections && $_collectionSize):
+    $helper = Mage::helper('reviewimage');
+   if($helper->getActive()):
+    ?>
+    <h6 class="user-gallery-title">
+	<a class="fr" href="<?php echo $helper->getCatalogReviewsUrl(0); ?>">See More ></a>
+        <span class="title-tile"><?php echo $helper->homeTitle(); ?></span>
+        <!--<hr class="title-hr"><p class="discount"><?php //echo $helper->homeDescription(); ?></p>-->
+    </h6>
+
+<div class="user-gallery-viewport">
+<a class="buyer-show-cover" target="_blank" href="<?php echo $helper->getCatalogReviewsUrl(0); ?>"></a>
+            <div id="shareTitle" class="hidden" dir="reviews"><?php echo $this->escapeHtml($helper->shareTitle()); ?></div>
+            <div id="likeUrl" class="hidden" dir="reviews"><?php echo $helper->likeUrl(); ?></div>
+	<div class="user-gallery-viewport-list">		
+        <div class="user-images-container gallery-unselect">
+		
+    <?php $j=0; foreach($collections as $_review):  ?>
+            <?php if ($j++%$_columnCount==0): ?>
+                   <ol class="user-gallery-list">
+            <?php endif ?>
+        <li>
+        <div id="review-<?php echo $_review->getReviewId() ?>" class="white-popup" dir="reviews">
+            <div class="review-detail-content hidden" dir="reviews" id="review-detail-content-<?php echo $_review->getReviewId() ?>"><?php echo nl2br($this->escapeHtml($_review->getDetail())) ?></div>
+            <div class="review-detail-product hidden"  dir="reviews"  id="review-detail-product-<?php echo $_review->getReviewId() ?>"><?php if($helper->getProductUrl($_review)): ?><a href="<?php echo $helper->getProductUrl($_review) ?>"><?php echo $this->__('Shop Now') ?></a><?php endif; ?></div>
+            <div class="review-detail-nicename hidden"  dir="reviews" id="review-detail-nicename-<?php echo $_review->getReviewId() ?>"><?php echo $this->__('Worn by <span>%s</span>', $this->escapeHtml($_review->getNickname())) ?></div>
+            <div class="review-detail-share hidden"  dir="reviews"  id="review-detail-share-<?php echo $_review->getReviewId() ?>"></div>
+            <div class="review-detail-likes hidden"  dir="reviews"  id="review-detail-likes-<?php echo $_review->getReviewId() ?>">
+                <div class="review-likes"  dir="reviews"  id="<?php echo $_review->getReviewId() ?>"><?php echo ($_review->getReviewLikes()) ? $_review->getReviewLikes() : 1; ?></div>
+            </div>
+            <div class="review-photo-images"  dir="reviews"  id="review-detail-images-<?php echo $_review->getReviewId() ?>"></div>
+            <?php
+            $images = $helper->getImages($_review);  //  $_review->getImages();
+            if ($images):
+                ?>
+
+                <div class="main-image" dir="reviews"></div>
+                <div class="review-thumbnail-images"  dir="reviews"  data-id="<?php echo $_review->getReviewId() ?>">
+                    <?php
+                    $hide = ''; //只显示第一张，其他的在弹框中展示
+                    foreach ($images as $i=>$image):
+                            if($i>0)$hide=' hidden';
+                        ?>
+                        <img class="gallery-thumbnail-image<?php echo $hide;?> small" src="<?php echo $image['big']; ?>" dir="reviews"  data-zoom-image="<?php echo $image['big']; ?>"/>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        </li>
+            <?php if ($j%$_columnCount==0|| $i==$_collectionSize): ?>
+           </ol>
+            <?php endif ?>
+    <?php  endforeach; ?>
+	
+    </div>
+	</div>
+    <botton class="user-photos-prev" style="display: none"><</botton>
+    <botton class="user-photos-next">></botton>
+    <div class="upload-wrap">
+        <div class="upload-box" id="more">
+            <a class="upload" id="share-your-photo" href="#customer-reviews-form"><span class="home-logo"></span>UPLOAD A PHOTO</a>
+        </div>
+        <div class="view-box" id="more">
+            <a target="_blank" href="<?php echo $helper->getCatalogReviewsUrl(0); ?>" class="view"><span class="view-logo"></span>VIEW GALLERY</a>
+        </div>
+    </div>
+    <div id="customer-reviews-form" class="white-popup mfp-hide">
+        <?php echo $this->getChildHtml('review_custom_form') ; ?>
+        <div class="review-form-right-tips">
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('review-form-right-tips')->toHtml() ?>
+        </div>  
+    </div>
+</div>
+<?php
+endif;
+endif;
+?>
+
+
+
+

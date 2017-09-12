@@ -1,0 +1,89 @@
+<?php
+/**
+ * This is the part of 'BmProducts' module for Magento,
+ * which allows easy access to product collection
+ * with flexible filters
+ */
+?>
+<?php 
+$_collections = $this->getCatalogProductAboutCollenction();
+if($_collections):
+    //$_columnCount=8;
+    $_row=5;
+    $title=$this->__('HOW ABOUT THESE?');
+ ?>
+<!-- Catalog Attribute - Product about ids -->
+<div class="product-views-about">
+    <div class="block-title"><?php echo $title; ?></div>
+    <div class="block-content">     
+     <?php $_collectionSize = $_collections->count(); ?>
+     <!-- <?php echo $_collectionSize; ?> -->
+   <ul class="side-list-about" id="lofslidecontent46">
+     <?php $i = 0; foreach ($_collections as $_product): ?>
+     <?php if ($i++%$_row==0): ?>
+        <li class="products-grid-about">
+     <?php endif ?>
+            <div class="products-grid-about-row">     
+               <a class="product-img" href="<?php echo $_product->getProductUrl() ?>?ref=right_related" title="<?php echo $this->htmlEscape($_product->getName()) ?>" target="_blank"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(300,400) ?>" width="72" height="96" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" /></a>
+	           <div class="price-info">
+                <?php $finalPrice = $_product->getFinalPrice(); 
+                echo Mage::helper('core')->currency($finalPrice, true, false);
+                ?>
+	           </div>
+           </div>
+       <?php if ($i%$_row==0 || $i==$_collectionSize): ?>
+        </li>
+        <?php endif ?>
+     <?php  endforeach; ?>
+     </ul>
+     <span class="lof-previous46"><</span>
+     <span class="lof-next46">></span>
+    </div>
+</div>
+<script type="text/javascript">// <![CDATA[
+ jQuery(function() {
+var sWidth = 82;
+var len = jQuery(".product-views-about .products-grid-about").length,index = 0,picTimer,btn = "<div class='btn'>";
+for(var i=0; i < len; i++) {
+btn += "<span></span>";
+}
+btn += "</div>";
+jQuery(".product-views-about").append(btn); 
+jQuery(".product-views-about .btn span").css("opacity",0.4).mouseover(function() {
+index = jQuery(".product-views-about .btn span").index(this);
+showPics(index);
+}).eq(0).trigger("mouseover");
+
+jQuery(".product-views-about .preNext").css("opacity",0.2).hover(function() {
+jQuery(this).stop(true,false).animate({"opacity":"0.5"},300);
+},function() {
+jQuery(this).stop(true,false).animate({"opacity":"0.2"},300);
+});
+jQuery(".product-views-about .lof-previous46").click(function() {
+index -= 1;
+if(index == -1) {index = len - 1;}
+showPics(index);
+});
+jQuery(".product-views-about .lof-next46").click(function() {
+index += 1;
+if(index == len) {index = 0;}
+showPics(index);
+}); 
+jQuery(".product-views-about ul.side-list-about").css("width",sWidth*jQuery(".product-views-about .products-grid-about").length);
+jQuery(".product-views-about").hover(function() {
+clearInterval(picTimer);
+},function() {
+picTimer = setInterval(function() {
+showPics(index);
+index++;
+if(index == len) {index = 0;}
+},4000); 
+}).trigger("mouseleave");
+function showPics(index) { 
+var nowLeft = -index*sWidth;
+jQuery(".product-views-about ul.side-list-about").stop(true,false).animate({"left":nowLeft},300);
+jQuery(".product-views-about .btn span").stop(true,false).animate({"opacity":"0.4"},300).eq(index).stop(true,false).animate({"opacity":"1"},300); 
+}
+}); 
+// ]]></script>
+<?php endif; ?>

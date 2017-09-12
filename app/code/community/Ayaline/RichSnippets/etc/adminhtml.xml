@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * created : 23/02/2012
+ * 
+ * @category Ayaline
+ * @package Ayaline_RichSnippets
+ * @author aYaline
+ * @copyright Ayaline - 2012 - http://magento-shop.ayaline.com
+ * @license http://shop.ayaline.com/magento/fr/conditions-generales-de-vente.html
+ */
+-->
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <ayalinerichsnippets translate="title" module="ayalinerichsnippets">
+                                        <title>Ayaline Rich Snippets</title>
+                                    </ayalinerichsnippets>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

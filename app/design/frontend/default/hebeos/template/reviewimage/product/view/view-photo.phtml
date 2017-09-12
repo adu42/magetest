@@ -1,0 +1,83 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_items = $this->getReviewsCollection()->getItems(); ?>
+<?php $helper = Mage::helper("reviewimage"); ?>
+<?php $_products = array(); ?>
+<?php $_have_image = false; ?>
+<div class="box-collateral box-reviews" id="customer-reviews">
+    <?php if (count($_items)): ?>
+        <dl>
+            <?php foreach ($_items as $_review): ?>
+                <?php if (Mage::helper("reviewimage")->getActive() == '1'): ?>
+                    <?php
+                    $images = Mage::helper("reviewimage")->getImages($_review); //  $_review->getImages();
+                    if ($images):
+                        ?>
+                        <?php $_have_image = true; ?>
+                        <?php
+                        $_productId = $_review->getEntityPkValue();
+                        $_product = isset($_products[$_productId]) ? $_products[$_productId] : ($_products[$_productId] = Mage::getModel('catalog/product')->load($_productId)); ?>
+
+                        <dd style="margin:5px 5px; float:left;">
+                            <!---!!--->
+                            <div id="review-<?php echo $_review->getReviewId() ?>" class="white-popup" dir="reviews">
+                                <div class="review-detail-nicename hidden" dir="reviews"
+                                     id="review-detail-nicename-<?php echo $_review->getReviewId() ?>"><?php echo $this->__('Worn by <span>%s</span>', $this->escapeHtml($_review->getNickname())) ?></div>
+                                <div class="review-detail-share hidden" dir="reviews"
+                                     id="review-detail-share-<?php echo $_review->getReviewId() ?>"></div>
+                                <div class="review-detail-likes hidden" dir="reviews"
+                                     id="review-detail-likes-<?php echo $_review->getReviewId() ?>">
+                                    <div class="review-likes" dir="reviews"
+                                         id="<?php echo $_review->getReviewId() ?>"><?php echo ($_review->getReviewLikes()) ? $_review->getReviewLikes() : 1; ?></div>
+                                </div>
+                                <div class="review-photo-images" dir="reviews"
+                                     id="review-detail-images-<?php echo $_review->getReviewId() ?>"></div>
+                                <!---!!--->
+                                <div class="main-image" dir="reviews"></div>
+                                <div class="review-thumbnail-images" dir="reviews"
+                                     data-id="<?php echo $_review->getReviewId() ?>">
+                                    <?php foreach ($images as $image): ?>
+                                        <!-- <a href="#review-<?php //echo $_review->getReviewId() ?>" class="gallery-item" data-id="<?php //echo $_review->getReviewId() ?>"> </a> -->
+                                        <img class="gallery-thumbnail-image thumbnail"
+                                             src="<?php echo $image['big']; ?>" dir="reviews"
+                                             data-zoom-image="<?php echo $image['big']; ?>"/>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </dd>
+                    <?php endif; ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
+         
+        </dl>
+    <?php endif; ?>
+	<?php if (!$_have_image): ?>
+                <div class="no-image-review">
+                    <a href="<?php echo Mage::getUrl('review/gallery/index') ?>"><img src="<?php echo $this->getSkinUrl('images/no-image-review.jpg') ?>" alt="testimonial"/></a>
+                </div>
+            <?php endif; ?>
+</div>

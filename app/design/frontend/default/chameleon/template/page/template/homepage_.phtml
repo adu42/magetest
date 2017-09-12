@@ -1,0 +1,46 @@
+<?php
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Mobile
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+/**
+ * @var New Arrivals
+ */
+?>
+<?php
+	$storeId    = Mage::app()->getStore()->getId();
+	$product    = Mage::getModel('catalog/product');
+	$todayDate  = $product->getResource()->formatDate(time());
+	$products   = $product->setStoreId($storeId)->getCollection()->addAttributeToSelect('*');
+	$products->setOrder('entity_id', 'desc')->setPageSize(10)->setCurPage(1);
+	Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($products);
+	Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($products);		
+?>
+<?php if (($_products = $products) && $_products->getSize()): ?>
+<div id="new-arrivals">
+	<h1>New Arrivals</h1>
+	<ul class="products-grid">
+	<?php foreach ($_products->getItems() as $_product): ?>
+			<li class="item">
+				<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+					 <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(100,100); ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>"/>
+				<div class="home-page-txt">
+					<p><a class="product-name" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>)"><?php echo $_product->getName() ?></a></p>
+				</div>
+				</a>
+			</li>
+	<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>	

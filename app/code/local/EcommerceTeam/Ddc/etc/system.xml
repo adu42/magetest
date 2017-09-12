@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<!--
+	Magento Delivery Date & Customer Comment Extension
+	@copyright:	EcommerceTeam (http://www.ecommerce-team.com)
+	@version:	2.0
+-->
+<config>
+    <sections>
+    	<checkout>
+    		<groups>
+				<!--
+    			<deliverydatecomment>
+	    			<label>Delivery Date and Customer Comment</label>
+	                <frontend_type>text</frontend_type>
+	                <sort_order>20</sort_order>
+	                <show_in_default>1</show_in_default>
+	                <show_in_website>1</show_in_website>
+	                <show_in_store>1</show_in_store>
+	                <fields>
+	                	<enabled_comment translate="label">
+                            <label>Enable Customer Comment</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ecommerceteam_ddc/adminhtml_system_config_source_enablecomment</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled_comment>
+                        <comment_label translate="label">
+                            <label>Comment Field Label</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </comment_label>
+	                	<enabled_deliverydate translate="label">
+                            <label>Enable Delivery Date</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled_deliverydate>
+                        <deliverydate_label translate="label">
+                            <label>Date Field Label</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </deliverydate_label>
+                        <disable_week_days>
+                        	<label>Non available delivery days of week</label>
+                            <comment>1,7 (equal to Sunday,Saturday)</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </disable_week_days>
+                        <min_day translate="label">
+                            <label>Delivery from</label>
+                            <comment>Number of days after order date</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </min_day>
+                    	<max_day translate="label">
+                            <label>Delivery to</label>
+                            <comment>Number of days after order date</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </max_day>
+                        <description translate="label">
+                            <label>Delivery Date Description</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </description>
+						<format translate="label">
+                            <label>Date Format</label>
+                            <comment>Example: dd MMM yyyy</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                       </format>
+                       <disable_month_days>
+                        	<label>Not Delivery Days (month)</label>
+                            <comment>Coma separeted</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </disable_month_days>
+	                </fields>
+				</deliverydatecomment>
+				-->
+				<deliveryfee>
+	    			<label>Delivery Date Fee</label>
+	                <frontend_type>text</frontend_type>
+	                <sort_order>20</sort_order>
+	                <show_in_default>1</show_in_default>
+	                <show_in_website>1</show_in_website>
+	                <show_in_store>1</show_in_store>
+	                <fields>
+	                	<enabled_deliveryfee translate="label">
+                            <label>Enable Delivery Fee Select</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ecommerceteam_ddc/adminhtml_system_config_source_enablecomment</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled_deliveryfee>
+                        <deliveryfee_label translate="label">
+                            <label>Delivery Fee Label</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Total Title]]></comment>
+                        </deliveryfee_label>
+                        <deliveryfee_title translate="label">
+                            <label>Delivery Fee Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </deliveryfee_title>
+	                	<deliveryfee_select translate="label">
+                            <label>Enable Delivery Select</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[
+							One item per line,exp:<br>
+							No|label|description|price in usd|checked<br>
+							1|Last arrive in 15 days| rush order | 18 |checked<br>
+							2|Last arrive in [18] days| rush order | 15<br>
+							3|Last arrive in [24] days| del 9 | 0<br>
+							]]></comment>
+                        </deliveryfee_select>
+	                </fields>
+				</deliveryfee>
+    		</groups>
+    	</checkout>
+    </sections>
+</config>

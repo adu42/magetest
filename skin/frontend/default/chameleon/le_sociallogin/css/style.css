@@ -1,0 +1,29 @@
+/**
+ * @project     SocialLogin
+ * @package     LitExtension_SocialLogin
+ * @author      LitExtension
+ * @email       litextension@gmail.com
+ */
+
+.le-socialconnect-social{margin-top: 10px;}
+div.le-socialconnect-social .col3-set .col-3 {width: 100%;}
+div.le-socialconnect-social .col3-set .col-3 .content {min-height: 70px;margin:10px 0;padding:0;}
+div.le-socialconnect-social .col3-set .col-3 .content .le-social-button-login{text-align:center;padding: 10px 0;}
+/*.le-social-button-login{text-align: center;}*/
+.le-socialconnect-social .ico-fb{background: url('../images/signin-facebook.png') 0 0 no-repeat !important; background-repeat:no-repeat; display: inline-block;height: 37px !important;}
+.ico-fb .face-labelIcon{display:inline-block;background:url(../images/signin-facebook.png) 0 -40px repeat-x;line-height:37px;margin-left: 40px;color:#fff;}
+.ico-fb .face-rightIcon{display:inline-block;float: right;
+width: 5px;
+height: 37px;
+background: url(../images/signin-facebook.png) 0 -80px no-repeat;}
+.le-socialconnect-social .ico-go{display:none;background: url('../images/google_plus_icon.png') !important; background-repeat:no-repeat; width: 162px !important; height: 29px !important;float:left; padding: 0; border: none;}
+.le-socialconnect-social .ico-tw{display:none;background: url('../images/twitter_icon.png') !important; background-repeat:no-repeat; width: 162px !important; height: 29px !important;float:left; padding: 0; border: none;}
+.le-socialconnect-social .ico-li{display:none;background: url('../images/linkdin_icon.png') !important; background-repeat:no-repeat; width: 30px !important; height: 30px !important; padding: 0; border: none;}
+.le-socialconnect-social .ico-yh{display:none;background: url('../images/yahoo_icon.png') !important; background-repeat:no-repeat; width: 30px !important; height: 30px !important; padding: 0; border: none;}
+.le-social-button-login{overflow:hidden;}
+.le-social-button-login .le-icon-social{ margin-right: 5px; cursor: pointer;border-radius:0;margin-bottom:5px;float:none; }
+.button-set{border-top: 1px solid #efefef}
+.button-bum{float: right; width: 100%;}
+.social-button{text-align: center;margin-top: 10px;}
+.le-socialconnect-social .content h2{display:none;}
+.le-socialconnect-social .content{width:100%;}

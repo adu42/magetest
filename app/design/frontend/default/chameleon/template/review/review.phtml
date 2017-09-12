@@ -1,0 +1,97 @@
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct();?>
+<div class="product-view">
+    <div class="product-essential">
+    	<?php echo $this->getChildHtml('catalog_products_about') ?>
+        <div class="product-shop">
+            <div class="product-name">
+                <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+            </div>     
+		
+		   <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('register_coupon')->toHtml() ?>
+	
+			<?php if($_product->getIsoff()){
+				$old_price = $_product->getPrice();  ?>
+				<?php $special_price = $_product->getFinalPrice();?>
+				<?php $percent = ceil((($old_price-$special_price)/$old_price)*100)?>
+				<?php if($percent){?>
+					<div class="discount-propage"><strong><?php echo $percent ?><?php echo $this->__('% OFF') ?></strong><?php echo $this->__('This Week') ?></div>
+			<?php }} ?>
+            <?php echo $this->getTierPriceHtml() ?>
+			<?php $old_price = $_product->getPrice();  ?>
+			<?php $special_price = $_product->getFinalPrice();?>
+            <?php $percent = ceil((($old_price-$special_price)/$old_price)*100)?>
+			
+		<!--/////////-->
+        <div class="clear"></div>
+			<div class="additionals">
+            <?php echo $this->getChildHtml('additional') ?>
+			</div>
+            <?php if (!$this->hasOptions()):?>
+                <div class="add-to-box">
+                    <?php if($_product->isSaleable()): ?>
+                        <?php echo $this->getChildHtml('addtocart') ?>
+                        <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
+                      
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    <?php echo $this->getChildHtml('addto') ?>
+                </div>
+                <?php echo $this->getChildHtml('extra_buttons') ?>
+            <?php elseif (!$_product->isSaleable()): ?>     
+            <?php endif; ?>
+
+            <?php echo $this->getChildHtml('other');?>
+          
+            <div class="clearer"></div>
+    </div>
+     
+        <div class="product-img-box">
+            <?php echo $this->getChildHtml('media') ?>
+	    <div style="clear:both;"></div>
+
+        </div>
+
+    </div>
+
+
+
+			<div id="tabs-detail">
+			<?php echo $this->getChildHtml('product_additional_data') ?>
+		</div>
+ </div>
+
+<!-- add select languages url by slee at 2014/10/9-->
+<?php
+$langs = array();
+$allStores = Mage::app()->getStores();
+foreach ($allStores as $_eachStoreId => $val) {
+    $_storeUrl = Mage::app()->getStore($_eachStoreId)->getBaseUrl();
+    $_storeCode = Mage::app()->getStore($_eachStoreId)->getCode();
+    $_storeId = Mage::app()->getStore($_eachStoreId)->getId();
+    $langs[$_storeId] = $_storeUrl;
+}
+$data = array();
+foreach ($langs as $key => $value) {
+    $url = Mage::getModel('catalog/product')->setStoreId($key)->load($_product->getId())->getUrlPath();
+    if(!empty($url)){
+        $data[$value] = $url;
+    }else{
+        $data[$value] = '';
+    }
+}
+?>
+<script type="text/javascript">
+    var productUrls = <?php echo json_encode($data)?>;
+    jQuery(function(){
+        jQuery(".top-language a").each(function(){
+            var url = jQuery(this).attr("href");
+            for(var key in productUrls){
+                if(url == key){
+                    jQuery(this).attr('href', url+productUrls[key]);
+                }
+            }
+        });
+    });
+</script>
+<!-- end-->

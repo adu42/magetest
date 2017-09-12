@@ -1,0 +1,285 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<?php
+$_reviews = $this->getCollection();
+$urk_key = $this->getUrlKey();
+$_helper = $this->helper('catalog/output');
+$_listMode = "grid";
+?>
+
+<?php if(!count($_reviews)): ?>
+    <p class="note-msg"><?php echo $this->__('There are no products reviews matching the selection.') ?></p>
+<?php else: ?>
+    <div class="category-products">
+        <?php // List mode ?>
+        <?php if($_listMode != 'grid'): ?>
+            <?php $_iterator = 0; ?>
+            <ol class="products-list" id="products-list">
+                <?php foreach ($_reviews as $review): ?>
+                    <?php $_product = Mage::getModel('catalog/product')->load($review->getData('entity_pk_value')); ?>
+                    <li class="item<?php if( ++$_iterator == sizeof($_reviews) ): ?> last<?php endif; ?>">
+                        <?php // Product Image ?>
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+                        <?php // Product description ?>
+                        <div class="product-shop">
+                            <div class="f-fix">
+                                <?php $_productNameStripped = $this->stripTags($_product->getName(), null, true); ?>
+                                <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped; ?>"><?php echo $_helper->productAttribute($_product, $_product->getName() , 'name'); ?></a></h2>
+                                <?php if($_product->getRatingSummary()): ?>
+                                    <?php echo $this->getReviewsSummaryHtml($_product) ?>
+                                <?php endif; ?>
+                                <?php echo $this->getPriceHtml($_product, true) ?>
+                                <?php if($_product->isSaleable()): ?>
+                                    <p><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button></p>
+                                <?php else: ?>
+                                    <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                                <?php endif; ?>
+                                <div class="desc std">
+                                    <?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                    <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn"><?php echo $this->__('Learn More') ?></a>
+                                </div>
+                                <ul class="add-to-links">
+                                    <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                                        <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                                    <?php endif; ?>
+                                    <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                                        <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+                                    <?php endif; ?>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ol>
+            <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+        <?php else: ?>
+
+        <?php // Grid Mode ?>
+
+        <?php $_collectionSize = sizeof($_reviews) ?>
+        <?php //$_columnCount = $this->getColumnCount(); ?>
+        <?php $_columnCount = 3; ?>
+        <?php $i=0; foreach ($_reviews as $review): ?>
+        <?php $_product = Mage::getModel('catalog/product')->load($review->getData('entity_pk_value'));
+
+
+$_current_id='';
+
+ ?>
+
+        <?php if ($i++%$_columnCount==0): ?>
+            <ul class="products-grid">
+        <?php endif ?>
+            <li id="favorite" class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+                <a href="<?php echo $_product->getProductUrl().$_current_id;  ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(234,312); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+
+                <!--
+<div class="favorite">
+<a target="_blank" rel="nofollow" id="favorite-category" href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="fav-atc">Favorite & Buy Later&nbsp;(<?php
+                $resource = Mage::getSingleton('core/resource');
+                $readConnection = $resource->getConnection('core_read');
+                $productid = $_product->getId();
+                $total_wishlist = $readConnection->fetchCol("SELECT count(*) FROM wishlist_item where product_id = '$productid' ");
+
+                echo ''.$total_wishlist['0'];
+                ?>)</a>
+
+</div>
+-->
+                <h2 class="product-name"><a href="<?php echo $_product->getProductUrl().$_current_id;  ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
+                <?php
+                if($_product->getIsoff()){
+                    $old_price = $_product->getPrice();  ?>
+                    <?php $special_price = $_product->getFinalPrice();?>
+                    <?php $percent = ceil((($old_price-$special_price)/$old_price)*100)?>
+                    <?php if($percent){?>
+                        <div class="list_save_off"><?php echo $percent ?></div>
+                    <?php }} ?>
+
+
+                <?php echo $this->getPriceHtml($_product, true) ?>
+                <div style="height: 50px; overflow:hidden ">
+                    <strong><?php echo $review->getNickname();?>:</strong>
+                    <a href="/Review/<?php echo $_product->getUrl_key();?>.html" ><?php echo $review->getDetail();?>...</a>
+                </div>
+
+
+                <?php if($_product->getRatingSummary()): ?>
+                    <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                <?php endif; ?>
+                <div style="float:left;margin-top:5px;">
+                    <div class="fb-like" data-href="<?php echo $_product->getProductUrl() ?>" data-send="true" data-layout="button_count" data-width="200" data-show-faces="false"></div>
+
+                </div>
+
+            </li>
+            <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+            </ul>
+        <?php endif ?>
+        <?php endforeach ?>
+            <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
+<?php
+$page = $this->getPager();
+?>
+<div class="toolbar-bottom">
+    <div class="toolbar">
+        <?php if($page->getCollection()->getSize()): ?>
+
+            <?php if($page->getUseContainer()): ?>
+                <div class="pager">
+            <?php endif ?>
+
+            <?php if($page->getShowAmounts()): ?>
+                <p class="amount">
+                    <?php if($this->getLastPageNum()>1): ?>
+                        <?php echo $this->__('Items %s to %s of %s total', $page->getFirstNum(), $page->getLastNum(), $page->getTotalNum()) ?>
+                    <?php else: ?>
+                        <strong><?php echo $this->__('%s Item(s)', $page->getTotalNum()) ?></strong>
+                    <?php endif; ?>
+                </p>
+            <?php endif ?>
+
+            <?php if($page->getLastPageNum()>1): ?>
+                <div class="pages">
+                    <strong><?php echo $this->__('Page:') ?></strong>
+                    <ol>
+                        <?php if (!$page->isFirstPage()): ?>
+                            <li>
+                                <?php $str = $page->getPreviousPageUrl();
+                                $PreviousPageUrl = "/Review/".$urk_key.'/'.str_replace('/', '', end(explode('_',$page->getPreviousPageUrl()))).".html";
+                                ?>
+                                <a class="previous<?php if(!$page->getAnchorTextForPrevious()): ?> i-previous<?php endif;?>" href="<?php echo $PreviousPageUrl; ?>" title="<?php echo $this->__('Previous') ?>">
+                                    <?php if(!$page->getAnchorTextForPrevious()): ?>
+                                        <img src="<?php echo $page->getSkinUrl('images/pager_arrow_left.gif') ?>" alt="<?php echo $this->__('Previous') ?>" class="v-middle" />
+                                    <?php else: ?>
+                                        <?php echo $page->getAnchorTextForPrevious() ?>
+                                    <?php endif;?>
+                                </a>
+                            </li>
+                        <?php endif;?>
+
+                        <?php if ($page->canShowFirst()): ?>
+                            <?php $FirstPageUrl = '/Review'; ?>
+                            <li><a class="first" href="<?php echo $FirstPageUrl; ?>">1</a></li>
+                        <?php endif;?>
+
+                        <?php if ($page->canShowPreviousJump()): ?>
+                            <?php $PreviousJumpUrl = "/Review/".$urk_key.'/'.str_replace('/', '', end(explode('_',$page->getPreviousJumpUrl()))).".html";?>
+                            <li><a class="previous_jump" title="" href="<?php echo $PreviousJumpUrl; ?>">...</a></li>
+                        <?php endif;?>
+
+                        <?php foreach ($page->getFramePages() as $_page): ?>
+                            <?php if ($page->isPageCurrent($_page)): ?>
+                                <li class="current"><?php echo $_page ?></li>
+                            <?php else: ?>
+                                <?php $current_url = "/Review/".$urk_key.'/'.$_page.".html";?>
+                                <li><a href="<?php echo $current_url; ?>"><?php echo $_page ?></a></li>
+                            <?php endif;?>
+                        <?php endforeach;?>
+
+
+                        <?php if ($page->canShowNextJump()): ?>
+                            <?php $NextJumpUrl = "/Review/".$urk_key.'/'.str_replace('/', '', end(explode('_',$page->getNextJumpUrl()))).".html";?>
+
+                            <li><a class="next_jump" title="" href="<?php echo $NextJumpUrl; ?>">...</a></li>
+                        <?php endif;?>
+
+                        <?php if ($page->canShowLast()): ?>
+                            <?php $LastPageUrl = "/Review/".$urk_key.'/'.str_replace('/', '', end(explode('_',$page->getLastPageNum()))).".html";?>
+
+                            <li><a class="last" href="<?php echo $LastPageUrl ?>"><?php echo $page->getLastPageNum() ?></a></li>
+                        <?php endif;?>
+
+                        <?php if (!$page->isLastPage()): ?>
+                            <li>
+                                <?php $NextPageUrl = "/Review/".$urk_key.'/'.str_replace('/', '', end(explode('_',$page->getNextPageUrl()))).".html";?>
+                                <a class="next<?php if(!$page->getAnchorTextForNext()): ?> i-next<?php endif; ?>" href="<?php echo $NextPageUrl ?>" title="<?php echo $this->__('Next') ?>">
+                                    <?php if(!$page->getAnchorTextForNext()): ?>
+                                        <img src="<?php echo $page->getSkinUrl('images/pager_arrow_right.gif') ?>" alt="<?php echo $this->__('Next') ?>" class="v-middle" />
+                                    <?php else: ?>
+                                        <?php echo $page->getAnchorTextForNext() ?>
+                                    <?php endif;?>
+                                </a>
+                            </li>
+                        <?php endif;?>
+                    </ol>
+
+                </div>
+            <?php endif; ?>
+
+            <?php if($page->getUseContainer()): ?>
+                </div>
+            <?php endif ?>
+
+        <?php endif ?>
+    </div>
+</div>
+
+<!--add likes +1-->
+<script>
+    function _getBaseUrl(){
+        var url=document.domain;
+        url='http://'+url;
+        return url;
+    }
+    function clicklikes(obj,id){
+        jQuery(obj).children('img').attr('src','<?php echo $this->getSkinUrl('images/fb_like_disabled.png'); ?>');
+        var url=_getBaseUrl();
+        url+='/includes/likes.php?po=likes&id='+id;
+        var likes=jQuery('#fb_num_'+id).html();
+        if(likes!=''){
+            likes=parseInt(likes);
+            if(!isNaN(likes)){
+                likes+=1;
+            }
+        }else{
+            likes=1;
+        }
+        jQuery.get(url);
+        jQuery('#fb_num_'+id).html(likes);
+        jQuery(obj).unbind('click');
+    }
+    jQuery(function($) {
+        $('.fb_like_button').each(function(){
+            $(this).click(function(){
+                clicklikes($(this),$(this).attr('id'));
+            });
+        });
+    });
+</script>
+<!--add likes +1 the end-->

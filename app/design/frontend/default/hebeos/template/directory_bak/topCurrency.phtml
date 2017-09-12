@@ -1,0 +1,81 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Currency switcher
+ *
+ * @see Mage_Directory_Block_Currency
+ */
+?>
+<script type="text/javascript">
+    var urlAddress=parent.document.location;var pageName=document.title; function addfavorite(){try {window.external.addFavorite(urlAddress, pageName);}catch(e){try{window.sidebar.addPanel(pageName,urlAddress,"");}catch(e){alert('Unfortunately, your browser does not support this action,' + ' please bookmark this page manually by pressing Ctrl + D on PC or Cmd + D on Mac.');}}}function killErrors(){return true;}window.onerror=killErrors;
+</script> 
+<?php if ($this->getCurrencyCount() > 1): ?>
+<div class="top-currency">
+    <div class="block-content">
+        <dl>
+			<dt class="currency-select"><img style="margin-top:9px;margin-right:8px" src="<?php echo $this->getSkinUrl('') ?>images/terry/<?php echo $this->getCurrentCurrencyCode(); ?>.jpg" />
+                    <?php
+                    echo Mage::app()->getLocale()->currency($this->getCurrentCurrencyCode())->getSymbol() . "&nbsp;&nbsp;";
+                    echo $this->getCurrentCurrencyCode();
+                    ?>
+            </dt>
+			<dd class="currency-duo">
+                <ul>
+                    <?php
+                    $i = 0;
+                    foreach ($this->getCurrencies() as $_code => $_name):
+                        ?>
+                        <?php
+                        if ($_code == $this->getCurrentCurrencyCode()) {
+                            continue;
+                        }
+                        if ($i == 0) {
+                            $cClass = '';
+                        } else {
+                            $cClass = 'code_Class';
+                        }
+                        ?>
+                        <li><a rel="nofollow" class="rr<?php echo $_code ?> <?php echo $cClass; ?>" href="<?php echo $this->getSwitchCurrencyUrl($_code) ?>">
+                            
+                                <img style="margin-right: 10px;margin-top: 3px;" src="<?php echo $this->getSkinUrl('') ?>images/terry/<?php echo $_code; ?>.jpg" />
+                                <?php
+                                echo Mage::app()->getLocale()->currency($_code)->getSymbol() . "&nbsp;&nbsp;";
+                                echo $_code
+                                ?>
+                            
+                        </a></li>
+                        <?php
+                        $i++;
+                    endforeach;
+                    ?>
+				</ul>
+			</dd>
+        </dl>
+    </div>
+</div>
+<?php endif; ?>

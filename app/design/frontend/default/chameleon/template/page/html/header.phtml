@@ -1,0 +1,41 @@
+<?php $_cartItems = $this->helper('checkout/cart')->getSummaryCount(); ?>
+<?php 
+	$curr = $this->helper('core/url')->getCurrentUrl();
+?>
+<div class="header-top">
+<ul class="header-top-link">
+<li><a href="#menu" id="nav-menu-link" class="ui-link"><i class="i1"></i></a></li>
+	<li class="account-icon<?php if ($curr == $this->getUrl('customer/account')): ?> active<?php endif ?>">
+		<?php if (!Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+			<a id="to-login" href="<?php echo $this->getUrl('customer/account') ?>" title="<?php echo $this->__('Account') ?>"><i class="i2">&nbsp;</i></a>
+		<?php else: ?>
+			<a id="to-my-account" href="<?php echo $this->getUrl('customer/account') ?>" title="<?php echo $this->__('Account') ?>"><i class="i2">&nbsp;</i></a>
+		<?php endif; ?>
+	</li>
+<li class="logo">
+			<a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>"><img src="<?php echo $this->getSkinUrl('images/logo.png') ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+			<a id="pink" style="display:none;" href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>"><img src="<?php echo $this->getSkinUrl('images/logo.png') ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+			<a id="green" style="display:none;" href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>"><img src="<?php echo $this->getSkinUrl('images/logo-green.png') ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+			<a id="brown" style="display:none;" href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>"><img src="<?php echo $this->getSkinUrl('images/logo-brown.png') ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+			<a id="blue" style="display:none;" href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>"><img src="<?php echo $this->getSkinUrl('images/logo.png') ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+			<a id="darkblue" style="display:none;" href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>"><img src="<?php echo $this->getSkinUrl('images/logo-darkblue.png') ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+		</li>
+<li class="click-search<?php echo ($this->getIsHomePage())?' current':'';?>"><a title="Search" href="javascript:;"><i class="i3"></i></a></li>
+	<li class="cart-icon<?php if ($curr == $this->getUrl('checkout/cart')): ?> active<?php endif ?>">
+		<a href="<?php echo $this->getUrl('checkout/cart'); ?>" title="<?php echo $this->__('Cart') ?>"><i class="i4"><span><?php echo ($_cartItems)?$_cartItems:'&nbsp;'; ?></span></i></a>
+	</li>
+</ul>	
+</div>
+	<div class="header">
+     	<div class="search-block<?php echo (!$this->getIsHomePage())?' hide':'';?>"><?php echo $this->getChildHtml('topSearch') ?></div>
+		 <div class="coupon_off">
+				<img src="<?php echo $this->getSkinUrl('images/coupon_80off.jpg') ?>" alt="">
+			</div>
+			<div class="slider">
+				<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('slider')->toHtml()  ?>
+			</div>
+	</div>
+	<?php echo $this->getChildHtml('topCart') ?>
+	<?php echo $this->getChildHtml('topLinks') ?>
+
+

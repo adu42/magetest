@@ -1,0 +1,186 @@
+<?php /** @var $this SoftCube_Integration_Block_Adminhtml_System_Config_Block */ ?>
+<div class="section-config active">
+    <div class="entry-edit-head collapseable">
+        <a id="softcube_general-head"
+           href="#"
+           onclick="Fieldset.toggleCollapse('softcube_general'); return false;"
+           class="open"><?php echo $this->__('General') ?></a>
+    </div>
+    <input id="softcube_general-state" name="config_state[softcube_general]" type="hidden" value="1">
+    <fieldset class="config collapseable" id="softcube_general">
+        <legend>General</legend>
+        <table cellspacing="0" class="form-list">
+            <colgroup>
+                <col width="1000"/>
+            </colgroup>
+            <tbody>
+            <tr id="row_softcube_general_test_connection">
+                <td class="label">
+                    <?php if ($this->isReadyToInstall() && !$this->isAlreadyInstalled()): ?>
+                        <div><b><?php echo $this->__('Your store ready to be configured. Please press "Install" button to proceed.') ?></b></div>
+                        <table>
+                            <tbody>
+                            <tr id="row_softcube_information_name">
+                                <td class="label"><label for="softcube_information_name">Name</label></td>
+                                <td class="value"><input id="softcube_information_name"
+                                                         name="groups[information][fields][name][value]"
+                                                         value="<?php echo Mage::getStoreConfig(SoftCube_Integration_Model_Service_Abstract::XML_PATH_SOFTCUBE_INFO_NAME) ?>"
+                                                         class="input-text required-entry" type="text">
+                                </td>
+                                <td class="scope-label">[STORE VIEW]</td>
+                                <td class=""></td>
+                            </tr>
+                            <tr id="row_softcube_information_email">
+                                <td class="label"><label for="softcube_information_email">E-mail</label></td>
+                                <td class="value"><input id="softcube_information_email"
+                                                         name="groups[information][fields][email][value]"
+                                                         value="<?php echo Mage::getStoreConfig(SoftCube_Integration_Model_Service_Abstract::XML_PATH_SOFTCUBE_INFO_EMAIL) ?>"
+                                                         class=" input-text required-entry validate-email" type="text">
+                                </td>
+                                <td class="scope-label">[STORE VIEW]</td>
+                                <td class=""></td>
+                            </tr>
+                            <tr id="row_softcube_information_phone">
+                                <td class="label"><label for="softcube_information_phone">Phone</label></td>
+                                <td class="value"><input id="softcube_information_phone"
+                                                         name="groups[information][fields][phone][value]"
+                                                         value="<?php echo Mage::getStoreConfig(SoftCube_Integration_Model_Service_Abstract::XML_PATH_SOFTCUBE_INFO_PHONE) ?>"
+                                                         class="input-text required-entry validate-phoneLax" type="text">
+                                </td>
+                                <td class="scope-label">[STORE VIEW]</td>
+                                <td class=""></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <button class="scalable" type="button"
+                                    onclick="installAction('<?php echo $this->getInstallActionUrl() ?>')">
+                                <span><span><?php echo $this->__('Install') ?></span></span>
+                            </button>
+                        </div>
+                    <?php else: ?>
+                        <?php if (!$this->isAlreadyInstalled()): ?>
+                            <div><?php echo $this->__('Your store does not meet requirements to proceed.') ?></div>
+                            <div>
+                            <span class="required">
+                                <?php echo $this->__('Magento Should have permissions to write it its root folder. Please refresh this page when this issue will be solved.') ?>
+                            </span>
+                            </div>
+                            <div>&nbsp;</div>
+                            <div>
+                                <button class="scalable disabled" type="button" disabled="disabled">
+                                    <span><span><?php echo $this->__('Install') ?></span></span>
+                                </button>
+                            </div>
+                        <?php else: ?>
+                            <div><b><?php echo $this->__('Your store already configured.'); ?></b></div>
+                            <table>
+                                <tbody>
+                                <tr id="row_softcube_information_store_key">
+                                    <td class="label"><label
+                                            for="softcube_information_store_key"><?php echo $this->__('Store Key'); ?></label>
+                                    </td>
+                                    <td class="value"><?php echo $this->getStoreKey(); ?></td>
+                                    <td class="scope-label"></td>
+                                    <td class=""></td>
+                                </tr>
+                                <tr id="row_softcube_information_name">
+                                    <td class="label"><label for="softcube_information_name">Name</label></td>
+                                    <td class="value"><input id="softcube_information_name"
+                                                             name="groups[information][fields][name][value]"
+                                                             value="<?php echo Mage::getStoreConfig(SoftCube_Integration_Model_Service_Abstract::XML_PATH_SOFTCUBE_INFO_NAME) ?>"
+                                                             class="input-text required-entry" type="text">
+                                    </td>
+                                    <td class="scope-label">[STORE VIEW]</td>
+                                    <td class=""></td>
+                                </tr>
+                                <tr id="row_softcube_information_email">
+                                    <td class="label"><label for="softcube_information_email">E-mail</label></td>
+                                    <td class="value"><input id="softcube_information_email"
+                                                             name="groups[information][fields][email][value]"
+                                                             value="<?php echo Mage::getStoreConfig(SoftCube_Integration_Model_Service_Abstract::XML_PATH_SOFTCUBE_INFO_EMAIL) ?>"
+                                                             class="input-text required-entry validate-email" type="text">
+                                    </td>
+                                    <td class="scope-label">[STORE VIEW]</td>
+                                    <td class=""></td>
+                                </tr>
+                                <tr id="row_softcube_information_phone">
+                                    <td class="label"><label for="softcube_information_phone">Phone</label></td>
+                                    <td class="value"><input id="softcube_information_phone"
+                                                             name="groups[information][fields][phone][value]"
+                                                             value="<?php echo Mage::getStoreConfig(SoftCube_Integration_Model_Service_Abstract::XML_PATH_SOFTCUBE_INFO_PHONE) ?>"
+                                                             class="input-text required-entry validate-phoneLax" type="text">
+                                    </td>
+                                    <td class="scope-label">[STORE VIEW]</td>
+                                    <td class=""></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div>&nbsp;</div>
+                            <button class="scalable" type="button" onclick="updateInfo()">
+                                <span><span>Update Info</span></span>
+                            </button>
+                            &nbsp;&nbsp;
+                            <button class="scalable delete" type="button"
+                                    onclick="installAction('<?php echo $this->getReinstallActionUrl() ?>')">
+                                <span><span><?php echo $this->__('Reinstall') ?></span></span>
+                            </button>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </fieldset>
+</div>
+
+
+<script type="text/javascript">
+    //<![CDATA[
+    function installAction(action) {
+
+        if (!configForm.validate()) {
+            return;
+        }
+
+        new Ajax.Request(action, {
+            parameters: {
+                isAjax: 'true',
+                form_key: FORM_KEY,
+                name: $('softcube_information_name').value,
+                email: $('softcube_information_email').value,
+                phone: $('softcube_information_phone').value
+            },
+            onSuccess: function () {
+                location.reload();
+            },
+            onFailure: function () {
+                location.reload();
+            }
+        });
+    }
+
+    function updateInfo() {
+
+        if (!configForm.validate()) {
+            return;
+        }
+
+        new Ajax.Request('<?php echo $this->getUpdateActionUrl() ?>', {
+            parameters: {
+                isAjax: 'true',
+                form_key: FORM_KEY,
+                name: $('softcube_information_name').value,
+                email: $('softcube_information_email').value,
+                phone: $('softcube_information_phone').value
+            },
+            onSuccess: function () {
+                location.reload();
+            },
+            onFailure: function () {
+                location.reload();
+            }
+        });
+    }
+    //]]>
+</script>

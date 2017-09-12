@@ -1,0 +1,58 @@
+<?php $_items = $this->getReviewCollection(); ?>
+<?php $_products = array();  ?>
+<?php $helper = Mage::helper("reviewimage");  ?>
+<?php if (count($_items)): ?>
+        <?php foreach ($_items as $_review): ?>
+            <?php
+            $_productId = $_review->getEntityPkValue();
+            $_product = isset($_products[$_productId]) ? $_products[$_productId] : ($_products[$_productId] = Mage::getModel('catalog/product')->load($_productId)); ?>
+        <li class="reviews-group-item">
+        <div class="review-one">
+                <!---!!--->
+            <div id="review-<?php echo $_review->getReviewId() ?>" class="white-popup" dir="reviews">
+                <div class="review-detail-content hidden" dir="reviews" id="review-detail-content-<?php echo $_review->getReviewId() ?>"><?php echo nl2br($this->escapeHtml($_review->getDetail())) ?></div>
+                <div class="review-detail-product hidden"  dir="reviews"  id="review-detail-product-<?php echo $_review->getReviewId() ?>"><a
+                        href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->__('Shop Now') ?></a>
+                </div>
+                <div class="review-detail-nicename hidden"  dir="reviews"
+                     id="review-detail-nicename-<?php echo $_review->getReviewId() ?>"><?php echo $this->__('Worn by <span>%s</span>', $this->escapeHtml($_review->getNickname())) ?></div>
+                <div class="review-detail-share hidden"  dir="reviews"
+                     id="review-detail-share-<?php echo $_review->getReviewId() ?>"></div>
+                <div class="review-detail-likes hidden"  dir="reviews"
+                     id="review-detail-likes-<?php echo $_review->getReviewId() ?>">
+                    <div class="gallery-like review-likes"  dir="reviews"
+                         id="<?php echo $_review->getReviewId() ?>"><?php echo ($_review->getReviewLikes()) ? $_review->getReviewLikes() : 1; ?></div>
+                </div>
+                <div class="review-photo-images"  dir="reviews"
+                     id="review-detail-images-<?php echo $_review->getReviewId() ?>"></div>
+                <?php if (Mage::helper("reviewimage")->getActive() == '1'): ?>
+                    <?php
+                    $images = Mage::helper("reviewimage")->getImages($_review); //  $_review->getImages();
+                    if ($images):
+                        ?>
+                        <!---!!--->
+                        <div class="main-image" dir="reviews"></div>
+                        <div class="review-thumbnail-images"  dir="reviews"  data-id="<?php echo $_review->getReviewId() ?>">
+                            <?php   $hide = ''; //只显示第一张，其他的在弹框中展示  ?>
+                            <?php  foreach ($images as $i=>$image):
+                                if($i>0)$hide=' hidden';
+                                ?>
+                                <img class="gallery-thumbnail-image<?php echo $hide;?> small" src="<?php echo $image['big']; ?>" dir="reviews"  data-zoom-image="<?php echo $image['big']; ?>"/>
+
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
+            </div>
+            <div class="review-one-two">
+                <div class="name-date">
+                    <div class="name-date-name"><?php echo $this->escapeHtml($_review->getNickname()) ?></div>
+                    <div class="name-date-time"><small class="date"><?php echo $this->__('(Posted on %s)', $this->formatDate($_review->getCreatedAt()), 'long') ?></small></div>
+                </div>
+                <div class="gallery-like review-likes"
+                     id="<?php echo $_review->getReviewId() ?>"><?php echo ($_review->getReviewLikes()) ? $_review->getReviewLikes() : 1; ?></div>
+            </div>
+        </li>
+        <?php endforeach; ?>
+<?php endif; ?>

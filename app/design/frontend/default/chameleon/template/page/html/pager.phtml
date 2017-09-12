@@ -1,0 +1,104 @@
+<?php
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+?>
+<?php
+/**
+ * Pager template
+ *
+ * @see Mage_Page_Block_Html_Pager
+ */
+?>
+<?php if($this->getCollection()->getSize()): ?>
+
+    <?php if($this->getUseContainer()): ?>
+    <div class="pager">
+    <?php endif ?>
+
+    <?php /*if($this->getShowAmounts()): ?>
+    <p class="amount">
+        <?php if($this->getLastPageNum()>1): ?>
+            <?php echo $this->__('Items %s to %s of %s total', $this->getFirstNum(), $this->getLastNum(), $this->getTotalNum()) ?>
+        <?php else: ?>
+            <strong><?php echo $this->__('%s Item(s)', $this->getTotalNum()) ?></strong>
+        <?php endif; ?>
+    </p>
+    <?php endif */?>
+
+    <?php if($this->getShowPerPage()): ?>
+    <div class="limiter">
+        <label><?php echo $this->__('Show') ?></label>
+        <select onchange="setLocation(this.value)">
+        <?php foreach ($this->getAvailableLimit() as  $_key=>$_limit): ?>
+            <option value="<?php echo $this->getLimitUrl($_key) ?>"<?php if($this->isLimitCurrent($_key)): ?> selected="selected"<?php endif ?>>
+                <?php echo $_limit ?>
+            </option>
+        <?php endforeach; ?>
+        </select> <?php echo $this->__('per page') ?>
+    </div>
+    <?php endif ?>
+
+    <?php if($this->getLastPageNum()>1): ?>
+    <div class="pages">
+        <ul onchange="setLocation(this.value)">
+		    <?php if (!$this->isFirstPage()): ?>
+			<li>
+				<a class="prev-page" href="<?php echo $this->getPreviousPageUrl() ?>" title="<?php echo $this->__('Prev') ?>">&#8592;&nbsp;<?php echo $this->__('Prev') ?></a>
+			</li>
+			<?php else: ?>
+			<li><span class="prev-page disabled">&#8592;&nbsp;<?php echo $this->__('Prev') ?></span></li>
+			<?php endif;?>
+			
+            <?php if ($this->canShowFirst()): ?>
+                <li><a href="<?php echo $this->getFirstPageUrl() ?>">1</a></li>
+            <?php endif;?>
+
+            <?php if ($this->canShowPreviousJump()): ?>
+                <li value="<?php echo $this->getPreviousJumpUrl() ?>">...</li>
+            <?php endif;?>
+
+            <?php foreach ($this->getFramePages() as $_page): ?>
+                <?php if ($this->isPageCurrent($_page)): ?>
+                   <li class="current" selected="selected"><span><?php echo $_page ?></span></li>
+                <?php else: ?>
+                    <li><a href="<?php echo $this->getPageUrl($_page) ?>"><?php echo $_page ?></a></li>
+                <?php endif;?>
+            <?php endforeach;?>
+
+            <?php if ($this->canShowNextJump()): ?>
+                <li value="<?php echo $this->getNextJumpUrl() ?>">...</li>
+            <?php endif;?>
+
+            <?php if ($this->canShowLast()): ?>
+                <li value="<?php echo $this->getLastPageUrl() ?>"><?php echo $this->getLastPageNum() ?></li>
+            <?php endif;?>
+       
+        <?php if (!$this->isLastPage()): ?>
+              <li>
+				<a class="next-page" href="<?php echo $this->getNextPageUrl() ?>" title="<?php echo $this->__('Next') ?>"><?php echo $this->__('Next') ?>&nbsp;&#8594;</a>
+			</li>
+        <?php else: ?>
+                <li><span class="next-page disabled"><?php echo $this->__('Next') ?>&nbsp;&#8594;</span></li>
+        <?php endif;?>
+		 </ul>
+    </div>
+    <?php endif; ?>
+
+    <?php if($this->getUseContainer()): ?>
+    </div>
+    <?php endif ?>
+
+<?php endif ?>

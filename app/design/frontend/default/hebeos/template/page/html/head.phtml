@@ -1,0 +1,112 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<meta http-equiv="Content-Type" content="<?php echo $this->getContentType() ?>" />
+<title><?php echo $this->getTitle() ?></title>
+<meta name="description" content="<?php echo htmlspecialchars($this->getDescription()) ?>" />
+<meta name="keywords" content="<?php echo htmlspecialchars($this->getKeywords()) ?>" />
+<meta name="robots" content="<?php echo htmlspecialchars($this->getRobots()) ?>" />
+<link rel="icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<link rel="shortcut icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<script language="JavaScript">
+function killErrors() {
+return true;
+}
+// window.onerror = killErrors;
+</script>
+<!--[if lt IE 7]>
+<script type="text/javascript">
+//<![CDATA[
+    var BLANK_URL = '<?php echo $this->helper('core/js')->getJsUrl('blank.html') ?>';
+    var BLANK_IMG = '<?php echo $this->helper('core/js')->getJsUrl('spacer.gif') ?>';
+//]]>
+</script>
+<![endif]-->
+<?php /* Open Graph Protocol for Facebook and SEO START */ ?>
+<?php
+function getPageType($type){
+    $moduleName=Mage::app()->getRequest()->getModuleName();
+    $controllerName=Mage::app()->getRequest()->getControllerName();
+    $actionName=Mage::app()->getRequest()->getActionName();
+	$cmsHome = Mage::getSingleton('cms/page')->getIdentifier();
+	$routeName = Mage::app()->getFrontController()->getRequest()->getRouteName();
+	
+    $s = strtolower($moduleName.$controllerName);
+    if($s==$type){
+        return true;
+    }elseif($cmsHome=='home' && $routeName==$type){
+		return true;
+	}
+    return false;
+}
+
+
+$_og_site_name='Hebeos';
+$product = Mage::registry('current_product');
+if(getPageType('catalogproduct')):
+if($product && $product->getId()): ?>
+    <?php $product = Mage::registry('current_product'); ?>
+    <meta property="og:title" content="<?php echo ($product->getName()); ?>" />
+    <meta property="og:type" content="product" />
+    <meta property="og:image" content="<?php echo $this->helper('catalog/image')->init($product, 'image');?>" />
+    <meta property="og:url" content="<?php echo $product->getProductUrl(); ?>" />
+    <meta property="og:description" content="<?php echo strip_tags(($product->getShortDescription())); ?>" />
+    <meta property="og:site_name" content="<?php echo $_og_site_name; ?>" />
+    <meta property="product:price:amount" content="<?php echo $product->getFinalPrice(); ?>" />
+    <meta property="og:price:standard_amount" content="<?php echo $product->getPrice(); ?>" />
+    <meta property="product:price:currency" content="USD" />
+    <meta property="og:availability" content="instock" />
+<?php endif ?>	
+<?php elseif(getPageType('catalogcategory')): ?>
+    <meta property="og:title" content="<?php echo $this->getTitle() ?>" />
+    <meta property="og:type" content="product.group" />
+    <meta property="og:url" content="<?php echo $this->helper('core/url')->getCurrentUrl();?>" />
+    <meta property="og:description" content="<?php echo strip_tags($this->getDescription()) ?>" />
+    <meta property="og:site_name" content="<?php echo $_og_site_name; ?>" />
+<?php elseif(getPageType('cms')) : ?>
+    <meta property="og:title" content="<?php echo $this->getTitle() ?>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<?php echo $this->helper('core/url')->getCurrentUrl();?>" />
+    <meta property="og:description" content="<?php echo strip_tags($this->getDescription()) ?>" />
+    <meta property="og:site_name" content="<?php echo $_og_site_name; ?>" />
+<?php else: ?>
+    <meta property="og:title" content="<?php echo $this->getTitle() ?>" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="<?php echo $this->helper('core/url')->getCurrentUrl();?>" />
+    <meta property="og:description" content="<?php echo strip_tags($this->getDescription()) ?>" />
+    <meta property="og:site_name" content="<?php echo $_og_site_name; ?>" />
+<?php endif; ?>
+<?php /* Open Graph Protocol for Facebook and SEO END */ ?>
+<?php echo $this->getCssJsHtml() ?>
+<?php echo $this->getChildHtml() ?>
+<?php echo $this->helper('core/js')->getTranslatorScript() ?>
+<?php echo $this->getIncludes() ?>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/common.js') ?>"></script> 
+<script type="text/javascript">var _gaq = _gaq || [];</script> 
+
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery.lazyload.mini.js') ?>"></script>
+
+

@@ -1,0 +1,24 @@
+<?php if (($_products = $this->getProductCollection()) && $_collectionSize = $_products->getSize()): ?>
+    <?php $_columnCount = $this->getColumnsCount(); ?>
+    <?php $i = 0; foreach ($_products->getItems() as $_product): ?>
+    <?php if($i++%$_columnCount == 0) : ?>
+	
+    <ol class="product-list">
+    <?php endif; ?>
+        <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+			<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+				<img class="product-image" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(180,240) ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" /></a>
+			<?php $price=$this->getPriceHtml($_product, true, $this->getPriceSuffix()); 
+				$price=str_replace('class="price-box"','class="price-box-list"',$price);
+				$price=str_replace('class="old-price"','class="old-price-list"',$price);
+				$price=str_replace('class="special-price"','class="special-price-list"',$price);
+				echo $price;
+			?>
+				 
+        </li>
+    <?php if($i%$_columnCount == 0 || $i == count($_products)): ?>
+    </ol>
+    <?php endif; ?>
+    <?php endforeach; ?>
+<?php endif; ?>
+

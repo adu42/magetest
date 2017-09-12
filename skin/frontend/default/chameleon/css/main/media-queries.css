@@ -1,0 +1,67 @@
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+
+/* MEDIA QUERIES ----------------------------------- */
+body > section img {
+    max-width: 100%;
+}
+@media screen and (min-width:480px) and (max-width:1024px) {
+	.c-list li.last {
+		background:url( '../../images/bg/border-product.gif') repeat-x center bottom!important;
+		}
+	.products-grid  {
+		clear:none;
+		}
+}
+  .c-list  > li{
+		width:50%;
+		-webkit-box-sizing:border-box;
+		box-sizing:border-box;
+		min-height:148px;
+		}
+
+@media screen and (max-width: 800px) and (min-width: 476px) {
+    .c-list  > li{
+		width:33.3%;
+		}
+}
+@media screen and (min-width: 801px){
+	.c-list  > li{
+		width:33.3%;
+		width:25%;
+		min-height:190px;
+		}		
+}
+
+
+
+
+
+
+@media screen and (max-width: 800px) and (min-width: 476px) {
+	.proWrap ul li {
+	    width:33.3%;
+	}
+}
+@media screen and (min-width: 801px){
+	.proWrap ul li {
+		width:33.3%;
+		width:25%;
+		min-height:190px;
+		}
+}
+
+

@@ -1,0 +1,104 @@
+<?php 
+
+    // 设置cookie
+    $cookieRating = Mage::getSingleton('core/cookie')->get('rating');
+
+    // 当前分类id
+    $currentCatId = Mage::registry('current_category')->getEntityId();
+
+    $_helper    = $this->helper('catalog/output');
+
+    $category = $this->getCurrentCategory();
+    $category->setStoreId($this->getStoreId());
+
+    // 获取当前栏目的评分
+    $countRating = $category->getRatingvalues();
+	
+    // 获取当前栏目分类名称
+    $cate_name = $category->getName();	
+    
+    // 获取当前栏目的投票数
+    $countTotal = $category->getTotalvotes();
+ 
+    // 获取当前栏目最高价
+    $priceRangeHigh = round($category->getPricerangehigh(),2);
+
+    // 获取当前栏目最低价
+    $priceRangeLow = round($category->getPricerangelow(),2);
+
+    // 判断是否是第二页
+    $_pages = Mage::app()->getRequest()->getParam('p');
+
+    // 筛选匹配
+    $urls = Mage::helper('core/url')->getCurrentUrl();
+
+    if(preg_match("/_filter/i", $urls)) {
+        $urls_status = 1 ;
+    }else{
+        $urls_status = 0 ;
+    }
+
+
+
+
+
+ ?>
+
+
+
+
+<?php if( !empty($countRating) &&  !empty($countTotal) && (($_pages == '1') ||  empty($_pages))   && !$urls_status) { ?>
+<div class="ratingushere" itemscope itemtype="http://schema.org/Product">
+
+<div class="ratingusimage" >
+<div id="rateboxtable_gd_bdazzle">
+<style>
+    .star_pink_medium_gd_bdazzle{width:10px;height:20px;float:left;-webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+        }
+.rate_pink_medium_heart_gd_bdazzle{background-color:transparent;background-image: url('<?php echo $this->getSkinUrl('images/pink_medium_heart.png') ?>');background-repeat: no-repeat;}
+
+.trueodd_medium_gd_bdazzle{background-position: -4px -36px;padding-left:0px;}
+.trueeven_medium_gd_bdazzle{background-position: -18px -36px;padding-right:3px;}
+.falseodd_medium_gd_bdazzle{background-position: -4px -1px;padding-left:0px;}
+.falseeven_medium_gd_bdazzle{background-position: -18px -1px;padding-right:3px;}
+</style>
+
+
+<?php
+
+ if(!$this-> getRatingStatues($currentCatId)){ 
+    echo $this->_defaultcountratingrang($countRating,$currentCatId);
+
+ }else{
+      
+    echo $this->_countratingrang($countRating);
+} ?>
+</div>
+</div>
+
+
+<meta itemprop="name" content="<?php echo $cate_name ;?>"> 
+<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating" class="rating_more">
+<!--	<div class="rating_value">Score Value:</div>-->
+<div itemprop="ratingValue" class="_countRating"><?php if(!$countRating) {echo 0;}else{ echo $countRating ;} ;?></div>
+<div>/</div>
+<div itemprop="bestRating" id="rateboxtable_gd_la-femme" class="">5</div> 
+<div>&nbsp;(</div><div itemprop="ratingCount" class="_countTotal"><?php echo $countTotal ;?></div><div>&nbsp;Votes)</div>
+<meta itemprop="worstRating" content="1"></div>
+<?php } ?>
+
+
+<?php if( !empty($priceRangeHigh) &&  !empty($priceRangeLow)  && (($_pages == '1') ||  empty($_pages)) && !$urls_status  ) { ?>
+<span itemprop="offers" itemscope itemtype="http://schema.org/AggregateOffer" class="rating_where">
+from <span itemprop="lowPrice" id="lowPrice"><?php echo $priceRangeLow ;?></span> to
+<span itemprop="highPrice" id="highPrice"><?php echo $priceRangeHigh ;?></span><span>&nbsp;</span><span itemprop="priceCurrency">USD</span>
+</span>
+
+</div>
+<?php } ?>
+
+
+

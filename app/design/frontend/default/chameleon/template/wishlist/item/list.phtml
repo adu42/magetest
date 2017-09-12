@@ -1,0 +1,47 @@
+<?php
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+?>
+<?php
+    $columns = $this->getColumns();
+?>
+<table class="data-table" id="wishlist-table">
+    <tbody>
+        <?php if (count($this->getItems())): ?>
+            <?php foreach ($this->getItems() as $item): ?>
+                <tr id="item_<?php echo $item->getId();?>">
+                    <td>
+                        <?php foreach ($columns as $column): ?>
+                            <?php $column->setItem($item); echo $column->toHtml($item);?>
+                        <?php endforeach; ?>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+        <?php else: ?>
+            <td colspan="<?php echo count($columns);?>" class="wishlist-empty"><?php echo $this->__('This Wishlist has no Items');?></td>
+        <?php endif; ?>
+    </tbody>
+</table>
+<?php foreach ($columns as $column): ?>
+    <?php echo $column->getAdditionalHtml();?>
+<?php endforeach; ?>
+<script type="text/javascript">
+//<![CDATA[
+<?php foreach ($columns as $column): ?>
+    <?php echo $column->getJs();?>
+<?php endforeach; ?>
+//]]>
+</script>

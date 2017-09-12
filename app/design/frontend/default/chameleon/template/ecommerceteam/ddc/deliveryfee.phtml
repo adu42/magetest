@@ -1,0 +1,26 @@
+<?php
+ $deliveryFeeId = $this->getCheckout()->getQuote()->getDeliveryFeeId();
+ $deliveryOptions= $this->getDeliveryFeeOptions();
+ if(!empty($deliveryOptions)):
+ ?>
+<div class="delivery-fee-wrap">
+<h5><?php echo $this->getDeliveryFeeLabel()?></h5>   
+    <ul>   
+<?php  foreach($deliveryOptions as $_option): 
+	$defaultCheck=false;
+	if($deliveryFeeId && $_option['id']==$deliveryFeeId){
+		$defaultCheck=true;
+	}else if(!$deliveryFeeId && (isset($_option['checked']) && $_option['checked']=='checked')){
+		$defaultCheck=true;
+	}
+?>
+        <li>
+        <input type="radio" id="delivery-fee:<?php echo $_option['id']; ?>" name="deliveryfee" value="<?php echo $_option['id']; ?>"<?php echo $defaultCheck?'checked="checked"':''; ?>/>
+        <label for="delivery-fee:<?php echo $_option['id']; ?>"><?php echo $_option['label'];	?></label>
+        <div class="delivery-fee-description"><?php echo $_option['description']; ?></div>
+        <div class="delivery-fee-price">&nbsp;&nbsp;<?php echo $_option['price']; ?></div>
+        </li>
+<?php endforeach; ?>
+    </ul> 
+</div>
+<?php endif; ?>

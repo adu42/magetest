@@ -1,0 +1,74 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Currency switcher
+ *
+ * @see Mage_Directory_Block_Currency
+ */
+?>
+<?php if($this->getCurrencyCount()>1): ?>
+<div class="top-currency">
+    <div class="block-content">
+		<div class="curSelector">
+			<a class="dropdown-toggle">
+				<?php echo $this->getCurrentCurrencyCode()?><span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+			<?php foreach ($this->getCurrencies() as $_code => $_name): ?>
+			<li><a title="<?php echo $_code ?>" alt="<?php echo $_code ?>" href="<?php echo $this->getSwitchCurrencyUrl($_code) ?>">
+				<span class="symbo">
+				<?php if($_code=="USD") echo "$";?>
+				<?php if($_code=="EUR") echo "€";?>
+				<?php if($_code=="GBP") echo "£";?>
+				<?php if($_code=="CAD") echo "$";?>
+				<?php if($_code=="AUD") echo "$";?>
+				<?php if($_code=="CHF") echo "₣";?>
+				<?php if($_code=="BRL") echo "R$";?>
+				<?php if($_code=="NZD") echo "NZ$";?>
+				<?php if($_code=="RUB") echo "p.";?>
+				<?php if($_code=="SGD") echo "S$";?>
+				<?php if($_code=="ZAR") echo "$";?>				
+				<?php if($_code=="HKD") echo "$";?>
+				<?php if($_code=="JPY") echo "¥";?>
+				<?php if($_code=="CLP") echo "$";?>
+				<?php if($_code=="BOK") echo "kr.";?>
+				<?php if($_code=="DKK") echo "kr.";?>
+				<?php if($_code=="SEK") echo "Kr.";?>
+				<?php if($_code=="KRW") echo "&#8361;";?>
+				<?php if($_code=="ILS") echo "&#8362;";?>
+				<?php if($_code=="INR") echo "Rs";?>				
+				</span>				
+			<?php echo $_code ?></a></li>
+			<?php endforeach; ?>
+			</ul>
+		</div>		
+    </div>
+</div>
+<div class="join">
+</div>
+<?php endif; ?>

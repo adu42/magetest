@@ -1,0 +1,69 @@
+<?php
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+?>
+<!DOCTYPE html>
+<html lang="<?php echo $this->getLang() ?>">
+<head>
+    <?php echo $this->getChildHtml('head') ?>
+</head>
+<body class="<?php echo $this->getBodyClass() ? $this->getBodyClass() . ' ' : '' ?><?php echo $this->helper('chameleoncolorchanger')->getColorTheme() ?>" onunload="">
+    <?php echo $this->getChildHtml('after_body_start') ?>
+<div class="wrapper">
+	<header class="main-header page" role="banner">
+		<?php echo $this->getChildHtml('global_notices') ?>
+		<?php echo $this->getChildHtml('header') ?>
+	</header>
+	<nav id="menu" class="hide">
+		<?php //use in ajax get form backend //echo $this->getLayout()->createBlock('cms/block')->setBlockId('top-left-link-mobile')->toHtml(); ?>
+	</nav>
+	<div class="nav-main" id="page">
+		<!-- nav maybe in here -->
+		<div class="belvg">
+			<div class="main-wrapper">
+				<section class="main-content">
+					<?php echo $this->getChildHtml('breadcrumbs') ?>
+					<?php echo $this->getChildHtml('global_messages') ?>
+					<?php echo $this->getChildHtml('homepage.banner') ?>
+					<?php echo $this->getChildHtml('content') ?>
+				</section>
+			</div>
+		</div>
+		<!-- login from maybe in here -->
+		<?php
+		$currUrl = $this->helper('core/url')->getCurrentUrl();
+		$loginUrl = 'customer/account/login';
+		$registerUrl = 'customer/account/create';
+		$https='http:';
+		if(substr($currUrl,0,5)==='https')$https='https:';
+		if (!Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+			<?php if(stripos($currUrl,$loginUrl)===false): ?>
+				<?php $loginHtml = $this->getChildHtml('login_form'); echo str_replace(array('true','dataForm','http:'),array('false','loginDataForm',$https),$loginHtml); ?>
+			<?php endif; ?>
+			<?php if(stripos($currUrl,$registerUrl)===false): ?>
+				<?php $registerHtml = $this->getChildHtml('register_form'); echo str_replace(array('true','dataForm','http:'),array('false','registerDataForm',$https),$registerHtml); ?>
+			<?php endif; ?>
+		<?php endif; ?>
+		<!-- end login from maybe in here -->
+		<footer class="main-footer" role="contentinfo">
+			<?php echo $this->getChildHtml('footer') ?>
+			<?php echo $this->getChildHtml('before_body_end') ?>
+			<?php echo $this->getAbsoluteFooter() ?>
+		</footer>
+	</div>
+</div>
+</body>
+</html>

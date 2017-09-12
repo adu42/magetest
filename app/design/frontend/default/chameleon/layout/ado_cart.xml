@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.1.0">
+    <checkout_cart_index translate="label">
+        <reference name="head">
+            <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/configurable.js</script></action>
+         <!--   <action method="addItem"><type>js_css</type><name>calendar/calendar2.css</name><params/></action>
+            <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params/></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar_as.js</name></action>
+            <action method="addItem"><type>js</type><name>calendar/calendar.en.js</name></action>
+            <action method="addItem"><type>js</type><name>jquery/jquery-1.8.3.min.js</name></action>
+            <action method="addItem"><type>js</type><name>jquery/no-conflict.js</name></action>
+		-->
+        </reference>
+        <reference name="content">
+        <!-- Add New Product list Block  cart/product_list 
+        <block type="ado_cart/product_list" name="checkout.cart.product" as="productlist" template="ado_cart/product_list.phtml"/>                 
+        Add New Product list Block End -->
+        </reference>        
+    </checkout_cart_index>
+</layout>

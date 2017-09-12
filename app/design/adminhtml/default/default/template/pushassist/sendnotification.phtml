@@ -1,0 +1,294 @@
+<?php 
+$check_api_key=Mage::app()->getStore()->getConfig('pushassistsection/general/apikey');
+$check_secret_key=Mage::app()->getStore()->getConfig('pushassistsection/general/secretkey');
+$account_response = Mage::helper('pushassist')->get_account_details();
+if(isset($account_response['account_name'])){
+$account_url='https://'.$account_response['account_name'].'.pushassist.com/dashboard/';
+}
+
+if($check_api_key!='' && $check_secret_key != '' && (!isset($account_response['error'] )) && $account_response) {
+?>
+<form action="<?php echo $this->getUrl('*/*/sendnotification'); ?>" method="post" name="notification" enctype='multipart/form-data' >
+<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+<div id="Psidebar" >
+  <ul>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_dashboard'); ?>"><?php echo $this->__('Dashboard')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_notificationmain'); ?>"><?php echo $this->__('Notifications')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_notificationsend'); ?>"><?php echo $this->__('Send Notification')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_segments'); ?>"><?php echo $this->__('Segments')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_createsegments'); ?>"><?php echo $this->__('Create Segments')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_subscribers'); ?>"><?php echo $this->__('Subscribers')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_settings'); ?>"><?php echo $this->__('Settings')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_campaign'); ?>"><?php echo $this->__('Campaigns')?></a></li>
+  </ul>
+  </div>
+<!-- Content Start -->
+    <div id="pushassist" class="content clearfix">
+        <!-- Start Page Header -->
+        <div class="page-header">
+            <h1 class="title"><?php echo $this->__('New Notification')?></h1>
+	    
+        </div>
+        <!-- End Page Header -->
+
+        <!-- Container Start -->
+        <div class="container-widget clearfix">
+            <div class="alert alert-danger alert-dismissable" id="pussassist_error" style="display: none"></div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                            <div class="">
+                                <input type="hidden" class="form-control" id="sites" name="sites" value="<?php //echo $result[0]['id']; ?>" />
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label form-label"><?php echo $this->__('Notification Title')?></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="title" name="title" placeholder="Notification Title" maxlength="77" required="required" />
+                                    <span class="pull-right"><?php echo $this->__('Limit 77 Characters')?></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label form-label"><?php echo $this->__('Notification Message')?></label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" rows="2" name="message" id="message" placeholder="Notification Message" maxlength="138" required="required" style="resize: none"></textarea>
+                                    <span class="pull-right"><?php echo $this->__('Limit 138 Characters')?></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label form-label"><?php echo $this->__('Notification URL')?></label>
+				<div class="col-sm-9 margin-b-15">
+                                    <input type="url" maxlength="250" placeholder="Enter a URL to push your subscribers to (yoursite.com)" name="url" id="url" class="form-control" >
+                                </div>
+  
+                            </div>
+                            
+                            <div class="form-group margin-b-0">
+                                <label for="focusedinput" class="col-sm-3 control-label form-label"><?php echo $this->__('Notification Logo')?></label>    
+                                <div class="col-sm-9">
+                                    <span class="btn btn-success fileinput-button margin-b-10">
+                                        <span><?php echo $this->__('Notification Logo')?>...</span>
+                                        <input id="fileupload" type="file" name="fileupload" />
+                                    </span>
+				    <span class="clearfix"><?php echo $this->__('Image size must be exactly 250x250px.')?></span>
+                                    <!-- The global progress bar -->
+                                    <div id="progress" class="progress">
+                                        <div class="progress-bar progress-bar-success"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-offset-3 control-label form-label">    
+                                    <input type="checkbox" value="1" name="is_utm_show" id="is_utm_show" />
+                                    <label class="form-label checkbox_title margin-l-10"><?php echo $this->__('Add UTM Parameters')?></label>    
+                                </label>
+                            </div>
+                            <div class="form-group" id="utm_parameter_div" style="display: none;">    
+                                <label class="col-sm-3 control-label form-label"><?php echo $this->__('UTM Source')?></label>
+                                <div class="col-sm-9 margin-b-15">
+                                    <input type="text" class="form-control" id="utm_source" name="utm_source" value="pushassist" placeholder="Enter UTM Source" maxlength="45" required="required" />
+                                    <span class="pull-right"><?php echo $this->__('Limit 45 Characters')?></span>
+                                </div>
+
+                                <label class="col-sm-3 control-label form-label"><?php echo $this->__('UTM Medium')?></label>
+                                <div class="col-sm-9 margin-b-15">
+                                    <input type="text" class="form-control" name="utm_medium" id="utm_medium" value="pushassist_notification" placeholder="Enter UTM Medium" maxlength="73" required="required" />
+                                    <span class="pull-right"><?php echo $this->__('Limit 73 Characters')?></span>
+                                </div>
+
+                                <label class="col-sm-3 control-label form-label"><?php echo $this->__('UTM Campaign')?></label>
+                                <div class="col-sm-9 margin-b-15">
+                                    <input type="text" class="form-control" name="utm_campaign" id="utm_campaign" value="pushassist" placeholder="Enter UTM Campaign" maxlength="500" required="required"  />
+                                    <span class="pull-right"><?php echo $this->__('Limit 500 Characters')?></span>
+                                </div>    
+                                <input type="hidden" id="campaign_id" name="campaign_id" value="" />
+                                <input type="hidden" id="status" name="status" value="" />
+                                <input type="hidden" id="notification_logo" name="notification_logo" />
+                                <input type="hidden" id="cmp_status" name="cmp_status" value="0" />
+                                <input type="hidden" id="date" name="date" value="" />
+                                <input type="hidden" id="is_draft" name="is_draft" value="1" />    
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label form-label"><?php echo $this->__('Segment')?></label>
+                                <div class="col-sm-9 dropdown_padding">
+                                    <select class="col-sm-12" id="segment" name="segment[]"  multiple>
+				      <?php $get_segment = Mage::helper('pushassist')->get_segments(); 
+					    if(count($get_segment) > 0){ 
+						foreach($get_segment as $get_segment_list){
+					    ?>
+						<option value="<?php echo $get_segment_list['id'];?>"><?php echo $get_segment_list['name'];?></option>
+					<?php  }  } else{ 
+					?>
+					<option value=""><?php echo $this->__('No Segment')?></option>
+                                        <?php } ?>
+                                        
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-1 col-xs-3">
+                                    <button type="submit" class="btn btn-default"><?php echo $this->__('Send')?></button>
+                                </div>
+			    </div>
+                        <!--</form>-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 dummy-notification shadow panel panel-default">
+		<p class="h4 pb15">Preview</p>
+		<div class="widget shadow dummy-notification-inner-wrapper">
+		    <div class="wrapper">
+			<div class="img_wrapper pull-left">
+			    <img class="img-responsive" src="<?php echo $account_response['site_image'];?>" id="pushassist_preview_logo">
+			</div>
+			<div class="text_wrapper pull-left">
+			    <div class="title">
+				<div id="notification_title" class="title_txt pull-left"><?php echo $this->__('Notification Title')?></div>
+				<div class="closer pull-right">x</div>
+                            </div>
+			    <div id="notification_message" class="message"><?php echo $this->__('Notification Body')?></div> 
+			    <div class="domain">
+				    <div class="domain"><?php echo $account_response['account_name'];?>.pushassist.com</div>
+			    </div>
+			 </div>
+		    </div>
+		</div>
+		<div class="redirect_url">
+			  <p class="h5" id="redirect_url" name="redirect_url"><?php echo $this->__('URL to open when user clicks the notification')?>:</p>
+		</div>
+	    </div>
+
+	</div>
+        <!-- Container End -->
+    </div>
+    <!-- Content End -->
+    
+    <!-- Script -->
+	<script language="javascript">
+		jQuery.noConflict();
+jQuery(document).ready(function() {
+"use strict";
+		 var $url = "";
+			
+		 jQuery("#title").keyup(function () {
+		 
+            title = jQuery('#title').val();
+
+            if (title != "") {
+                jQuery('#notification_title').text(title);
+            }
+            else {
+                jQuery('#notification_title').text('Notification Title');
+            }
+        });
+
+        jQuery("#message").keyup(function () {
+
+             message = jQuery('#message').val();
+
+            if (message != "") {
+                jQuery('#notification_message').text(message);               
+            }
+            else {
+
+                jQuery('#notification_message').text('Notification Body');                
+            }
+        });
+
+        jQuery("#url,#utm_medium,#utm_source, #utm_campaign").keyup(function () {
+
+            $url = jQuery('#url').val();
+
+            if ($url != "" && jQuery('#is_utm_show').is(':checked')) {
+
+                jQuery('#redirect_url').text($url + "?utm_source=" + jQuery('#utm_source').val() + "&utm_medium=" + jQuery('#utm_medium').val() + "&utm_campaign=" + jQuery('#utm_campaign').val());                
+
+            } else if ($url != "") {
+			
+                jQuery('#redirect_url').text($url);                
+            }
+            else {
+                jQuery('#redirect_url').text('URL to open when user clicks the notification:');                
+            }
+        });
+
+	
+
+        jQuery("#title").blur(function () {
+            title = jQuery('#title').val();
+
+            if (title != "") {
+                jQuery('#notification_title').text(title);
+            }
+            else {
+                jQuery('#notification_title').text('Notification Title');
+            }
+        });
+
+        jQuery("#message").blur(function () {
+		
+            message = jQuery('#message').val();
+
+            if (message != "") {
+                jQuery('#notification_message').text(message);               
+            }
+            else {
+
+                jQuery('#notification_message').text('Notification Body');                
+            }
+        });
+
+        jQuery("#url").blur(function () {
+
+            $url = jQuery('#url').val();
+
+            if ($url != "" && jQuery('#is_utm_show').is(':checked')) {
+
+                jQuery('#redirect_url').text($url + "?utm_source=" + jQuery('#utm_source').val() + "&utm_medium=" + jQuery('#utm_medium').val() + "&utm_campaign=" + jQuery('#utm_campaign').val());                
+
+            } else if ($url != "") {
+			
+                jQuery('#redirect_url').text($url);                
+            }
+            else {
+                jQuery('#redirect_url').text('URL to open when user clicks the notification:');                
+            }
+        });
+		
+		jQuery("#is_utm_show").on('click', function () {
+		
+			if (jQuery('#is_utm_show').is(':checked')) { 
+
+
+					jQuery('#utm_parameter_div').show('slow');
+
+					if ($url == "") {
+
+						jQuery('#redirect_url').text('URL to open when user clicks the notification:');
+					} else {
+
+						jQuery('#redirect_url').text($url + "?utm_source=" + jQuery('#utm_source').val() + "&utm_medium=" + jQuery('#utm_medium').val() + "&utm_campaign=" + jQuery('#utm_campaign').val());
+					}
+
+				} else {
+
+					jQuery('#utm_parameter_div').hide('slow');
+
+					if ($url == "") {
+
+						jQuery('#redirect_url').text('URL to open when user clicks the notification:');
+					} else {
+
+						jQuery('#redirect_url').text($url);
+					}
+				}
+		});
+	});	
+	</script>   
+</form>
+<?php }else{
+Mage::app()->getResponse()->setRedirect(Mage::helper("adminhtml")->getUrl("adminhtml/pushassist_createaccount/index/"));
+
+} ?>
+

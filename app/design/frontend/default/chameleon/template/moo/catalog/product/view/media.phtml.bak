@@ -1,0 +1,76 @@
+<?php
+/**
+ * Moo Extension
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   Moo
+ * @package    Moo_Catalog
+ * @author     Mohamed Alsharaf <mohamed.alsharaf@gmail.com>
+ * @copyright  Copyright (c) 2010 Mohamed Alsharaf. (http://jamandcheese-on-phptoast.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Product media data template
+ *
+ * @see Mage_Catalog_Block_Product_View_Media
+ */
+?>
+<?php
+    $_product = $this->getProduct();
+    $_helper = $this->helper('catalog/output');
+$width=300;
+$height=400;
+
+$mainImagePath =$gallery= $pagination = '';
+$gallery = '<div id="slider" class="case_box device">
+
+ <div class="swiper-container">
+
+    <div class="swiper-wrapper">
+ ';
+$galleryImages = $this->getGalleryImages();
+if (count($galleryImages) > 0){
+ 
+   foreach ($galleryImages as $_image) {
+        $gallery .= '<div class="swiper-slide">'
+                 .  '<img src="'.$this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize($width,$height) . '" width="'.$width.'" height="'.$height.'" alt="' . $this->htmlEscape($_image->getLabel()) . '" />'
+                 .  '</div>';        
+    }   
+}else{
+    $gallery .= '<div class="swiper-slide">';
+    $gallery .= '<img src="'.$this->helper('catalog/image')->init($_product, 'image')->resize($width,$height).'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel()).'" />';
+    $gallery .= '</div>';
+    
+}
+$gallery .= '</div></div><div class="pagination"></div></div>';
+?>
+<?php echo $gallery; ?>
+<script type="text/javascript">
+var mySwiper = new Swiper('.swiper-container',{
+    pagination: '.pagination',
+    speed:750,
+    loop:true,
+    grabCursor: true,
+    paginationClickable: true
+    });
+   /* 
+jQuery('.arrow-left').on('click', function(e){
+    e.preventDefault();
+    mySwiper.swipePrev();
+  })
+jQuery('.arrow-right').on('click', function(e){
+    e.preventDefault();
+    mySwiper.swipeNext();
+  })
+  */
+</script>

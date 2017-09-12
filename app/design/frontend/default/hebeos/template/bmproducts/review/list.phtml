@@ -1,0 +1,25 @@
+<?php if (($_products = $this->getProductCollection()) && $_collectionSize = $_products->getSize()): ?>
+<div class="box highlight products-grid">
+    <div class="head"><span><?php echo $this->__($this->getTitle()) ?></span></div>
+    <?php $i = 0; foreach ($_products->getItems() as $_product): ?>
+    <?php if($i++%$this->getColumnsCount() == 0): ?>
+    <ol class="grid-row">
+    <?php endif; ?>
+        <li class="item">
+            <p><a class="product-name" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></p>
+            <div>
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+                    <img class="product-image" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(150, 170) ?>" width="80" height="80" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" />
+                </a>
+            </div>
+             
+            <a href="<?php echo $this->getReviewUrl($_product->getReviewId()) ?>"><strong><?php echo $this->htmlEscape($_product->getTitle()) ?></strong></a> <?php echo $this->__('Review by %s', $this->htmlEscape($_product->getNickname())) ?>
+            <p><?php echo nl2br($this->htmlEscape($_product->getDetail())) ?> <?php echo $this->__('(Posted on %s)', $this->formatDate($_product->getCreatedAt()), 'long') ?></p>
+        </li>
+    <?php if($i%$this->getColumnsCount() == 0 || $i == count($_products)): ?>
+    </ol>
+    <?php endif; ?>
+    <?php endforeach; ?>
+    <script type="text/javascript">decorateGeneric($$('.grid-row'), ['last', 'odd', 'even']);</script>
+</div>
+<?php endif; ?>

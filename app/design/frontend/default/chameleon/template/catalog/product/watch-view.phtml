@@ -1,0 +1,231 @@
+<?php
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+?>
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct(); ?>
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="product-view">
+<input type="hidden" name="sizeUnit" id="sizeUnit" value="inch" />
+    <form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+        <div class="no-display">
+            <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+            <input type="hidden" name="related_product" id="related-products-field" value="" />
+        </div>
+        <div class="product-essential">
+                <div class="product-img-box">
+                    <?php echo $this->getChildHtml('media') ?>
+                </div>
+                 <div id="mobileshare">
+				<span><?php echo $this->__('Share Us')?>:</span> 
+				<a id="facebshare" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $_product->getProductUrl()?>" target="_blank"><img width="26" height="26" src="<?php echo $this->getSkinUrl('images/facebshare.png') ?>" ></a> 
+				<a id="twitshare" href="https://twitter.com/intent/tweet?text=Check this out  <?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>&url=<?php echo $_product->getProductUrl()?>"><img width="26" height="26" src="<?php echo $this->getSkinUrl('images/twitshare.png') ?>"></a> 
+				<a id="pintshare" href="http://www.pinterest.com/pin/create/button/?url=<?php echo $_product->getProductUrl()?>&media=<?php echo $this->helper('catalog/image')->init($_product, 'small_image')?>&description=<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>" target="_blank"><img width="26" height="26" src="<?php echo $this->getSkinUrl('images/pintshare.png') ?>"></a>
+				<a id="gplusshare"  href="https://plus.google.com/share?url=<?php echo $_product->getProductUrl()?>" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><img width="26" height="26" src="<?php echo $this->getSkinUrl('images/gplusshare.png') ?>"></a>
+
+			 </div>
+                <div class="product-shop">
+					<div class="product-name">
+						<h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+					</div> 
+					
+					<?php if($_product->getRatingSummary()): ?>
+						<?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+					<?php endif; ?>
+                    <div class="product-main-info">
+                        <?php echo $this->getChildHtml('alert_urls') ?>
+                        <?php echo $this->getChildHtml('product_type_data') ?>
+						<?php if($_product->getIsoff()){
+									$old_price = $_product->getPrice();  ?>
+									<?php $special_price = $_product->getFinalPrice();?>
+									<?php $percent = ceil((($old_price-$special_price)/$old_price)*100)?>
+									<?php if($percent){?>
+										<div class="m-discount-propage" style="background:url(<?php echo $this->getSkinUrl('images/save_off_'.(Mage::app()->getStore()->getCode()).'.png') ?>) 0 -120px repeat;<?php if(Mage::app()->getStore()->getCode() == 'fr') { echo "padding-top: 8px;padding-left: 50px;height: 52px;";} ?><?php if(Mage::app()->getStore()->getCode() == 'es') { echo "padding-top: 8px;padding-left: 50px;height: 52px;";} ?>"><?php echo $percent ?></div>
+						<?php }} ?>
+                    </div>
+                    <?php echo $this->getTierPriceHtml() ?>
+                    <?php echo $this->getChildHtml('extrahint') ?>
+
+                    <?php if (!$this->hasOptions()):?>
+                        <div class="add-to-box">
+                            <?php if($_product->isSaleable()): ?>
+                                <?php echo $this->getChildHtml('addtocart') ?>
+                            <?php endif; ?>
+                        </div>
+                        <?php echo $this->getChildHtml('extra_buttons') ?>
+                    <?php else:?>
+                        <?php if ($_product->isSaleable() && $this->hasOptions() && $this->getChildChildHtml('container1') ):?>
+                            <div class="options-container-small">
+                                <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+								<?php
+									$resource = Mage::getSingleton('core/resource');
+									$readConnection = $resource->getConnection('core_read');
+									$wishlist = $readConnection->fetchOne('SELECT count(*) as total FROM wishlist_item where product_id="'.$_product->getId().'" GROUP BY product_id');
+								?>			
+								
+								<div class="favorite">
+									<a id="favorite-product-mobile" rel="nofollow" href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="fav-atc">
+										<?php echo $this->__('Favorite & Buy Later') ?>&nbsp;<?php //echo $wishlist; ?>
+									</a>
+								</div>
+								<div class="favo-img-shuo"><a target="_blank" href="javascript:var newin=window.open('https://safeweb.norton.com/report/show?url=www.queenabelle.com','htm','height=570,width=562,scrollbars=yes');if(newin!=null){newin.focus();}"><img src="/skin/frontend/default/chameleon/images/payval_32.jpg"></a> 
+								<a target="_blank" href="#"><img src="/skin/frontend/default/chameleon/images/payval_33.jpg"></a></div>
+                            </div>
+                        <?php endif;?>
+                    <?php endif; ?>
+                   
+                    <?php echo $this->getChildHtml('other');?>
+                </div>
+        </div>
+<?php //echo $this->getReviewsSummaryHtml($_product, false, true)?>
+<div class="product-collateral">
+<div class="box-collateral" id="st-accordion">
+<h2 class="productdes"><?php echo $this->__('Product Description') ?></h2>
+<div class="archiver_item">
+ <?php foreach ($this->getChildGroup('detailed_info', 'getChildHtml') as $alias => $html):?>
+            <div class="box1-collateral <?php echo "box-{$alias}"?>">
+                <?php if ($title = $this->getChildData($alias, 'title')):?>
+                <h2><?php echo $this->escapeHtml($title); ?></h2>
+                <?php endif;?>
+                <?php echo $html; ?>
+            </div>
+            <?php if ($alias == 'description'): ?>
+                <div class="product-add-to"><?php echo $this->getChildHtml('addto') ?></div>
+            <?php endif; ?>
+            <?php endforeach;?>
+<h3><a href="/AllYouNeedToKnow.html" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=auto,width=auto');return false;" rel="nofollow"><?php echo $this->__('More Details')?></a></h3>
+</div>
+
+  </div>
+  <div class="re-help-and-pro">
+      <?php
+      $this->addReviewSummaryTemplate('short','review/helper/summary_short_mobile.phtml');
+      echo $this->getReviewsSummaryHtml($_product, 'short', true); ?>
+	 <?php //echo $this->getLayout()->createBlock('cms/block')->setBlockId('helper-links-middle-mobile')->toHtml(); ?>
+	 </div>
+	 <div class="re-help-and-pro">
+      <?php
+      $this->addReviewSummaryTemplate('short','review/helper/summary_short_mobile.phtml');
+      echo $this->getReviewsSummaryHtml($_product, 'short', true); ?>
+	 <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('helper-links-middle-accessories-mobile')->toHtml(); ?>
+	 </div>
+        </div>
+	
+        <?php if ($_product->isSaleable() && $this->hasOptions() && $this->getChildChildHtml('container2') ):?>
+            <div class="options-container-big">
+                <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+            </div>
+        <?php endif;?>
+    </form>
+
+	<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('custom_product_js')->toHtml() ?>
+    <?php echo $this->getChildHtml('upsell_products') ?>
+    <?php echo $this->getChildHtml('productTagList') ?>
+    <?php //echo $this->getChildHtml('product_additional_data') ?>
+</div>
+
+<script type="text/javascript">
+    //<![CDATA[
+        var productAddToCartForm = new VarienForm('product_addtocart_form');
+        productAddToCartForm.submit = function(button, url) {
+            if (this.validator.validate()) {
+                if (button && button != 'undefined') {
+                    button.disabled = true;
+                }
+                // Start of our new ajax code
+					    var oldurl;
+					    var url=oldurl = jQuery('#product_addtocart_form').attr('action');
+						url = url.replace("checkout/cart/add","checkout/cart/add2"); 
+						var data = jQuery('#product_addtocart_form').serialize();
+						data += '&isAjax=1';
+						jQuery('#ajax_loader').show();
+						try {
+							jQuery.ajax( {
+								url : url,
+								dataType : 'json',
+								type : 'post',
+								data : data,
+								success : function(data1) {
+									jQuery('#ajax_loader').hide();
+									if (button && button != 'undefined') {
+										button.disabled = false;
+									}
+									try{
+									if(data1.status!='ERROR'){
+										jQuery('#add_to_cart_err').html('').hide();
+										if(jQuery('#cart_total')){
+										   jQuery('#cart_total').html(data1.toplink);
+										}
+                                        var l= oldurl.indexOf('add');
+                                        jQuery(button).removeClass('btn-cart1').addClass('btn-cart2');
+                                        jQuery(button).removeAttr('onclick');
+                                        jQuery(button).html('<?php echo $this->__('Check Cart'); ?>');
+                                        jQuery(button).attr('title','<?php echo $this->__('Check Cart'); ?>');
+                                        jQuery(button).bind('click',function(){
+                                            jQuery('#ajax_loader').hide();
+                                            location.href=oldurl.substr(0,l);
+                                        });
+										}else{
+											jQuery('#add_to_cart_err').html(data1.message).show();
+										}
+									}catch (e) {
+									}
+								}
+							});
+						} catch (e) {
+						}
+					jQuery('#product_addtocart_form').attr('action',oldurl);
+                
+                
+            }
+        }.bind(productAddToCartForm);
+
+        productAddToCartForm.submitLight = function(button, url){
+            if(this.validator) {
+                var nv = Validation.methods;
+                delete Validation.methods['required-entry'];
+                delete Validation.methods['validate-one-required'];
+                delete Validation.methods['validate-one-required-by-name'];
+                // Remove custom datetime validators
+                for (var methodName in Validation.methods) {
+                    if (methodName.match(/^validate-datetime-.*/i)) {
+                        delete Validation.methods[methodName];
+                    }
+                }
+
+                if (this.validator.validate()) {
+                    if (url) {
+                        this.form.action = url;
+                    }
+                    this.form.submit();
+                }
+                Object.extend(Validation.methods, nv);
+            }
+        }.bind(productAddToCartForm);
+    //]]>
+    </script>
+
+<?php echo $this->getChildHtml('language-currency'); ?>

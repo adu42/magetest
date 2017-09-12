@@ -1,0 +1,59 @@
+<?php
+/**
+ * This is the part of 'BmProducts' module for Magento,
+ * which allows easy access to product collection
+ * with flexible filters
+ */
+?>
+<?php 
+$_collections = $this->getCatalogRecommendProductCollenction();
+if($_collections):
+    $title=$this->__('Related Products');   
+ ?>
+ 
+<script src='<?php echo $this->getSkinUrl('js/view-slider.js') ?>'></script> 
+<script>
+		jQuery(function(){
+			jQuery('.product-catalog-views-recommend').mySlider({  //参数可选,以下为默认参数
+					speed: 300,
+					direction: 'left', //  运动方向 可选 left,top
+					prevClass: 'slider-prev',
+					nextClass: 'slider-next',
+					prevClass: 'slider-prev',
+					wrapperClass: 'block-content-recommend',
+					moveClass: 'side-list-recommend'
+			});
+		});
+</script>
+<!-- Catalog Attribute - Recommend product ids --> 
+<div class="block  product-catalog-views-recommend">
+    <div class="block-title"><?php echo $title; ?></div>
+	<a href='javascript:;' class="slider-prev slider-btn">left</a> 
+    <div class="block-content-recommend">     
+    <?php $_collectionSize = $_collections->count();; ?>
+    <ul class="side-list-recommend">
+    <?php $i = 1; foreach ($_collections as $_product): ?>
+    <?php //$_product=Mage::getModel('catalog/product')->load($_productId); 
+           if(!$_product->getId())continue;
+    ?>
+        <li <?php if($i==$_collectionSize) {echo ' class="last"'; } ?>>
+                <a class="product-img" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>" target="_blank">
+                   <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(600, 800) ?>" width="125" height="176" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" /> </a>
+	       <div class="other-info">
+	       <div class="home-name"><h3 class="product-name"><a  href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h3></div>
+               <?php echo $this->getPriceHtml($_product, true, $this->getPriceSuffix()) ?>
+               <?php $old_price = $_product->getPrice();  ?>
+							 <?php $special_price = $_product->getFinalPrice();?>
+							 <?php $percent = ceil((($old_price-$special_price)/$old_price)*100)?>
+							 <?php if($percent){?>
+							 <span class="red">save:<?php echo $percent ?>% off</span>
+							 <?php }?>
+ 
+	       </div>
+        </li>
+     <?php $i++; endforeach; ?>
+     </ul>
+    </div>
+	<a href='javascript:;' class="slider-next slider-btn">right</a>
+</div>
+<?php endif; ?>

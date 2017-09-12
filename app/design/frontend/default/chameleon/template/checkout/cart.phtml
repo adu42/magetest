@@ -1,0 +1,113 @@
+<?php
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+?>
+<?php
+/**
+ * Shopping cart template
+ * @see Mage_Checkout_Block_Cart
+ */
+?>
+<div class="page-title">
+	<h1><?php echo $this->__('Shopping Cart') ?></h1>
+</div>
+<div class="cart">
+<div class="cart-messages">
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+</div>
+    <form id="shopping-cart-form" action="<?php echo $this->getUrl('checkout/cart/updatePost') ?>" method="post">
+        <?php echo $this->getBlockHtml('formkey'); ?>
+        <fieldset>
+            <table id="shopping-cart-table" class="data-table cart-table">
+		        <!--<thead>
+                    <tr>
+                        <th colspan="2"><span class="nobr"><?php //echo $this->__('Product') ?></span></th>
+                        <th class="a-left" colspan="<?php //echo $mergedCells; ?>"><span class="nobr"><?php //echo $this->__('Price') ?></span></th>
+                        <th  class="a-left"><?php //echo $this->__('Qty') ?></th>
+                        <th class="a-left"><?php //echo $this->__('Price') ?></th>
+                        <th class="a-left">&nbsp;</th>
+                    </tr>
+                </thead>-->
+
+
+                <tbody>
+                <?php foreach($this->getItems() as $_item): ?>
+                    <?php echo $this->getItemHtml($_item) ?>
+                <?php endforeach ?>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="5">
+                        <div class="totals">
+                            <?php echo $this->getChildHtml('totals'); ?>
+                        </div>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </fieldset>
+		<!--<div class="button-cart">
+			<button type="submit" name="update_cart_action" value="update_qty" title="<?php //echo $this->__('Update Cart'); ?>" class="button btn-update"><?php //echo $this->__('Update Cart'); ?></button>
+			 <?php if($this->getContinueShoppingUrl()): ?>
+                    <button type="button" title="<?php //echo $this->__('Continue Shopping') ?>" class="button btn-continue" onclick="setLocation('<?php //echo $this->getContinueShoppingUrl() ?>')"><?php //echo $this->__('Continue Shopping') ?></button>
+             <?php endif; ?>
+		</div>-->
+    </form>
+    <?php echo $this->getChildHtml('shopping.cart.table.after'); ?>
+    <div class="cart-collaterals<?php if($this->getChildHtml('crosssell')) echo ' cross-inside'; ?>">
+        <?php echo $this->getChildHtml('crosssell') ?>
+		<?php if(!$this->hasError()): ?>
+        <ul class="checkout-types">
+        <?php foreach ($this->getMethods('methods') as $method): ?>
+            <?php $methodHtml = $this->getMethodHtml($method); ?>
+            <?php if ($methodHtml): ?>
+            <li><?php echo $methodHtml; ?></li>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        </ul>
+		<script type="text/javascript">decorateGeneric($$('ul.checkout-types li'), ['first','last'])</script>
+    <?php endif; ?>
+
+	<div class="paypal"></div>
+        <!--<div class="deals">
+            <?php /* Extensions placeholder */ ?>
+            <?php //echo $this->getChildHtml('checkout.cart.extra') ?>
+            <?php //echo $this->getChildHtml('checkout_cart_widget') ?>
+           
+            <?php //echo $this->getChildHtml('giftcards') ?>
+            <?php //echo $this->getChildHtml('giftregistry.cart.link') ?>
+        </div>--> 
+		<?php echo $this->getChildHtml('coupon'); ?>
+        <?php //if (!$this->getIsVirtual()): echo $this->getChildHtml('shipping'); endif; ?>
+    </div>
+    <div class="we-accept">
+		<h1><?php echo $this->__('We accept:') ?></h1>
+		<img src="<?php echo $this->getSkinUrl('images/m_pay_logo.jpg') ?>" width="320px">
+	</div>
+
+</div>
+<?php echo $this->getChildHtml('language-currency'); ?>
+
+
+
+<?php
+$total=$this->getQuote()->getBaseGrandTotal();
+try{
+    if((float)$total){
+    echo Mage::helper('ado_seo')->showConversionCode($total);
+    }
+}catch(exception $e){}
+?>

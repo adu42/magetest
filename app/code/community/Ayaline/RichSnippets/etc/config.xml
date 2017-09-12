@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * created : 23/02/2012
+ * 
+ * @category Ayaline
+ * @package Ayaline_RichSnippets
+ * @author aYaline
+ * @copyright Ayaline - 2012 - http://magento-shop.ayaline.com
+ * @license http://shop.ayaline.com/magento/fr/conditions-generales-de-vente.html
+ */
+-->
+<config>
+	<modules>
+		<Ayaline_RichSnippets>
+			<version>1.0.1</version>
+		</Ayaline_RichSnippets>
+	</modules>
+	<global>
+		<models>
+			<ayalinerichsnippets>
+				<class>Ayaline_RichSnippets_Model</class>
+			</ayalinerichsnippets>
+		</models>
+		<blocks>
+			<ayalinerichsnippets>
+				<class>Ayaline_RichSnippets_Block</class>
+			</ayalinerichsnippets>
+		</blocks>
+		<helpers>
+			<ayalinerichsnippets>
+				<class>Ayaline_RichSnippets_Helper</class>
+			</ayalinerichsnippets>
+		</helpers>		
+	</global>
+	<adminhtml>
+		<translate>
+			<modules>
+				<Ayaline_RichSnippets>
+					<files>
+						<default>Ayaline_RichSnippets.csv</default>
+					</files>
+				</Ayaline_RichSnippets>
+			</modules>
+		</translate>
+	</adminhtml>
+	<frontend>
+		<layout>
+			<updates>
+				<ayalinerichsnippets>
+					<file>ayaline/rich_snippets.xml</file>
+				</ayalinerichsnippets>
+			</updates>
+		</layout>	
+	</frontend>
+	<default>
+		<ayalinerichsnippets>
+			<product>
+			</product>
+		</ayalinerichsnippets>
+	</default>
+</config>

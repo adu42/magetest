@@ -1,0 +1,258 @@
+<style type="text/css">
+
+    div {
+        margin: 0;
+        padding: 0;
+    }
+    .w-prReviews {
+        font: 11px verdana;
+        color: #333;
+    }
+
+    .reviewsSelect {
+        margin-bottom: 30px;
+        height: 191px;
+    }
+
+    .reviewsSelect .reTitle {
+        border-bottom: 1px solid #E2CCC9;
+        color: #A72D2C;
+        font: 16px Georgia;
+    }
+
+    .reSelect-box {
+        background: #f8f8f8;
+        height: 158px;
+        padding: 15px;
+        color: #000;
+    }
+
+    .reSelect-box dt {
+        float: left;
+    }
+
+    .reSelect-box dd {
+        margin-left: 140px;
+    }
+
+    strong {
+        font-weight: bold;
+    }
+    .prRating {
+        margin-top: 0;
+        position: relative;
+        line-height: 24px;
+        height: 24px;
+        padding: 10px;
+        background-color: #f8f8f8;
+        margin-bottom: 30px;
+        font-size: 14px;
+    }
+
+    .left {
+        float: left;
+    }
+
+    .star {
+        display: inline-block;
+        overflow: hidden;
+        position: relative;
+        vertical-align: middle;
+        background-image: url('http://www.dylanqueen.com/image/star-ratings.png');
+        background-repeat: no-repeat;
+    }
+
+    .starB5 {
+        width: 100px;
+        height: 18px;
+    }
+
+    .starB5 {
+        background-position: 0 -60px;
+    }
+
+    .widget {
+        clear: both;
+        zoom: 1;
+        margin-bottom: 10px;
+    }
+
+    .w-prReviews .w-review {
+        position: relative;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .w-review .reviewerInfo {
+        position: absolute;
+        width: 111px;
+        top: 0;
+        left: 0;
+    }
+
+
+    .starS5 {
+        background-position: 0 -20px;
+        width: 70px;
+        height: 15px;
+    }
+
+    .lightGray {
+        color: #999;
+    }
+
+    .b {
+        font-weight: bold;
+    }
+    .reviewDetails .generalReview {
+        font-size: 12px;
+    }
+    .w-review .reviewDetails {
+        min-height: 50px;
+        margin-left: 121px;
+    }
+
+    p.reviewInfo {
+        margin: 16px 0;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .data-table {
+        width: 50%;
+        float: left;
+    }
+
+    .review-hr {
+        border-top: 1px solid #999;
+        clear: both;
+        margin: 15px 10px;
+    }
+
+    .data {
+        font-style: italic;
+        color: #000;
+    }
+
+    .label {
+        color: #666;
+        font-size: 11px;
+        font-weight: normal;
+    }
+
+    .orange, a.orange:link, a.orange:visited {
+        color: #ee5d04;
+    }
+
+    .w-prReviews p {
+        margin: 5px 0;
+    }
+</style>
+<?php $_product = $this->getProduct(); ?>
+<?php
+$reviews = $this->getReviewsCollection();
+$avg = 0;
+$ratings = array();
+if ($reviews && count($reviews) > 0) {
+    foreach ($reviews->getItems() as $review) {
+        foreach ($review->getRatingVotes() as $vote) {
+            $ratings[] = $vote->getPercent();
+        }
+    }
+    $avg = array_sum($ratings) / count($ratings);
+}
+
+?>
+<div id="prReviews" class="widget w-prReviews black">
+<div class="widget reviewsSelect">
+    <h2 class="reTitle"><?php echo $this->__('Customer Reviews') ?></h2>
+
+    <div class="reSelect-box clearfix grid grid-m-l">
+        <dt>
+            <a href="<?php echo $_product->getProductUrl(); ?>"
+               title=" <?php echo $_product->getName(); ?>">
+                <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(132, 179); ?>"
+                     alt="  <?php echo $_product->getName(); ?>"
+                     title=" <?php echo $_product->getName(); ?>" width="132" height="179">
+            </a>
+        </dt>
+        <dd>
+            <div class="proTitle">
+                <a href="<?php echo $_product->getProductUrl(); ?>"
+                   title=" <?php echo $_product->getName(); ?>">
+                    <?php echo $_product->getName(); ?> </a>
+            </div>
+            <div class="price-box">
+                <p class="old-price">
+                    <span class="price-label"><?php echo $this->__('Market Price:') ?></span>
+                <span class="price" id="old-price">
+                    <?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>
+                    <?php echo number_format($_product->getPrice(), '2', '.', ','); ?>
+                </span>
+                </p>
+
+                <p class="special-price">
+                    <span class="price-label"><?php echo $this->__('Special Price:') ?></span>
+                <span class="price" id="product-price">
+                    <?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>
+                    <?php echo number_format($_product->getSpecialPrice(), '2', '.', ','); ?>
+                </span>
+                </p>
+            </div>
+            <?php
+            foreach ($this->getAttr($_product) as $key => $value) {
+                if (!empty($value)) {
+                    ?>
+                    <div class="data-table" id="product-attribute-specs-table">
+                        <span class="label"><?php echo $key; ?>&nbsp;:&nbsp;</span>
+                        <span class="data"><?php echo $value; ?></span>
+                    </div>
+                <?php
+                }
+            }
+            ?>
+        </dd>
+    </div>
+</div>
+
+<div class="prRating clearfix">
+    <div class="left">
+        <?php echo $this->__('Average rating:') ?>
+        <span title="Average rating 5" class="star starB5"></span>
+        <strong class="score">4.8</strong>
+    </div>
+</div>
+<div id="reviews" class="widget w-reviews">
+    <?php foreach ($reviews as $_reviews) { ?>
+        <div class="widget w-review">
+            <ul class="reviewerInfo">
+                <li>
+                    <span title="5 out of 5 stars" class="star starS5"></span>
+                </li>
+                <li>
+                    <span class="lightGray"><?php echo $this->__('By') ?></span>&nbsp;<cite
+                        class="b"><?php echo $_reviews->getNickname(); ?></cite>
+                </li>
+                <li>
+                    <cite class="lightGray"><?php echo Mage::getModel('core/date')->date('Y-m-d', strtotime($_reviews->getCreatedAt()));?></cite>
+                </li>
+            </ul>
+            <div class="reviewDetails">
+                <div class="title">
+                    <p class="generalReview clearfix">
+                        <strong class="orange left"><?php echo $_reviews->getTitle(); ?></strong>
+                    </p>
+                </div>
+                <br/>
+                <div class="content">
+                    <p class="reviewInfo"><?php echo $_reviews->getDetail() ?></p>
+                </div>
+            </div>
+        </div>
+        <div class="review-hr"></div>
+
+    <?php } ?>
+</div>
+
+</div>

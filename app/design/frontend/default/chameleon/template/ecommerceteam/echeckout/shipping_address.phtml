@@ -1,0 +1,457 @@
+<?php
+if($this->helper->mobileShippingFirst()): //new shippping first start
+?>
+<?php 
+$allowed_guest_checkout = Mage::helper('checkout')->isAllowedGuestCheckout($this->getQuote());
+$checkout_method = Mage::getSingleton('checkout/type_onepage')->getCheckoutMethod();
+?>
+<?php if($this->canShow()): ?>
+<div class="easy-step" id="easycheckout-addressshipping-available">
+	
+	<h2><?php echo $this->__('Shipping Address')?>:</h2>
+	 
+	
+	<ul <?php if(!$this->isThreeColsMode()):?>id="shipping-address-form"<?php endif;?> class="form-list address-form-list" >
+		
+		<?php if ($this->customerHasAddresses()): ?>
+	       <li class="wide">
+	           <label style="text-align:left;width:auto;float:none;" for="shipping-address-select"><?php echo $this->__('Select a shipping address from your address book.') ?></label>
+	           <div>
+	               <?php echo $this->getAddressesHtmlSelect('shipping') ?>
+	           </div>
+	       </li>
+	    <?php endif ?>
+		
+        <li id="shipping-new-address-form"<?php if ($this->customerHasAddresses()): ?> style="display:none;"<?php endif ?>>
+            <fieldset>
+	            <ul <?php if(!$this->isThreeColsMode()):?>class="left"<?php endif;?>>
+	    			
+	    			<li>
+                    	
+	    				<div class="field name-firstname">
+                        	<label for="shipping:firstname" class="required ehd"><em>*</em><?php echo $this->__('First Name:') ?></label>
+					        <div class="input-box">
+					            <input type="text" id="shipping:firstname" name="shipping[firstname]" value="<?php echo $this->getAddress()->getFirstname(); ?>" placeholder="<?php echo $this->__('First Name') ?>" title="<?php echo $this->__('First Name') ?>" autocomplete="given-name" class="input-text required-entry" />
+					        </div>
+					    </div>
+	    				<div class="field name-lastname">
+                        	<label for="shipping:lastname" class="required ehd"><em>*</em><?php echo $this->__('Last Name:') ?></label>
+					        <div class="input-box">
+					            <input type="text" id="shipping:lastname" name="shipping[lastname]" value="<?php echo $this->getAddress()->getLastname(); ?>" placeholder="<?php echo $this->__('Last Name') ?>"  title="<?php echo $this->__('Last Name') ?>" autocomplete="family-name" class="input-text required-entry" />
+					        </div>
+					    </div>
+	    			</li>
+	    			
+                    <?php if(!$this->isCustomerLoggedIn()): ?>
+				        <li>
+	                    <div class="field">
+	                        <label for="shipping:email" class="required ehd"><em>*</em><?php echo $this->__('Email Address') ?></label>
+	                        <div class="input-box">
+	                            <input type="email" name="shipping[email]" id="shipping:email" value="<?php echo $this->htmlEscape($this->getAddress()->getEmail()) ?>" placeholder="<?php echo $this->__('Email Address') ?>" title="<?php echo $this->__('Email Address') ?>" autocomplete="email" class="input-text validate-email required-entry" />
+	                        </div>
+	                    </div>
+	                    </li>
+	                    <?php else:?>
+	                    <li>
+	                    <div class="field">
+	                        <label class="required ehd"><em>*</em><?php echo $this->__('Email Address') ?></label>
+	                        <div class="input-box">
+	                            <input type="email"  name="shipping[email]" readonly="readonly" value="<?php echo $this->htmlEscape(Mage::getSingleton('customer/session')->getCustomer()->getEmail()) ?>" placeholder="<?php echo $this->__('Email Address') ?>" title="<?php echo $this->__('Email Address') ?>" autocomplete="email" class="input-text readonly" />
+	                        </div>
+	                    </div>
+	                    </li>
+			        	<?php endif ?>
+                    
+	    			<li>
+						<div class="field">
+		                    <label for="shipping:street1" class="required ehd"><em>*</em><?php echo $this->__('Street line') ?> 1</label>
+		                    <div class="input-box">
+		                        <input type="text" title="<?php echo $this->__('Street Address') ?>" name="shipping[street][]" id="shipping:street1" placeholder="<?php echo $this->__('Street line') ?> 1" value="<?php echo $this->htmlEscape($this->getAddress()->getStreet(1)) ?>" autocomplete="address-line1" class="input-text required-entry" />
+		                    </div>
+                            <!-- <div class="tip"><?php //echo $this->__('Note: P.O. box addresses are not available for shipping right now. Please provide street address for your order. Thank you.') ?></div>-->
+		                </div>
+				        
+			        	
+			        </li>
+	                
+	                <li>
+		                
+		                <div class="field">
+		                	<label for="shipping:street1" class="ehd"><?php echo $this->__('Street line') ?> 2</label>
+		                    <div class="input-box">
+		                        <input type="text" title="<?php echo $this->__('Street Address %s', 2) ?>" name="shipping[street][]" id="shipping:street2" placeholder="<?php echo $this->__('Street line') ?> 2" value="<?php echo $this->htmlEscape($this->getAddress()->getStreet(2)) ?>" autocomplete="address-line2" class="input-text" />
+		                    </div>
+                          <!--  <div class="tip"><?php //echo $this->__('Apartment, suite, unit, building, floor, etc.') ?></div> -->
+		                </div>
+		                
+	                </li>
+                    
+                    <li>
+	    				
+	    				<div class="field">
+	                        <label for="shipping:city" class="required ehd"><em>*</em><?php echo $this->__('City') ?></label>
+	                        <div class="input-box">
+	                            <input type="text" title="<?php echo $this->__('City') ?>" name="shipping[city]" value="<?php echo $this->htmlEscape($this->getAddress()->getCity()) ?>" placeholder="<?php echo $this->__('City') ?>" autocomplete="address-level1" class="input-text required-entry" id="shipping:city" />
+	                        </div>
+	                    </div>
+	    				
+	    			</li>
+                    
+	    			
+	    			<li>
+	    				
+	    				<div class="field">
+	                        <label for="shipping:country_id" class="required ehd"><em>*</em><?php echo $this->__('Country') ?></label>
+	                        <div class="input-box">
+	                            <?php echo $this->getCountryHtmlSelect('shipping') ?>
+	                        </div>
+	                    </div>
+	    				
+	    			</li>
+	    			
+	    			<li>
+	    				
+	    				<div class="field">
+	                        <label for="shipping:region_id" class="required ehd"><em>*</em><?php echo $this->__('State/Province') ?></label>
+	                        <div class="input-box">
+	                            <select id="shipping:region_id" name="shipping[region_id]" title="<?php echo $this->__('State/Province') ?>" class="validate-select" style="display:none;">
+	                                <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+	                            </select>
+	                            <script type="text/javascript">
+	                            //<![CDATA[
+	                                $('shipping:region_id').setAttribute('defaultValue',  "<?php echo $this->getAddress()->getRegionId() ?>");
+	                            //]]>
+	                            </script>
+	                            <input type="text" id="shipping:region" name="shipping[region]" value="<?php echo $this->htmlEscape($this->getAddress()->getRegion()) ?>" placeholder="<?php echo $this->__('State/Province') ?>"  title="<?php echo $this->__('State/Province') ?>" autocomplete="address-level2" class="input-text" style="display:none;" />
+	                        </div>
+	                    </div>
+	    				
+	    			</li>
+	    			
+	    			<li>
+	    				
+	    				<div class="field">
+	                        <label for="shipping:postcode" class="required ehd"><em>*</em><?php echo $this->__('Zip/Postal Code') ?></label>
+	                        <div class="input-box">
+	                            <input type="text" title="<?php echo $this->__('Zip/Postal Code') ?>" name="shipping[postcode]" id="shipping:postcode" value="<?php echo $this->htmlEscape($this->getAddress()->getPostcode()) ?>" placeholder="<?php echo $this->__('Zip/Postal Code') ?>" autocomplete="postal-code" class="input-text required-entry" />
+	                        </div>
+	                    </div>
+	    				
+	    			</li>
+	    			
+                    <li>
+	                	
+	                	<div class="field">
+	                        <label for="shipping:telephone" class="required ehd"><em>*</em><?php echo $this->__('Telephone') ?></label>
+	                        <div class="input-box">
+	                            <input type="text" name="shipping[telephone]" value="<?php $_tel = $this->getAddress()->getTelephone();
+								 $_tel =($_tel)?$_tel:Mage::getSingleton('checkout/session')->getShippingTelephone();
+								echo $this->htmlEscape($_tel);
+								 ?>" title="<?php echo $this->__('Telephone') ?>" placeholder="<?php echo $this->__('Telephone') ?>" class="input-text required-entry" id="shipping:telephone" />
+	                        </div>
+                         <!--   <div class="tip"><?php //echo $this->__('Your phone number is needed just in case we or the shipping carrier need to reach you regarding your order.') ?></div> -->
+	                    </div>
+	                    
+	                </li>
+	    			<?php if($this->helper->faxcompanyEnabled()): ?>
+                    <li>
+	                	
+	                    <div class="field">
+	                        <label for="shipping:fax" class="ehd"><?php echo $this->__('Fax') ?></label>
+	                        <div class="input-box">
+	                            <input type="text" name="shipping[fax]" value="<?php echo $this->htmlEscape($this->getAddress()->getFax()) ?>" title="<?php echo $this->__('Fax') ?>" placeholder="<?php echo $this->__('Fax') ?>" class="input-text" id="shipping:fax" />
+	                        </div>
+	                    </div>
+	                    
+	                </li>
+	                
+	                <li>
+	                	
+	                	<div class="field">
+	                        <label for="shipping:company" class="ehd"><?php echo $this->__('Company') ?></label>
+	                        <div class="input-box">
+	                            <input type="text" id="shipping:company" name="shipping[company]" value="<?php echo $this->htmlEscape($this->getAddress()->getCompany()) ?>" placeholder="<?php echo $this->__('Company') ?>" title="<?php echo $this->__('Company') ?>" class="input-text" />
+	                        </div>
+	                    </div>
+	                	
+	                </li>
+	    			<?php endif; ?>
+                    
+                    
+                    
+                    	
+					
+					
+					<?php if(!$this->isCustomerLoggedIn()): ?>
+		        		<?php $_dob = $this->getLayout()->createBlock('customer/widget_dob') ?>
+						<?php $_gender = $this->getLayout()->createBlock('customer/widget_gender') ?>
+		            	<?php if ($_dob->isEnabled() || $_gender->isEnabled()): ?>
+							<?php if ($_dob->isEnabled()): ?>
+								<li>
+									<div class="field">
+										<?php echo $_dob->setDate($this->getQuote()->getCustomerDob())->setFieldIdFormat('shipping:%s')->setFieldNameFormat('shipping[%s]')->toHtml() ?>
+									</div>
+								</li>
+							<?php endif; ?>
+							<?php if ($_gender->isEnabled()): ?>
+								<li>
+									<div class="field">
+										<?php echo $_gender->setGender($this->getQuote()->getCustomerGender())->setFieldIdFormat('shipping:%s')->setFieldNameFormat('shipping[%s]')->toHtml() ?>
+									</div>
+								</li>	
+							<?php endif ?>
+						<?php endif ?>
+						<?php $_taxvat = $this->getLayout()->createBlock('customer/widget_taxvat') ?>
+						<?php if ($_taxvat->isEnabled()): ?>
+						<li>
+							<div class="field">
+							<?php echo $_taxvat->setTaxvat($this->getQuote()->getCustomerTaxvat())->setFieldIdFormat('shipping:%s')->setFieldNameFormat('shipping[%s]')->toHtml() ?>
+							</div>
+                            <div class="tip"><?php echo $this->__('CPF/CNPJ,Required for Brazilians') ?></div>
+						</li>
+						<?php endif ?>
+		            	
+	                <?php endif; ?>
+					
+				
+				
+			
+				<?php if(!$this->isCustomerLoggedIn()): ?>
+					<ul>
+					
+					<?php if(!$this->isCustomerLoggedIn()):?>
+						
+						<?php if($allowed_guest_checkout):?>
+						<li class="control <?php if(!$this->isThreeColsMode()):?>fields<?php endif;?>">
+							<div class="field">
+								<label for="customer_account_create">
+									<input class="radio" id="customer_account_create" onclick="if(this.checked){$('register-customer-password').style.display='block';}else{$('register-customer-password').style.display='none';}" type="checkbox" <?php if($checkout_method == 'register'):?>checked="checked"<?php endif;?> name="create_account" value="1"  />
+									<?php echo $this->__('Create Account');?>
+								</label>
+							</div>
+						</li>
+						<?php endif;?>
+						
+		                <li <?php if(!$this->isThreeColsMode()):?>class="fields"<?php endif;?> id="register-customer-password" <?php if($allowed_guest_checkout && $checkout_method != 'register'):?>style="display:none;"<?php endif;?>>
+		                    <div class="field">
+		                        <label for="shipping_customer_password" class="required ehd"><em>*</em><?php echo $this->__('Password') ?></label>
+		                        <div class="input-box">
+		                            <input type="password" name="shipping[password]" id="shipping_customer_password" title="<?php echo $this->__('Password') ?>" placeholder="<?php echo $this->__('Password') ?>" class="input-text required-entry validate-password" />
+		                        </div>
+		                    </div>
+		                    <div class="field">
+		                        <label for="shipping_confirm_password" class="required ehd"><em>*</em><?php echo $this->__('Confirm Password') ?></label>
+		                        <div class="input-box">
+		                            <input type="password" name="shipping[confirmation]" title="<?php echo $this->__('Confirm Password') ?>" id="shipping_confirm_password" placeholder="<?php echo $this->__('Confirm Password') ?>" class="input-text required-entry validate-cpassword" />
+		                        </div>
+		                    </div>
+		                </li>
+		               	
+		               	
+		               	
+	            	<?php endif; ?>
+	            	</ul>
+                <?php endif; ?>
+				
+                    
+                    
+                    
+	    		</ul>
+	        </fieldset>
+        </li>
+         <?php  if($this->getLayout()->getBlock('checkout.onepage.address.shipping')->canShow()): ?>
+			<li id="shipping_use_for_billing_yes_li">
+			 	<label style="width:auto" for="shipping_use_for_billing_yes"><input class="radio" type="checkbox" name="shipping[use_for_billing]" id="shipping_use_for_billing_yes" value="1" <?php if($this->getLayout()->getBlock('checkout.onepage.address.billing')->someAsShipping()):?> checked="checked" <?php endif;?> class="radio" /><?php echo $this->__('Use as billing address');?></label>
+			</li>
+		<?php endif;?>
+    </ul>
+    
+	<script type="text/javascript">
+	//<![CDATA[
+	    var shippingRegionUpdater = new RegionUpdater('shipping:country_id', 'shipping:region', 'shipping:region_id', countryRegions, undefined, 'shipping:postcode');
+	//]]>
+	</script>
+</div>
+<?php endif;?>
+
+
+<?php else: // old shipping start ======================================= // ?>
+
+
+<?php if($this->canShow()): ?>
+<div class="easy-step" <?php if($this->isThreeColsMode()):?>id="shipping-address-form" <?php if($this->someAsShipping()):?> style="display:none;" <?php endif;?> <?php endif;?>>
+	
+	<h2><?php echo $this->__('Shipping Address')?>:		
+		<?php if(!$this->isThreeColsMode()):?>
+		<label>
+		
+		<input type="checkbox" name="billing[use_for_shipping]" id="billing_use_for_shipping_yes" value="1" <?php if($this->someAsBilling()):?> checked="checked" <?php endif;?> class="radio" />
+		
+		<span><?php echo $this->__('Same as Billing Address');?></span>
+		
+		</label>
+		<?php endif;?></h2>
+	 
+	
+	<ul <?php if(!$this->isThreeColsMode()):?>id="shipping-address-form" <?php if($this->someAsBilling()):?> style="display:none;" <?php endif;?> <?php endif;?> class="form-list address-form-list" >
+		
+		<?php if ($this->customerHasAddresses()): ?>
+	       <li class="wide">
+	           <label style="text-align:left;width:auto;float:none;" for="shipping-address-select"><?php echo $this->__('Select a shipping address from your address book.') ?></label>
+	           <div>
+	               <?php echo $this->getAddressesHtmlSelect('shipping') ?>
+	           </div>
+	       </li>
+	    <?php endif ?>
+		
+        <li id="shipping-new-address-form"<?php if ($this->customerHasAddresses()): ?> style="display:none;"<?php endif ?>>
+            <fieldset>
+	            <ul <?php if(!$this->isThreeColsMode()):?>class="left"<?php endif;?>>
+	    			
+	    			<li>
+                    	
+	    				<div class="field name-firstname">
+					        <div class="input-box">
+                            	<label for="shipping:firstname" class="required ehd"><em>*</em><?php echo $this->__('First Name:') ?></label>
+					            <input type="text" id="shipping:firstname" name="shipping[firstname]" value="<?php echo $this->getAddress()->getFirstname(); ?>" title="<?php echo $this->__('First Name') ?>" placeholder="<?php echo $this->__('First Name:') ?>" autocomplete="given-name" class="input-text required-entry" />
+					        </div>
+					    </div>
+	    				<div class="field name-lastname">
+                        	<label for="shipping:lastname" class="required ehd"><em>*</em><?php echo $this->__('Last Name:') ?></label>
+					        <div class="input-box">
+					            <input type="text" id="shipping:lastname" name="shipping[lastname]" value="<?php echo $this->getAddress()->getLastname(); ?>" title="<?php echo $this->__('Last Name') ?>" placeholder="<?php echo $this->__('Last Name') ?>" autocomplete="family-name" class="input-text required-entry" />
+					        </div>
+					    </div>
+	    			</li>
+	    			
+	    			<li>
+						<div class="field">
+		                    <label for="shipping:street1" class="required ehd"><em>*</em><?php echo $this->__('Street line') ?> 1</label>
+		                    <div class="input-box">
+		                        <input type="text" title="<?php echo $this->__('Street Address') ?>" name="shipping[street][]" id="shipping:street1" value="<?php echo $this->htmlEscape($this->getAddress()->getStreet(1)) ?>" placeholder="<?php echo $this->__('Street line') ?> 1" autocomplete="address-line1" class="input-text required-entry" />
+		                    </div>
+		                </div>
+				        
+			        	
+			        </li>
+	                
+	                <li>
+		                
+		                <div class="field">
+		                	<label for="shipping:street1" class="ehd"><?php echo $this->__('Street line') ?> 2</label>
+		                    <div class="input-box">
+		                        <input type="text" title="<?php echo $this->__('Street Address %s', 2) ?>" name="shipping[street][]" id="shipping:street2" value="<?php echo $this->htmlEscape($this->getAddress()->getStreet(2)) ?>" placeholder="<?php echo $this->__('Street line') ?> 2" autocomplete="address-line2" class="input-text" />
+		                    </div>
+		                </div>
+		                
+	                </li>
+                    
+                    <li>
+	    				
+	    				<div class="field">
+	                        <label for="shipping:city" class="required ehd"><em>*</em><?php echo $this->__('City') ?></label>
+	                        <div class="input-box">
+	                            <input type="text" title="<?php echo $this->__('City') ?>" name="shipping[city]" value="<?php echo $this->htmlEscape($this->getAddress()->getCity()) ?>" placeholder="<?php echo $this->__('City') ?>" autocomplete="address-level1" class="input-text required-entry" id="shipping:city" />
+	                        </div>
+	                    </div>
+	    				
+	    			</li>
+                    
+	    			
+	    			<li>
+	    				
+	    				<div class="field">
+	                        <label for="shipping:country_id" class="required ehd"><em>*</em><?php echo $this->__('Country') ?></label>
+	                        <div class="input-box">
+	                            <?php echo $this->getCountryHtmlSelect('shipping') ?>
+	                        </div>
+	                    </div>
+	    				
+	    			</li>
+	    			
+	    			<li>
+	    				
+	    				<div class="field">
+	                        <label for="shipping:region_id" class="required ehd"><em>*</em><?php echo $this->__('State/Province') ?></label>
+	                        <div class="input-box">
+	                            <select id="shipping:region_id" name="shipping[region_id]" title="<?php echo $this->__('State/Province') ?>" class="validate-select" style="display:none;">
+	                                <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+	                            </select>
+	                            <script type="text/javascript">
+	                            //<![CDATA[
+	                                $('shipping:region_id').setAttribute('defaultValue',  "<?php echo $this->getAddress()->getRegionId() ?>");
+	                            //]]>
+	                            </script>
+	                            <input type="text" id="shipping:region" name="shipping[region]" value="<?php echo $this->htmlEscape($this->getAddress()->getRegion()) ?>"  title="<?php echo $this->__('State/Province') ?>" placeholder="<?php echo $this->__('State/Province') ?>" autocomplete="address-level2" class="input-text" style="display:none;" />
+	                        </div>
+	                    </div>
+	    				
+	    			</li>
+	    			
+	    			<li>
+	    				
+	    				<div class="field">
+	                        <label for="shipping:postcode" class="required ehd"><em>*</em><?php echo $this->__('Zip/Postal Code') ?></label>
+	                        <div class="input-box">
+	                            <input type="text" title="<?php echo $this->__('Zip/Postal Code') ?>" name="shipping[postcode]" id="shipping:postcode" value="<?php echo $this->htmlEscape($this->getAddress()->getPostcode()) ?>" placeholder="<?php echo $this->__('Zip/Postal Code') ?>" autocomplete="postal-code" class="input-text required-entry" />
+	                        </div>
+	                    </div>
+	    				
+	    			</li>
+	    			
+                    <li>
+	                	
+	                	<div class="field">
+	                        <label for="shipping:telephone" class="required ehd"><em>*</em><?php echo $this->__('Telephone') ?></label>
+	                        <div class="input-box">
+	                            <input type="text" name="shipping[telephone]" value="<?php $_tel = $this->getAddress()->getTelephone();
+								$_tel =($_tel)?$_tel:Mage::getSingleton('checkout/session')->getShippingTelephone();
+								echo $this->htmlEscape($_tel);
+								 ?>" title="<?php echo $this->__('Telephone') ?>" placeholder="<?php echo $this->__('Telephone') ?>" class="input-text required-entry" id="shipping:telephone" />
+	                        </div>
+	                    </div>
+	                    
+	                </li>
+	    			<?php if($this->helper->faxcompanyEnabled()): ?>
+                    <li>
+	                	
+	                    <div class="field">
+	                        <label for="shipping:fax" class="ehd"><?php echo $this->__('Fax') ?></label>
+	                        <div class="input-box">
+	                            <input type="text" name="shipping[fax]" value="<?php echo $this->htmlEscape($this->getAddress()->getFax()) ?>" title="<?php echo $this->__('Fax') ?>" placeholder="<?php echo $this->__('Fax') ?>" class="input-text" id="shipping:fax" />
+	                        </div>
+	                    </div>
+	                    
+	                </li>
+	                
+	                <li>
+	                	
+	                	<div class="field">
+	                        <label for="shipping:company" class="ehd"><?php echo $this->__('Company') ?></label>
+	                        <div class="input-box">
+	                            <input type="text" id="shipping:company" name="shipping[company]" value="<?php echo $this->htmlEscape($this->getAddress()->getCompany()) ?>" title="<?php echo $this->__('Company') ?>" placeholder="<?php echo $this->__('Company') ?>" class="input-text" />
+	                        </div>
+	                    </div>
+	                	
+	                </li>
+	    			<?php endif; ?>
+	    		</ul>
+	        </fieldset>
+        </li>
+         <?php if($this->isThreeColsMode() && $this->getLayout()->getBlock('checkout.onepage.address.shipping')->canShow()): ?>
+			<li>
+			 	<label style="width:auto" for="billing_use_for_shipping_yes"><input class="radio" type="checkbox" name="billing[use_for_billing]" id="billing_use_for_shipping_yes" value="1" <?php if($this->getLayout()->getBlock('checkout.onepage.address.billing')->someAsShipping()):?> checked="checked" <?php endif;?> class="radio" /><?php echo $this->__('Billing the same address');?></label>
+			</li>
+		<?php endif;?>
+    </ul>
+    
+	<script type="text/javascript">
+	//<![CDATA[
+	    var shippingRegionUpdater = new RegionUpdater('shipping:country_id', 'shipping:region', 'shipping:region_id', countryRegions, undefined, 'shipping:postcode');
+	//]]>
+	</script>
+		
+	
+</div>
+<?php endif;?>
+<?php endif;// end all if ?>

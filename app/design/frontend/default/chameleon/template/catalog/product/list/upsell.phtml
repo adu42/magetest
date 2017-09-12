@@ -1,0 +1,63 @@
+<?php
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+?>
+<?php
+   $_productCollection=$this->getLoadedProductCollection();
+   $_helper = $this->helper('catalog/output');
+   $_current_id='';
+   $_uri=$_SERVER["REQUEST_URI"];
+if(stripos($_uri,'search')===false){
+	if(stripos($_uri,'tag/')===false){
+		$_category=Mage::registry('current_category');
+		if($_category && $_category->getId()){
+			$_categoryId=$_category->getId();
+			$_current_id='?catid='.$_categoryId;
+		}
+	}else{
+			$__uri=explode('/',$_uri);
+			$_current_id='?catid=tags'.end($__uri);
+	}  
+}
+?>
+<?php if(count($this->getItemCollection()->getItems())): ?>   
+ <div class="swiper-container border-gradient thumbs-cotnainer swiper-container1">
+ 	<div class="box-title">
+        <h2><?php echo $this->__('You May Also Like') ?></h2>
+    </div>
+    <div class="swiper-wrapper" id="upsell-product-list">
+    <?php foreach($this->getItemCollection()->getItems() as $_link): ?>
+            <div class="swiper-slide">
+                <a href="<?php echo $_link->getProductUrl().$_current_id ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_link, 'small_image')->resize(90,120) ?>" width="90" height="120" alt="<?php echo $this->escapeHtml($_link->getName()) ?>" title="<?php echo $this->escapeHtml($_link->getName()) ?>" /></a>
+                <?php echo $this->getPriceHtml($_link, true, '-upsell') ?>
+            </div>
+    <?php endforeach; ?>
+   </div>
+</div>
+<?php endif ?>
+<script type="text/javascript">
+jQuery(function($){
+	$('.swiper-container1').each(function(){
+		$(this).swiper({
+			initialSlide:2,
+			slidesPerView:'auto',
+			offsetPxBefore:25,
+			offsetPxAfter:10,
+			calculateHeight: true
+		})	
+	})
+});
+</script>

@@ -1,0 +1,101 @@
+<?php 
+$check_api_key=Mage::app()->getStore()->getConfig('pushassistsection/general/apikey');
+$check_secret_key=Mage::app()->getStore()->getConfig('pushassistsection/general/secretkey');
+$account_response = Mage::helper('pushassist')->get_account_details();
+if(isset($account_response['account_name'])){
+$account_url='https://'.$account_response['account_name'].'.pushassist.com/dashboard/';
+}
+if($check_api_key!='' && $check_secret_key != '' && (!isset($account_response['error'] )) && $account_response) {
+?>
+
+
+<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+<div id="Psidebar" >
+  <ul>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_dashboard'); ?>"><?php echo $this->__('Dashboard')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_notificationmain'); ?>"><?php echo $this->__('Notifications')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_notificationsend'); ?>"><?php echo $this->__('Send Notification')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_segments'); ?>"><?php echo $this->__('Segments')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_createsegments'); ?>"><?php echo $this->__('Create Segments')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_subscribers'); ?>"><?php echo $this->__('Subscribers')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_settings'); ?>"><?php echo $this->__('Settings')?></a></li>
+    <li><a href="<?php echo $this->getUrl('*/pushassist_campaign'); ?>"><?php echo $this->__('Campaigns')?></a></li>
+  </ul>
+  </div>
+<!-- Content Start -->
+    <div id="pushassist" class="content clearfix">
+        <!-- Start Page Header -->
+        <div class="page-header">
+            <h1 class="title"><?php echo $this->__('Create Segment') ?></h1>
+        </div>
+        <!-- End Page Header -->
+
+        <!-- Container Start -->
+        <div class="container-widget clearfix">
+            <div class="alert alert-danger alert-dismissable" id="pushassist_error" style="display: none"></div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form class="form-horizontal" action="<?php echo $this->getUrl('*/*/addsegments'); ?>" method="post" autocomplete="off" id="create_segment_form" name="create_segment_form" enctype="multipart/form-data">                            
+                            <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label form-label"><?php echo $this->__('Segment Name') ?></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="title" name="title" placeholder="Segment Name" maxlength="40" required="required" />
+                                    <span class="pull-right"><?php echo $this->__('Limit 40 Characters. E.g. Google') ?></span>
+                                </div>
+                            </div>
+                            
+			    <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-1 col-xs-3">
+                                    <button type="submit" class="btn btn-default"><?php echo $this->__('Create Segment') ?></button>
+                                </div>
+			    </div>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- col-md-6-->
+
+	   <div class="col-md-6 dummy-notification shadow panel panel-default">
+
+		  <p class="h5 pb15"><strong><?php echo $this->__('How to Implement Segments for your Push Notification Subscribers') ?></strong></p>
+
+		  <div class="widget shadow dummy-notification-inner-wrapper pb15">
+		      <p><strong><?php echo $this->__('Step 1') ?> :</strong> <?php echo $this->__('Create a new segment. Go to Create Segments') ?></p>
+
+		      <p><strong><?php echo $this->__('Step 2') ?> :</strong> <?php echo $this->__('Copy the following JavaScript code and paste it on your site page(s).') ?></p>
+
+		      <p class="margin-t-20"><strong><?php echo $this->__('Subscribe for Single Segment') ?></strong></p>
+		      <p>
+			  &lt;script&gt;
+			  <br>
+			  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; var _pa = [];<br>
+			  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; _pa.push('segmentname');
+			  <br>
+			  &lt;/script&gt;
+		      </p>
+
+		      <p class="margin-t-20"><strong>Subscriber for Multiple Segments</strong></p>
+		      <p>
+			  &lt;script&gt;
+			  <br>
+			  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; var _pa = [];<br>
+			  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; _pa.push('segmentname1', 'segmentname2');
+			  <br>
+			  &lt;/script&gt;
+		      </p>
+		  </div>
+           </div>
+
+        </div>
+        <!-- Container End -->
+    </div>
+    <!-- Content End -->
+<?php }else{
+Mage::app()->getResponse()->setRedirect(Mage::helper("adminhtml")->getUrl("adminhtml/pushassist_createaccount/index/"));
+
+} ?>    
+   
+	  
+
+

@@ -1,0 +1,30 @@
+<?php
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+
+/* @var Mage_Wishlist_Model_Item $item */
+$item = $this->getItem();
+$product = $item->getProduct();
+?>
+<?php if($this->getSortedChildren()): ?>
+    <div class="item-manage">
+    <?php foreach($this->getSortedChildren() as $childName):?>
+        <?php echo $this->getChildHtml($childName, false);?>
+    <?php endforeach;?>
+    </div>
+<?php endif; ?>
+<div class="description std"><div class="inner"><?php echo $this->escapeHtml($this->stripTags($product->getShortDescription()));?></div></div>
+<textarea name="description[<?php echo $item->getWishlistItemId() ?>]" rows="3" cols="5" onfocus="focusComment(this)" onblur="focusComment(this)" placeholder="<?php echo $this->__('Comment') ?>"><?php echo ($this->escapeHtml($item->getDescription())) ?></textarea>

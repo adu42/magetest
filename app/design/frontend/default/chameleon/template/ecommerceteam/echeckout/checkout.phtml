@@ -1,0 +1,195 @@
+<?php
+/*
+ * Magento EsayCheckout Extension
+ *
+ * @copyright:	EcommerceTeam (http://www.ecommerce-team.com)
+ * @version:	1.1
+ *
+ */
+?>
+<script type="text/javascript">
+	//<![CDATA[
+	var countryRegions			= <?php echo $this->helper('directory')->getRegionJson(); ?>;
+	
+	var checkoutDefaultUrl		= '<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'methods'));?>';
+	<?php if($this->helper->mobileShippingFirst()):?>
+	<?php if($this->helper->differentShippingEnabled()):?>
+	var checkoutShippingUrl 	= '<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'payment'));?>';
+	var checkoutBillingUrl  	= '<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'billing'));?>';
+	<?php else:?>
+	var checkoutShippingUrl		= '<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'methods'));?>';
+	<?php endif;?>
+	<?php else:?>
+	<?php if($this->helper->differentShippingEnabled()):?>
+	var checkoutBillingUrl		= '<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'payment'));?>';
+	var checkoutShippingUrl		= '<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'shipping'));?>';
+	<?php else:?>
+	var checkoutBillingUrl		= '<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'methods'));?>';
+	<?php endif;?>
+	<?php endif;?>
+	var checkoutTotalsUrl		= '<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'review'));?>';
+	var checkoutCouponUrl		= '<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'coupon'));?>';
+	
+	//var checkoutSaveAddressUrl		= '<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'save'));?>';
+    var checkoutSaveShippingAddressUrl		= '<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'saveshipping'));?>';
+    var checkoutSaveBillingAddressUrl		= '<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'savebilling'));?>';
+    var checkoutSaveAddressUrl		= '<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'saveshippingbilling'));?>';
+
+
+	
+	
+	var loginFormHtml = '<div id="elogin-message" class="a-left"></div>'+
+		'<ul class="form-list">'+
+            '<li>'+
+                '<label class="required" for="elogin-email"><em>*</em><?php echo  str_replace("'","\\'",$this->__('Email Address')); ?></label>'+
+                '<div class="input-box"><input type="text" title="<?php echo str_replace("'","\\'",$this->__('Email Address'));?>" class="input-text" id="elogin-email" /></div>'+
+            '</li>'+
+            '<li>'+
+                '<label class="required" for="elogin-password"><em>*</em><?php echo str_replace("'","\\'",$this->__('Password'));?></label>'+
+                '<div class="input-box"><input type="password" title="<?php echo str_replace("'","\\'",$this->__('Password'));?>" class="input-text" id="elogin-password"/></div>'+
+            '</li>'+
+        '</ul>'+
+        '<div class="actions">'+
+        	'<div id="elogin-buttons">'+
+	        	'<div class="left">'+
+	        		'<a href="<?php echo $this->getUrl('customer/account/forgotpassword')?>"><?php echo str_replace("'","\\'",$this->__('Forgot Your Password?'))?></a>'+
+					'<a href="<?php echo $this->getUrl('customer/account/create')?>"><?php echo str_replace("'","\\'",$this->__('Register'))?></a>'+
+	        	'</div>'+
+	        	'<div class="right">'+
+	        		'<button class="button" onclick="TINY.box.hide();return false;"><span><span><?php echo str_replace("'","\\'",$this->__('Cancel'));?></span></span></button>'+
+	        		'<button style="margin-left:5px;" class="button" onclick="elogin($(\'elogin-email\').value, $(\'elogin-password\').value, \'<?php echo $this->getUrl('*/onepage/ajax', array('action'=>'login'));?>\');return false;"><span><span><?php echo str_replace("'","\\'",$this->__('Login'));?></span></span></button>'+
+	        	'</div>'+
+	        '</div>'+
+        	'<div id="elogin-loading" style="display:none;"><?php echo str_replace("'","\\'",$this->__('loading please wait...'));?></div>'+
+        '</div>';
+	//]]>
+</script>
+
+
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+<div class="easycheckout-onepage-wrap easycheckout-1column" id="easycheckout-form-wrap">
+	
+	<div id="load-info-overlay">&nbsp;</div>
+	
+	<?php echo $this->getCmsBlockHtml();?>
+<?php if(false): ?>	
+	<?php 
+	
+	if(!Mage::helper('customer')->isLoggedIn()):
+		if($this->helper->mobileMustLogin()):
+			echo '<script>TINY.box.show(loginFormHtml,0,320,0,0);</script>';
+		else:
+	?>
+	<p><a href="<?php echo $this->getUrl('customer/account/login');?>" onclick="TINY.box.show(loginFormHtml,0,320,0,0);return false"><?php echo $this->__('Already registered? Click here to login.');?></a></p>
+	<?php endif;
+	endif; ?>
+<?php endif; ?>
+	<ul class="easycheckout-guides">
+    	<li id="easycheckout-guide-1" class="active"><?php echo $this->__('Check Out');?></li>
+        <li id="easycheckout-guide-2"><?php echo $this->__('Pay');?></li>
+        <li id="easycheckout-guide-3"><?php echo $this->__('Success');?></li>
+    </ul>
+	<form action="<?php echo $this->getUrl('*/*/save');?>" method="post" id="easycheckout-form">
+		<!-- /echeckout step 1 shpping address/ -->
+        <div id="easycheckout-address-shipping-step">
+		<?php echo $this->getChildHtml('shipping_address'); ?>
+        <div class="button-set">
+			<?php if($this->helper->showSubscribe()):?>
+			<p><label><input type="checkbox" name="subscribe" value="1"/> <?php echo $this->__('Subscribe to newsletter');?></label></p>
+			<?php endif; ?>
+			<button id="submit-save-shipping-address-btn" style="display:none;" type="button" title="<?php echo $this->__('Save and use this address') ?>" class="button btn-checkout"><span><span><?php echo $this->__('Save and use this address') ?></span></span></button>
+		</div>
+        </div>
+        <!-- /echeckout step 1 shpping address save / -->
+
+        <!-- /echeckout step 1-1 billing address / -->
+        <div id="easycheckout-address-billing-step" style="display:none;">
+            <?php echo $this->getChildHtml('billing_address'); ?>
+            <div class="button-set">
+                <?php if($this->helper->showSubscribe()):?>
+                    <p><label><input type="checkbox" name="subscribe" value="1"/> <?php echo $this->__('Subscribe to newsletter');?></label></p>
+                <?php endif; ?>
+                <button id="submit-save-billing-address-btn" style="display:none;" type="button" title="<?php echo $this->__('Save and use this address') ?>" class="button btn-checkout"><span><span><?php echo $this->__('Save and use this address') ?></span></span></button>
+            </div>
+        </div>
+        <!-- /echeckout step 1-1 billing address save/ -->
+        <div id="easycheckout-address-submit-btn">
+            <div class="button-set">
+                <button id="submit-save-address-btn" type="button" title="<?php echo $this->__('Save and use this address') ?>" class="button btn-checkout"><span><span id="gtm-saveadress-onepage-mobile"><?php echo $this->__('Save and use this address') ?></span></span></button>
+            </div>
+        </div>
+
+        <!-- /echeckout step 2/ -->
+	    <!-- /echeckout overlay/ -->
+        <div id="easycheckout-shipping-payment-step" style="display:none;">
+        		<div class="easycheckout-return-address">
+                    <div class="btn btn-edit" id="easycheckout-return-shipping-address"><?php echo $this->__('Edit'); ?></div>
+                    <div id="shipping-address-detail">
+                        <div class="shipping-address-detail-title"><?php echo $this->__('Shpping Address'); ?></div>
+                        <div class="shipping-address-detail-body" id="shipping-address-detail-body">
+                            <?php echo $this->getQuote()->getShippingAddress()->getFormated(true); ?>
+                        </div>
+                    </div>
+                </div>
+				<?php if(!$this->getQuote()->isVirtual()):?>
+				<div class="shipping-method"><?php echo $this->getChildHtml('shipping_method');?></div>
+				<?php endif;?>
+                <?php if($this->helper->couponEnabled()):?>
+                <div id="easycheckout-coupon" class="easy-step">
+                    <?php echo $this->getChildHtml('echeckout_coupon');?>
+                </div>
+                <?php endif;?>
+                <?php echo $this->getChildHtml('review');?>
+                <div id="easycheckout-totals"><?php echo $this->getChildHtml('echeckout_totals'); ?></div>
+                <div class="button-set">
+                	<div id="result-select-method-message" style="color:red; display:none"><?php echo $this->__('Please select shipping method.'); ?></div>
+                    <button id="submit-save-shipping-btn" type="button" title="<?php echo $this->__('Continue Checkout') ?>" class="button btn-checkout"><span><span id="gtm-continuecheckout-onepage-mobile"><?php echo $this->__('Continue Checkout') ?></span></span></button>
+                </div>
+		</div>
+        <div id="easycheckout-payment-step" style="display:none;">
+            <div id="easycheckout-return-shipping" class="btn btn-edit-shipping"><?php echo $this->__('Back'); ?></div>
+            <div class="easycheckout-return-address">
+        	<div id="easycheckout-return-billing-address" class="btn btn-edit"><?php echo $this->__('Edit'); ?></div>
+                <div id="billing-address-detail">
+                    <div class="billing-address-detail-title"><?php echo $this->__('Billing Address'); ?></div>
+                    <div class="billing-address-detail-body" id="billing-address-detail-body">
+                        <?php echo $this->getQuote()->getBillingAddress()->getFormated(true); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="easycheckout-totals-detail">
+                <div class="easycheckout-totals-payment-title"><?php echo $this->__('Order Summary'); ?></div>
+                <div id="easycheckout-totals-payment" class="easycheckout-totals-payment-body"><?php echo $this->getChildHtml('echeckout_totals'); ?></div>
+            </div>
+        	<div class="payment-method"><?php echo $this->getChildHtml('payment_method');?></div>
+            <div class="button-set" id="easycheckout-button-set">
+			<button id="submit-btn" type="submit" title="<?php echo $this->__('Continue') ?>" class="button btn-checkout"><span><span id="gtm-paynow-onepage-mobile"><?php echo $this->__('Continue') ?></span></span></button>
+		</div>
+        </div>
+	</form>
+</div>
+<script type="text/javascript">
+	//<![CDATA[
+	var checkoutForm = new VarienForm('easycheckout-form');
+	checkoutForm.validator.options.onFormValidate = function(result, form) {
+		if(result){
+			$('submit-btn').disabled = 'disabled';
+			$('submit-btn').addClassName('btn-checkout-disabled');
+		}
+	};
+	<?php 	
+		if(Mage::getSingleton('checkout/session')->getStepNotifyPaymentMethod()){
+			echo 'topay();';
+		}else if(Mage::getSingleton('checkout/session')->getStepNotifyShippingMethod()){
+			echo 'hideAddress();';
+		}
+	?>
+	//]]>
+</script>
+<?php
+   //google codes
+   $total=$this->getQuote()->getBaseGrandTotal();
+   if(!$total)$total='150.00';
+  echo Mage::helper('ado_seo')->showConversionCode($total);
+?>

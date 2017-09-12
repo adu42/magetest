@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="after_body_start">
+            <block name="softcube.js" type="softcube_integration/js" template="softcube/integration/js.phtml"/>
+        </reference>
+    </default>
+    <catalog_product_view>
+        <reference name="before_body_end">
+            <block name="softcube.product" type="softcube_integration/product" template="softcube/integration/product.phtml"/>
+        </reference>
+    </catalog_product_view>
+    <catalog_category_default>
+        <reference name="before_body_end">
+            <block name="softcube.category" type="softcube_integration/category" template="softcube/integration/category.phtml"/>
+        </reference>
+    </catalog_category_default>
+    <catalog_category_view>
+        <reference name="before_body_end">
+            <block name="softcube.category" type="softcube_integration/category" template="softcube/integration/category.phtml"/>
+        </reference>
+    </catalog_category_view>
+    <checkout_onepage_success>
+        <reference name="before_body_end">
+            <block name="softcube.success" type="softcube_integration/success" template="softcube/integration/success.phtml"/>
+        </reference>
+    </checkout_onepage_success>
+    <checkout_multishipping_success>
+        <reference name="before_body_end">
+            <block name="softcube.success" type="softcube_integration/success" template="softcube/integration/success.phtml"/>
+        </reference>
+    </checkout_multishipping_success>
+    <paypal_standard_success>
+        <reference name="before_body_end">
+            <block name="softcube.success" type="softcube_integration/success" template="softcube/integration/success.phtml"/>
+        </reference>
+    </paypal_standard_success>
+    <moneybookers_processing_success>
+        <reference name="before_body_end">
+            <block name="softcube.success" type="softcube_integration/success" template="softcube/integration/success.phtml"/>
+        </reference>
+    </moneybookers_processing_success>
+    <customer_logged_in>
+        <reference name="before_body_end">
+            <block name="softcube.customer" type="softcube_integration/customer" template="softcube/integration/customer.phtml"/>
+        </reference>
+    </customer_logged_in>
+</layout>

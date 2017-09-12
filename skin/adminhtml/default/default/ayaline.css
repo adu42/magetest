@@ -1,0 +1,48 @@
+/**
+ * 
+ * @category Ayaline
+ * @package Ayaline_Core
+ * @author aYaline
+ * @copyright Ayaline - 2012 - http://magento-shop.ayaline.com
+ * @license http://shop.ayaline.com/magento/fr/conditions-generales-de-vente.html
+ */
+li.ayaline-tab dl dt.label {
+	background: url("images/ayaline/ayaline_icommerce.png") no-repeat scroll 35px -15px #D1DEDF;
+	height: 41px;
+}
+h3.ayaline-header {
+	background: url("images/ayaline/ayaline_header.png") no-repeat scroll 4px 0 transparent;
+	padding: 11px 0 2px 90px;
+	height: 19px;
+	color: #EA4512; 
+}
+
+#ayaline-encart.ayaline-notice {
+	border: 1px solid #DBDBDB;
+	background-color: #E8E9EC;
+    color: #3D3D3D;
+    padding: 5px 5px 0;
+    margin: 0 0 10px;
+}
+.ayaline-content {
+	padding: 0 0 0 150px;
+}
+
+/* Images produits */
+/*#ayaline-products {
+	float: left;
+	height: 115px;
+    width: 150px;
+}
+.ayaline-product-1 {
+	background: url("images/ayaline/ayaline_range_filters.png") no-repeat scroll 7px 0 transparent;
+}
+.ayaline-product-2 {
+	background: url("images/ayaline/dashboard.png") no-repeat scroll 32px 0 transparent;
+}
+.ayaline-product-3 {
+	background: url("images/ayaline/ayaline_tab.png") no-repeat scroll 7px 0 transparent;
+}
+.ayaline-product-4 {
+	background: url("images/ayaline/ayaline_icommerce.png") no-repeat scroll 7px 0 transparent;
+}*/

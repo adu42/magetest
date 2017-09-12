@@ -1,0 +1,437 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+?>
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $helper = Mage::helper("reviewimage");  ?>
+<?php $_product = $this->getProduct(); ?>
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+        <?php 
+            $current_pid  = $this->helper('catalog/data')->getProduct()->getId();
+            $prev=0;
+            $next=0;
+            if($current_pid){
+                $prev = Mage::getModel('catalog/product')->_getPrevProduct($current_pid);
+            	$next = Mage::getModel('catalog/product')->_getNextProduct($current_pid);
+            }
+         ?>
+</div>
+<div class="product-view">
+    <div class="product-essential">
+    <input type="hidden" name="sizeUnit" id="sizeUnit" value="inch" />
+    <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+        <div class="no-display">
+            <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+            <input type="hidden" name="related_product" id="related-products-field" value="" />
+        </div>
+		<?php //echo $this->getChildHtml('catalog_products_about') ?>
+        <div class="product-shop">
+            <div class="product-name">
+                <span><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></span>
+				
+            </div>
+			<div class="rating-question">
+			<span>Item Code:<?php echo nl2br($_product->getSku()) ?></span>
+	    <?php if($_product->getRatingSummary()): ?>
+			<?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+            <?php endif; ?>
+		<div style=" color: #666666;float: left;font-size: 11px;padding:0px;height:30px;line-height:29px;">
+		<a class="write-review" href="<?php //echo Mage::helper("reviewimage")->getWriteUrl();  ?>#tabs-7">Write a review</a>
+		
+		</div> 
+
+		</div>
+		 
+		<div class="prod-price-pos">
+            <?php echo $this->getChildHtml('alert_urls') ?>
+            <?php echo $this->getChildHtml('product_type_data') ?>
+            <?php echo $this->getTierPriceHtml() ?>
+
+	    <?php $old_price = $_product->getPrice();  ?>
+	    <?php $special_price = $_product->getFinalPrice();?>
+
+            <?php $percent = ceil((($old_price-$special_price)/$old_price)*100)?>
+			
+	    <div class="timelist">
+		<!-- daoji shi-->
+		<span><?php if($percent){?>(<?php echo $percent ?>% OFF)<?php }?></span>
+</div>
+</div>
+
+
+            <?php //echo $this->getChildHtml('extrahint') ?>
+            <?php if (!$this->hasOptions()):?>
+                <div class="add-to-box">
+                    <?php if($_product->isSaleable()): ?>
+                        <?php echo $this->getChildHtml('addtocart') ?>
+                        <?php if( $this->helper('wishlist')->isAllow() || $_compareUrl=$this->helper('catalog/product_compare')->getAddUrl($_product)): ?>
+                      
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    <?php //echo $this->getChildHtml('addto') ?>
+                </div>
+                <?php echo $this->getChildHtml('extra_buttons') ?>
+            <?php elseif (!$_product->isSaleable()): ?>
+            <?php endif; ?>
+
+            <?php echo $this->getChildHtml('other');?>
+
+            <?php if ($_product->isSaleable() && $this->hasOptions()):?>
+            
+                <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+            <?php endif;?>
+			<div class="clearer"></div>
+			<?php if ($_product->isSaleable() && $this->hasOptions()):?>
+				<?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+			<?php endif;?>
+					<!--daojishi -->
+<div class="clear"></div>
+<div class="share-link" style="margin-bottom:10px;">
+<div class="addthis-right" style="float:left; padding:0 15px 0 0;">
+			<div class="fb-like" style="float:left;" data-href="<?php echo $_product->getProductUrl() ?>" data-layout="button_count" data-action="like" data-width="200" data-show-faces="false" data-share="true"></div>
+	        
+</div>
+<a href="http://www.tumblr.com/share?url=<?php echo $_product->getProductUrl() ?>" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url('http://platform.tumblr.com/v1/share_1.png') top left no-repeat transparent;" target="_blank">Share on Tumblr</a>
+<a href="https://twitter.com/share" class="twitter-share-button" data-lang="en">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.async=true;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  <a href="http://pinterest.com/pin/create/button/?url=<?php echo $_product->getProductUrl() ?>" class="pin-it-button" count-layout="none" rel="nofollow"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
+ <script type="text/javascript" defer src="//assets.pinterest.com/js/pinit.js"></script>
+ <div class="g-plusone" data-size="medium"></div>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+
+</div>
+			<div class="prod-info-time clearfix">	
+		<span class="pointer">
+			<em class="icon-tailoring"></em>
+			<a href="javascript:void(0)" class="tailoring-time">Tailoring Time</a>:12-15 days
+			<span class="hide" id="timeTip" style="width: 254px;">
+				<span class="arrow"></span>
+				Whether you choose a standard size or custom measurements, our tailors craft each dress to order.
+		</span>
+		</span>
+		<span class="pointer" style="margin-left:35px;">
+			<em class="icon-shipping"></em>
+			<a href="javascript:void(0)" class="shipping-time">Shipping Time</a>:&nbsp;3-8 Days
+			<span class="hide timeTip" id="timeTip" style="width:254px;">
+				<span class="arrow"></span>
+				Your dress will be finished tailoring in around 12-15 days. Then we will ship it out via UPS / DHL / TNT/Fedex.</span>
+		</span>
+	</div>
+	<div class="tabs-anchor" id="tabs-anchor">
+		<ul>
+			<li class="tabs-2"><a rel="nofollow" href="javascript:var newin=window.open('./size-chart.html','htm','height=572,width=790,scrollbars=yes');if(newin!=null){newin.focus();}">Size Chart</a></li>
+			<li class="tabs-3"><a rel="nofollow" href="javascript:var newin=window.open('./colour-chart.html','htm','height=572,width=790,scrollbars=yes');if(newin!=null){newin.focus();}">Colour Chart</a></li>	
+			<li class="tabs-5"><a rel="nofollow" href="javascript:var newin=window.open('./measurement-guide.html','htm','height=572,width=790,scrollbars=yes');if(newin!=null){newin.focus();}">Measurement</a></li>
+			<li class="tabs-6"><a rel="nofollow" href="javascript:var newin=window.open('./faqs.html','htm','height=572,width=790,scrollbars=yes');if(newin!=null){newin.focus();}">FAQs</a></li>
+			<li class="tabs-4"><a rel="nofollow" href="javascript:var newin=window.open('./return-policy.html','htm','height=572,width=790,scrollbars=yes');if(newin!=null){newin.focus();}">Return Policy</a></li>
+		</ul>
+	</div>
+		<div class="shipping-info-time">
+			<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('shipping-info-view')->toHtml();?>			
+			<div class="arrival-date">
+				<p class="arrival-order">The earliest arrival date is <span style="color:#e00;font-size:13px;font-weight:bold;"><?php echo date('M d,Y',strtotime('+15 days')); ?></span> if order placed TODAY.</p>
+			</div>
+		</div>
+			
+        </div>
+        <div class="product-img-box">
+            <?php echo $this->getChildHtml('media') ?>
+			<script type="text/javascript">
+var lastT=1367280000;
+var nowT=1367070662
+</script>
+<script type="text/javascript">
+startclock();
+var timerID = null;
+var timerRunning = false;
+nowT=nowT*1000;
+lastT=lastT*1000;
+function showtime(){
+nowT += 100;
+var t=lastT-nowT;
+if(t>0){
+var NowMill=parseInt(t%1000/100);
+var Secondleft=parseInt(t/1000%60);
+var Minuteleft=parseInt(t/1000/60%60);
+var Hourleft=parseInt(t/1000/60/60%72);
+if(Secondleft<10){
+Secondleft="0"+Secondleft;
+}
+if(Minuteleft<10){
+Minuteleft="0"+Minuteleft;
+}
+if(Hourleft<10){
+Hourleft="0"+Hourleft;
+}
+}else{
+var NowMill="00";
+var Secondleft="00";
+var Minuteleft="00";
+var Hourleft="00";
+timerRunning=false;
+}
+Temp=Hourleft+':'+Minuteleft+':'+Secondleft +"."+NowMill;
+document.getElementById('time_set_change').innerHTML=Temp;
+timerID = setTimeout("showtime()",100);
+timerRunning = true;
+}
+var timerID = null;
+var timerRunning = false;
+function stopclock () {
+if(timerRunning)
+clearTimeout(timerID);
+timerRunning = false;
+}
+function startclock () {
+stopclock();
+showtime();
+}
+</script>
+
+	        </div>
+    </form>
+	<!--<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		jQuery(".product-options dd:eq(0) .input-box").append('<span class="color_chart"><a href="javascript:void(0);">Colour Chart</a></span>');
+		jQuery(".product-options .input-box.has-guide").append('<span class="size_chart"><a href="javascript:void(0);">Size chart</a></span>');
+		jQuery(".size_chart a").bind('click',function() { 
+			window.open('./size-chart.html','_blank','width=750,height=565,top=80,left=80,toolbar=no, menubar=no, scrollbars=yes, resizable=yes');
+		});
+		jQuery(".color_chart a").bind('click',function() { 
+			window.open('./colour-chart.html','_blank','width=750,height=565,top=80,left=80,toolbar=no, menubar=no, scrollbars=yes, resizable=yes');
+		});
+	})(jQuery);
+</script>-->
+    <script type="text/javascript">
+    //<![CDATA[
+        var productAddToCartForm = new VarienForm('product_addtocart_form');
+        productAddToCartForm.submit = function(button, url) {
+            if (this.validator.validate()) {
+                if (button && button != 'undefined') {
+                    button.disabled = true;
+                }  
+                // Start of our new ajax code
+					    var oldurl;
+					    var url=oldurl = jQuery('#product_addtocart_form').attr('action');
+						url = url.replace("checkout/cart/add","checkout/cart/add2"); 
+						var data = jQuery('#product_addtocart_form').serialize();
+						data += '&isAjax=1';
+						jQuery('#ajax_loader').show();
+						try {
+							jQuery.ajax( {
+								url : url,
+								dataType : 'json',
+								type : 'post',
+								data : data,
+								success : function(data1) {
+									jQuery('#ajax_loader').hide();
+									if (button && button != 'undefined') {
+										button.disabled = false;
+									}
+									try{
+									if(data1.status!='ERROR'){
+										jQuery('#add_to_cart_err').html('').hide();
+										if(jQuery('#cart_total')){
+										   jQuery('#cart_total').html(data1.toplink);
+										}
+                                        var l= oldurl.indexOf('add');
+                                        jQuery(button).removeClass('btn-cart1').addClass('btn-cart2');
+                                        jQuery(button).removeAttr('onclick');
+                                        jQuery(button).html('Check Cart');
+                                        jQuery(button).attr('title','Check Cart');
+                                        jQuery(button).bind('click',function(){
+                                            jQuery('#ajax_loader').hide();
+                                            location.href=oldurl.substr(0,l);
+                                        });
+										}else{
+											jQuery('#add_to_cart_err').html(data1.message).show();
+										}
+									}catch (e) {
+									}
+								}
+							});
+						} catch (e) {
+						}
+					jQuery('#product_addtocart_form').attr('action',oldurl);
+                
+                
+            }
+        }.bind(productAddToCartForm);
+
+        productAddToCartForm.submitLight = function(button, url){
+            if(this.validator) {
+                var nv = Validation.methods;
+                delete Validation.methods['required-entry'];
+                delete Validation.methods['validate-one-required'];
+                delete Validation.methods['validate-one-required-by-name'];
+                // Remove custom datetime validators
+                for (var methodName in Validation.methods) {
+                    if (methodName.match(/^validate-datetime-.*/i)) {
+                        delete Validation.methods[methodName];
+                    }
+                }
+
+                if (this.validator.validate()) {
+                    if (url) {
+                        this.form.action = url;
+                    }
+                    this.form.submit();
+                }
+                Object.extend(Validation.methods, nv);
+            }
+        }.bind(productAddToCartForm);
+    //]]>
+    </script>
+    </div>
+	<!-- related products -->
+    <?php echo $this->getChildHtml('catalog_products_related'); ?>  
+    <?php echo $this->getChildHtml('catalog_products_recommend'); ?>  
+    <!-- related products -->
+    <div class="product-collateral">
+	
+         <div class="main-right">
+		<?php //echo $this->getChildHtml('upsell_products') ?>
+		<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/tab/livepipe.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/tab/tabs.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/tab/view.js'); ?>"></script>
+
+	 
+		<div id="tabs-detail">
+			<ul id="tabs-detail-ul" class="subsection_tabs">
+				<li class="tab1"><a class="active" href="#tabs-1"><?php echo $this->__('Descriptions') ?></a></li>
+				<li class="tab2"><a class="" href="#tabs-2"><?php echo $this->__('Size Chart') ?></a></li>
+				<li class="tab3"><a class="" href="#tabs-3"><?php echo $this->__('Color Chart') ?></a></li>
+				<li class="tab4"><a class="" href="#tabs-4"><?php echo $this->__('Delivery') ?></a></li>
+				<li class="tab5"><a class="" href="#tabs-5"><?php echo $this->__('Measurement') ?></a></li>
+				<li class="tab6"><a class="" href="#tabs-6"><?php echo $this->__('FAQs') ?></a></li>
+				<li class="tab7"><a class="" href="#tabs-7"><?php echo $this->__('Reviews') ?></a></li>
+				<li class="tab8"><a class="" href="#tabs-8"><?php echo $this->__('Quality Guarantee') ?></a></li>
+				<li class="tab9"><a class="" href="#tabs-9"><?php echo $this->__('Style') ?></a></li>
+			</ul>
+			<div style="display: block;" id="tabs-1" class="tabs-content">
+				<?php foreach ($this->getChildGroup('detailed_info', 'getChildHtml') as $alias => $html):?>
+					<div class="box-collateral <?php echo "box-{$alias}"?>">
+						<?php if ($title = $this->getChildData($alias, 'title')):?>
+						<span><?php echo $this->escapeHtml($title); ?></span> 
+						<?php endif;?>
+						<?php echo $html; ?>
+					</div>
+				<?php endforeach;?>
+
+				<p style="border-bottom:1px solid #ccc;font-size:16px;font-weight:bold;"><?php echo $this->__('Pictures')?></p>
+				<?php echo $this->getChildHtml('media-1') ?>
+				
+			</div>
+			<div style="display: none;" id="tabs-2" class="tabs-content">
+				<style type="text/css">
+					.chart-style{width:100%;height:260px;text-align:center;}
+					.chart-style td {text-align:center;vertical-align: middle;}
+				</style>
+				<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('sizeChart-view')->toHtml() ?>
+			</div>
+			<div style="display: none;" id="tabs-3" class="tabs-content">
+				<link type="text/css" href="<?php echo $this->getSkinUrl('color-chart/css/styles.css')?>" rel="stylesheet" />
+				<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('colorChart-view')->toHtml() ?>
+			</div>
+			<div style="display: none;" id="tabs-4" class="tabs-content">
+				<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('delivery-view')->toHtml() ?>
+			</div>
+			<div style="display: none;" id="tabs-5" class="tabs-content">
+				<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('measurement-view')->toHtml() ?>
+			</div>
+			<div style="display: none;" id="tabs-6" class="tabs-content">
+				<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('faq-view')->toHtml() ?>
+			</div>
+			<div style="display: none;" id="tabs-7" class="tabs-content">
+			   <span style="text-align:center;margin:10px 0;display:block;"><a href="<?php echo Mage::helper("reviewimage")->getWriteUrl(); ?>"><img src="/skin/frontend/default/hebeos/images/review.jpg"/></a></span>
+				<?php echo $this->getChildHtml('reviews') ?>
+			</div>
+			<div style="display: none;" id="tabs-8" class="tabs-content">
+				<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('dressdetail-view')->toHtml() ?>
+			</div>
+			<div style="display: none;" id="tabs-9" class="tabs-content">
+				<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('style-view')->toHtml() ?>
+			</div>
+		</div>
+       
+	</div>
+	<div class="f_right" style="display:block; width:156px; overflow:hidden;">
+		<?php echo $this->getChildHtml('product_related') ?>
+		<?php echo $this->getChildHtml('product_page_bestseller') ?>
+        </div>
+    </div>
+</div>
+ 
+</div>
+<script src="/ajax/likes.php?po=views&id=<?php echo $_product->getId();?>"></script>
+<!--add likes +1-->
+<script>
+function _getBaseUrl(){
+    var url=document.domain;
+    url='//'+url;
+    return url;    
+}
+function clicklikes(obj,id){
+	jQuery(obj).children('img').attr('src','<?php echo $this->getSkinUrl('images/fb_like_disabled.png'); ?>');
+    var url=_getBaseUrl();
+    url+='/ajax/likes.php?po=likes&id='+id;
+    var likes=jQuery('#fb_num_'+id).html();
+    if(likes!=''){
+        likes=parseInt(likes);
+        if(!isNaN(likes)){
+            likes+=1;
+        }
+    }else{
+        likes=1;
+    }
+    jQuery.get(url);
+    jQuery('#fb_num_'+id).html(likes);
+    jQuery(obj).unbind('click');
+}
+jQuery(function($) {
+  $('.fb_like_button').each(function(){
+        $(this).click(function(){
+             clicklikes($(this),$(this).attr('id'));
+        });
+  });
+});
+</script>
+<!--add likes +1 the end-->

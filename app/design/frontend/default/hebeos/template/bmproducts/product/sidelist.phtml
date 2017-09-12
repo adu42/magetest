@@ -1,0 +1,43 @@
+<?php
+/**
+* This is the part of 'BmProducts' module for Magento,
+* which allows easy access to product collection
+* with flexible filters
+*/
+?>
+<?php 
+
+
+
+// die;
+
+if (($_products = $this->getProductCollection()) && $_collectionSize = $_products->getSize()): ?>
+<div class="block hot-deals">
+	<div class="block-title"><?php echo $this->__($this->getTitle()) ?><?php echo $this->getWishlistProductCollection() ; ?></div>
+	<div class="block-content">
+	<?php $_productCollection=$this->getProductCollection() ?>
+	<?php $_collectionSize = $_productCollection->count() ?>
+		<ul class="sidelist">
+		<?php $i = 1; foreach ($_products->getItems() as $_product): ?>
+			<li <?php if($i==$_collectionSize) {echo ' class="last"'; } ?>>
+				<a class="product-img" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+				<img class="pro-list" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(300,400); ?>" width="90" height="120" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" />
+				</a>
+				<div class="hotDeal-np">
+					<a class="product-name" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a>	
+					<span>
+						<?php $price=$this->getPriceHtml($_product, true, $this->getPriceSuffix()); 
+						$price=str_replace('class="price-box"','class="price-box-list"',$price);
+						$price=str_replace('class="old-price"','class="old-price-list"',$price);
+						$price=str_replace('class="special-price"','class="special-price-list"',$price);
+						echo $price;
+						?>
+					</span>
+				</div>
+			</li>
+		<?php $i++; endforeach; ?>
+		</ul>
+	</div>
+</div>
+<?php endif; ?>
+

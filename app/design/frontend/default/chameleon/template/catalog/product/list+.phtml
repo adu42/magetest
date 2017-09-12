@@ -1,0 +1,107 @@
+<?php
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<?php
+
+function _cutDotStr($str,$len=60,$substr='',$splitChar=','){
+        if(strlen($str)>$len){
+            $_str=explode($splitChar,$str);
+            foreach($_str as &$v){  
+                $v=trim($v);
+            }
+            if(!empty($substr)){
+                $substr.=','.array_pop($_str);
+            }else{
+                $substr.=array_pop($_str);    
+            }
+            $str=implode($splitChar,$_str); 
+            if(strlen($str)>$len){
+               list($str,$substr)=_cutDotStr($str,$len,$substr,$splitChar);
+            }
+        }
+        return array($str,$substr);
+}
+
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');
+   $_current_id='';
+   $_uri=$_SERVER["REQUEST_URI"];
+if(stripos($_uri,'search')===false){
+ if(stripos($_uri,'tag/')===false){
+    $_categoryId=Mage::registry('current_category')->getId();
+    if($_categoryId)$_current_id='?catid='.$_categoryId.'&user_device=mobile';
+  }else{
+         $__uri=explode('/',$_uri);
+        $_current_id='?catid=tags'.end($__uri);
+  }  }
+?>
+<?php if(!$_productCollection->count()): ?>
+    <p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+	<?php echo $this->getToolbarHtml() ?>
+    <div class="category-products">
+        <?php $_collectionSize = $_productCollection->count() ?>
+	<?php $_columnCount = $this->getColumnCount(); ?>
+ <ul class="c-list">
+            <?php $i=0; foreach ($_productCollection as $_product): ?>
+                <li>
+                    <a href="<?php echo $_product->getProductUrl().$_current_id;?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>">
+                        <div class="wrap">
+                            <div class="product-image">
+                                <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(174,232); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                            </div>
+                            <div class="product-shop">
+                                <header>
+				<!--<h1><?php 
+$name=$_helper->productAttribute($_product, $_product->getName(), 'name');
+list($name,$clsStr)=_cutDotStr($name,40,'',' ');
+echo $name; ?></h1>-->
+                                    <?php echo $this->getPriceHtml($_product, true) ?>
+                                </header>
+                            </div>
+                        </div>
+                    </a>
+		     <?php if($_product->getRatingSummary()): ?>
+		<?php $summary= $this->getReviewsSummaryHtml($_product, 'short') ?>
+                <?php $product_url=$_product->getProductUrl();		
+			$summary= preg_replace('/href=\"\s*http:\/\/(\S+)\/#/',"href=\" ".$product_url."#",$summary);
+			echo  $summary;
+		?>
+                <?php endif; ?>
+		<div class="favorite">
+			<span class="fav-atc">(<?php
+			$resource = Mage::getSingleton('core/resource');
+			$readConnection = $resource->getConnection('core_read');
+			$productid = $_product->getId();
+			$total_wishlist = $readConnection->fetchCol("SELECT count(*) FROM wishlist_item where product_id = '$productid' ");
+													   
+			echo ''.$total_wishlist['0'];
+			?>)</span>
+		</div>
+                </li>
+            <?php endforeach ?>
+        </ul
+</div></div>
+    <?php echo $this->getToolbarHtml() ?>
+<?php endif; ?>

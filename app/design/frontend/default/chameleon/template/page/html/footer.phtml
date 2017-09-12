@@ -1,0 +1,26 @@
+	
+	<div class="myacc-footer">
+		<a href="<?php echo $this->getUrl('customer/account') ?>" rel="nofollow"><?php echo $this->__('My Account') ?></a>
+	</div>
+	<div class="history-footer">
+		<?php echo Mage::helper('ado_seo')->getViewedHistoryUrl('View History'); ?>
+	</div>
+	<div class="help-center-footer">
+		<a href="<?php echo $this->getUrl('').'help-center.html' ?>" rel="nofollow"><?php echo $this->__('Help Center') ?></a>
+	</div>
+	<div class="wishlist-footer">
+		<a href="<?php echo $this->getUrl('wishlist') ?>" rel="nofollow"><?php echo $this->__('My Favorites') ?></a>
+	</div>
+	<div class="login-reg">
+		<?php if (! Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+		<a href="<?php echo Mage::helper('customer')->getLoginUrl(); ?>"><?php echo $this->__('Login/Register') ?></a>
+		<?php else: ?>
+		<a href="<?php echo Mage::helper('customer')->getLogoutUrl(); ?>"><?php echo $this->__('Log out') ?></a>
+		<?php endif; ?>
+	</div>
+	<div class="bottom-helper-links"><?php // echo $this->getLayout()->createBlock('cms/block')->setBlockId('bottom-link-mobile')->toHtml() ?>
+</div>
+<address class="copyright">&nbsp;&nbsp;<?php echo $this->getCopyright() ?></address>
+<div class="actGotop"><a id="view-history" class="view-history can-open" href="#myhistory"><?php echo $this->__('View History') ?></a><a class="backtop" title="Top" href="javascript:;"><?php echo $this->__('Back To Top') ?></a></div>
+<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('livechat_mobile')->toHtml() ?>
+

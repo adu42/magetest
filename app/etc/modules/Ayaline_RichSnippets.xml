@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * created : 23/02/2012
+ * 
+ * @category Ayaline
+ * @package Ayaline_RichSnippets
+ * @author aYaline
+ * @copyright Ayaline - 2012 - http://magento-shop.ayaline.com
+ * @license http://shop.ayaline.com/magento/fr/conditions-generales-de-vente.html
+ */
+ -->
+<config>
+	<modules>
+		<Ayaline_RichSnippets>
+			<active>true</active>
+			<codePool>community</codePool>
+			<depends>
+				<Ayaline_Core />
+			</depends>
+		</Ayaline_RichSnippets>
+	</modules>
+</config>

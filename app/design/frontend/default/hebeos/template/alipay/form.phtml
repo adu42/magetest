@@ -1,0 +1,61 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category	CosmoCommerce
+ * @package 	CosmoCommerce_Alipay
+ * @copyright	Copyright (c) 2009 CosmoCommerce,LLC. (http://www.cosmocommerce.com)
+ * @contact :
+ * T: +86-021-66346672
+ * L: Shanghai,China
+ * M:sales@cosmocommerce.com
+ */
+?>
+
+
+
+<fieldset class="form-divst">
+	<?php $_code=$this->getMethodCode() ?>
+	<div  id="payment_form_<?php echo $_code ?>" style="display:none">
+                  <input type="radio" name="payment[cc_type]" value="boc-visa" onclick="document.getElementById('alipaymethod').value='YES';" /><img src="https://img.alipay.com/sys/wkpayment/card_logo_VC.png"  alt="Visa" /> 
+                <input type="radio" name="payment[cc_type]" value="boc-master" onclick="document.getElementById('alipaymethod').value='YES';" /><img src="https://img.alipay.com/sys/wkpayment/card_logo_MC.png"  alt="MasterCard"  />
+		<input id="alipaymethod" type="hidden" class="required-entry" />
+        <input type="hidden" id="jsreturn" name="payment[jsreturn]" value="" />
+	</div>
+</fieldset>
+<script>
+if(window["alipay-merchant-result"]){
+    var d=document.getElementsByName('payment[jsreturn]');
+    for(i=0;i<d.length;i++){
+        d[i].value=window["alipay-merchant-result"];
+    }
+}else{
+     var sobj = document.createElement('script');
+      sobj.type = "text/javascript";
+      sobj.src = "https://irds.alipay.com/merchant/merchant.js";
+      var headobj = document.getElementsByTagName('head')[0];
+      headobj.appendChild(sobj);
+      sobj.onload=sobj.onreadystatechange=function(){
+          if (!this.readyState || 'loaded' === this.readyState || 'complete' === this.readyState) {
+            if(window["alipay-merchant-result"]){
+                var d=document.getElementsByName('payment[jsreturn]');
+                for(i=0;i<d.length;i++){
+                    d[i].value=window["alipay-merchant-result"];
+                }
+            }
+            this.onload = this.onreadystatechange = null;
+          }
+      }
+    
+}
+</script>

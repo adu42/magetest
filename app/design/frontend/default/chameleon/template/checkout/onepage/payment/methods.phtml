@@ -1,0 +1,184 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * One page checkout payment methods
+ *
+ * @see Mage_Checkout_Block_Onepage_Payment_Methods
+ */
+ function getIcons($_code){
+	$_icons=array(
+		'paypal'=>array('icons-card-1',
+				'icons-card-2',
+				'icons-card-3',
+				'icons-card-4',
+				'icons-card-5',
+				'icons-card-6',
+				'icons-card-7',
+				'icons-card-8',
+				'icons-card-9',
+				'icons-card-10',
+				'icons-card-11',
+				'icons-card-12',
+				'icons-card-13',
+				'icons-card-14',
+				'icons-card-15',),
+		'paypal_express'=>array(
+				'icons-card-1',
+				'icons-card-2',
+				'icons-card-3',
+				'icons-card-4',
+				'icons-card-5',
+				'icons-card-6',
+				'icons-card-7',
+				'icons-card-8',
+				'icons-card-9',
+				'icons-card-10',
+				'icons-card-11',
+				'icons-card-12',
+				'icons-card-13',
+				'icons-card-14',
+				'icons-card-15',),
+	/*	'masapi'=>array('visaIcon',
+				'visaDebitIcon',
+				'masterCardIcon',
+				'masterCardDebitIcon',
+				'visaElectronIcon',
+				'americanExpressIcon',
+				'debitIcon',
+				'jcbIcon',
+				'dkIcon',),
+		
+		'worldpay'=>array(
+				'visaIcon',
+				'visaDebitIcon',
+				'masterCardIcon',
+				'masterCardDebitIcon',
+				'visaElectronIcon',
+				'americanExpressIcon',
+				'debitIcon',
+				'jcbIcon',
+				'dkIcon',),
+		*/
+		'default'=>array(
+		        'paypalIcon',
+				'visaIcon',
+				'visaDebitIcon',
+				'masterCardIcon',
+				'masterCardDebitIcon',
+				'visaElectronIcon',
+				'americanExpressIcon',
+				'debitIcon',
+				'jcbIcon',
+				'dkIcon',
+				'idealIcon',
+				'sofortIcon',
+				'sofortBankIcon',
+				'westernunionIcon',
+				'boletoIcon',
+				'yandexIcon',
+				'webMoneyBlueIcon',
+				'qiwiIcon',),
+		
+	);
+	$spanTmp='<span class="%s"></span>';
+	$_result='';
+	if(isset($_icons[$_code])){
+		foreach($_icons[$_code] as $iconName){
+			$_result.=vsprintf($spanTmp,array($iconName));
+		}
+	}
+	return $_result;
+ }
+
+$defaultDescription =$this->__('We currently accept PayPal, common credit and debit cards, Western Union, wire transfer and realtime bank transfer for all orders (you can check the availability listed below). We also take security very seriously indeed, so your details will be safe with us.');
+ 
+?>
+<dl class="sp-methods" id="checkout-payment-method-load">
+<?php
+	$_html=array();
+    $methods = $this->getMethods();
+    $oneMethod = count($methods) <= 1;
+?>
+    <?php if(!$oneMethod): ?>
+    	<dt>
+        <select id="p_method_checkout" name="payment[method]" onchange="showPaymentFormIcon(this.options[this.selectedIndex].value);">
+        <option value=""><?php echo $this->__('Please Select Payment Method'); ?></option>
+        <?php $_html[]='<dd id="payment-method-default-description">'.$defaultDescription.'<p id="icon-">'.(getIcons('default')).'</p></dd>'; ?>
+       <?php $k=1; foreach ($methods as $_method):
+        	 $_code = $_method->getCode(); 
+			 $_html[]= '<dd>'.$this->getPaymentMethodFormHtml($_method).'<p id="icon-'.$_code.'"'.(($k!=0)?'style="display:none"':'').'>'.(getIcons($_code)).'</p></dd>';
+			 ?>
+        	<option value="<?php echo $_code ?>"><?php echo $this->htmlEscape($_method->getTitle()); ?></option>
+          <?php $k++;endforeach; ?>
+        </select>
+        </dt>
+        <?php echo implode('',$_html); ?>
+        <?php else: ?>
+        <dt>
+           <?php  foreach ($methods as $_method):
+        	 $_code = $_method->getCode(); ?>
+          <span class="no-display"><input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" checked="checked" class="radio" /></span>
+        <?php $oneMethod = $_code; ?>
+        <label for="p_method_<?php echo $_code ?>"><?php echo $this->getMethodTitle($_method) ?> <?php echo $this->getMethodLabelAfterHtml($_method) ?></label>
+       </dt>
+        <?php if ($html = $this->getPaymentMethodFormHtml($_method)): ?>
+    <dd>
+        <?php echo $html; ?>
+    </dd>
+    <?php endif; ?>
+     	<?php endforeach; ?>
+          <?php endif; ?>
+        
+    
+
+</dl>
+<?php echo $this->getChildChildHtml('additional'); ?>
+<script type="text/javascript">
+//<![CDATA[
+<?php echo $this->getChildChildHtml('scripts'); ?>
+payment.init();
+<?php if (is_string($oneMethod)): ?>
+    payment.switchMethod('<?php echo $oneMethod ?>');
+<?php endif; ?>
+function showPaymentFormIcon(v){
+	payment.switchMethod(v);
+	if(v.length>0){
+		$('payment-method-default-description').style.display='none';
+	}else{
+		$('payment-method-default-description').style.display='block';
+	}
+	if($('icon-'+v)){
+		jQuery('p[id^=icon-]').each(function(index, element) {
+            jQuery(this).css({'display':'none'});
+        });
+		
+		$('icon-'+v).style.display='block';
+	}
+}
+//]]>
+</script>

@@ -1,0 +1,50 @@
+<?php
+/**
+ * Moo Extension
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   Moo
+ * @package    Moo_Catalog
+ * @author     Mohamed Alsharaf <mohamed.alsharaf@gmail.com>
+ * @copyright  Copyright (c) 2010 Mohamed Alsharaf. (http://jamandcheese-on-phptoast.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Product media data template
+ *
+ * @see Mage_Catalog_Block_Product_View_Media
+ */
+?>
+<?php
+    $_product = $this->getProduct();
+    $_helper = $this->helper('catalog/output');
+
+$width=243;
+$height=324;
+
+$mainImagePath =$gallery= '';
+$galleryImages = $this->getGalleryImages();
+if (count($galleryImages) > 0){
+ $gallery = '<div id="slider" class="case_box"><ul>';
+   foreach ($galleryImages as $_image) {
+        $gallery .= '<li>'
+                 .  '<img src="'.$this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize($width,$height) . '" width="'.$width.'" height="'.$height.'" alt="' . $this->htmlEscape($_image->getLabel()) . '" />'
+                 .  '</li>';
+    }
+    $gallery .= '</ul></div>';
+}else{
+    $gallery = '<img src="'.$this->helper('catalog/image')->init($_product, 'image')->resize($width,$height).'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel()).'" />';
+}
+?>
+<?php echo $gallery; ?>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/tab_photo.js') ?>"></script>

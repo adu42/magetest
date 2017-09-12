@@ -1,0 +1,82 @@
+<?php
+/**
+ * created : 23/02/2012
+ * 
+ * @category Ayaline
+ * @package Ayaline_RichSnippets
+ * @author aYaline
+ * @copyright Ayaline - 2012 - http://magento-shop.ayaline.com
+ * @license http://shop.ayaline.com/magento/fr/conditions-generales-de-vente.html
+ */
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ * @see Ayaline_RichSnippets_Block_Catalog_Product_View
+ */
+/* @var $this Ayaline_RichSnippets_Block_Catalog_Product_View */
+?>
+<?php if($this->isEnabled()): ?>
+	<?php 
+		$_product = $this->getProduct(); 
+		$_taxHelper  = $this->helper('tax');
+		$_simplePricesTax = ($_taxHelper->displayPriceIncludingTax() || $_taxHelper->displayBothPrices());
+		$_finalPrice = $_taxHelper->getPrice($_product, $_product->getFinalPrice(), $_simplePricesTax);
+		$_productName = $this->escapeHtml($_product->getName());
+	?>
+	<div itemscope itemtype="http://data-vocabulary.org/Product">
+		<meta itemprop="name" content="<?php echo $_productName; ?>" />
+			
+		<?php if($this->canSendImage() && $_product->getImage()): ?>
+			<?php $_image = $this->helper('catalog/image')->init($_product, 'image'); ?>
+			<meta itemprop="image" content="<?php echo $_image; ?>" />
+		<?php endif; ?>
+			
+		<?php if($this->canSendDescription()): ?>
+			<meta itemprop="description" content="<?php echo $this->escapeHtml($_product->getDescription()); ?>" />
+		<?php endif; ?>
+		
+		<?php if($this->canSendBrand()): ?>
+			<meta itemprop="brand" content="<?php echo $this->escapeHtml($_product->getAttributeText('manufacturer')); ?>" />
+		<?php endif; ?>
+		
+		<?php $_category = $this->getCategory(); ?>
+		<?php if($this->canSendCategory() && $_category): ?>
+			<meta itemprop="category" content="<?php echo $this->escapeHtml($_category->getName()); ?>" />
+		<?php endif; ?>
+		
+		<?php if($this->canSendReview()) :?>
+			<?php $_count = $this->getReviewsCount(); ?>
+			<?php if($_count == 1): ?>
+				<div itemscope itemtype="http://data-vocabulary.org/Review">
+					<meta itemprop="itemreviewed" content="<?php echo $_productName; ?>" />
+					<meta itemprop="rating" content="<?php echo $this->getRating(); ?>" />
+					<?php $_review = $this->getFirstReview(); ?>
+					<?php if($_review): ?>
+						<meta itemprop="reviewer" content="<?php echo $this->escapeHtml($_review->getNickname()); ?>" />
+						<meta itemprop="dtreviewed" content="<?php echo $this->getCleanDate($_review->getCreatedAt()); ?>" />
+						<meta itemprop="description" content="<?php echo $this->escapeHtml($_review->getTitle()); ?>" />
+						<meta itemprop="summary" content="<?php echo $this->escapeHtml($_review->getDetail()); ?>" />
+					<?php endif; ?>
+				</div>
+			<?php elseif($_count > 1): ?>
+				<span itemprop="review" itemscope itemtype="http://data-vocabulary.org/Review-aggregate">
+					<meta itemprop="itemreviewed" content="<?php echo $_productName; ?>" />
+					<meta itemprop="count" content="<?php echo $this->getReviewsCount(); ?>" />
+					<meta itemprop="rating" content="<?php echo $this->getRating(); ?>" />
+				</span>
+  			<?php endif; ?>
+		<?php endif; ?>
+	
+		<?php if($this->canSendSku()): ?>
+			<meta itemprop="identifier" content="sku:<?php echo $_product->getSku(); ?>" />
+		<?php endif; ?>
+		
+		<span itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">
+			<meta itemprop="currency" content="<?php echo Mage::app()->getStore()->getBaseCurrencyCode(); ?>" />
+			<meta itemprop="price" content="<?php echo $_finalPrice; ?>" />
+			<meta itemprop="condition" content="New" />
+		</span>
+	</div>
+<?php endif; ?>

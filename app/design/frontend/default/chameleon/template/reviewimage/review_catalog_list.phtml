@@ -1,0 +1,164 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_items = $this->getReviewCollection(); ?>
+<?php $_products = array();  ?>
+<?php $helper = Mage::helper("reviewimage");  ?>
+<?php $categories = $this->getCategories();  ?>
+<?php $catalogReviewUrl = $this->getCatalogReviewsUrl(0);  ?>
+<div class="box-collateral box-reviews" id="customer-reviews">
+    <div class="style-gallery-banner">
+        <div class="give-away">
+            <img src="<?php echo $this->getSkinUrl('images/share.jpg'); ?>"/>
+			 <a rel="nofollow" act="" id="share-your-photo" href="#customer-reviews-form" class="share-your-photo"> <img src="<?php echo $this->getSkinUrl('images/up_load.png'); ?>"/></a>
+        </div>
+        <a rel="nofollow" act="" id="share-your-photo" href="#customer-reviews-form" class="share-your-photo"><i></i>Share your Photo</a>
+
+        <div class="gallery_sns_share">
+            <p>
+			<span class="star"></span>
+               <span><?php echo $helper->shareTitleDescription(); ?></span>
+            </p>
+            <a class="style-gallery-details" href="#style-gallery-detail" id="rules-details">More Details&gt;&gt;</a>
+
+            <div class="style-gallery-share" style="top: 292px;">
+                <?php if (count($_items)):
+                     $first_item =  $_items->getFirstItem();
+                     $first_item_images = $helper->getImages($first_item);
+                          ?>
+                <a title="Facebook" class="share-icon facebook-share-icon"></a>
+                <div class="share-icon pinterest-share-icon" href="http://pinterest.com/pin/create/button/?url=<?php echo $catalogReviewUrl; ?>&amp;media=<?php echo isset($first_item_images['big'])?$first_item_images['big']:''; ?>&amp;description=<?php echo nl2br($this->escapeHtml($helper->shareTitle())) ?>">
+                    <span class="PIN_1460190687192_button_pin" data-pin-log="button_pinit_bookmarklet" data-pin-href="https://www.pinterest.com/pin/create/button/"></span>
+                </div>
+                <a title="Google+" class="share-icon googleplus-share-icon" href="https://plus.google.com/share?url=<?php echo $catalogReviewUrl; ?>" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"></a>
+                <!-- <a onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" href="https://instagram.com/jjshouseuk/" class="share-icon instagram-share-icon" title="Instagram"></a> -->
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+    <div id="style-gallery-detail" class="white-popup mfp-hide">
+        <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('review-gallery-rules-regulations')->toHtml() ?>
+    </div>
+    <div id="customer-reviews-form" class="white-popup mfp-hide">
+        <?php echo $this->getChildHtml('review_custom_form') ; ?>
+        <div class="review-form-right-tips">
+        <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('review-form-right-tips')->toHtml() ?>
+        </div> 
+    </div>
+    <?php //if(count($categories)): ?>
+        <!--<div class="style-gallery-category">
+            <div class="clearfix sort-by">
+                <div class="list-name">
+				    <?php //$_cur_catalog_id = $this->getCatalogId(); ?>
+                    <a href="<?php //echo $this->getCatalogReviewsUrl(); ?>"<?php //echo (!$_cur_catalog_id)?' class="on"':''; ?> id="va" rel="nofollow">
+                        View All
+                    </a>
+                    <?php 
+					 //foreach($categories as $category): 
+						//$catalog_id = (is_object($category)?$category->getId():$category['entity_id']);
+					?>
+                    <a href="<?php //echo $this->getCatalogReviewsUrl($category); ?>"<?php //echo ($catalog_id==$_cur_catalog_id)?' class="on"':''; ?>  rel="nofollow">
+                        <?php //echo $category['name']; ?>
+                    </a>
+                    <?php //endforeach; ?>
+                </div>
+            </div>
+        </div>-->
+    <?php //endif; ?>
+
+    <?php if (count($_items)): ?>
+        <!--<h2><?php //echo $this->__('Customer Reviews') ?></h2>-->
+        <!---!!--->
+        <div id="shareTitle" class="hidden" dir="reviews"><?php echo nl2br($this->escapeHtml($helper->shareTitle())) ?></div>
+        <div id="likeUrl" class="hidden" dir="reviews"><?php echo $helper->likeUrl(); ?></div>
+        <div id="loadUrl" class="hidden" dir="reviews"><?php echo $helper->loadUrl(); ?></div>
+        <div id="max" class="hidden" dir="reviews"><?php echo $_items->getLastPageNumber(); ?></div>
+        <!---!!--->
+        <?php //echo $this->getChildHtml('toolbar') ?>
+        <ul class="reviews-group" dir="reviews">
+            <?php foreach ($_items as $_review): ?>
+            <?php
+            $_productId = $_review->getEntityPkValue();
+            $_product = isset($_products[$_productId]) ? $_products[$_productId] : ($_products[$_productId] = Mage::getModel('catalog/product')->load($_productId)); ?>
+            <li class="reviews-group-item">
+            <div class="review-one">
+                <!---!!--->
+                <div id="review-<?php echo $_review->getReviewId() ?>" class="white-popup" dir="reviews">
+                    <div class="review-detail-content hidden" dir="reviews" id="review-detail-content-<?php echo $_review->getReviewId() ?>"><?php echo nl2br($this->escapeHtml($_review->getDetail())) ?></div>
+                    <div class="review-detail-product hidden"  dir="reviews"  id="review-detail-product-<?php echo $_review->getReviewId() ?>"><a
+                            href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->__('Shop Now') ?></a>
+                    </div>
+                    <div class="review-detail-nicename hidden"  dir="reviews"
+                         id="review-detail-nicename-<?php echo $_review->getReviewId() ?>"><?php echo $this->__('Worn by <span>%s</span>', $this->escapeHtml($_review->getNickname())) ?></div>
+                    <div class="review-detail-share hidden"  dir="reviews"
+                         id="review-detail-share-<?php echo $_review->getReviewId() ?>"></div>
+                    <div class="review-detail-likes hidden"  dir="reviews"
+                         id="review-detail-likes-<?php echo $_review->getReviewId() ?>">
+                        <div class="gallery-like review-likes" id="<?php echo $_review->getReviewId() ?>">
+													<?php echo ($_review->getReviewLikes()) ? $_review->getReviewLikes() : 1; ?>
+					
+											
+	                </div>
+                    </div>
+                    <div class="review-photo-images"  dir="reviews"
+                         id="review-detail-images-<?php echo $_review->getReviewId() ?>"></div>
+                    <?php if (Mage::helper("reviewimage")->getActive() == '1'): ?>
+                        <?php
+                        $images = Mage::helper("reviewimage")->getImages($_review); //  $_review->getImages();
+                        if ($images):
+                            ?>
+                            <!---!!--->
+                            <div class="main-image" dir="reviews"></div>
+                            <div class="review-thumbnail-images"  dir="reviews"  data-id="<?php echo $_review->getReviewId() ?>">
+                                <?php   $hide = ''; //只显示第一张，其他的在弹框中展示  ?>
+                                <?php  foreach ($images as $i=>$image):
+                                    if($i>0)$hide=' hidden';
+                                    ?>
+                                    <img class="gallery-thumbnail-image<?php echo $hide;?> small" src="<?php echo $image['big']; ?>" dir="reviews"  data-zoom-image="<?php echo $image['big']; ?>" alt="<?php echo $helper->shareTitle(); ?>"/>
+
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="review-one-two">
+            <div class="name-date">
+                <div class="name-date-name"><?php echo $this->escapeHtml($_review->getNickname()) ?></div>
+                <div class="name-date-time"><small class="date"><?php echo $this->__('(Posted on %s)', $this->formatDate($_review->getCreatedAt()), 'long') ?></small></div>
+            </div>
+			<div class="gallery-like review-likes" id="<?php echo $_review->getReviewId() ?>">
+													<?php echo ($_review->getReviewLikes()) ? $_review->getReviewLikes() : 1; ?>
+					
+	                </div>
+            
+            </li>
+            <?php endforeach; ?>
+            <li id="review-loading" dir="reviews"><img src="<?php echo $this->getSkinUrl('images/ajax-loader.gif'); ?>"/></li>
+        </ul>
+        <?php //echo $this->getChildHtml('toolbar') ?>
+    <?php endif; ?>
+</div>

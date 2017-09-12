@@ -1,0 +1,31 @@
+<?php
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+/* @var $this Mage_Core_Block_Template */
+/* @var $catalogSearchHelper Mage_Catalogsearch_Helper_Data */
+$catalogSearchHelper =  $this->helper('catalogsearch');
+?>
+<form id="search_mini_form" action="<?php echo $catalogSearchHelper->getResultUrl() ?>" method="get">
+    <div class="home-search"><input type="search" name="<?php echo $this->helper('catalogsearch')->getQueryParamName() ?>" id="search" placeholder="<?php echo $this->__('Search') ?>..." maxlength="<?php echo $catalogSearchHelper->getMaxQueryLength();?>"/>
+    </div>
+    <button class="form-button"><em><?php echo $this->__('Go') ?></em></button>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    //var searchForm = new Varien.searchForm('search_mini_form', 'search', '<?php echo $this->__('Search') ?>');
+    //searchForm.initAutocomplete('<?php echo $catalogSearchHelper->getSuggestUrl() ?>', 'search_autocomplete');
+//]]>
+</script>

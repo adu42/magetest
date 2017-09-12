@@ -1,0 +1,107 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<div class="">
+
+<?php $_product = $this->getProduct(); ?>
+<?php $buttonTitle = $this->__('Add to Cart'); ?>
+<?php if($_product->isSaleable()): 
+  $_coreHelper = $this->helper('core');
+  ?>
+<script type="text/javascript" src="<?php echo $this->helper('core/js')->getJsUrl('jquery/custom-by-ado.js') ?>"></script>     
+
+<?php 
+      $_price= $_product->getSpecialPrice()>=0?$_product->getSpecialPrice():$_product->getPrice();
+      $totals = Mage::getSingleton('checkout/cart/')->getQuote()->getTotals(); 
+      $subtotal = $totals["subtotal"]->getValue(); 
+      $_coreHelper = $this->helper('core');
+        $customtotal = 0;
+        $variable = Mage::getModel('core/variable')->loadByCode('gifts_total');  //gifts_total
+        if(isset($variable)&&!empty($variable)){
+			$gifts_total=$variable->getValue('text');
+		//Âú×ãµÄ¼Û¸ñ
+		  $__coreHelper = $this->helper('core')->currency($gifts_total,false,false);
+		  $customtotal = $__coreHelper;
+        }
+        $getItems = Mage::getSingleton('checkout/cart/')->getItems();
+        $i=0;
+        $_canSubmit=false;
+			foreach($getItems as $_item) {
+				if(intval($_item->getPrice()) == 0) {
+					$i++;
+				}
+			}
+
+		if($_price==0 && $i>=1) {
+			echo "<script>function stopFroms(){
+	                         return 2;
+				          }
+			      </script>";
+		}elseif($_price==0 && $subtotal>=$customtotal ) {
+			echo "<script>function stopFroms(){document.getElementById('qty').value='1';return 1;}</script>"; 
+            $_canSubmit=true;
+		}elseif($_price==0 && $subtotal<$customtotal){
+			echo "
+			<script>
+				function stopFroms(){
+					return 2;
+				}
+			</script>
+			";
+		}elseif($_price>0){
+			echo "<script>function stopFroms(){return 1;}</script>"; 
+            $_canSubmit=true;
+		} 
+		?>
+        <script>
+			function stopFromsb(){alert('Sorry, As your current consumption amount is limited and can not shop this free commodity');}
+		</script>
+    <div class="add-to-cart">
+      
+	 <label for="qty"><?php echo $this->__('Quantity:') ?></label>
+        <input type="text" name="qty" id="qty" maxlength="12" value="<?php echo $this->getProductDefaultQty() * 1 ?>" title="<?php echo $this->__('Qty') ?>" class="input-text qty" size="2" />
+	<div class="add_to_cart_buttons add-to-cart-detail">    
+      <button type="button" title="<?php echo $buttonTitle ?>" class="button btn-cart" 
+	<?php 
+		if($_product->getPrice()==0 && $i>=1) {
+            echo 'onclick="stopFromsb()"';
+		}elseif($subtotal>=$customtotal && $_product->getPrice()==0){
+			echo 'onclick="if(stopFroms()==1){productAddToCartForm.submitLight(this)}"';
+		}elseif($_product->getPrice()>0){
+			echo 'onclick="if(stopFroms()==1){productAddToCartForm.submitLight(this)}"';
+		}elseif($subtotal<$customtotal && $_product->getPrice()==0) {
+			echo 'onclick="stopFromsb()"';
+		}
+		?>
+		><span><span><?php echo $buttonTitle ?></span></span></button>
+	</div>
+	<div id="add_to_cart_err" style="color:red;display:none;" ></div>
+        <?php //echo $this->getChildHtml('', true, true) ?>
+
+	 </div>
+</div>
+<?php endif; ?>

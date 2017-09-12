@@ -1,0 +1,44 @@
+<?php
+/**
+ * BelVG
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ 
+ * @category   Belvg
+ * @package    Chameleon Mobile Theme
+ * @copyright  Copyright (c) 2010 - 2012 BelVG LLC. (http://www.belvg.com)
+ * @license    http://store.belvg.com/BelVG-LICENSE-COMMUNITY.txt
+ */
+
+/**
+ * Product media data template
+ *
+ * @see Mage_Catalog_Block_Product_View_Media
+ */
+?>
+<?php
+    $_product = $this->getProduct();
+    $_helper = $this->helper('catalog/output');
+?>
+<div class="product-image-wrap">
+    <div class="product-image">
+        <ul><!--
+            --><li>
+                <?php
+                    $_img = '<span><img src="'.$this->helper('catalog/image')->init($_product, 'image')->resize(280).'" width="280" alt="'.$this->escapeHtml($this->getImageLabel()).'" title="'.$this->escapeHtml($this->getImageLabel()).'" /></span>';
+                    echo $_helper->productAttribute($_product, $_img, 'image');
+                ?>
+            </li><!--
+            <?php if (count($this->getGalleryImages()) > 0): ?>
+				<?php foreach ($this->getGalleryImages() as $_image): ?>
+                    --><li><img src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(280); ?>" width="280" height="280" alt="<?php echo $this->escapeHtml($_image->getLabel()) ?>" /></li><!--
+                <?php endforeach; ?>
+            <?php endif; ?>
+        --></ul>
+    </div>
+</div>

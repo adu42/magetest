@@ -1,0 +1,49 @@
+<?php
+/**
+ * This is the part of 'BmProducts' module for Magento,
+ * which allows easy access to product collection
+ * with flexible filters
+ */
+?>
+<?php if (($_products = Mage::helper('catalog/product')->getSoldProducts())): ?>
+<div class="block block-topdeal" style="width:215px;margin-bottom:15px; border:none;">
+	 <h4 class="block-title-recent" style="color:#ffffff; text-indent:10px;">Recent Orders</h4>
+  <div class="recent_order" style="border:1px solid #999;padding:10px;width:193px;">
+     <div style="position: relative; height: 402px; overflow: hidden; padding: 0pt; margin: 0pt;" id="topdeals">
+            <?php $_iterator=0; ?>
+	    <div id="topdeals1">
+				<ul class="top-list">
+				<?php foreach ($_products as $_product): ?>
+					<li>
+					<span class="recent_order_icon">&nbsp;</span>
+						 <a href="<?php echo Mage::getBaseUrl().$_product['url'] ?>" title="<?php echo $_product['name'] ?>"><?php echo $_product['name'] ?></a>
+					<br />ship to <?php echo $_product['address'];?>
+					</li>
+										<?php if(++$_iterator>10) {break;} ?>
+						<?php endforeach ?>
+				</ul>
+	    </div>
+	    <div id="topdeals2">	    </div>
+    </div>
+    
+ </div>
+</div>
+<script type="text/javascript">
+//top deals
+var speeda=10;
+var topdeals2=document.getElementById("topdeals2");
+var topdeals1=document.getElementById("topdeals1");
+var topdeals=document.getElementById("topdeals");
+topdeals2.innerHTML=topdeals1.innerHTML;
+function Marquee(){
+if(topdeals2.offsetTop-topdeals.scrollTop<=0){
+topdeals.scrollTop-=topdeals1.offsetHeight+10;
+}else{
+topdeals.scrollTop++;
+}
+}
+var MyMar=setInterval(Marquee,speeda);
+topdeals.onmouseover=function() {clearInterval(MyMar)}
+topdeals.onmouseout=function() {MyMar=setInterval(Marquee,speeda)}
+</script>
+<?php endif; ?>

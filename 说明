@@ -1,0 +1,45 @@
+1、后台块banner-top里把
+'url': '/ajax.php',  改成
+'url': '/ajax/ajax.php',
+
+Customer Configuration > Show Middle Name (initial) 后台设置成 No
+System > Permissions > Blocks 块白名单管理，用于邮件模板里块调用，可以在里面加入一些常用的块，否则不会被渲染并报错：
+  Security problem: newsletter/subscribe has not been whitelisted.
+  加入：
+  newsletter/subscribe
+  bmproducts/product_featured
+
+
+2、环境在php5.4~ php 5.6版本之间
+
+缓存说明：1.9 ce版还是没有全页缓存full page cache
+getNameInLayout
+1、layout里的所有带name的定义，都进行缓存
+2、cacheTags的数据都进行标签类型的缓存，也就是redis缓存，区别于key-value简单类型缓存
+后台的External Full-Page Cache并没有实现，只保留了一些接口和位置方法
+ Mage_PageCache_Model_Observer拦截get入口处理缓存，post方式的pass
+ Mage_PageCache_Model_Control_Zend只有清理缓存的方法，extension_loaded('Zend Page Cache'也就是依赖Zend Page Cache php扩展
+ 以及后台配置一些按钮
+ ____________________________________________________
+ 就目前有些功能全了，测试n个页面，然后修改样式--添加数据--脱离以前的功能对比
+
+1\缺js,css合并压缩
+2\支付页修改 保存填写未提交的状态，并email自动登陆
+
+product id > 85 是新上的
+RuralDock.com
+rd
+田园码头，很有诗意的名字
+商品定位：
+1、渔具（钓具:杆 10、线轮 10、浮瞟 10、线 5、鱼钩 5、工作手套 10）  50款
+2、鱼烹饪工具和方法论、钓鱼的视频及乐趣，钓鱼者俱乐部相关。
+3、海周边娱乐服装工具（泳衣 （男女50）、泳帽（10）、冲浪服（50）、冲浪板（10）、沙滩毯子（10）、沙滩气垫（2）、
+        防晒护肤服装、帽子、伞具、防晒化妆品
+        防冻护肤服装、鞋、帽、手套（20）、防冻化妆品（）
+        分: 男\女\青少年
+        ）
+4、
+
+
+
+
