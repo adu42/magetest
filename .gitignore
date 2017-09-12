@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+.gitignore
+.htaccess
+.htaccess.sample
+.idea/
+LICENSE.html
+LICENSE.txt
+LICENSE_AFL.txt
+LICENSE_EE.html
+LICENSE_EE.txt
+RELEASE_NOTES.txt
+var/
