@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_CatalogPermissions
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -594,7 +594,7 @@ class Enterprise_CatalogPermissions_Model_Observer
      */
     protected function _getCustomerGroupId()
     {
-        return Mage::getSingleton('customer/session')->getCustomerGroupId();
+        return (int) Mage::getSingleton('customer/session')->getCustomerGroupId();
     }
 
     /**
@@ -614,7 +614,7 @@ class Enterprise_CatalogPermissions_Model_Observer
      */
     protected function _getWebsiteId()
     {
-        return Mage::app()->getStore()->getWebsiteId();
+        return (int) Mage::app()->getStore()->getWebsiteId();
     }
 
     /**

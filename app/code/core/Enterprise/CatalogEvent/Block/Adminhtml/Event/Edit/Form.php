@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_CatalogEvent
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -157,12 +157,12 @@ class Enterprise_CatalogEvent_Block_Adminhtml_Event_Edit_Form extends Mage_Admin
             $form->getElement('category_name')->setText(
                 '<a href="' . Mage::helper('adminhtml')->getUrl('adminhtml/catalog_category/edit',
                                                             array('clear' => 1, 'id' => $currentCategory->getId()))
-                . '">' . $currentCategory->getName() . '</a>'
+                . '">' . $this->escapeHtml($currentCategory->getName()) . '</a>'
             );
         } else {
             $form->getElement('category_name')->setText(
                 '<a href="' . $this->getParentBlock()->getBackUrl()
-                . '">' . $currentCategory->getName() . '</a>'
+                . '">' . $this->escapeHtml($currentCategory->getName()) . '</a>'
             );
         }
 

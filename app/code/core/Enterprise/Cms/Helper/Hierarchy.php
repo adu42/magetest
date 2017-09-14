@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Cms
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -156,6 +156,8 @@ class Enterprise_Cms_Helper_Hierarchy extends Mage_Core_Helper_Abstract
             'menu_levels_down',
             'menu_ordered',
             'menu_list_type',
+            'top_menu_visibility',
+            'top_menu_excluded'
         );
         foreach ($forced as $element) {
             if (array_key_exists($element, $source)) {

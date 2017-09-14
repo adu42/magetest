@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Adminhtml
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -78,7 +78,9 @@ class Mage_Adminhtml_Block_System_Variable_Edit_Form extends Mage_Adminhtml_Bloc
 
         $useDefault = false;
         if ($this->getVariable()->getId() && $this->getVariable()->getStoreId()) {
-            $useDefault = !((bool)$this->getVariable()->getStoreHtmlValue());
+            $useDefault = !((bool)$this->getVariable()->getStoreHtmlValue()
+                || (bool)$this->getVariable()->getStorePlainValue()
+            );
             $this->getVariable()->setUseDefaultValue((int)$useDefault);
             $fieldset->addField('use_default_value', 'select', array(
                 'name'   => 'use_default_value',

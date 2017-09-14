@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Cms
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -635,5 +635,44 @@ class Enterprise_Cms_Model_Observer
         $nodePathIds = explode('/', $currentNode->getXpath());
 
         return in_array($cmsNode->getId(), $nodePathIds);
+    }
+
+    /**
+     * Generate full path for breadcrumbs
+     *
+     * @param Varien_Event_Observer $observer
+     * @return Enterprise_Cms_Model_Observer
+     */
+    public function cmsGenerateBreadcrumbs(Varien_Event_Observer $observer)
+    {
+        $breadcrumbs = $observer->getEvent()->getBreadcrumbs()->getCrumbs();
+        if (isset($breadcrumbs[1])) {
+            $breadcrumbsPage = $breadcrumbs[1];
+            unset($breadcrumbs[1]);
+        }
+        if ($currentNode = Mage::registry('current_cms_hierarchy_node')) {
+            $nodePathIds = explode('/', $currentNode->getXpath());
+            foreach ($nodePathIds as $nodeId) {
+                if ($currentNode->getId() != $nodeId) {
+                    $node = Mage::getModel('enterprise_cms/hierarchy_node')->load($nodeId);
+                    $breadcrumbs[] = array(
+                        'crumbName' => 'cms_node_' . $node->getId(),
+                        'crumbInfo' => array(
+                            'label' => $node->getLabel(),
+                            'link'  => $node->getUrl(),
+                            'title' => $node->getLabel()
+                        )
+                    );
+                }
+            }
+        }
+
+        if (isset($breadcrumbsPage)) {
+            array_push($breadcrumbs, $breadcrumbsPage);
+        }
+
+        $observer->getEvent()->getBreadcrumbs()->setCrumbs($breadcrumbs);
+
+        return $this;
     }
 }

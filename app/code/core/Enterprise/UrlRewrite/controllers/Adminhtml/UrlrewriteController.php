@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_UrlRewrite
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -150,6 +150,7 @@ class Enterprise_UrlRewrite_Adminhtml_UrlrewriteController extends Mage_Adminhtm
         }
 
         unset($data['form_key']);
+        $data['identifier'] = strtolower($data['identifier']);
         $this->_getSession()->setData('url_redirect_data', $data);
 
         try {

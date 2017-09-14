@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_PageCache
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -205,7 +205,11 @@ class Enterprise_PageCache_Model_Cookie extends Mage_Core_Model_Cookie
         $cookieIds = array_unique($cookieIds);
         $cookieIds = array_slice($cookieIds, 0, $countLimit);
         $cookieIds = implode(',', $cookieIds);
-        setcookie(Enterprise_PageCache_Model_Container_Viewedproducts::COOKIE_NAME, $cookieIds, 0, '/');
+        Enterprise_PageCache_Helper_Data::setCookieWithoutApp(
+            Enterprise_PageCache_Model_Container_Viewedproducts::COOKIE_NAME,
+            $cookieIds,
+            0
+        );
     }
 
     /**
@@ -215,7 +219,7 @@ class Enterprise_PageCache_Model_Cookie extends Mage_Core_Model_Cookie
      */
     public static function setCategoryCookieValue($value)
     {
-        setcookie(self::COOKIE_CATEGORY_PROCESSOR, $value, 0, '/');
+        Enterprise_PageCache_Helper_Data::setCookieWithoutApp(self::COOKIE_CATEGORY_PROCESSOR, $value, 0);
     }
 
     /**
@@ -236,7 +240,7 @@ class Enterprise_PageCache_Model_Cookie extends Mage_Core_Model_Cookie
      */
     public static function setCategoryViewedCookieValue($id)
     {
-        setcookie(self::COOKIE_CATEGORY_ID, $id, 0, '/');
+        Enterprise_PageCache_Helper_Data::setCookieWithoutApp(self::COOKIE_CATEGORY_ID, $id, 0);
     }
 
     /**
@@ -257,7 +261,7 @@ class Enterprise_PageCache_Model_Cookie extends Mage_Core_Model_Cookie
      */
     public static function setFormKeyCookieValue($formKey)
     {
-        setcookie(self::COOKIE_FORM_KEY, $formKey, 0, '/');
+        Enterprise_PageCache_Helper_Data::setCookieWithoutApp(self::COOKIE_FORM_KEY, $formKey, 0);
     }
 
     /**
@@ -294,5 +298,4 @@ class Enterprise_PageCache_Model_Cookie extends Mage_Core_Model_Cookie
     {
         $_COOKIE[self::COOKIE_CATEGORY_ID] = $categoryId;
     }
-
 }

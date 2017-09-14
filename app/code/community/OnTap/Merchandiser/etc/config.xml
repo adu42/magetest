@@ -21,14 +21,14 @@
  *
  * @category    OnTap
  * @package     OnTap_Merchandiser
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 -->
 <config>
     <modules>
         <OnTap_Merchandiser>
-            <version>2.2.8</version>
+            <version>2.2.9</version>
             <depends>
                 <Mage_Adminhtml/>
             </depends>
@@ -83,7 +83,7 @@
                 <rebuild_on_categorysave>1</rebuild_on_categorysave>
                 <rebuild_on_cron>1</rebuild_on_cron>
                 <new_products_handler>1</new_products_handler>
-                <cron_setup>0,30 * * * *</cron_setup>
+                <cron_setup>0 4 * * *</cron_setup>
                 <min_stock_threshold>1</min_stock_threshold>
                 <bestseller_sort_period>6</bestseller_sort_period>
             </merchandiser>
@@ -132,12 +132,20 @@
         <events>
             <catalog_category_save_after>
                 <observers>
-                    <merchandiser_catalog_category_prepare_save>
+                    <merchandiser_catalog_category_save_after>
                         <class>merchandiser/adminhtml_observer</class>
                         <method>categorySaveAfter</method>
-                    </merchandiser_catalog_category_prepare_save>
+                    </merchandiser_catalog_category_save_after>
                 </observers>
             </catalog_category_save_after>
+            <catalog_category_prepare_save>
+                <observers>
+                    <merchandiser_catalog_category_prepare_save>
+                        <class>merchandiser/adminhtml_observer</class>
+                        <method>categoryPrepareSave</method>
+                    </merchandiser_catalog_category_prepare_save>
+                </observers>
+            </catalog_category_prepare_save>
             <catalog_category_delete_after>
                 <observers>
                     <merchandiser_catalog_category_delete_after>
@@ -172,6 +180,13 @@
                 </OnTap_Merchandiser>
             </modules>
         </translate>
+        <enterprise>
+            <admingws>
+                <collection_load_before>
+                    <merchandiser__catalog_product_collection>merchandiser/adminhtml_adminGws::limit</merchandiser__catalog_product_collection>
+                </collection_load_before>
+            </admingws>
+        </enterprise>
     </adminhtml>
     <admin>
         <routers>

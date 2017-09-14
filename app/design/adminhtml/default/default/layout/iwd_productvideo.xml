@@ -5,7 +5,7 @@
             <action method="addLinkRel"><rel>stylesheet</rel><href>//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css</href></action>
 
             <action method="addItem"><type>js</type><name>iwd/productvideo/iwd-jquery-ui.min.js</name></action>
-            <action method="addItem"><type>js</type><name>iwd/all/modal.js</name></action>
+            <action method="addItem"><type>js</type><name>iwd/productvideo/modal.js</name></action>
 
             <action method="addItem"><type>js</type><name>iwd/productvideo/product-video.js</name></action>
             <action method="addItem"><type>js</type><name>iwd/productvideo/video.js</name></action>

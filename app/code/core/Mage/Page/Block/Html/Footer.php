@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Page
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -58,8 +58,7 @@ class Mage_Page_Block_Html_Footer extends Mage_Core_Block_Template
             (int)Mage::app()->getStore()->isCurrentlySecure(),
             Mage::getDesign()->getPackageName(),
             Mage::getDesign()->getTheme('template'),
-            Mage::getSingleton('customer/session')->isLoggedIn(),
-            Mage::helper('core/url')->getCurrentUrl()
+            Mage::getSingleton('customer/session')->isLoggedIn()
         );
     }
 

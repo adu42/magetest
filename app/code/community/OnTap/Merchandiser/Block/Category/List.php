@@ -20,7 +20,7 @@
  *
  * @category    OnTap
  * @package     OnTap_Merchandiser
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 class OnTap_Merchandiser_Block_Category_List extends Mage_Core_Block_Template
@@ -88,7 +88,9 @@ class OnTap_Merchandiser_Block_Category_List extends Mage_Core_Block_Template
 
         $html = "";
 
-        if (0 < $productCollection->count()) {
+        if ($currentPage > $productCollection->getLastPageNumber() || !$productCollection->count()) {
+            $html = Mage::helper('merchandiser')->__('false');
+        } else {
             foreach ($productCollection as $_product) {
                 $productBox =  $this->getLayout()
                     ->createBlock('merchandiser/adminhtml_catalog_product_list')
@@ -98,8 +100,6 @@ class OnTap_Merchandiser_Block_Category_List extends Mage_Core_Block_Template
                 $productBox->setCurrentPosition($currentPosition);
                 $html .= $productBox->toHtml();
             }
-        } else {
-            $html = Mage::helper('merchandiser')->__('false');
         }
 
         return $html;
@@ -160,8 +160,13 @@ class OnTap_Merchandiser_Block_Category_List extends Mage_Core_Block_Template
      */
     public function getProductCollection()
     {
-        $products = Mage::getModel('catalog/category')->load($this->getCategoryId())
-            ->getProductCollection()
+        /** @var Mage_Catalog_Model_Category $category */
+        $category = Mage::getModel('catalog/category')->load($this->getCategoryId());
+
+        /** @var OnTap_Merchandiser_Model_Resource_Catalog_Product_Collection $products */
+        $products = Mage::getResourceModel('merchandiser/catalog_product_collection')
+            ->setStoreId($category->getStoreId())
+            ->addCategoryFilter($category)
             ->addAttributeToSelect('*');
 
         $heroProducts = Mage::getModel('merchandiser/merchandiser')

@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_CatalogPermissions
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -229,29 +229,10 @@ class Enterprise_CatalogPermissions_Model_Resource_Permission_Index extends Mage
             foreach (array_keys($this->_permissionCache[$path]) as $uniqKey) {
                 if (isset($this->_permissionCache[$parentPath][$uniqKey])) {
                     foreach ($this->_grantsInheritance as $grant => $inheritance) {
-
                         $value = $this->_permissionCache[$parentPath][$uniqKey][$grant];
 
                         if ($this->_permissionCache[$path][$uniqKey][$grant] == $permissionParent) {
                             $this->_permissionCache[$path][$uniqKey][$grant] = $value;
-                        } else {
-                            if ($inheritance == 'allow') {
-                                $value = max(
-                                    $this->_permissionCache[$path][$uniqKey][$grant],
-                                    $value
-                                );
-                            }
-
-                            $value = min(
-                                $this->_permissionCache[$path][$uniqKey][$grant],
-                                $value
-                            );
-
-                            $this->_permissionCache[$path][$uniqKey][$grant] = $value;
-                        }
-
-                        if ($this->_permissionCache[$path][$uniqKey][$grant] == $permissionParent) {
-                            $this->_permissionCache[$path][$uniqKey][$grant] = null;
                         }
                     }
                 }

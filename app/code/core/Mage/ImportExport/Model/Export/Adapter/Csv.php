@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_ImportExport
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -124,6 +124,8 @@ class Mage_ImportExport_Model_Export_Adapter_Csv extends Mage_ImportExport_Model
             $this->_delimiter,
             $this->_enclosure
         );
+
+        $this->_rowsCount++;
 
         return $this;
     }

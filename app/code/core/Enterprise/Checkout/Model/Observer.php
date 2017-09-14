@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Checkout
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -98,7 +98,7 @@ class Enterprise_Checkout_Model_Observer
             return;
         }
         foreach ($addBySkuItems as $id => $params) {
-            $sku = isset($params['sku']) ? $params['sku'] : $id;
+            $sku = (string) (isset($params['sku']) ? $params['sku'] : $id);
             $cart->prepareAddProductBySku($sku, $params['qty'], isset($items[$id]) ? $items[$id] : array());
         }
         /* @var $orderCreateModel Mage_Adminhtml_Model_Sales_Order_Create */

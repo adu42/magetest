@@ -3,9 +3,7 @@
     <menu>
         <system>
             <children>
-                <iwdall>
-                    <children>
-                        <iwd_productvideo module="iwd_productvideo">
+                 <iwd_productvideo module="iwd_productvideo">
                             <title>Product Videos</title>
                             <sort_order>10</sort_order>
                             <action>adminhtml/iwd_productvideo_video/index</action>
@@ -27,8 +25,6 @@
                                 </iwd_pv_config>
                             </children>
                         </iwd_productvideo>
-                    </children>
-                </iwdall>
             </children>
         </system>
     </menu>
@@ -46,8 +42,6 @@
                                     </iwd_productvideo>
                                 </children>
                             </config>
-                            <iwdall>
-                                <children>
                                     <iwd_productvideo translate="title">
                                         <title>Product Video</title>
                                         <children>
@@ -62,8 +56,6 @@
                                             </iwd_pv_config>
                                         </children>
                                     </iwd_productvideo>
-                                </children>
-                            </iwdall>
                         </children>
                     </system>
                 </children>

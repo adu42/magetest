@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Checkout
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -332,10 +332,5 @@ class Mage_Checkout_Helper_Data extends Mage_Core_Helper_Abstract
     public function isCustomerMustBeLogged()
     {
         return Mage::getStoreConfigFlag(self::XML_PATH_CUSTOMER_MUST_BE_LOGGED);
-    }
-
-    public function enableTheme()
-    {
-        return Mage::getStoreConfigFlag('checkout/enable_theme');
     }
 }

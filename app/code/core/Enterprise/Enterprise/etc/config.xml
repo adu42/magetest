@@ -21,7 +21,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 -->
@@ -77,6 +77,14 @@
         </design>
     </install>
     <default>
+        <hints>
+            <store_switcher>
+                <url><![CDATA[http://merch.docs.magento.com/ee/user_guide/configuration/scope.html]]></url>
+            </store_switcher>
+        </hints>
+        <help>
+            <target_version>ee</target_version>
+        </help>
         <paypal>
             <bncode>Magento_Cart_Enterprise</bncode>
         </paypal>
@@ -89,7 +97,7 @@
                 <default_keywords>Magento, Varien, E-commerce</default_keywords>
             </head>
             <footer>
-                <copyright>&amp;copy; 2016 Magento Enterprise Edition Demo Store. All Rights Reserved.</copyright>
+                <copyright>&amp;copy; 2017 Magento Enterprise Edition Demo Store. All Rights Reserved.</copyright>
             </footer>
         </design>
         <system>

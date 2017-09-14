@@ -20,7 +20,7 @@
  *
  * @category    OnTap
  * @package     OnTap_Merchandiser
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 class OnTap_Merchandiser_Block_Adminhtml_System_Config_Form_Field_Attributes
@@ -49,7 +49,7 @@ class OnTap_Merchandiser_Block_Adminhtml_System_Config_Form_Field_Attributes
             array(
                 'values'    =>  $this->populateAttributes(),
                 'class' => 'vm_select'
-            ))->setWidth(100);
+            ))->setWidth(240);
 
         $renderLogic = $adminLayout->createBlock(
                 'merchandiser/adminhtml_system_config_form_renderer_select',

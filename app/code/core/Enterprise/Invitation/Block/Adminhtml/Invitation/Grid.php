@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Invitation
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -76,7 +76,8 @@ class Enterprise_Invitation_Block_Adminhtml_Invitation_Grid extends Mage_Adminht
         $this->addColumn('email', array(
             'header' => Mage::helper('enterprise_invitation')->__('Email'),
             'index' => 'invitation_email',
-            'type'  => 'text'
+            'type'  => 'text',
+            'escape' => true
         ));
 
         $renderer = (Mage::getSingleton('admin/session')->isAllowed('customer/manage'))

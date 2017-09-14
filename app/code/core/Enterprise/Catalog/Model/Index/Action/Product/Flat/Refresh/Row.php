@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Catalog
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -62,7 +62,7 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh_Row
     /**
      * Method deletes old row in the mview table and insert new one from view.
      *
-     * @return Enterprise_Catalog_Model_Index_Action_Product_Refresh_Row
+     * @return Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh_Row
      * @throws Enterprise_Index_Model_Action_Exception
      */
     public function execute()
@@ -84,7 +84,7 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh_Row
     /**
      * Validates value
      *
-     * @return Enterprise_Catalog_Model_Index_Action_Product_Refresh_Row
+     * @return Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh_Row
      * @throws Enterprise_Index_Model_Action_Exception
      */
     protected function _validate()
@@ -96,13 +96,13 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh_Row
     }
 
 
-        /**
+    /**
      * Reindex single product into flat product table
      *
      * @param int $storeId
      * @param int $productId
      *
-     * @return Enterprise_Catalog_Model_Index_Action_Product_Refresh_Row
+     * @return Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh_Row
      */
     protected function _reindexSingleProduct($storeId, $productId)
     {
@@ -124,11 +124,10 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh_Row
 
             foreach ($columnsChunks as $columns) {
                 $select      = $this->_connection->select();
-                $selectValue = $this->_connection->select();
                 $keyColumns  = array(
                     'entity_id'    => 'e.entity_id',
                     'attribute_id' => 't.attribute_id',
-                    'value'        =>  $this->_connection->getIfNullSql('`t2`.`value`', '`t`.`value`'),
+                    'value'        =>  $this->_connection->getCheckSql('t2.value_id > 0', 't2.value', 't.value'),
                 );
 
                 //EAV table/attributes
@@ -136,11 +135,6 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh_Row
                     $valueColumns = array();
                     $ids          = array();
                     $select->from(
-                        array('e' => $this->_productHelper->getTable('catalog/product')),
-                        $keyColumns
-                    );
-
-                    $selectValue->from(
                         array('e' => $this->_productHelper->getTable('catalog/product')),
                         $keyColumns
                     );

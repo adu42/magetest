@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_CatalogInventory
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -384,6 +384,7 @@ class Mage_CatalogInventory_Model_Observer
                 $stockItem = $option->getProduct()->getStockItem();
 
                 if ($quoteItem->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
+                    $stockItem->setParentItem($quoteItem);
                     $stockItem->setProductName($quoteItem->getName());
                 }
 

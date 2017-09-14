@@ -20,8 +20,8 @@
  *
  * @category    design
  * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
-<input type="text" pattern="\d*" name="qty[<?php echo $this->getItem()->getId();?>]" class="validate-number qty input-text" value="<?php echo $this->getItem()->getQty()*1;?>" size="2" />
+<input type="text" pattern="\d*(\.\d+)?" name="qty[<?php echo $this->getItem()->getId() ?>]" class="validate-number qty input-text" value="<?php echo $this->getItem()->getQty() * 1 ?>" size="2" />

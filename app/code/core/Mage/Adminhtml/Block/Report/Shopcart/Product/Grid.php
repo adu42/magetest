@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Adminhtml
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -62,11 +62,6 @@ class Mage_Adminhtml_Block_Report_Shopcart_Product_Grid extends Mage_Adminhtml_B
         $this->addColumn('name', array(
             'header'    =>Mage::helper('reports')->__('Product Name'),
             'index'     =>'name'
-        ));
-
-        $this->addColumn('sku', array(
-            'header'    =>Mage::helper('reports')->__('Product Sku'),
-            'index'     =>'sku'
         ));
 
         $currencyCode = $this->getCurrentCurrencyCode();

@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_PageCache
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -379,8 +379,12 @@ class Enterprise_PageCache_Model_Processor
      */
     public function getSessionInfoCacheId()
     {
-        $cookieName = Mage_Core_Model_Store::COOKIE_NAME;
-        return 'full_page_cache_session_info' . (isset($_COOKIE[$cookieName]) ? '_' . $_COOKIE[$cookieName] : '');
+        $cookieName = '_';
+        if (isset($_COOKIE[Mage_Core_Model_Store::COOKIE_NAME])) {
+            $cookieName .= $_COOKIE[Mage_Core_Model_Store::COOKIE_NAME];
+        }
+        $host = $this->_getCurrentHost();
+        return sprintf("full_page_cache_session_info%s_%s", $cookieName, $host);
     }
 
     /**
@@ -415,12 +419,10 @@ class Enterprise_PageCache_Model_Processor
             $isProcessed = false;
         }
 
-        $formKey = Enterprise_PageCache_Model_Cookie::getFormKeyCookieValue();
+        $formKey = Enterprise_PageCache_Helper_Form_Key::getFormKey();
         if (!$formKey) {
-            $formKey = Enterprise_PageCache_Helper_Data::getRandomString(16);
-            Enterprise_PageCache_Model_Cookie::setFormKeyCookieValue($formKey);
-        }
-
+            $formKey = Enterprise_PageCache_Helper_Form_Key::getFormKey(true);
+         }
         Enterprise_PageCache_Helper_Form_Key::restoreFormKey($content, $formKey);
 
         /**
@@ -715,7 +717,41 @@ class Enterprise_PageCache_Model_Processor
      */
     protected function _getFullPageUrl()
     {
-        $uri = false;
+        $uri = $this->_getCurrentHost();
+
+        /**
+         * Define request URI
+         */
+        if (!empty($uri)) {
+            if (isset($_SERVER['HTTP_X_ORIGINAL_URL'])) {
+                // IIS with Microsoft Rewrite Module
+                $uri.= $_SERVER['HTTP_X_ORIGINAL_URL'];
+            } elseif (isset($_SERVER['HTTP_X_REWRITE_URL'])) {
+                // IIS with ISAPI_Rewrite
+                $uri.= $_SERVER['HTTP_X_REWRITE_URL'];
+            } elseif (isset($_SERVER['REQUEST_URI'])) {
+                $uri.= $_SERVER['REQUEST_URI'];
+            } elseif (!empty($_SERVER['IIS_WasUrlRewritten']) && !empty($_SERVER['UNENCODED_URL'])) {
+                $uri.= $_SERVER['UNENCODED_URL'];
+            } elseif (isset($_SERVER['ORIG_PATH_INFO'])) {
+                $uri.= $_SERVER['ORIG_PATH_INFO'];
+                if (!empty($_SERVER['QUERY_STRING'])) {
+                    $uri.= $_SERVER['QUERY_STRING'];
+                }
+            }
+        }
+        return $uri;
+    }
+
+    /**
+     * Get Current Host
+     *
+     * @return string
+     */
+    protected function _getCurrentHost()
+    {
+        $uri = '';
+
         /**
          * Define server HTTP HOST
          */
@@ -730,24 +766,8 @@ class Enterprise_PageCache_Model_Processor
             $uri = $_SERVER['SERVER_NAME'];
         }
 
-        /**
-         * Define request URI
-         */
-        if ($uri) {
-            if (isset($_SERVER['REQUEST_URI'])) {
-                $uri.= $_SERVER['REQUEST_URI'];
-            } elseif (!empty($_SERVER['IIS_WasUrlRewritten']) && !empty($_SERVER['UNENCODED_URL'])) {
-                $uri.= $_SERVER['UNENCODED_URL'];
-            } elseif (isset($_SERVER['ORIG_PATH_INFO'])) {
-                $uri.= $_SERVER['ORIG_PATH_INFO'];
-                if (!empty($_SERVER['QUERY_STRING'])) {
-                    $uri.= $_SERVER['QUERY_STRING'];
-                }
-            }
-        }
         return $uri;
     }
-
 
     /**
      * Save metadata for cache in cache storage

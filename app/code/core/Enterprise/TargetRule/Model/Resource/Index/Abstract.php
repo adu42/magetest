@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_TargetRule
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -196,25 +196,31 @@ abstract class Enterprise_TargetRule_Model_Resource_Index_Abstract extends Mage_
      */
     public function saveResultForCustomerSegments($object, $segmentId, $productIds)
     {
-        $select = $this->_getReadAdapter()->select()
-            ->from($this->getMainTable(), 'targetrule_id')
-            ->where('entity_id = ?', $object->getProduct()->getEntityId())
-            ->where('store_id = ?', $object->getStoreId())
-            ->where('customer_group_id = ?', $object->getCustomerGroupId())
-            ->where('customer_segment_id = ?', $segmentId);
-        $targetruleId = $this->_getReadAdapter()->fetchOne($select);
-        if (!$targetruleId) {
-            $data = array(
-                'entity_id'           => $object->getProduct()->getEntityId(),
-                'store_id'            => $object->getStoreId(),
-                'customer_group_id'   => $object->getCustomerGroupId(),
-                'customer_segment_id' => $segmentId,
-            );
-            $this->_getWriteAdapter()->insert($this->getMainTable(), $data);
-            $targetruleId = $this->_getWriteAdapter()->lastInsertId();
-        } else {
-            $this->deleteIndexProducts($targetruleId);
-        }
+        $data = array(
+            'entity_id'           => $object->getProduct()->getEntityId(),
+            'store_id'            => $object->getStoreId(),
+            'customer_group_id'   => $object->getCustomerGroupId(),
+            'customer_segment_id' => $segmentId,
+        );
+
+        /**
+         * If the statement updates a row instead of inserting new one, LAST_INSERT_ID() is not meaningful.
+         * Which can be used to determine if record was inserted or updated by INSERT ON DUPLICATE statement later.
+         *
+         * @link http://dev.mysql.com/doc/refman/5.0/en/insert-on-duplicate.html
+         */
+        $updateFields = array(
+            'entity_id' => 'entity_id',
+            'targetrule_id' => new Zend_Db_Expr('LAST_INSERT_ID(targetrule_id)')
+        );
+        $this->_getWriteAdapter()->insertOnDuplicate(
+            $this->getMainTable(),
+            $data,
+            $updateFields
+        );
+        $targetruleId = $this->_getWriteAdapter()->lastInsertId();
+
+        $this->deleteIndexProducts($targetruleId);
         $this->saveIndexProducts($targetruleId, $productIds);
 
         return $this;

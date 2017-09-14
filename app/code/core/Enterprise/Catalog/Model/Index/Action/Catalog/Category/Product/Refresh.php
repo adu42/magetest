@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Catalog
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -574,7 +574,6 @@ class Enterprise_Catalog_Model_Index_Action_Catalog_Category_Product_Refresh
                         )
                     )
                 );
-
             $this->_nonAnchorCategoriesSelect[$store->getId()] = $select;
         }
 
@@ -619,113 +618,147 @@ class Enterprise_Catalog_Model_Index_Action_Catalog_Category_Product_Refresh
      * @param Mage_Core_Model_Store $store
      * @return Varien_Db_Select
      */
-    protected function _getAnchorCategoriesSelect(Mage_Core_Model_Store $store)
+    protected function _getAnchorCategoriesSubSelect(Mage_Core_Model_Store $store)
     {
         if (!isset($this->_anchorCategoriesSelect[$store->getId()])) {
             /** @var $eavConfig Mage_Eav_Model_Config */
             $eavConfig = $this->_factory->getSingleton('eav/config');
             $isAnchorAttributeId = $eavConfig->getAttribute(Mage_Catalog_Model_Category::ENTITY, 'is_anchor')->getId();
-            $statusAttributeId = $eavConfig->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'status')->getId();
-            $visibilityAttributeId = $eavConfig->getAttribute(
-                Mage_Catalog_Model_Product::ENTITY, 'visibility'
-            )->getId();
-
+            $entityTypeId = (int)$eavConfig->getEntityType(Mage_Catalog_Model_Category::ENTITY)->getEntityTypeId();
+            
             $rootCatIds = explode('/', $this->_getPathFromCategoryId($store->getRootCategoryId()));
             array_pop($rootCatIds);
 
             $select = $this->_connection->select()
-                ->from(array('cc' => $this->_getTable('catalog/category')), array())
+                ->from(array('cc' => $this->_getTable('catalog/category')), array(
+                        'cc_entity_id' => 'cc.entity_id',
+                        'cc2_entity_id' => 'cc2.entity_id')
+                )
                 ->joinInner(
                     array('cc2' => $this->_getTable('catalog/category')),
                     'cc2.path LIKE '
-                        . $this->_connection->getConcatSql(
-                            array(
-                                $this->_connection->quoteIdentifier('cc.path'),
-                                $this->_connection->quote('/%')
-                            )
+                    . $this->_connection->getConcatSql(
+                        array(
+                            $this->_connection->quoteIdentifier('cc.path'),
+                            $this->_connection->quote('/%')
                         )
-                        . ' AND cc.entity_id NOT IN (' . implode(',', $rootCatIds) . ')',
-                    array()
-                )
-                ->joinInner(
-                    array('ccp' => $this->_getTable('catalog/category_product')),
-                    'ccp.category_id = cc2.entity_id',
-                    array()
-                )
-                ->joinInner(
-                    array('cpw' => $this->_getTable('catalog/product_website')),
-                    'cpw.product_id = ccp.product_id',
-                    array()
-                )
-                ->joinInner(
-                    array('cpsd' => $this->_getTable(array('catalog/product', 'int'))),
-                    'cpsd.entity_id = ccp.product_id AND cpsd.store_id = 0 AND cpsd.attribute_id = '
-                        . $statusAttributeId,
-                    array()
-                )
-                ->joinLeft(
-                    array('cpss' => $this->_getTable(array('catalog/product', 'int'))),
-                    'cpss.entity_id = ccp.product_id AND cpss.attribute_id = cpsd.attribute_id'
-                        . ' AND cpss.store_id = ' . $store->getId(),
-                    array()
-                )
-                ->joinInner(
-                    array('cpvd' => $this->_getTable(array('catalog/product', 'int'))),
-                    'cpvd.entity_id = ccp.product_id AND cpvd.store_id = 0'
-                        . ' AND cpvd.attribute_id = ' . $visibilityAttributeId,
-                    array()
-                )
-                ->joinLeft(
-                    array('cpvs' => $this->_getTable(array('catalog/product', 'int'))),
-                    'cpvs.entity_id = ccp.product_id AND cpvs.attribute_id = cpvd.attribute_id '
-                        . 'AND cpvs.store_id = ' . $store->getId(),
+                    )
+                    . ' AND cc.entity_id NOT IN (' . implode(',', $rootCatIds) . ')',
                     array()
                 )
                 ->joinInner(
                     array('ccad' => $this->_getTable(array('catalog/category', 'int'))),
-                    'ccad.entity_id = cc.entity_id AND ccad.store_id = 0'
-                        . ' AND ccad.attribute_id = ' . $isAnchorAttributeId,
+                    'ccad.entity_id = cc.entity_id AND ccad.store_id = 0 AND ccad.entity_type_id = ' . $entityTypeId
+                    . ' AND ccad.attribute_id = ' . $isAnchorAttributeId,
                     array()
                 )
                 ->joinLeft(
                     array('ccas' => $this->_getTable(array('catalog/category', 'int'))),
-                    'ccas.entity_id = cc.entity_id AND ccas.attribute_id = ccad.attribute_id'
-                        . ' AND ccas.store_id = ' . $store->getId(),
+                    'ccas.entity_id = cc.entity_id AND ccas.attribute_id = ccad.attribute_id AND ccas.entity_type_id = ' . $entityTypeId
+                    . ' AND ccas.store_id = ' . $store->getId(),
                     array()
-                )
-                ->where('cpw.website_id = ?', $store->getWebsiteId())
-                ->where(
-                    $this->_connection->getIfNullSql('cpss.value', 'cpsd.value') . ' = ?',
-                    Mage_Catalog_Model_Product_Status::STATUS_ENABLED
-                )
-                ->where(
-                    $this->_connection->getIfNullSql('cpvs.value', 'cpvd.value') . ' IN (?)',
-                    array(
-                        Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
-                        Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG
-                    )
                 )
                 ->where(
                     $this->_connection->getIfNullSql('ccas.value', 'ccad.value') . ' = ?',
                     1
-                )
-                ->columns(
-                    array(
-                        'category_id'   => 'cc.entity_id',
-                        'product_id'    => 'ccp.product_id',
-                        'position'      => new Zend_Db_Expr('ccp.position + 10000'),
-                        'is_parent'     => new Zend_Db_Expr('0'),
-                        'store_id'      => new Zend_Db_Expr($store->getId()),
-                        'visibility'    => new Zend_Db_Expr(
-                            $this->_connection->getIfNullSql('cpvs.value', 'cpvd.value')
-                        )
-                    )
                 );
 
             $this->_anchorCategoriesSelect[$store->getId()] = $select;
         }
-
         return $this->_anchorCategoriesSelect[$store->getId()];
+    }
+
+    /**
+     * Retrieve select for reindex products of non anchor categories by particular subselect
+     *
+     * @deprecated
+     *
+     * @param Mage_Core_Model_Store $store
+     * @return Varien_Db_Select
+     */
+    protected function _getAnchorCategoriesSelect(Mage_Core_Model_Store $store)
+    {
+        $subSelect = $this->_getAnchorCategoriesSubSelect($store);
+        return $this->_getAnchorCategoriesSelectBySubSelect($subSelect, $store);
+    }
+
+    /**
+     * Retrieve select for reindex products of non anchor categories by particular subselect
+     *
+     * @param Varien_Db_Select $subSelect
+     * @param Mage_Core_Model_Store $store
+     * @return Varien_Db_Select
+     */
+    protected function _getAnchorCategoriesSelectBySubSelect(Varien_Db_Select $subSelect, Mage_Core_Model_Store $store)
+    {
+        /** @var $eavConfig Mage_Eav_Model_Config */
+        $eavConfig = $this->_factory->getSingleton('eav/config');
+        $statusAttributeId = $eavConfig->getAttribute(Mage_Catalog_Model_Product::ENTITY, 'status')->getId();
+        $visibilityAttributeId = $eavConfig->getAttribute(
+            Mage_Catalog_Model_Product::ENTITY, 'visibility'
+        )->getId();
+
+        $select = $this->_connection->select()
+            ->from(array('c' => $subSelect), array())
+            ->joinInner(
+                array('ccp' => $this->_getTable('catalog/category_product')),
+                'ccp.category_id = c.cc2_entity_id',
+                array()
+            )
+            ->joinInner(
+                array('cpw' => $this->_getTable('catalog/product_website')),
+                'cpw.product_id = ccp.product_id',
+                array()
+            )
+            ->joinInner(
+                array('cpsd' => $this->_getTable(array('catalog/product', 'int'))),
+                'cpsd.entity_id = ccp.product_id AND cpsd.store_id = 0 AND cpsd.attribute_id = '
+                . $statusAttributeId,
+                array()
+            )
+            ->joinLeft(
+                array('cpss' => $this->_getTable(array('catalog/product', 'int'))),
+                'cpss.entity_id = ccp.product_id AND cpss.attribute_id = cpsd.attribute_id'
+                . ' AND cpss.store_id = ' . $store->getId(),
+                array()
+            )
+            ->joinInner(
+                array('cpvd' => $this->_getTable(array('catalog/product', 'int'))),
+                'cpvd.entity_id = ccp.product_id AND cpvd.store_id = 0'
+                . ' AND cpvd.attribute_id = ' . $visibilityAttributeId,
+                array()
+            )
+            ->joinLeft(
+                array('cpvs' => $this->_getTable(array('catalog/product', 'int'))),
+                'cpvs.entity_id = ccp.product_id AND cpvs.attribute_id = cpvd.attribute_id '
+                . 'AND cpvs.store_id = ' . $store->getId(),
+                array()
+            )
+            ->where('cpw.website_id = ?', $store->getWebsiteId())
+            ->where(
+                $this->_connection->getIfNullSql('cpss.value', 'cpsd.value') . ' = ?',
+                Mage_Catalog_Model_Product_Status::STATUS_ENABLED
+            )
+            ->where(
+                $this->_connection->getIfNullSql('cpvs.value', 'cpvd.value') . ' IN (?)',
+                array(
+                    Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
+                    Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG
+                )
+            )
+            ->columns(
+                array(
+                    'category_id' => 'cc_entity_id',
+                    'product_id' => 'ccp.product_id',
+                    'position' => new Zend_Db_Expr('ccp.position + 10000'),
+                    'is_parent' => new Zend_Db_Expr('0'),
+                    'store_id' => new Zend_Db_Expr($store->getId()),
+                    'visibility' => new Zend_Db_Expr(
+                        $this->_connection->getIfNullSql('cpvs.value', 'cpvd.value')
+                    )
+                )
+            );
+        return $select;
     }
 
     /**
@@ -735,9 +768,9 @@ class Enterprise_Catalog_Model_Index_Action_Catalog_Category_Product_Refresh
      */
     protected function _reindexAnchorCategories(Mage_Core_Model_Store $store)
     {
-        $selects = $this->_prepareSelectsByRange($this->_getAnchorCategoriesSelect($store), 'entity_id');
-
-        foreach ($selects as $select) {
+        $selects = $this->_prepareSelectsByRange($this->_getAnchorCategoriesSubSelect($store), 'entity_id');
+        foreach ($selects as $subSelect) {
+            $select = $this->_getAnchorCategoriesSelectBySubSelect($subSelect, $store);
             $this->_connection->query(
                 $this->_connection->insertFromSelect(
                     $select,

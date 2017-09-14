@@ -20,7 +20,7 @@
  *
  * @category    design
  * @package     default_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -761,10 +761,12 @@
 
         getMetadataFields: function() {
             return [
+                <?php if (Mage::helper('enterprise_cms/hierarchy')->isMetadataEnabled()): ?>
                 'meta_first_last',
                 'meta_next_previous',
                 'meta_cs_enabled',
                 'meta_chapter_section',
+                <?php endif ?>
                 'pager_visibility',
                 'pager_frame',
                 'pager_jump',

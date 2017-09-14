@@ -20,10 +20,10 @@
  *
  * @category    OnTap
  * @package     OnTap_Merchandiser
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
-class OnTap_Merchandiser_Block_Adminhtml_Catalog_Category_Tab_Smartmerch extends Mage_Core_Block_Template
+class OnTap_Merchandiser_Block_Adminhtml_Catalog_Category_Tab_Smartmerch extends Mage_Adminhtml_Block_Template
 {
     /**
      * _construct
@@ -36,6 +36,16 @@ class OnTap_Merchandiser_Block_Adminhtml_Catalog_Category_Tab_Smartmerch extends
     }
 
     /**
+     * Retrieve current category instance
+     *
+     * @return Mage_Catalog_Model_Category
+     */
+    public function getCategory()
+    {
+        return Mage::registry('category');
+    }
+
+    /**
      * getCategoryValues
      *
      * @return array
@@ -45,16 +55,6 @@ class OnTap_Merchandiser_Block_Adminhtml_Catalog_Category_Tab_Smartmerch extends
         $categoryValues = Mage::getResourceModel('merchandiser/merchandiser')
             ->fetchCategoriesValuesByCategoryId($this->getCategory()->getId());
         return count($categoryValues) ? array_shift($categoryValues) : null;
-    }
-
-    /**
-     * getCategory
-     *
-     * @return object
-     */
-    public function getCategory()
-    {
-        return Mage::registry('category');
     }
 
     /**

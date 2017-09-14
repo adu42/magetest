@@ -20,7 +20,7 @@
  *
  * @category    OnTap
  * @package     OnTap_Merchandiser
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 class OnTap_Merchandiser_Model_Resource_Merchandiser extends Mage_Catalog_Model_Resource_Abstract
@@ -47,14 +47,16 @@ class OnTap_Merchandiser_Model_Resource_Merchandiser extends Mage_Catalog_Model_
     public $vmBuildTable;
 
     /**
-     * _construct
+     * Resource initialization
      */
     public function _construct()
     {
         parent::_construct();
-        $this->catalogCategoryProduct = Mage::getSingleton('core/resource')->getTableName('catalog_category_product');
-        $this->categoryValuesTable = Mage::getSingleton('core/resource')->getTableName('merchandiser_category_values');
-        $this->vmBuildTable = Mage::getSingleton('core/resource')->getTableName('merchandiser_vmbuild');
+
+        $this->catalogCategoryProduct = $this->getCoreResource()->getTableName('catalog_category_product');
+        $this->categoryValuesTable    = $this->getCoreResource()->getTableName('merchandiser_category_values');
+        $this->vmBuildTable           = $this->getCoreResource()->getTableName('merchandiser_vmbuild');
+
         $this->setConnection('core_read', 'core_write');
     }
 
@@ -76,19 +78,33 @@ class OnTap_Merchandiser_Model_Resource_Merchandiser extends Mage_Catalog_Model_
     }
 
     /**
-     * insertMultipleProductsToCategory
+     * Assign products to categories at specified positions, skipping non-existing products/categories
      *
-     * @param mixed $insertData
+     * @param array $insertData
      * @return void
      */
     public function insertMultipleProductsToCategory($insertData)
     {
         $write = $this->_getWriteAdapter();
+
+        // Attempt to insert all rows at once, assuming that referential integrity is maintained
         try {
             $write->insertMultiple($this->catalogCategoryProduct, $insertData);
+            return;
         } catch (Exception $e) {
-            Mage::log($e->getMessage());
+            // Fall back to per-row insertion, because even one erroneous row fails entire batch
         }
+
+        // Insert rows one by one, skipping erroneous ones and logging encountered errors
+        $write->beginTransaction();
+        foreach ($insertData as $insertRow) {
+            try {
+                $write->insert($this->catalogCategoryProduct, $insertRow);
+            } catch (Exception $e) {
+                Mage::log($e->getMessage());
+            }
+        }
+        $write->commit();
     }
 
     /**
@@ -140,7 +156,10 @@ class OnTap_Merchandiser_Model_Resource_Merchandiser extends Mage_Catalog_Model_
     {
         $write = $this->_getWriteAdapter();
         try {
-            $whereCondition = array($write->quoteInto('category_id=? AND product_id IN ('.$products.')', $categoryId));
+            $whereCondition = array(
+                $write->quoteInto('category_id = ?', $categoryId),
+                $write->quoteInto('product_id IN (?)', $products)
+            );
             $write->delete($this->catalogCategoryProduct, $whereCondition);
         } catch (Exception $e) {
             Mage::log($e->getMessage());
@@ -305,17 +324,41 @@ class OnTap_Merchandiser_Model_Resource_Merchandiser extends Mage_Catalog_Model_
      */
     public function getVmBuildRows($attributeCode = "")
     {
-        $writeAdapter = $this->_getWriteAdapter();
-        try {
-            $select = $this->_getWriteAdapter()->select()->from($this->vmBuildTable);
-            if ($attributeCode != "") {
-                $condition = "attribute_code =  '$attributeCode'";
-                $select->where($condition);
-            }
-            return $writeAdapter->fetchAll($select);
-        } catch (Exception $e) {
-            return array();
+        return $this->getVmBuildRowsForInsert($attributeCode, false);
+    }
+
+    /**
+     * Get vmbuild rows for insert
+     *
+     * @param string|array $codes
+     * @param bool $unique
+     * @return array
+     */
+    public function getVmBuildRowsForInsert($codes, $unique = true)
+    {
+        $adapter = $this->_getWriteAdapter();
+
+        if ($codes && is_string($codes)) {
+            $codes = array($codes);
         }
+
+        $select = $adapter->select()
+            ->from($this->vmBuildTable);
+
+        if (!empty($codes)) {
+            $select->where('attribute_code IN(?)', $codes);
+        }
+
+        if ($unique) {
+            $data = array();
+            $unique = array_diff($codes, $adapter->fetchCol($select));
+            foreach ($unique as $code) {
+                $data[] = array('attribute_code' => $code);
+            }
+            return $data;
+        }
+
+        return $adapter->fetchAll($select);
     }
 
     /**
@@ -374,12 +417,18 @@ class OnTap_Merchandiser_Model_Resource_Merchandiser extends Mage_Catalog_Model_
      */
     public function insertVmBuildRows($iData)
     {
-        $writeAdapter = $this->_getWriteAdapter();
-        try {
-            $writeAdapter->insert($this->vmBuildTable, $iData);
-        } catch (Exception $e) {
-            Mage::log($e->getMessage());
-        }
+        $this->insertVmBuildRowsArray($iData);
+    }
+
+    /**
+     * Insert multiple rows into vmbuild table
+     *
+     * @param mixed $rows
+     * @return void
+     */
+    public function insertVmBuildRowsArray($rows)
+    {
+        $this->_getWriteAdapter()->insertMultiple($this->vmBuildTable, $rows);
     }
 
     /**
@@ -390,12 +439,15 @@ class OnTap_Merchandiser_Model_Resource_Merchandiser extends Mage_Catalog_Model_
      */
     public function reindexCategoryValuesIndexCron($vmBuildAttributeCodes)
     {
-        $whereCondition = ' automatic_sort <> "" OR automatic_sort <> "none"';
+        $whereCondition = ' automatic_sort <> "" AND automatic_sort <> "none"';
         if (count($vmBuildAttributeCodes) > 0) {
             $whereCondition .= ' OR ';
             $whereConditionArr = array();
-            foreach ($vmBuildAttributeCodes as $attributeCode) {
-                $whereConditionArr[] = 'FIND_IN_SET("'.$attributeCode.'", attribute_codes)';
+            foreach ($vmBuildAttributeCodes as $value) {
+                if ($value['attribute_code'] == 'category_ids') {
+                    $value['attribute_code'] = 'category_id';
+                }
+                $whereConditionArr[] = 'FIND_IN_SET("' . $value['attribute_code'] . '", attribute_codes)';
             }
             $whereCondition .= implode(' OR ', $whereConditionArr);
         }
@@ -523,14 +575,17 @@ class OnTap_Merchandiser_Model_Resource_Merchandiser extends Mage_Catalog_Model_
             ->getTableName('sales_bestsellers_aggregated_monthly');
 
         try {
+            $sumQtyOrdered = new Zend_Db_Expr("SUM(qty_ordered)");
             $write = $this->_getWriteAdapter();
             $select = $write->select()
                 ->from(array('cp' => $this->catalogCategoryProduct), array('cp.product_id'))
                 ->join(array('bs' => $bestsellersAggregatedMonthly),
-                    'bs.product_id = cp.product_id', array('qty_ordered' => 'qty_ordered'))
+                    'bs.product_id = cp.product_id', array('qty_ordered' => $sumQtyOrdered))
                 ->where("period >= :end AND period <= :start")
+                ->where('bs.store_id = ?', Mage_Core_Model_App::ADMIN_STORE_ID)
+                ->where('cp.category_id = ?', $categoryId)
                 ->group('cp.product_id')
-                ->order('bs.qty_ordered DESC');
+                ->order('qty_ordered DESC');
 
             return $write->fetchAll($select, array(
                 'end' => $end,
@@ -618,7 +673,7 @@ class OnTap_Merchandiser_Model_Resource_Merchandiser extends Mage_Catalog_Model_
             ), "`at_color`.`value` = `option_value`.`option_id`", array(
                 'color_value' => 'value'
             ))
-            ->where('option_value.store_id = 0');
+            ->where(new Zend_Db_Expr("(option_value.store_id = 0 OR option_value.store_id IS NULL)"));
 
         $fieldList = $this->_getWriteAdapter()->quote($valueOrderArray);
         $productCollection->getSelect()->order(new Zend_Db_Expr("FIELD (color_value, {$fieldList}) DESC"));
@@ -661,5 +716,15 @@ class OnTap_Merchandiser_Model_Resource_Merchandiser extends Mage_Catalog_Model_
             return $value['product_id'];
         }
         return "";
+    }
+
+    /**
+     * Retrieve core resource model
+     *
+     * @return Mage_Core_Model_Resource
+     */
+    public function getCoreResource()
+    {
+        return Mage::getSingleton('core/resource');
     }
 }

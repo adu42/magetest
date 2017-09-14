@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Checkout
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -61,6 +61,6 @@ class Mage_Checkout_Block_Onepage extends Mage_Checkout_Block_Onepage_Abstract
      */
     public function getActiveStep()
     {
-        return $this->isCustomerLoggedIn() ? 'shipping' : 'login';   //billing ==by@ado
+        return $this->isCustomerLoggedIn() ? 'billing' : 'login';
     }
 }

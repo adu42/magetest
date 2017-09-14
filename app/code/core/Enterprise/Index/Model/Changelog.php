@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Index
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -86,11 +86,11 @@ class Enterprise_Index_Model_Changelog
     {
         $select = $this->_connection->select()
             ->from(array('changelog' => $this->_metadata->getChangelogName()), array())
-            ->where('version_id >= ?', $this->_metadata->getVersionId())
+            ->where('version_id > ?', $this->_metadata->getVersionId())
             ->columns(array($this->_metadata->getKeyColumn()));
 
         if ($currentVersion) {
-            $select->where('version_id < ?', $currentVersion);
+            $select->where('version_id <= ?', $currentVersion);
         }
 
         return $this->_connection->fetchCol($select);

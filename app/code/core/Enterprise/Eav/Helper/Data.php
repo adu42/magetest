@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Eav
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -206,7 +206,7 @@ class Enterprise_Eav_Helper_Data extends Mage_Core_Helper_Abstract
                 'validate_filters'  => array(),
                 'backend_model'     => 'eav/entity_attribute_backend_array',
                 'source_model'      => 'eav/entity_attribute_source_table',
-                'backend_type'      => 'varchar',
+                'backend_type'      => 'text',
                 'default_value'     => false,
             ),
             'boolean'       => array(

@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_PageCache
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -44,6 +44,22 @@ class Enterprise_PageCache_Model_Processor_Category extends Enterprise_PageCache
      * @var string
      */
     protected $_queryParams;
+
+    /**
+     * Filter input parameters using parameters map
+     * @param array $inputParameters
+     *
+     * @return array
+     */
+    protected function _filterInputParameters($inputParameters)
+    {
+        return array_intersect_key(
+            !$inputParameters
+                ? array()
+                : $inputParameters,
+            array_flip($this->_paramsMap)
+        );
+    }
 
     /**
      * Return cache page id with application. Depends on catalog session and GET super global array.
@@ -81,9 +97,9 @@ class Enterprise_PageCache_Model_Processor_Category extends Enterprise_PageCache
 
         $sessionParams = Enterprise_PageCache_Model_Cookie::getCategoryCookieValue();
         if ($sessionParams) {
-            $sessionParams = (array)json_decode($sessionParams);
+            $sessionParams = $this->_filterInputParameters((array)json_decode($sessionParams));
             foreach ($sessionParams as $key => $value) {
-                if (in_array($key, $this->_paramsMap) && !isset($queryParams[$key])) {
+                if (!isset($queryParams[$key])) {
                     $queryParams[$key] = $value;
                 }
             }
@@ -142,7 +158,7 @@ class Enterprise_PageCache_Model_Processor_Category extends Enterprise_PageCache
         $queryParams = json_decode($this->_getQueryParams(), true);
         if (empty($queryParams)) {
             $queryParams = Enterprise_PageCache_Model_Cookie::getCategoryCookieValue();
-            $queryParams = json_decode($queryParams, true);
+            $queryParams = $this->_filterInputParameters(json_decode($queryParams, true));
         }
 
         if (is_array($queryParams) && !empty($queryParams)) {
@@ -164,7 +180,7 @@ class Enterprise_PageCache_Model_Processor_Category extends Enterprise_PageCache
     protected function _getQueryParams()
     {
         if (is_null($this->_queryParams)) {
-            $queryParams = array_merge($this->_getSessionParams(), $_GET);
+            $queryParams = $this->_filterInputParameters(array_merge($this->_getSessionParams(), $_GET));
             ksort($queryParams);
             $this->_queryParams = json_encode($queryParams);
         }

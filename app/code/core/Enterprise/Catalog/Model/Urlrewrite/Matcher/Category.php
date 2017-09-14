@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Catalog
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -168,9 +168,15 @@ class Enterprise_Catalog_Model_Urlrewrite_Matcher_Category
 
         $rewritePath = $rewriteRow['request_path'];
         if (!empty($this->_seoSuffix)) {
-            $rewritePath .= '.' . $this->_seoSuffix;
+            $rewritePath .= $this->_seoSuffix;
         }
-        if ($rewritePath == $requestPath) {
+
+        $cmpRequestPath = $requestPath;
+        if ($this->_seoSuffix == '/' && substr($this->_request->getPathInfo(), -1) == '/') {
+            $cmpRequestPath .= '/';
+        }
+
+        if ($rewritePath == $cmpRequestPath) {
             $this->_checkStoreRedirect($rewriteRow['url_rewrite_id']);
             return true;
         }
@@ -191,7 +197,7 @@ class Enterprise_Catalog_Model_Urlrewrite_Matcher_Category
                 if (!empty($rewrite)) {
                     $requestPath = $rewrite['request_path'];
                     if (!empty($this->_newStoreSeoSuffix)) {
-                        $requestPath .= '.' . $this->_newStoreSeoSuffix;
+                        $requestPath .= $this->_newStoreSeoSuffix;
                     }
 
                     $requestPath = $this->_getBaseUrl() . $requestPath;

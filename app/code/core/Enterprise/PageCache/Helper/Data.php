@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_PageCache
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 /**
@@ -38,6 +38,9 @@ class Enterprise_PageCache_Helper_Data extends Mage_Core_Helper_Abstract
     const CHARS_LOWERS                          = 'abcdefghijklmnopqrstuvwxyz';
     const CHARS_UPPERS                          = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const CHARS_DIGITS                          = '0123456789';
+
+    const COOKIE_CONFIG_FPC_KEY                 = 'COOKIE_CONFIG_FPC_KEY';
+    const XML_PATH_USE_COOKIE_CONFIG            = 'system/page_cache/use_cookie_config';
 
     /**
      * Get random generated string
@@ -102,5 +105,86 @@ class Enterprise_PageCache_Helper_Data extends Mage_Core_Helper_Abstract
             $isSSL = true;
         }
         return $isSSL;
+    }
+
+    /**
+     * Set cookie without app using cached cookie config
+     *
+     * @param string $name
+     * @param string $value
+     * @param int $period
+     * @param string $path
+     * @param string $domain
+     * @param bool $secure
+     * @param bool $httponly
+     */
+    public static function setCookieWithoutApp(
+        $name, $value, $period = null, $path = null, $domain = null, $secure = null, $httponly = null
+    ) {
+        $config = self::_getCookieConfig();
+        if (isset($config[self::XML_PATH_USE_COOKIE_CONFIG]) && $config[self::XML_PATH_USE_COOKIE_CONFIG]) {
+            if ($period === true) {
+                $period = 3600 * 24 * 365;
+            } elseif (is_null($period)) {
+                $period = isset($config[Mage_Core_Model_Cookie::XML_PATH_COOKIE_LIFETIME])
+                    ? $config[Mage_Core_Model_Cookie::XML_PATH_COOKIE_LIFETIME] : null;
+            }
+            if (is_null($path)) {
+                $path = isset($config[Mage_Core_Model_Cookie::XML_PATH_COOKIE_PATH])
+                    ? $config[Mage_Core_Model_Cookie::XML_PATH_COOKIE_PATH] : Mage::app()->getRequest()->getBasePath();
+            }
+            if (is_null($domain)) {
+                $domain = isset($config[Mage_Core_Model_Cookie::XML_PATH_COOKIE_DOMAIN])
+                    ? $config[Mage_Core_Model_Cookie::XML_PATH_COOKIE_DOMAIN]
+                    : Mage::app()->getRequest()->getHttpHost();
+            }
+            if (is_null($secure)) {
+                $secure = Mage::app()->getRequest()->isSecure();
+            }
+            if (is_null($httponly)) {
+                $httponly = !empty($config[Mage_Core_Model_Cookie::XML_PATH_COOKIE_HTTPONLY])
+                    ? (bool) $config[Mage_Core_Model_Cookie::XML_PATH_COOKIE_HTTPONLY] : null;
+            }
+        } else {
+            $path = '/';
+        }
+
+        if ($period == 0) {
+            $expire = 0;
+        } else {
+            $expire = time() + $period;
+        }
+
+        setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
+    }
+
+    /**
+     * Get cached cookie configuration for current store
+     *
+     * return array
+     */
+    protected static function _getCookieConfig()
+    {
+        $cacheInstance = Enterprise_PageCache_Model_Cache::getCacheInstance();
+        $config = $cacheInstance->load(self::COOKIE_CONFIG_FPC_KEY);
+        if (!$config) {
+            return array();
+        }
+
+        $config = @unserialize($config);
+        if (!is_array($config)) {
+            return array();
+        }
+
+        if (isset($_COOKIE[Mage_Core_Model_Store::COOKIE_NAME])) {
+            $storeIdentifier = $_COOKIE[Mage_Core_Model_Store::COOKIE_NAME];
+        } else {
+            $storeIdentifier = Mage::app()->getRequest()->getHttpHost() . Mage::app()->getRequest()->getBaseUrl();
+        }
+        if (!isset($config[$storeIdentifier])) {
+            return array();
+        }
+
+        return $config[$storeIdentifier];
     }
 }

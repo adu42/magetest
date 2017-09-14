@@ -20,7 +20,7 @@
  *
  * @category    OnTap
  * @package     OnTap_Merchandiser
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -392,8 +392,8 @@ class OnTap_Merchandiser_Adminhtml_MerchandiserController extends Mage_Adminhtml
      *
      * @return bool
      */
-    protected function _isAllowed()
-    {
-        return Mage::getSingleton('admin/session')->isAllowed('catalog/merchandiser');
-    }
+     protected function _isAllowed()
+     {
+         return Mage::helper('merchandiser')->isAllowed();
+     }
 }

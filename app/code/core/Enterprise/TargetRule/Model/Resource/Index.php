@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_TargetRule
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -312,7 +312,7 @@ class Enterprise_TargetRule_Model_Resource_Index extends Mage_Index_Model_Resour
                 }
                 foreach ($callbacks as $callback) {
                     if (is_array($callback)) {
-                        $v = $this->$callback[0]($v, $callback[1]);
+                        $v = $this->{$callback[0]}($v, $callback[1]);
                     } else {
                         $v = $this->$callback($v);
                     }

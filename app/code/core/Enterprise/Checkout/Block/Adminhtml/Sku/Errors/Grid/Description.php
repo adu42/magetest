@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Checkout
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -55,7 +55,7 @@ class Enterprise_Checkout_Block_Adminhtml_Sku_Errors_Grid_Description extends Ma
     {
         $canConfigure = $this->getProduct()->canConfigure() && !$this->getItem()->getIsConfigureDisabled();
         $productId = $this->escapeHtml(Mage::helper('core')->jsonEncode($this->getProduct()->getId()));
-        $itemSku = $this->escapeHtml(Mage::helper('core')->jsonEncode($this->getItem()->getSku()));
+        $itemSku = $this->escapeHtml(Mage::helper('core')->jsonEncode((string)$this->getItem()->getSku()));
 
         /* @var $button Mage_Adminhtml_Block_Widget_Button */
         $button = $this->getLayout()->createBlock('adminhtml/widget_button', '', array(

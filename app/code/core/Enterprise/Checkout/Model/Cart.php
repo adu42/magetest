@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Checkout
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -1095,7 +1095,7 @@ class Enterprise_Checkout_Model_Cart extends Varien_Object implements Mage_Check
     protected function _getValidatedItem($sku, $qty)
     {
         $code = Enterprise_Checkout_Helper_Data::ADD_ITEM_STATUS_SUCCESS;
-        if ($sku == '') {
+        if ($sku === '') {
             $code = Enterprise_Checkout_Helper_Data::ADD_ITEM_STATUS_FAILED_EMPTY;
         } else {
             if (!Zend_Validate::is($qty, 'Float')) {
@@ -1186,7 +1186,7 @@ class Enterprise_Checkout_Model_Cart extends Varien_Object implements Mage_Check
      */
     public function setAffectedItemConfig($sku, $config)
     {
-        if (!empty($sku) && !empty($config) && is_array($config)) {
+        if ($sku !== '' && !empty($config) && is_array($config)) {
             $this->_affectedItemsConfig[$sku] = $config;
         }
         return $this;

@@ -20,7 +20,7 @@
  *
  * @category    design
  * @package     default_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -43,7 +43,7 @@
             <?php else: ?>
                 <?php echo $this->getPriceHtml($_product, true); ?>
             <?php endif; ?>
-            <?php echo $helper->getStockQtyHtml($_product) ?>
+            <div><?php echo $helper->getStockQtyHtml($_product) ?></div>
         </h2>
         <input type="hidden" class="productid input-product-position productid<?php echo $pId ?>" rel="<?php echo $this->htmlEscape($_product->getSku()) ?>" name="product[<?php echo $pId ?>]" value="<?php echo $currentPosition++ ?>" />
         <div class="dragbox-content">

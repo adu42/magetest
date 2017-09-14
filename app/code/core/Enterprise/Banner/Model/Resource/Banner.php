@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Banner
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -443,17 +443,19 @@ class Enterprise_Banner_Model_Resource_Banner extends Mage_Core_Model_Resource_D
      * Get banners IDs that related to sales rule and satisfy conditions
      *
      * @param array $matchedCustomerSegments
-     * @param array $aplliedRules
+     * @param array $appliedRules
      * @param bool $enabledOnly
+     *
      * @return array
      */
-    public function getSalesRuleRelatedBannerIds($matchedCustomerSegments, $aplliedRules, $enabledOnly = true)
+    public function getSalesRuleRelatedBannerIds($matchedCustomerSegments, $appliedRules, $enabledOnly = true)
     {
         $adapter = $this->_getReadAdapter();
         $collection = Mage::getResourceModel('enterprise_banner/salesrule_collection');
         $collection->resetColumns()
-               ->addBannersFilter($aplliedRules, $enabledOnly)
+               ->addBannersFilter($appliedRules, $enabledOnly)
                ->addCustomerSegmentFilter($matchedCustomerSegments);
+
         return $adapter->fetchCol($collection->getSelect());
     }
 
@@ -464,6 +466,7 @@ class Enterprise_Banner_Model_Resource_Banner extends Mage_Core_Model_Resource_D
      * @param int $customerGroupId
      * @param array $matchedCustomerSegments
      * @param bool $enabledOnly
+     *
      * @return array
      */
     public function getCatalogRuleRelatedBannerIds(
@@ -475,6 +478,7 @@ class Enterprise_Banner_Model_Resource_Banner extends Mage_Core_Model_Resource_D
                ->addAppliedRuleFilter($websiteId, $customerGroupId)
                ->addBannersFilter($enabledOnly)
                ->addCustomerSegmentFilter($matchedCustomerSegments);
+
         return $adapter->fetchCol($collection->getSelect());
     }
 

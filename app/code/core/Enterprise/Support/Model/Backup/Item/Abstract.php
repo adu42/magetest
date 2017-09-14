@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Support
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -169,8 +169,10 @@ class Enterprise_Support_Model_Backup_Item_Abstract extends Mage_Core_Model_Abst
         $error = '';
 
         if (!is_writable($outputPath) || !is_readable($outputPath)) {
+            $io = new Varien_Io_File();
             $error = sprintf(
-                Mage::helper('enterprise_support')->__('Directory %s should have writable & readable permissions'), $outputPath);
+                Mage::helper('enterprise_support')->__('Directory %s should have writable & readable permissions'),
+                $io->getFilteredPath($outputPath));
         }
 
         return $error;

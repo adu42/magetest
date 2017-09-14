@@ -20,7 +20,7 @@
  *
  * @category    design
  * @package     default_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -66,7 +66,7 @@
                 <td class="label"><label><?php  echo $this->helper('enterprise_invitation')->__('Email'); ?><?php if ($this->canEditMessage()): ?><span class="required">*</span><?php endif; ?></label></td>
                 <td>
                 <?php if ($this->canEditMessage()): ?>
-                    <input type="text" class="required-entry input-text validate-email" name="email" value="<?php echo $this->getInvitation()->getEmail() ?>" />
+                    <input type="text" class="required-entry input-text validate-email" name="email" value="<?php echo $this->escapeHtml($this->getInvitation()->getEmail()) ?>" />
                 <?php else: ?>
                     <strong><?php echo $this->escapeHtml($this->getInvitation()->getEmail()) ?></strong>
                 <?php endif; ?>
