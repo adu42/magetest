@@ -19,7 +19,7 @@
  *
  * @category    design
  * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -119,7 +119,9 @@ Enterprise.Wishlist.Widget.Form.Create = Class.create(Enterprise.Wishlist.Widget
         if (!this.useAjax) {
             this.onWishlistCreated({serializedData: $(this._node).serialize()});
         } else {
-            var callback = (function(wishlistId){this.onWishlistCreated(wishlistId)}).bind(this);
+            var callback = (function(wishlistId){
+                this.onWishlistCreated(wishlistId);
+            }).bind(this);
             new Ajax.Request(this.action, {
                 method: 'post',
                 parameters: $(this._node).serialize(),
@@ -163,12 +165,12 @@ Enterprise.Wishlist.createWithCallback = function(createUrl, callback, useAjax) 
             if (this.isValid) {
                 Enterprise.Wishlist.createWithCallbackDialog.setBusy(true);
             }
-        })
+        });
     }
     Enterprise.Wishlist.createWithCallbackDialog.form.useAjax = useAjax;
     Enterprise.Wishlist.createWithCallbackDialog.form.onWishlistCreated = callback;
     Enterprise.Wishlist.createWithCallbackDialog.show();
-}
+};
 
 Enterprise.Wishlist.create = function(createUrl, callback) {
     if (!Enterprise.Wishlist.createDialog) {
@@ -180,7 +182,7 @@ Enterprise.Wishlist.create = function(createUrl, callback) {
         createForm.onCancel = Enterprise.Wishlist.createDialog.hide.bind(Enterprise.Wishlist.createDialog);
     }
     Enterprise.Wishlist.createDialog.show();
-}
+};
 
 Enterprise.Wishlist.edit = function(editUrl, wishlistName, visibility) {
     if (!Enterprise.Wishlist.editDialog) {
@@ -195,12 +197,12 @@ Enterprise.Wishlist.edit = function(editUrl, wishlistName, visibility) {
     Enterprise.Wishlist.editDialog.form.setName(wishlistName);
     Enterprise.Wishlist.editDialog.form.setIsVisible(visibility);
     Enterprise.Wishlist.editDialog.show();
-}
+};
 
 Enterprise.Wishlist.getRowQty = function(rowNode) {
     var qtyNode = $(rowNode).down('input.qty');
     return qtyNode ? qtyNode.value : null;
-}
+};
 
 Enterprise.Wishlist.copyItemTo = function(itemId, qty, wishlistId) {
     var form = new Element('form', {method: 'post', action: Enterprise.Wishlist.url.copyItem});
@@ -292,13 +294,13 @@ Event.observe(document, 'dom:loaded', function() {
                 wishlistInfo = Hash.toQueryString({'wishlist_id': wishlist});
             }
             return url + glue + wishlistInfo;
-        }
+        };
 
         $$('.link-wishlist').each(function(link) {
             var url = link.href;
             var onclick = link.onclick || function() {
                 setLocation(this.href);
-            }
+            };
 
             var wishlistSplitButton = new Enterprise.Widget.SplitButton(link.innerHTML, Translator.translate('Add to Wishlist'), 'light clickable wishlist-selector');
             wishlistSplitButton.onClick = onclick.bind({href: url});

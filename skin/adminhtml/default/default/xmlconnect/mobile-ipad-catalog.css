@@ -19,7 +19,7 @@
  *
  * @category    design
  * @package     default_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
  
@@ -224,6 +224,7 @@
         height:407px;
         }
     .ipad-catalog-landscape .content {
+        background-image:url(../images/xmlconnect/mobile_preview/ipad/background_landscape_home.jpg);
         padding:5px 0 0 10px;
         height:300px;
         width:331px;

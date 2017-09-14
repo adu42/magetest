@@ -19,7 +19,7 @@
  *
  * @category    design
  * @package     base_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 if (!window.Catalog) {
@@ -322,7 +322,7 @@ Event.observe(window, 'resize', function(event) {
     if (Catalog.Map.active) {
         Catalog.Map.showHelp(event);
     }
-})
+});
 
 $(document).observe('bundle:reload-price', function (event) { //reload price
     var data = event.memo, bundle = data.bundle;
