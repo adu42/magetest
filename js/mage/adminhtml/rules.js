@@ -19,7 +19,7 @@
  *
  * @category    Mage
  * @package     Mage_Adminhtml
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -313,7 +313,7 @@ VarienRulesForm.prototype = {
 
     _processSuccess : function(transport) {
         if (transport.responseText.isJSON()) {
-            var response = transport.responseText.evalJSON()
+            var response = transport.responseText.evalJSON();
             if (response.error) {
                 alert(response.message);
             }
@@ -380,4 +380,4 @@ VarienRulesForm.prototype = {
         grid.reloadParams = {'selected[]':this.chooserSelectedItems.keys()};
         this.updateElement.value = this.chooserSelectedItems.keys().join(', ');
     }
-}
+};

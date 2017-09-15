@@ -19,7 +19,7 @@
  *
  * @category    design
  * @package     default_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 body { margin: 0; padding: 0 }
@@ -117,6 +117,7 @@ body { margin: 0; padding: 0 }
     float: left;
     width: 50px;
     height: 100%;
+    background:url('../img/login-btn.png') center center repeat-x;
 }
 .login-body span
 {
@@ -129,12 +130,14 @@ body { margin: 0; padding: 0 }
     float: left;
     height: 100%;
     font: bold 3px arial;
+    background:url('../img/login-btn-left.png') center center no-repeat;
 }
 .login-right
 {
     float: left;
     height: 100%;
     font: bold 3px arial;
+    background:url('../img/login-btn-right.png') center center no-repeat;
 }
 .title
 {
@@ -164,7 +167,7 @@ body { margin: 0; padding: 0 }
     text-align: center;
     margin:  25px 7px 0 7px;
     width: 82px;
-    height: 108px;
+    height: 108;
 }
 .item-image
 {

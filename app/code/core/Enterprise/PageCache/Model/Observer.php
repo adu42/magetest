@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_PageCache
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -123,6 +123,7 @@ class Enterprise_PageCache_Model_Observer
         $request = $frontController->getRequest();
         $response = $frontController->getResponse();
         $this->_saveDesignException();
+        $this->_saveCookieConfig();
         $this->_checkAndSaveSslOffloaderHeaderToCache();
         $this->_processor->processRequestResponse($request, $response);
         return $this;
@@ -221,6 +222,60 @@ class Enterprise_PageCache_Model_Observer
             $this->_saveDesignExceptions($exceptions);
             $this->_processor->refreshRequestIds();
         }
+        return $this;
+    }
+
+    /**
+     * Load cookie config from cache
+     *
+     * @return array
+     */
+    protected function _loadCookieConfig()
+    {
+        $config = $this->_cacheInstance
+            ->load(Enterprise_PageCache_Helper_Data::COOKIE_CONFIG_FPC_KEY)
+        ;
+        $config = @unserialize($config);
+        return is_array($config) ? $config : array();
+    }
+
+    /**
+     * Save cookie config for current store in cache
+     *
+     * @return Enterprise_PageCache_Model_Observer
+     */
+    protected function _saveCookieConfig()
+    {
+        if (!$this->isCacheEnabled()) {
+            return $this;
+        }
+
+        if (isset($_COOKIE[Mage_Core_Model_Store::COOKIE_NAME])) {
+            $storeIdentifier = $_COOKIE[Mage_Core_Model_Store::COOKIE_NAME];
+        } else {
+            $storeIdentifier = Mage::app()->getRequest()->getHttpHost() . Mage::app()->getRequest()->getBaseUrl();
+        }
+
+        $config = $this->_loadCookieConfig();
+        $config[$storeIdentifier] = array(
+            Enterprise_PageCache_Helper_Data::XML_PATH_USE_COOKIE_CONFIG
+                => Mage::getStoreConfig(Enterprise_PageCache_Helper_Data::XML_PATH_USE_COOKIE_CONFIG),
+            Mage_Core_Model_Cookie::XML_PATH_COOKIE_DOMAIN
+                => Mage::getStoreConfig(Mage_Core_Model_Cookie::XML_PATH_COOKIE_DOMAIN),
+            Mage_Core_Model_Cookie::XML_PATH_COOKIE_HTTPONLY
+                 => Mage::getStoreConfig(Mage_Core_Model_Cookie::XML_PATH_COOKIE_HTTPONLY),
+            Mage_Core_Model_Cookie::XML_PATH_COOKIE_LIFETIME
+                 => Mage::getStoreConfig(Mage_Core_Model_Cookie::XML_PATH_COOKIE_LIFETIME),
+            Mage_Core_Model_Cookie::XML_PATH_COOKIE_PATH
+                 => Mage::getStoreConfig(Mage_Core_Model_Cookie::XML_PATH_COOKIE_PATH)
+        );
+
+        $this->_cacheInstance->save(
+            serialize($config),
+            Enterprise_PageCache_Helper_Data::COOKIE_CONFIG_FPC_KEY,
+            array(Enterprise_PageCache_Model_Processor::CACHE_TAG)
+        );
+
         return $this;
     }
 
@@ -738,6 +793,7 @@ class Enterprise_PageCache_Model_Observer
         $cookie->updateCustomerCookies();
         $cookie->updateCustomerRatesCookie();
         $this->updateCustomerProductIndex();
+        $this->updateFormKeyCookie();
         return $this;
     }
 
@@ -760,6 +816,7 @@ class Enterprise_PageCache_Model_Observer
             Enterprise_PageCache_Model_Cookie::registerViewedProducts(array(), 0, false);
         }
 
+        $this->updateFormKeyCookie();
         return $this;
     }
 
@@ -1033,11 +1090,9 @@ class Enterprise_PageCache_Model_Observer
             return;
         }
 
-        /** @var $session Mage_Core_Model_Session  */
-        $session = Mage::getSingleton('core/session');
-        $cachedFrontFormKey = Enterprise_PageCache_Model_Cookie::getFormKeyCookieValue();
+        $cachedFrontFormKey = Enterprise_PageCache_Helper_Form_Key::getFormKey();
         if ($cachedFrontFormKey) {
-            $session->setData('_form_key', $cachedFrontFormKey);
+            Mage::getSingleton('core/session')->setData('_form_key', $cachedFrontFormKey);
         }
     }
 
@@ -1151,5 +1206,13 @@ class Enterprise_PageCache_Model_Observer
             Enterprise_PageCache_Model_Cookie::setCurrentCategoryCookieValue($categoryId);
         }
 
+    }
+
+    /**
+     * Updates FPC form key
+     */
+    public function updateFormKeyCookie()
+    {
+        Enterprise_PageCache_Helper_Form_Key::getFormKey(true);
     }
 }

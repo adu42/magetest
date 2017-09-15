@@ -19,7 +19,7 @@
  *
  * @category    design
  * @package     default_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -211,7 +211,7 @@
         for (var i = 0, l = rows.length; i < l; i ++) {
             var row = rows[i];
             if (row.hasClassName('readonly')) {
-                continue
+                continue;
             }
             if (row.down('.' + this.fieldClassName('grant_catalog_category_view') + '[value="-2"]').checked) {
                 row.select('.' + this.fieldClassName('grant_catalog_product_price')).each(function(item){item.disabled = true;});
@@ -346,4 +346,4 @@
         }
         return false;
     }
- })
+ });

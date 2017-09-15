@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Pbridge
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -55,6 +55,13 @@ class Enterprise_Pbridge_Model_Pbridge_Api_Abstract extends Varien_Object
         try {
             $http = new Varien_Http_Adapter_Curl();
             $config = array('timeout' => 60);
+            if (Mage::getStoreConfigFlag('payment/pbridge/verifyssl')) {
+                $config['verifypeer'] = true;
+                $config['verifyhost'] = 2;
+            } else {
+                $config['verifypeer'] = false;
+                $config['verifyhost'] = 0;
+            }
             $http->setConfig($config);
             $http->write(
                 Zend_Http_Client::POST,

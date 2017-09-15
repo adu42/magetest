@@ -19,7 +19,7 @@
  *
  * @category    design
  * @package     default_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -148,7 +148,7 @@ AddBySku.prototype = {
                 {
                     this.loadingAreas = oldLoadingAreas;
                 }.bind(this.order)
-            })
+            });
         };
 
         // admin sales instance for order creation
@@ -199,7 +199,7 @@ AddBySku.prototype = {
                                 fieldsPrepare[paramKey] = elem[0].value;
                             }
                         }
-                    })(['qty', 'sku'], tr, elem.value)
+                    })(['qty', 'sku'], tr, elem.value);
                 }
             });
             this.order.productConfigureSubmit('errors', area, fieldsPrepare, this.skuInstance.configuredSkus);
@@ -367,7 +367,7 @@ AddBySku.prototype = {
                     formCurrentQty.value = qty;
                 }
             }
-        })
+        });
     },
 
     /**
@@ -386,7 +386,7 @@ AddBySku.prototype = {
             {
                 that.submitSkuForm() || that.addToCartButtonEvents[this.id]();
                 that.clearAddForm();
-            }
+            };
         });
     },
 

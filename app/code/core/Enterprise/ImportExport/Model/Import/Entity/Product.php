@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_ImportExport
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -160,13 +160,13 @@ class Enterprise_ImportExport_Model_Import_Entity_Product extends Mage_ImportExp
             }
             // set parent sku for child
             $sku = !empty($rowData['sku']) ? $rowData['sku'] : $sku;
-            if (isset($this->_urlKeys[$rowData['url_key']])
-                && ($this->_urlKeys[$rowData['url_key']] === false
-                    || $this->_urlKeys[$rowData['url_key']] != $sku)) {
+            $urlKey = strtolower($rowData['url_key']);
+            if (isset($this->_urlKeys[$urlKey]) && ($this->_urlKeys[$urlKey] === false
+                    || $this->_urlKeys[$urlKey] != $sku)) {
                 $this->addRowError(self::ERROR_DUPLICATE_URL_KEY, $rowNum);
                 return false;
             }
-            $this->_urlKeys[$rowData['url_key']] = false;
+            $this->_urlKeys[$urlKey] = false;
         }
         return true;
     }

@@ -20,7 +20,7 @@
  *
  * @category    Varien
  * @package     Varien_Db
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -108,7 +108,7 @@ class Varien_Db_Adapter_Pdo_Mysql extends Zend_Db_Adapter_Pdo_Mysql implements V
      *
      * @var bool
      */
-    protected $_debug               = true;
+    protected $_debug               = false;
 
     /**
      * Minimum query duration time to be logged
@@ -122,14 +122,14 @@ class Varien_Db_Adapter_Pdo_Mysql extends Zend_Db_Adapter_Pdo_Mysql implements V
      *
      * @var bool
      */
-    protected $_logAllQueries       = true;
+    protected $_logAllQueries       = false;
 
     /**
      * Add to log call stack data (backtrace)
      *
      * @var bool
      */
-    protected $_logCallStack        = true;
+    protected $_logCallStack        = false;
 
     /**
      * Path to SQL debug data log

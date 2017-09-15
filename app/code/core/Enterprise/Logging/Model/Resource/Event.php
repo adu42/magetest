@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Logging
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -47,11 +47,16 @@ class Enterprise_Logging_Model_Resource_Event extends Mage_Core_Model_Resource_D
      * Convert data before save ip
      *
      * @param Mage_Core_Model_Abstract $event
+     * @return Mage_Core_Model_Resource_Db_Abstract
      */
     protected function _beforeSave(Mage_Core_Model_Abstract $event)
     {
-        $event->setData('ip', inet_pton($event->getIp()));
+        // Sanity check. The Ip might have been converted already
+        if (!is_null($event->getIp()) && ctype_print($event->getIp()) !== false) {
+            $event->setData('ip', inet_pton($event->getIp()));
+        }
         $event->setTime($this->formatDate($event->getTime()));
+        return $this;
     }
 
     /**

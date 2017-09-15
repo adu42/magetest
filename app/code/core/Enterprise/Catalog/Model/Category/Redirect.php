@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Catalog
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -400,7 +400,7 @@ class Enterprise_Catalog_Model_Category_Redirect
         /* @var $store Mage_Core_Model_Store */
         foreach ($this->_app->getStores() as $store) {
             $seoSuffix = $this->_productHelper->getProductUrlSuffix($store->getId());
-            $casesResults[$store->getId()] = !empty($seoSuffix) ? '".' . $seoSuffix . '"' : '""';
+            $casesResults[$store->getId()] = !empty($seoSuffix) ? '"' . $seoSuffix . '"' : '""';
         }
 
         return $this->_connection->getCaseSql($field, $casesResults);
@@ -418,7 +418,7 @@ class Enterprise_Catalog_Model_Category_Redirect
         /* @var $store Mage_Core_Model_Store */
         foreach ($this->_app->getStores() as $store) {
             $seoSuffix = $this->_categoryHelper->getCategoryUrlSuffix($store->getId());
-            $casesResults[$store->getId()] = !empty($seoSuffix) ? '".' . $seoSuffix . '"' : '""';
+            $casesResults[$store->getId()] = !empty($seoSuffix) ? '"' . $seoSuffix . '"' : '""';
         }
 
         return $this->_connection->getCaseSql($field, $casesResults);

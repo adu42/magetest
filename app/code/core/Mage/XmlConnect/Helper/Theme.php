@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_XmlConnect
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -332,7 +332,8 @@ EOT;
             }
 
             if (!$ioFile->cp($src, $dst)) {
-                Mage::throwException(Mage::helper('xmlconnect')->__('Can\'t copy file "%s" to "%s".', $src, $dst));
+                Mage::throwException(Mage::helper('xmlconnect')->__('Can\'t copy file "%s" to "%s".',
+                    $ioFile->getFilteredPath($src), $ioFile->getFilteredPath($dst)));
             } else {
                 $ioFile->chmod($dst, 0755);
             }

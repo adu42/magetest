@@ -20,7 +20,7 @@
  *
  * @category    OnTap
  * @package     OnTap_Merchandiser
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 class OnTap_Merchandiser_Helper_Data extends Mage_Core_Helper_Abstract
@@ -42,6 +42,13 @@ class OnTap_Merchandiser_Helper_Data extends Mage_Core_Helper_Abstract
         $minStock = Mage::getStoreConfig('catalog/merchandiser/min_stock_threshold');
         return is_numeric($minStock) && $minStock > 0 ? $minStock : 0;
     }
+
+    /**
+     * Product Types
+     *
+     * @var array
+     */
+    protected $_productTypes;
 
     /**
      * getImageUrl
@@ -414,7 +421,7 @@ class OnTap_Merchandiser_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * smartFilter
+     * Smart Filter
      *
      * @param bool $curCategory (default: false)
      * @param mixed $categoryValues
@@ -422,203 +429,61 @@ class OnTap_Merchandiser_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function smartFilter($curCategory = false, $categoryValues)
     {
-        if ($categoryValues == '') {
-            return array();
+        $allProductIds = array();
+        if (empty($categoryValues)) {
+            return $allProductIds;
         }
 
-        $queryParams = Mage::app()->getRequest()->getParams();
-
-        if (isset($queryParams['cat']) && $queryParams['cat'] >0) {
-            $curCategory = $queryParams['cat'];
-        }
-
-        if (!$curCategory) {
-            $curCategory = mage::registry('current_category');
-        } elseif (is_numeric($curCategory)) {
-            $curCategory = Mage::getModel('catalog/category')->load($curCategory);
-        }
-
+        $curCategory = $this->_getCurrentCategory($curCategory);
         if (is_object($curCategory)) {
-            if (strlen(trim($categoryValues))>=1 || $categoryValues) {
-                $allIds = array();
+            if (strlen(trim($categoryValues)) >= 1 || $categoryValues) {
+                $allProductIds       = array();
                 $attributeConditions = unserialize($categoryValues);
-                $condition = "";
+                $condition           = "";
+                $orConditionCounter  = 0;
+                $productIds          = array($orConditionCounter => array());
 
                 foreach ($attributeConditions as $attribute) {
-                    $productCollection = Mage::getResourceModel('catalog/product_collection');
-                    $curType = "=";
-                    $attributeFilterArray = array();
-
-                    if ($attribute['attribute'] == "category_id") {
-                        $productCollection
-                            ->joinField('category_id', 'catalog/category_product',
-                                'category_id', 'product_id=entity_id', null, 'inner');
-                        $categoryFilterCondition = array();
-                        $missingCategories = array();
-                        foreach (explode(",", $attribute['value']) as $categoryId) {
-                            $categoryObject = Mage::getModel('catalog/category')->load($categoryId);
-                            if (!$categoryObject || !$categoryObject->getId()) {
-                                $missingCategories[] = $categoryId;
-                            }
-                            $categoryFilterCondition[] = array('finset' => $categoryId);
-                        }
-                        if (count($missingCategories) > 0) {
-                            $pluralTitle = count($missingCategories) > 1
-                                ? $this->__("categories")
-                                : $this->__("category");
-                            $categoryIdsStr = implode(', ', $missingCategories);
-                            $message = $this->__("The %s '%s' that you are trying to clone, does not exist.",
-                                $pluralTitle,
-                                $categoryIdsStr
-                            );
-                            Mage::getSingleton('core/session')->addNotice($message);
-                        }
-                        if (sizeof($categoryFilterCondition) > 0) {
-                            $productCollection->addAttributeToFilter('category_id', $categoryFilterCondition);
-                        } else {
-                            continue;
-                        }
-                    } elseif ($attribute['attribute'] == 'created_at' || $attribute['attribute'] == 'updated_at') {
-                        $allowedOperatorsDate = array(
-                            '>' => 'lt',
-                            '<' => 'gt',
-                            '>=' => 'lteq',
-                            '<=' => 'gteq'
-                        );
-                        $ranger = substr($attribute['value'], 0, 2);
-                        $rangerToStrip = 2;
-                        $rightRanger = substr($ranger, 1);
-
-                        if (is_numeric($rightRanger)) {
-                            $ranger = substr($attribute['value'], 0, 1);
-                            $rangerToStrip = 1;
-                        }
-
-                        if (!is_numeric($ranger)) {
-                            if (!array_key_exists($ranger, $allowedOperatorsDate)) {
-                                $ranger = '<';
-                            }
-                            $curType = $allowedOperatorsDate[$ranger];
-                            $attribute['value'] = substr($attribute['value'], $rangerToStrip);
-                        }
-
-                        $dateValue = date('Y-m-d', strtotime('-'.$attribute['value'].' days'));
-
-                        if ($curType == "=") {
-                            $dateStart = date('Y-m-d 00:00:00', strtotime($dateValue));
-                            $dateEnd = date('Y-m-d 23:59:59', strtotime($dateValue));
-                            $attributeFilterArray = array('from'  => $dateStart,'to'    => $dateEnd);
-                        } else {
-                            $attributeFilterArray = array($curType => $dateValue);
-                        }
-
-                        $productCollection->addAttributeToFilter($attribute['attribute'], $attributeFilterArray);
-                    } else {
-                        $attributeModel = Mage::getModel('catalog/resource_eav_attribute')
-                            ->load($attribute['attribute']);
-                        $attributeCode = $attributeModel->getAttributeCode();
-                        $allowedOperators = array(
-                            '>' => 'gt',
-                            '<' => 'lt',
-                            '!' => 'neq',
-                            '>=' => 'gteq',
-                            '<=' => 'lteq',
-                            '=' => 'eq'
-                        );
-
-                        switch (strtolower($attribute['value'])) {
-                            case 'yes':
-                            case 'true':
-                                $attribute['value'] = 1;
-                                break;
-                            case 'no':
-                            case 'false':
-                                $attribute['value'] = '0';
-                                break;
-                        }
-
-                        if (strpos($attribute['value'], '*') !== false) {
-                            $attribute['value'] = str_replace('*', '%', $attribute['value']);
-                            $attributeFilterArray = array('like'=>$attribute['value']);
-                        }
-
-                        if ($attributeModel->getFrontendInput() == "select") {
-                            if (substr($attribute['value'], 0, 1) == '!') {
-                                $curType = '!=';
-                                $attribute['value'] = substr($attribute['value'], 1);
-                            }
-                            $populateOptions = $attributeModel->getSource()->getAllOptions(true);
-                            foreach ($populateOptions as $option) {
-                                if ($option['label'] == $attribute['value']) {
-                                    $attribute['value'] = $option['value'];
-                                }
-                            }
-                            if ($curType == "!=") {
-                                $attributeFilterArray = array('neq'=>$attribute['value']);
-                            }
-                        }
-
-                        if ($attributeModel->getFrontendInput() == "multiselect") {
-                            if (substr($attribute['value'], 0, 1) == '!') {
-                                $curType = '!=';
-                                $attribute['value'] = substr($attribute['value'], 1);
-                            }
-                            $populateOptions = $attributeModel->getSource()->getAllOptions(true);
-                            foreach ($populateOptions as $option) {
-                                if ($option['label'] == $attribute['value']) {
-                                    $attribute['value'] = $option['value'];
-                                }
-                            }
-                            $attributeFilterArray = array('finset' => $attribute['value']);
-                        }
-
-                        if ($attributeModel->getFrontendInput() == "price") {
-                            $ranger = substr($attribute['value'], 0, 2);
-                            $rangerToStrip = 2;
-                            $rightRanger = substr($ranger, 1);
-
-                            if (is_numeric($rightRanger)) {
-                                $ranger = substr($attribute['value'], 0, 1);
-                                $rangerToStrip = 1;
-                            }
-
-                            if (!is_numeric($ranger)) {
-                                if (!array_key_exists($ranger, $allowedOperators)) {
-                                    $ranger = '=';
-                                }
-                                $curType = $allowedOperators[$ranger];
-                                $attribute['value'] = substr($attribute['value'], $rangerToStrip);
-                            }
-
-                            $attributeFilterArray = array($curType => $attribute['value']);
-                        }
-
-                        if (sizeof($attributeFilterArray) < 1) {
-                            $attributeFilterArray = array('eq' => $attribute['value']);
-                        }
-
-                        $productCollection->addAttributeToSelect($attributeCode, 'left');
-
-                        if ($attributeModel->getFrontendInput() == "multiselect" && $curType == "!=") {
-                            $notFindInSetSQL = Mage::getModel('merchandiser/resource_mysql4_product_collection')
-                                ->filterNotFindInSet($attributeCode, array('finset' => $attribute['value']));
-                            $productCollection->getSelect()
-                                ->where($notFindInSetSQL, null, Varien_Db_Select::TYPE_CONDITION);
-                        } else {
-                            $productCollection->addAttributeToFilter($attributeCode, $attributeFilterArray);
-                        }
+                    /* @var OnTap_Merchandiser_Model_Resource_Mysql4_Product_Collection $productCollection */
+                    $productCollection = Mage::getResourceModel('merchandiser/mysql4_product_collection');
+                    switch ($attribute['attribute']) {
+                        case 'category_id':
+                            $this->_addCategoryFilterToCollection($productCollection, $attribute);
+                            break;
+                        case 'created_at':
+                        case 'updated_at':
+                            $this->_addUpdatedAtFilterToCollection($attribute, $productCollection);
+                            break;
+                        default:
+                            $this->_addAttributeFilterToCollection($attribute, $productCollection);
+                            break;
                     }
-                    $currentCollectionIDs = $productCollection->getAllIds();
+
+                    $currentCollectionIds = ($attribute['attribute'] == 'category_id')
+                        ? $productCollection->getAllSortedIds('position')
+                        : $productCollection->getAllIds();
+
                     if ($condition == "AND") {
-                        $allIds = array_intersect($allIds, $currentCollectionIDs);
+                        $productIds[$orConditionCounter] = array_intersect(
+                            $productIds[$orConditionCounter], $currentCollectionIds
+                        );
                     } else {
-                        $allIds = array_merge($allIds, $currentCollectionIDs);
+                        if ($condition == 'OR') {
+                            $allProductIds = array_merge($productIds[$orConditionCounter], $allProductIds);
+                            $orConditionCounter++;
+                            $productIds[$orConditionCounter] = array();
+                        }
+                        $productIds[$orConditionCounter] = array_merge(
+                            $productIds[$orConditionCounter], $currentCollectionIds
+                        );
                     }
                     $condition = $attribute['link'];
                 }
 
-                $allIds = array_unique($allIds);
-                return $allIds;
+                $allProductIds = array_merge($productIds[$orConditionCounter], $allProductIds);
+                $allProductIds = array_merge($allProductIds, $this->_getParentProductIds($allProductIds));
+                $allProductIds = array_unique($allProductIds);
+                return $allProductIds;
             }
         }
     }
@@ -681,5 +546,296 @@ class OnTap_Merchandiser_Helper_Data extends Mage_Core_Helper_Abstract
     public function getColorAttributeOrder()
     {
         return Mage::getStoreConfig('catalog/merchandiser/color_order');
+    }
+
+    /**
+     * Get Current Category
+     *
+     * @param bool|int $curCategory
+     *
+     * @return Mage_Catalog_Model_Category|string
+     */
+    protected function _getCurrentCategory($curCategory = false)
+    {
+        $queryParams = Mage::app()->getRequest()->getParams();
+
+        if (isset($queryParams['cat']) && $queryParams['cat'] > 0) {
+            $curCategory = $queryParams['cat'];
+        }
+
+        if (!$curCategory) {
+            $curCategory = mage::registry('current_category');
+
+            return $curCategory;
+        } elseif (is_numeric($curCategory)) {
+            $curCategory = Mage::getModel('catalog/category')->load($curCategory);
+
+            return $curCategory;
+        }
+
+        return $curCategory;
+    }
+
+    /**
+     * Add Category Filter Condition To Product Collection
+     *
+     * @param Mage_Catalog_Model_Resource_Product_Collection $productCollection
+     * @param Mage_Eav_Model_Attribute $attribute
+     *
+     * @return bool
+     */
+    protected function _addCategoryFilterToCollection($productCollection, $attribute)
+    {
+        $productCollection
+            ->joinField('category_id', 'catalog/category_product',
+                'category_id', 'product_id=entity_id', null, 'inner');
+        $categoryFilterCondition = array();
+        $missingCategories       = array();
+        foreach (explode(",", $attribute['value']) as $categoryId) {
+            $categoryObject = Mage::getModel('catalog/category')->load($categoryId);
+            if (!$categoryObject || !$categoryObject->getId()) {
+                $missingCategories[] = $categoryId;
+            }
+            $categoryFilterCondition[] = array('finset' => $categoryId);
+        }
+        if (empty($categoryFilterCondition)) {
+            $categoryFilterCondition[] = array('finset' => $this->_getCurrentCategory()->getId());
+        }
+
+        if (count($missingCategories) > 0) {
+            $pluralTitle    = count($missingCategories) > 1
+                ? $this->__("categories")
+                : $this->__("category");
+            $categoryIdsStr = implode(', ', $missingCategories);
+            $message        = $this->__("The %s '%s' that you are trying to clone, does not exist.",
+                $pluralTitle,
+                $categoryIdsStr
+            );
+            Mage::getSingleton('core/session')->addNotice($message);
+
+            $productCollection->addAttributeToFilter('category_id', $categoryFilterCondition);
+            return $productCollection;
+        }
+
+        $productCollection->addAttributeToFilter('category_id', $categoryFilterCondition);
+        return $productCollection;
+    }
+
+    /**
+     * Add Updated At and Created At Filter To Product Collection
+     *
+     * @param Mage_Eav_Model_Attribute $attribute
+     * @param Mage_Catalog_Model_Resource_Product_Collection $productCollection
+     *
+     * @return array
+     */
+    protected function _addUpdatedAtFilterToCollection($attribute, $productCollection)
+    {
+        $curType = "=";
+        $allowedOperatorsDate = array(
+            '>'  => 'lt',
+            '<'  => 'gt',
+            '>=' => 'lteq',
+            '<=' => 'gteq'
+        );
+        $ranger               = substr($attribute['value'], 0, 2);
+        $rangerToStrip        = 2;
+        $rightRanger          = substr($ranger, 1);
+
+        if (is_numeric($rightRanger)) {
+            $ranger        = substr($attribute['value'], 0, 1);
+            $rangerToStrip = 1;
+        }
+
+        if (!is_numeric($ranger)) {
+            if (!array_key_exists($ranger, $allowedOperatorsDate)) {
+                $ranger = '<';
+            }
+            $curType            = $allowedOperatorsDate[$ranger];
+            $attribute['value'] = substr($attribute['value'], $rangerToStrip);
+        }
+
+        $dateValue = date('Y-m-d', strtotime('-' . $attribute['value'] . ' days'));
+
+        if ($curType == "=") {
+            $dateStart            = date('Y-m-d 00:00:00', strtotime($dateValue));
+            $dateEnd              = date('Y-m-d 23:59:59', strtotime($dateValue));
+            $attributeFilterArray = array('from' => $dateStart, 'to' => $dateEnd);
+        } else {
+            $attributeFilterArray = array($curType => $dateValue);
+        }
+
+        $productCollection->addAttributeToFilter($attribute['attribute'], $attributeFilterArray);
+
+        return $attribute;
+    }
+
+    /**
+     * Add Attribute Filter To Product Collection
+     *
+     * @param Mage_Eav_Model_Attribute $attribute
+     * @param Mage_Catalog_Model_Resource_Product_Collection $productCollection
+     *
+     * @return mixed
+     */
+    protected function _addAttributeFilterToCollection($attribute, $productCollection)
+    {
+        $curType = "=";
+        $attributeFilterArray = array();
+        $attributeModel   = Mage::getModel('catalog/resource_eav_attribute')
+            ->load($attribute['attribute']);
+        $attributeCode    = $attributeModel->getAttributeCode();
+        $allowedOperators = array(
+            '>'  => 'gt',
+            '<'  => 'lt',
+            '!'  => 'neq',
+            '>=' => 'gteq',
+            '<=' => 'lteq',
+            '='  => 'eq'
+        );
+
+        switch (strtolower($attribute['value'])) {
+            case 'yes':
+            case 'true':
+                $attribute['value'] = 1;
+                break;
+            case 'no':
+            case 'false':
+                $attribute['value'] = '0';
+                break;
+        }
+
+        if (strpos($attribute['value'], '*') !== false) {
+            $attribute['value']   = str_replace('*', '%', $attribute['value']);
+            $attributeFilterArray = array('like' => $attribute['value']);
+        }
+
+        if ($attributeModel->getFrontendInput() == "select") {
+            if (substr($attribute['value'], 0, 1) == '!') {
+                $curType            = '!=';
+                $attribute['value'] = substr($attribute['value'], 1);
+            }
+            $populateOptions = $attributeModel->getSource()->getAllOptions(true);
+            foreach ($populateOptions as $option) {
+                if ($option['label'] == $attribute['value']) {
+                    $attribute['value'] = $option['value'];
+                }
+            }
+            if ($curType == "!=") {
+                $attributeFilterArray = array('neq' => $attribute['value']);
+            }
+        }
+
+        if ($attributeModel->getFrontendInput() == "multiselect") {
+            if (substr($attribute['value'], 0, 1) == '!') {
+                $curType            = '!=';
+                $attribute['value'] = substr($attribute['value'], 1);
+            }
+            $populateOptions = $attributeModel->getSource()->getAllOptions(true);
+            foreach ($populateOptions as $option) {
+                if ($option['label'] == $attribute['value']) {
+                    $attribute['value'] = $option['value'];
+                }
+            }
+            $attributeFilterArray = array('finset' => $attribute['value']);
+        }
+
+        if ($attributeModel->getFrontendInput() == "price") {
+            $ranger        = substr($attribute['value'], 0, 2);
+            $rangerToStrip = 2;
+            $rightRanger   = substr($ranger, 1);
+
+            if (is_numeric($rightRanger)) {
+                $ranger        = substr($attribute['value'], 0, 1);
+                $rangerToStrip = 1;
+            }
+
+            if (!is_numeric($ranger)) {
+                if (!array_key_exists($ranger, $allowedOperators)) {
+                    $ranger = '=';
+                }
+                $curType            = $allowedOperators[$ranger];
+                $attribute['value'] = substr($attribute['value'], $rangerToStrip);
+            }
+
+            $attributeFilterArray = array($curType => $attribute['value']);
+        }
+
+        if (sizeof($attributeFilterArray) < 1) {
+            $attributeFilterArray = array('eq' => $attribute['value']);
+        }
+
+        $productCollection->addAttributeToSelect($attributeCode, 'left');
+
+        if ($attributeModel->getFrontendInput() == "multiselect" && $curType == "!=") {
+            $notFindInSetSQL = Mage::getModel('merchandiser/resource_mysql4_product_collection')
+                ->filterNotFindInSet($attributeCode, array('finset' => $attribute['value']));
+            $productCollection->getSelect()
+                ->where($notFindInSetSQL, null, Varien_Db_Select::TYPE_CONDITION);
+
+            return $attribute;
+        } else {
+            $productCollection->addAttributeToFilter($attributeCode, $attributeFilterArray);
+
+            return $attribute;
+        }
+    }
+
+    /**
+     * Get Parent Product Ids By Childs
+     *
+     * @param array $productIds
+     *
+     * @return array
+     */
+    protected function _getParentProductIds($productIds)
+    {
+        $parentIds = array();
+        foreach ($productIds as $productId) {
+            /** @var $productId Mage_Catalog_Model_Product */
+            $productTypes = $this->_getProductTypeInstances();
+            foreach ($productTypes as $productType) {
+                $parents = $productType->getParentIdsByChild($productId);
+                if ($parents) {
+                    $parentIds = array_merge($parentIds, $parents);
+                }
+            }
+        }
+
+        return $parentIds;
+    }
+
+    /**
+     * Retrieve Product Type Instances
+     * as key - type code, value - instance model
+     *
+     * @return array
+     */
+    protected function _getProductTypeInstances()
+    {
+        if (!$this->_productTypes) {
+            $this->_productTypes = array();
+            $productEmulator     = new Varien_Object();
+
+            foreach (array_keys(Mage_Catalog_Model_Product_Type::getTypes()) as $typeId) {
+                $productEmulator->setTypeId($typeId);
+                $productType = Mage::getSingleton('catalog/product_type')->factory($productEmulator);
+                if ($productType->isComposite()) {
+                    $this->_productTypes[$typeId] = $productType;
+                }
+            }
+        }
+
+        return $this->_productTypes;
+    }
+
+    /**
+     * Check if merchandiser is allowed for display
+     *
+     * @return bool
+     */
+    public function isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('catalog/merchandiser');
     }
 }

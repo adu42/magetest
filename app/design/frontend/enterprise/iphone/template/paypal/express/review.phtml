@@ -20,7 +20,7 @@
  *
  * @category    design
  * @package     enterprise_iphone
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 /** @var $this Mage_Paypal_Block_Express_Review */
@@ -121,11 +121,7 @@ if ($('update_shipping_method_submit')) {
             new Ajax.Request(this.form.action, {
                 parameters: {isAjax: 1, method: 'POST'},
                 onSuccess: function(transport) {
-                    try{
-                        response = eval('(' + transport.responseText + ')');
-                    } catch (e) {
-                        response = {};
-                    }
+                    var response = transport.responseJSON || transport.responseText.evalJSON(true) || {};
                     if (response.redirect) {
                         setLocation(response.redirect);
                         return;
@@ -135,12 +131,12 @@ if ($('update_shipping_method_submit')) {
                         return;
                     } else {
                         var msg = response.error_messages;
-                        if (typeof(msg)=='object') {
-                            msg = msg.join("\n");
+                        if (Object.isArray(msg)) {
+                            msg = msg.join("\n").stripTags().toString();
                         }
                         if (msg) {
                             $('review-please-wait').hide();
-                            alert(msg);
+                            alert(msg.stripTags().toString());
                             return;
                         }
                     }

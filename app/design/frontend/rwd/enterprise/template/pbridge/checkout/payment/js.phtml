@@ -20,7 +20,7 @@
  *
  * @category    design
  * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -132,13 +132,8 @@
     * Validate agreemnets
     */
     function validateAgreements(transport) {
-        if (transport && transport.responseText) {
-            try{
-                response = eval('(' + transport.responseText + ')');
-            }
-            catch (e) {
-                response = {};
-            }
+        if (transport) {
+            var response = transport.responseJSON || transport.responseText.evalJSON(true) || {};
             if (response.success) {
                 /* Accepted terms and conditions are no longer available to decline */
                 review.agreementsForm.hide();

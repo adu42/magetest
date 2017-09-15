@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_UrlRewrite
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -40,13 +40,14 @@ class Enterprise_UrlRewrite_Helper_Core_Url_Rewrite
      *
      * @param $requestPath
      * @return bool
-     * @throws Mage_Core_Exception
+     * @throws Exception
      */
     protected function _validate($requestPath)
     {
-        if (preg_match('/[^a-zA-Z0-9_]/', $requestPath)) {
-            throw new Mage_Core_Exception(
-                $this->__('Only alphanumeric characters and "_" (underscore) symbol is allowed for the "URL Suffix"')
+        if (preg_match('/^(\.[0-9a-zA-Z_]+)|^\/$|^$/', $requestPath) == false) {
+            throw new Exception(
+                $this->__('"URL Suffix" must be either: (1) blank or (2) a forward slash "/" or (3) a ' .
+                    'dot "." followed by alphanumeric characters or underscores "_"')
             );
         }
         return true;

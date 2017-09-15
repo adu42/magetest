@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_GoogleAnalyticsUniversal
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 class Enterprise_GoogleAnalyticsUniversal_Block_Adminhtml_Creditmemo_Ga

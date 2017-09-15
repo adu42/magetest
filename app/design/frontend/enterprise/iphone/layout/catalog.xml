@@ -21,7 +21,7 @@
  *
  * @category    design
  * @package     enterprise_iphone
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -150,6 +150,7 @@ Compare products page
         <reference name="head">
             <action method="addJs"><script>scriptaculous/scriptaculous.js</script></action>
             <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/product_options.js</script></action>
         </reference>
         <reference name="content">
             <block type="catalog/product_compare_list" name="catalog.compare.list" template="catalog/product/compare/list.phtml"/>
@@ -168,6 +169,7 @@ Product view
         </reference>
         <reference name="head">
             <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/product_options.js</script></action>
             <action method="addJs"><script>varien/configurable.js</script></action>
             <action method="addItem"><type>skin_js</type><name>js/jqzoom/jquery-1.3.1.min.js</name></action>
             <action method="addItem"><type>skin_js</type><name>js/jqzoom/jquery.jqzoom1.0.1.js</name></action>
@@ -307,6 +309,7 @@ Product send to friend
         </reference>
         <reference name="head">
             <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/product_options.js</script></action>
         </reference>
         <reference name="content">
             <block type="catalog/product_send" name="product.send" template="catalog/product/send.phtml">

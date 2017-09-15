@@ -21,7 +21,7 @@
  *
  * @category    design
  * @package     rwd_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -53,14 +53,14 @@ Customer account home dashboard layout
 Product view page
 -->
 
-   <!-- <catalog_product_view>
+    <catalog_product_view>
         <reference name="product.info">
             <block type="review/product_view_list" name="product.reviews" as="reviews" template="review/product/view/list.phtml" after="additional">
                 <action method="addToParentGroup"><group>detailed_info</group></action>
                 <action method="setTitle" translate="value"><value>Reviews</value></action>
             </block>
         </reference>
-    </catalog_product_view>-->
+    </catalog_product_view>
 
 <!--
 Product reviews page (?)
@@ -84,6 +84,7 @@ Product reviews page
         </reference>
         <reference name="head">
             <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/product_options.js</script></action>
             <action method="addJs"><script>varien/configurable.js</script></action>
         </reference>
         <reference name="content">

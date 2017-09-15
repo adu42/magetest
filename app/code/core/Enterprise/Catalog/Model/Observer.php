@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Catalog
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -340,7 +340,7 @@ class Enterprise_Catalog_Model_Observer
      */
     public function addSeoSuffixToCategoryUrl(Varien_Event_Observer $observer)
     {
-        $seoSuffix = (string) Mage::app()->getStore()->getConfig(
+        $seoSuffix = (string)Mage::app()->getStore($observer->getEvent()->getStoreId())->getConfig(
             Mage_Catalog_Helper_Category::XML_PATH_CATEGORY_URL_SUFFIX
         );
         $this->_addSuffixToUrl($observer->getCollection()->getItems(), $seoSuffix);
@@ -353,7 +353,7 @@ class Enterprise_Catalog_Model_Observer
      */
     public function addSeoSuffixToProductUrl(Varien_Event_Observer $observer)
     {
-        $seoSuffix = (string) Mage::app()->getStore()->getConfig(
+        $seoSuffix = (string)Mage::app()->getStore($observer->getEvent()->getStoreId())->getConfig(
             Mage_Catalog_Helper_Product::XML_PATH_PRODUCT_URL_SUFFIX
         );
         $this->_addSuffixToUrl($observer->getCollection()->getItems(), $seoSuffix);
@@ -367,9 +367,13 @@ class Enterprise_Catalog_Model_Observer
      */
     protected function _addSuffixToUrl($items, $seoSuffix)
     {
-        foreach ($items as $item) {
-            if ($item->getUrl() && strpos($item->getUrl(), $seoSuffix) === false) {
-                $item->setUrl($item->getUrl() . '.' . $seoSuffix);
+        $suffixLength = strlen($seoSuffix);
+        if ($suffixLength > 0) {
+            foreach ($items as $item) {
+                $url = $item->getUrl();
+                if ($url && ($seoSuffix !== substr($url, -$suffixLength))) {
+                    $item->setUrl($url . $seoSuffix);
+                }
             }
         }
     }

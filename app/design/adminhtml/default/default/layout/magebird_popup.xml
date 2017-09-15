@@ -3,7 +3,7 @@
   <default>
   		<reference name="head">
             <action method="addItem"><type>skin_css</type><name>magebird_popup/styles.css</name></action>
-        <action method="addItem"><type>skin_js</type><name>magebird_popup/jquery.js</name></action>
+      <!--  <action method="addItem"><type>skin_js</type><name>magebird_popup/jquery.js</name></action> -->
         <action method="addItem"><type>skin_js</type><name>magebird_popup/script.js</name></action>
   		</reference>
   </default>

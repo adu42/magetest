@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Checkout
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -89,7 +89,10 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
         ) {
             $this->getResponse()->setRedirect($backUrl);
         } else {
-            if ((strtolower($this->getRequest()->getActionName()) == 'add') && !$this->getRequest()->getParam('in_cart')) {
+            if (
+                (strtolower($this->getRequest()->getActionName()) == 'add')
+                && !$this->getRequest()->getParam('in_cart')
+            ) {
                 $this->_getSession()->setContinueShoppingUrl($this->_getRefererUrl());
             }
             $this->_redirect('checkout/cart');
@@ -141,6 +144,20 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
         $cart = $this->_getCart();
         if ($cart->getQuote()->getItemsCount()) {
             $cart->init();
+            if (
+                $cart->getQuote()->getShippingAddress()
+                && $this->_getSession()->getEstimatedShippingAddressData()
+                && $couponCode = $this->_getSession()->getCartCouponCode()
+            ) {
+                $estimatedSessionAddressData = $this->_getSession()->getEstimatedShippingAddressData();
+                $cart->getQuote()->getShippingAddress()
+                    ->setCountryId($estimatedSessionAddressData['country_id'])
+                    ->setCity($estimatedSessionAddressData['city'])
+                    ->setPostcode($estimatedSessionAddressData['postcode'])
+                    ->setRegionId($estimatedSessionAddressData['region_id'])
+                    ->setRegion($estimatedSessionAddressData['region']);
+                $cart->getQuote()->setCouponCode($couponCode);
+            }
             $cart->save();
 
             if (!$this->_getQuote()->validateMinimumAmount()) {
@@ -196,28 +213,6 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
         }
         $cart   = $this->_getCart();
         $params = $this->getRequest()->getParams();
-
- 	   /**
-         * ======edit By@ado======
-         */
-		if(isset($params['cart_quantity'])){
-        foreach($params['cart_quantity'] as $key=>$v){
-			if(!in_array($key,$params['product_id'])){
-				unset($params['cart_quantity'] [$key]);
-				unset($params['option'] [$key]);
-			}
-		}
-		$this->addcart($params);
-	
-        $params = $this->getRequest()->getParams();
-        if(isset($params['cart_quantity']))unset($params['cart_quantity']);
-        if(isset($params['product_id']))unset($params['product_id']);
-        if(isset($params['option']))unset($params['option']);
-        $this->getRequest()->setParams($params);
-		}	
-        /**
-         *======end  edit By@ado======
-         */
         try {
             if (isset($params['qty'])) {
                 $filter = new Zend_Filter_LocalizedToNormalized(
@@ -283,54 +278,6 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
         }
     }
 
-    /**
-     * add to cart
-     * ======by@ado======
-     * 
-     */
-	public function addcart($params)
-	{
-		$products = array();
-		$session = $this->_getSession();
-		$cart = $this->_getCart();
-	
-		foreach($params['product_id'] as $key=>$v){
-			$products[$key]['product'] = $v;
-		}
-		foreach($params['cart_quantity'] as $key=>$v){
-			if(isset($products[$key]))
-			$products[$key]['qty'] = $v;
-		}
-		foreach($params['option'] as $key=>$v){
-			if(isset($products[$key])){
-				$products[$key]['options'] = $v;
-                if(is_array($v)){
-    				foreach($v as $_key=>$_val){
-    					if(is_array($_val) && isset($_val['date'])){
-                            $products[$key]['validate_datetime_'.$_key]=$_val['date'];
-                        } 
-    				}
-                }
-			}
-		}
-        
-	
-        $filter = new Zend_Filter_LocalizedToNormalized(
-					array('locale' => Mage::app()->getLocale()->getLocaleCode())
-					);
-    	foreach ($products as $product_data)
-		{
-			if(isset($product_data['product'])){
-                if (isset($product_data['qty'])) {
-					$product_data['qty'] = $filter->filter($product_data['qty']);
-				}
-				$product = Mage::getModel('catalog/product')
-				->setStoreId(Mage::app()->getStore()->getId())
-				->load((int)$product_data['product']);
-				$cart->addProduct($product,$product_data);
-			}
-		}
-	}
     /**
      * Add products in group to shopping cart action
      */
@@ -596,6 +543,13 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
             ->setRegion($region)
             ->setCollectShippingRates(true);
         $this->_getQuote()->save();
+        $this->_getSession()->setEstimatedShippingAddressData(array(
+            'country_id' => $country,
+            'postcode'   => $postcode,
+            'city'       => $city,
+            'region_id'  => $regionId,
+            'region'     => $region
+        ));
         $this->_goBack();
     }
 
@@ -651,6 +605,7 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
                     $this->_getSession()->addSuccess(
                         $this->__('Coupon code "%s" was applied.', Mage::helper('core')->escapeHtml($couponCode))
                     );
+                    $this->_getSession()->setCartCouponCode($couponCode);
                 } else {
                     $this->_getSession()->addError(
                         $this->__('Coupon code "%s" is not valid.', Mage::helper('core')->escapeHtml($couponCode))

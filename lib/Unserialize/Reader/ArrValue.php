@@ -20,7 +20,7 @@
  *
  * @category    Unserialize
  * @package     Unserialize_Reader
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -82,6 +82,10 @@ class Unserialize_Reader_ArrValue
                     break;
                 case Unserialize_Parser::TYPE_DOUBLE:
                     $this->_reader = new Unserialize_Reader_Dbl();
+                    $this->_status = self::READING_VALUE;
+                    break;
+                case Unserialize_Parser::TYPE_NULL:
+                    $this->_reader = new Unserialize_Reader_Null();
                     $this->_status = self::READING_VALUE;
                     break;
                 default:

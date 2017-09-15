@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Checkout
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -151,14 +151,13 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
         if (is_null($countryId)) {
             $countryId = Mage::helper('core')->getDefaultCountry();
         }
-        $countryOptions=$this->getSortOptions($this->getCountryOptions(),$countryId);
         $select = $this->getLayout()->createBlock('core/html_select')
             ->setName($type.'[country_id]')
             ->setId($type.':country_id')
             ->setTitle(Mage::helper('checkout')->__('Country'))
             ->setClass('validate-select')
             ->setValue($countryId)
-            ->setOptions($countryOptions);
+            ->setOptions($this->getCountryOptions());
         if ($type === 'shipping') {
             $select->setExtraParams('onchange="if(window.shipping)shipping.setSameAsBilling(false);"');
         }
@@ -208,9 +207,6 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
      */
     protected function _getStepCodes()
     {
-        if(Mage::helper('checkout')->enableTheme()){
-            return array('login', 'billing', 'shipping', 'shipping_method', 'payment', 'review');
-        }
         return array('login', 'billing', 'shipping', 'shipping_method', 'payment', 'review');
     }
 
@@ -223,194 +219,6 @@ abstract class Mage_Checkout_Block_Onepage_Abstract extends Mage_Core_Block_Temp
     public function isShow()
     {
         return true;
-    }
-
-    /**
-     * @排序
-     * by@ado
-     */
-    public function getSortOptions($options,$countryId){
-        // @file_put_contents(dirname(__FILE__).'/aa.txt',$countryId.print_r($options,true)."\n",FILE_APPEND);
-        $countryDefault=array(
-            'SE' => array(
-                'SE',
-                'AU',
-                'CA',
-                'FR',
-                'DE',
-                'GB',
-                'US',
-            ),
-            'DA' => array(
-                'DA',
-                'AU',
-                'CA',
-                'FR',
-                'DE',
-                'GB',
-                'US',
-            ),
-            'DE' => array(
-                'DE',
-                'AT',
-                'CH',
-                'CZ',
-                'DK',
-                'NL',
-                'NO',
-                'PL',
-                'SI',
-                'SE',
-            ),
-            'AT' => array(
-                'AT',
-                'CZ',
-                'DK',
-                'DE',
-                'NL',
-                'NO',
-                'PL',
-                'SI',
-                'SE',
-                'CH',
-            ),
-            'US' => array(
-                'US',
-                'AU',
-                'BR',
-                'CA',
-                'FR',
-                'DE',
-                'IT',
-                'ES',
-                'CH',
-                'GB',
-            ),
-            'AU' => array(
-                'AU',
-                'BR',
-                'CA',
-                'FR',
-                'DE',
-                'IT',
-                'ES',
-                'CH',
-                'GB',
-                'US',
-            ),
-            'UK' => array(
-                'GB',
-                'AU',
-                'BR',
-                'CA',
-                'FR',
-                'DE',
-                'IT',
-                'ES',
-                'CH',
-                'US',
-            ),
-            'CA' => array(
-                'CA',
-                'AU',
-                'BR',
-                'FR',
-                'DE',
-                'IT',
-                'ES',
-                'CH',
-                'GB',
-                'US',
-            ),
-            'ES' => array(
-                'ES',
-                'AR',
-                'CL',
-                'CO',
-                'EC',
-                'MX',
-                'PE',
-                'PT',
-                'PR',
-                'VE',
-            ),
-            'FI' => array(
-                'FI',
-                'AU',
-                'CA',
-                'FR',
-                'DE',
-                'GB',
-                'US',
-            ),
-            'FR' => array(
-                'FR',
-                'BE',
-                'CA',
-                'NC',
-                'GF',
-                'PF',
-                'CH',
-            ),
-            'IT' => array(
-                'IT',
-                'CH',
-            ),
-            'NL' => array(
-                'NL',
-                'AN',
-                'AU',
-                'CA',
-                'FR',
-                'DE',
-                'GB',
-                'US',
-            ),
-            'NO' => array(
-                'NO',
-                'AU',
-                'CA',
-                'FR',
-                'DE',
-                'GB',
-                'US',
-            ),
-            'PT' => array(
-                'PT',
-                'BR',
-            ),
-        );
-
-        $find=false;
-        $_options=array();
-        if(isset($countryDefault[$countryId])){
-            $countryDefault=$countryDefault[$countryId];
-        }else{
-            $countryDefault=array();
-        }
-        if(!empty($countryDefault)){
-            foreach($countryDefault as $k=>$val){
-                foreach($options as $key=>$option){
-                    if($option['value']==$val){
-                        $_options[$k]['value']=$val;
-                        $_options[$k]['label']=$option['label'];
-                        unset($options[$key]);
-                        break;
-                    }
-                }
-            }
-
-            if(!empty($_options)){
-                foreach($options as &$option){
-                    if($option['value']==''){
-                        $option['label']='------------';
-                        break;
-                    }
-                }
-                $options=  array_merge($_options,$options);
-            }
-        }
-        return $options;
     }
 /* */
 }

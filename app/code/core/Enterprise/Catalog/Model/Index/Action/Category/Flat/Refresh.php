@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Catalog
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -283,9 +283,11 @@ class Enterprise_Catalog_Model_Index_Action_Category_Flat_Refresh extends Enterp
      */
     protected function _rebuild()
     {
+        /* @var $category Mage_Catalog_Model_Category */
+        $category = Mage::getModel('catalog/category');
         $stores = Mage::app()->getStores();
         $rootId = Mage_Catalog_Model_Category::TREE_ROOT_ID;
-        $categories = array();
+        $categoryEntities = array();
         $categoriesIds = array();
         /* @var $store Mage_Core_Model_Store */
         foreach ($stores as $store) {
@@ -293,16 +295,16 @@ class Enterprise_Catalog_Model_Index_Action_Category_Flat_Refresh extends Enterp
                 $this->_createTable($store->getId());
             }
 
-            if (!isset($categories[$store->getRootCategoryId()])) {
+            if (!isset($categoryEntities[$store->getRootCategoryId()])) {
                 $select = $this->_connection->select()
                     ->from($this->_productHelper->getTable('catalog/category'))
                     ->where('path = ?', (string)$rootId)
                     ->orWhere('path = ?', "{$rootId}/{$store->getRootCategoryId()}")
                     ->orWhere('path LIKE ?', "{$rootId}/{$store->getRootCategoryId()}/%");
-                $categories[$store->getRootCategoryId()] = $this->_connection->fetchAll($select);
+                $categoryEntities[$store->getRootCategoryId()] = $this->_connection->fetchAll($select);
                 $categoriesIds[$store->getRootCategoryId()] = array();
-                foreach ($categories[$store->getRootCategoryId()] as $category) {
-                    $categoriesIds[$store->getRootCategoryId()][] = $category['entity_id'];
+                foreach ($categoryEntities[$store->getRootCategoryId()] as $categoryEntity) {
+                    $categoriesIds[$store->getRootCategoryId()][] = $categoryEntity['entity_id'];
                 }
             }
 
@@ -313,15 +315,18 @@ class Enterprise_Catalog_Model_Index_Action_Category_Flat_Refresh extends Enterp
             foreach ($categoriesIdsChunks as $categoriesIdsChunk) {
                 $attributesData = $this->_getAttributeValues($categoriesIdsChunk, $store->getId());
                 $data = array();
-                foreach ($categories[$store->getRootCategoryId()] as $category) {
-                    if (!isset($attributesData[$category['entity_id']])) {
+                foreach ($categoriesIds[$store->getRootCategoryId()] as $categoryId) {
+                    if (!isset($attributesData[$categoryId])) {
                         continue;
                     }
-                    if (!empty($category['entity_id'])) {
-                        $category['store_id'] = $store->getId();
+                    if ($category->load($categoryId)->getId()) {
                         $data[] = $this->_prepareValuesToInsert(
-                            array_merge($category, $attributesData[$category['entity_id']])
-                        );
+                            array_merge(
+                                $category->getData(),
+                                $attributesData[$categoryId],
+                                array('store_id' => $store->getId())
+                            ));
+                        $category->unsetData();
                     }
                 }
                 $this->_connection->insertMultiple(

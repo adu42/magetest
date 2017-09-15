@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_UrlRewrite
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -187,7 +187,7 @@ class Enterprise_UrlRewrite_Model_Matcher_Redirect
             return false;
         }
 
-        if ($rewriteRow['request_path'] == $requestPath) {
+        if (strtolower($rewriteRow['request_path']) == strtolower($requestPath)) {
             $this->_checkStoreRedirect($rewriteRow['url_rewrite_id']);
             return true;
         }
@@ -234,7 +234,7 @@ class Enterprise_UrlRewrite_Model_Matcher_Redirect
         if ($rewrite) {
             $requestPath = $rewrite['request_path'];
             if (!empty($this->_newProductStoreSeoSuffix)) {
-                $requestPath .= '.' . $this->_newProductStoreSeoSuffix;
+                $requestPath .= $this->_newProductStoreSeoSuffix;
             }
             if (!empty($categoryId)) {
                 $requestPath = $this->_getNewStoreCategoryPath($categoryId) . '/' . $requestPath;
@@ -257,7 +257,7 @@ class Enterprise_UrlRewrite_Model_Matcher_Redirect
         if (!empty($rewrite)) {
             $requestPath = $rewrite['request_path'];
             if (!empty($this->_newCategoryStoreSeoSuffix)) {
-                $requestPath .= '.' . $this->_newCategoryStoreSeoSuffix;
+                $requestPath .= $this->_newCategoryStoreSeoSuffix;
             }
             $requestPath = $this->_getBaseUrl() . $requestPath;
         }

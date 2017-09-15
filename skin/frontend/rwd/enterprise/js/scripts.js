@@ -19,7 +19,7 @@
  *
  * @category    design
  * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -32,7 +32,7 @@ Event.observe(document, 'dom:loaded', function() {
     for (var i = 0, l = inputs.length; i < l; i ++) {
         inputs[i].addClassName('change-container-classname');
     }
-})
+});
 
 if (!window.Enterprise) {
     window.Enterprise = {};
@@ -123,7 +123,7 @@ Enterprise.Bundle = {
      },
      reloadPrice: function () {
          var result = Enterprise.Bundle.oldReloadPrice.bind(this)();
-         var priceContainer, duplicateContainer = null
+         var priceContainer, duplicateContainer = null;
          if (priceContainer = $('bundle-product-wrapper').down('.price-box .price-as-configured')) {
             if (duplicateContainer = $('bundle-product-wrapper').down('.duplicate-price-box .price-as-configured')) {
                 duplicateContainer.down('.price').update(
@@ -543,7 +543,7 @@ Object.extend(Enterprise.Slider.prototype, {
     getSlidePosition: function (isForward) {
         var targetOffset;
         if (isForward) {
-            targetOffset = Math.min(this.items.length - this.config.pageSize, this.offset + this.config.scrollSize)
+            targetOffset = Math.min(this.items.length - this.config.pageSize, this.offset + this.config.scrollSize);
         }
         else {
             targetOffset = Math.max(this.offset - this.config.scrollSize, 0);
@@ -914,7 +914,9 @@ Enterprise.Widget.SplitButton.Option = Class.create(Enterprise.Widget, {
     initialize: function($super, title, type) {
         $super(new Element('li', {'class' : type ? type : null}));
         this._node.update('<span title="' + title + '">' + title + '</span>');
-        Event.observe(this._node, 'click', (function(){this.onClick()}).bind(this));
+        Event.observe(this._node, 'click', (function () {
+            this.onClick();
+        }).bind(this));
     },
 
     getNode: function() {
@@ -924,7 +926,7 @@ Enterprise.Widget.SplitButton.Option = Class.create(Enterprise.Widget, {
     onClick: function() {
 
     }
-})
+});
 
 Enterprise.loadSplitButtons = function() {
     if (typeof Enterprise.splitButtonsLoaded == 'undefined') {
@@ -950,7 +952,7 @@ Enterprise.textOverflow = function(elem) {
             var tempString = '';
             for (var i = 0; $(test).getHeight() <= initialHeight || i < words.legth; i++) {
                 tempString = tempString + words[i] + ' ';
-                test.update(tempString)
+                test.update(tempString);
             };
             var finalstring = (words.slice(-words.length, i - 2)).join(' ');
             test.remove();

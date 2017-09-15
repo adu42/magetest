@@ -19,7 +19,7 @@
  *
  * @category    design
  * @package     default_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 jQuery.noConflict();
@@ -100,7 +100,7 @@ merchandiserJS.prototype = {
         jQuery('.search-results .dragbox').each( function(index) {
             item = jQuery(this);
             var merJSObject = new merchandiserJS();
-            prodId = merJSObject.getProdIdFromClass(item.attr('class'), mandatory)
+            prodId = merJSObject.getProdIdFromClass(item.attr('class'), mandatory);
             if (prodId) {
                 duplItem = jQuery('#merchandiser-categories input.productid'+prodId);
                 if (0 < duplItem.length) {
@@ -254,7 +254,7 @@ merchandiserJS.prototype = {
             var mainUrl = jQuery(this).parents('.cols2-left').find('a').first().attr('href');
             if(event.type == 'mouseenter') mainImg.attr('src', url);
             else mainImg.attr('src', mainUrl);
-        })
+        });
     },
     showDimWindow : function(){
         jQuery('#dimwindow').show();
@@ -295,8 +295,10 @@ merchandiserJS.prototype = {
 
         sku_array.each(function(value){
             value = value.trim().replace(/ /g, "_");
-            if (jQuery('#merchandiser-categories #sku-'+value).length) {
-                jQuery('#merchandiser-categories #sku-'+value).remove();
+            var merJSObject = new merchandiserJS();
+            var escapedValue = merJSObject.escapeSpecialChars(value);
+            if (jQuery('#merchandiser-categories #sku-'+escapedValue).length) {
+                jQuery('#merchandiser-categories #sku-'+escapedValue).remove();
                 sku_removed.push(value);
             } else {
                 sku_error.push(value);
@@ -356,11 +358,12 @@ merchandiserJS.prototype = {
         var addmassfunction = function(sku_array,index){
             var productSku = sku_array[index];
             var checkSKU = "";
+            var merJSObject = new merchandiserJS();
             if (typeof productSku != 'undefined') {
                 sku_array[index] = productSku.trim();
                 checkSKU = sku_array[index].replace(/ /g,"_");
+                checkSKU = merJSObject.escapeSpecialChars(checkSKU);
             }
-            var merJSObject = new merchandiserJS();
             if (jQuery('#merchandiser-categories #sku-'+checkSKU).length) {
                 if (typeof productSku != 'undefined') {
                     sku_existed.push(sku_array[index]);
@@ -443,7 +446,9 @@ merchandiserJS.prototype = {
                 }
             });
             var removedIds = $('removed_product_ids').value;
-            if (removedIds.search(e.id) >= 0) {
+            var merJSObject = new merchandiserJS();
+            escapedId = merJSObject.escapeSpecialChars(e.id);
+            if (removedIds.search(escapedId) >= 0) {
                 e.remove();
             }
         });
@@ -459,6 +464,9 @@ merchandiserJS.prototype = {
     },
     unObserverScrollbar : function(){
         jQuery(window).unbind('scroll');
+    },
+    escapeSpecialChars : function(id){
+        return id.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|\@\%\&\!\#\=\:\;\'\"\>\<]/g, "\\$&");
     }
-}
+};
 

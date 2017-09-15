@@ -20,7 +20,7 @@
  *
  * @category    OnTap
  * @package     OnTap_Merchandiser
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 class OnTap_Merchandiser_Model_Merchandiser
@@ -35,7 +35,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     protected $_data = array();
 
     /**
-     * moveInStockToTheTop
+     * Move products which are in stock to the top
      *
      * @param mixed $params
      * @return void
@@ -43,7 +43,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     public function moveInStockToTheTop($params)
     {
         $catId = $params['catId'];
-        $merchandiserResourceModel = Mage::getResourceModel('merchandiser/merchandiser');
+        $merchandiserResourceModel = $this->getResourceModel();
         $outStockProducts = $merchandiserResourceModel->getOutofStockProducts($catId);
 
         $maxPosition = $merchandiserResourceModel->getMaxInstockPositionFromCategory($catId);
@@ -57,7 +57,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     }
 
     /**
-     * moveSaleAtTop
+     * Move saleable products to the top
      *
      * @param mixed $params
      * @return void
@@ -65,7 +65,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     public function moveSaleAtTop($params)
     {
         $catId = $params['catId'];
-        $merchandiserResourceModel = Mage::getResourceModel('merchandiser/merchandiser');
+        $merchandiserResourceModel = $this->getResourceModel();
         $readResult = $merchandiserResourceModel->getSaleCategoryProducts($catId, "DESC");
         $position = 1;
         foreach ($readResult as $row) {
@@ -75,7 +75,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     }
 
     /**
-     * moveSaleAtBottom
+     * Move saleable products to the bottom
      *
      * @param mixed $params
      * @return void
@@ -83,7 +83,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     public function moveSaleAtBottom($params)
     {
         $catId = $params['catId'];
-        $merchandiserResourceModel = Mage::getResourceModel('merchandiser/merchandiser');
+        $merchandiserResourceModel = $this->getResourceModel();
         $readResult = $merchandiserResourceModel->getSaleCategoryProducts($catId, "ASC");
         $position = 1;
         foreach ($readResult as $row) {
@@ -93,14 +93,14 @@ class OnTap_Merchandiser_Model_Merchandiser
     }
 
     /**
-     * affectCategoryBySmartRule
+     * Affect category by smart rule
      *
      * @param mixed $categoryId
      * @return void
      */
     public function affectCategoryBySmartRule($categoryId)
     {
-        $merchandiserResourceModel = Mage::getResourceModel('merchandiser/merchandiser');
+        $merchandiserResourceModel = $this->getResourceModel();
         $insertData = array();
         $allocatedProducts = array();
         $iCounter = 1;
@@ -115,10 +115,7 @@ class OnTap_Merchandiser_Model_Merchandiser
         foreach ($categoryProductsResult as $categoryProductPostions) {
             $positionsArray[$categoryProductPostions['product_id']] = $categoryProductPostions['position'];
         }
-
         asort($positionsArray);
-        $productPositions = $positionsArray;
-        $productPositions = array_keys($productPositions);
 
         $merchandiserResourceModel->clearCategoryProducts($categoryId);
 
@@ -128,8 +125,13 @@ class OnTap_Merchandiser_Model_Merchandiser
         );
 
         $heroProducts = $categoryValues['heroproducts'];
+
+        /** @var Mage_Catalog_Model_Product $productObject */
         $productObject = Mage::getModel('catalog/product');
 
+        /**
+         * Add products that are anchored to the very beginning or very end
+         */
         foreach (explode(",", $heroProducts) as $heroSKU) {
             if ($heroSKU != '' && $productId = $productObject->getIdBySku(trim($heroSKU))) {
                 if ($productId > 0) {
@@ -147,24 +149,36 @@ class OnTap_Merchandiser_Model_Merchandiser
             }
         }
 
-        $addTo = Mage::helper('merchandiser')->newProductsHandler(); // 1= TOP , 2 = BOTTOM
+        $addTo = $this->getHelper()->newProductsHandler(); // 1= TOP , 2 = BOTTOM
         $addTo = $addTo < 1 ? 1 : $addTo;
 
         $categoryProducts = array_diff($categoryProducts, $allocatedProducts);
-        $ruledProductIds = Mage::helper('merchandiser')->smartFilter($categoryId, $categoryValues['smart_attributes']);
+        $ruledProductIds = $this->getHelper()->smartFilter($categoryId, $categoryValues['smart_attributes']);
         $ruledProductCount = $iCounter;
 
+        $allowNotMatching = $categoryValues['ruled_only'] == 0;
+
+        /**
+         * Add products that match rules
+         */
         if (sizeof($ruledProductIds) > 0) {
             $normalProductCount = sizeof($positionsArray) > 0 ? max($positionsArray) : 0;
             $differenceFactor = $iCounter - $normalProductCount;
             if ($differenceFactor <= 0) {
                 $differenceFactor = 1;
             }
-            if ($addTo == 2 && $categoryValues['ruled_only'] == 0) {
+            if ($addTo == 2 && $allowNotMatching) {
                  $ruledProductCount = $differenceFactor + $normalProductCount;
             }
             foreach ($ruledProductIds as $productId) {
                 if (!in_array($productId, $allocatedProducts)) {
+                    /**
+                     * Skip products that used to be in a category, so that they are added in bulk later on.
+                     * That preserves existing order and prevents newly matched products from getting in between.
+                     */
+                    if ($allowNotMatching && in_array($productId, $categoryProducts)) {
+                        continue;
+                    }
                     $allocatedProducts[] = $productId;
                     if ($addTo == 2) {
                         unset($positionsArray[$productId]);
@@ -183,7 +197,11 @@ class OnTap_Merchandiser_Model_Merchandiser
             $iCounter = $ruledProductCount;
         }
 
-        if ($categoryValues['ruled_only'] == 0) {
+        /**
+         * Add products that used to belong to a category although they don't match rules.
+         * These products either have been assigned manually or rules have changed and products no longer match.
+         */
+        if ($allowNotMatching) {
             if (sizeof($categoryProducts) > 0) {
                 $incrementFactor = $iCounter - min($positionsArray);
                 if ($incrementFactor < 0) {
@@ -204,13 +222,13 @@ class OnTap_Merchandiser_Model_Merchandiser
             }
         }
 
-        if (sizeof($insertData)>0) {
+        if (sizeof($insertData) > 0) {
             $merchandiserResourceModel->insertMultipleProductsToCategory($insertData);
         }
     }
 
     /**
-     * categoryProductsMap
+     * Callback function for mapping category products
      *
      * @param mixed $value
      * @return string
@@ -223,7 +241,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     }
 
     /**
-     * getCategoryValues
+     * Get category values
      *
      * @param mixed $categoryId
      * @param mixed $field (default: null)
@@ -231,11 +249,11 @@ class OnTap_Merchandiser_Model_Merchandiser
      */
     public function getCategoryValues($categoryId, $field = null)
     {
-        return Mage::getResourceModel('merchandiser/merchandiser')->getCategoryValues($categoryId, $field);
+        return $this->getResourceModel()->getCategoryValues($categoryId, $field);
     }
 
     /**
-     * clearEntityCache
+     * Clear entity cache
      *
      * @param Mage_Core_Model_Abstract $entity
      * @param array $ids
@@ -254,7 +272,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     }
 
     /**
-     * arrangeProducts function.
+     * Arrange products in category
      *
      * @param array $params
      * @param string $resourceMethod
@@ -264,7 +282,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     {
         if (isset($params['catId']) && $params['catId'] > 0) {
             $catId = $params['catId'];
-            $merchandiserResourceModel = Mage::getResourceModel('merchandiser/merchandiser');
+            $merchandiserResourceModel = $this->getResourceModel();
             $categoryProducts = $merchandiserResourceModel->getCategoryProduct($catId);
 
             if (count($categoryProducts) > 0) {
@@ -295,7 +313,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     }
 
     /**
-     * moveBestsellersTop
+     * Move the most saleable products to the top
      *
      * @param array $params
      * @return void
@@ -306,7 +324,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     }
 
     /**
-     * moveLowstockTop
+     * Move the lowstock products to top
      *
      * @param array $params
      * @return void
@@ -317,7 +335,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     }
 
     /**
-     * newestFirst function.
+     * Move newest products to top
      *
      * @param array $params
      * @return void
@@ -325,7 +343,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     public function newestFirst($params)
     {
         $catId = $params['catId'];
-        $merchandiserResourceModel = Mage::getResourceModel('merchandiser/merchandiser');
+        $merchandiserResourceModel = $this->getResourceModel();
         $categoryProducts = $merchandiserResourceModel->getCategoryProduct($catId, "product_id DESC");
         $position = 1;
         foreach ($categoryProducts as $product) {
@@ -335,7 +353,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     }
 
     /**
-     * highestMarginFirst function.
+     * Sort products by difference between price and cost
      *
      * @param array $params
      * @return void
@@ -343,7 +361,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     public function highestMarginFirst($params)
     {
         $categoryId = $params['catId'];
-        $resource = Mage::getResourceModel('merchandiser/merchandiser');
+        $resource = $this->getResourceModel();
         $productCollection = $resource->getProductsOrderedByMargin($categoryId);
 
         $position = 1;
@@ -354,7 +372,7 @@ class OnTap_Merchandiser_Model_Merchandiser
     }
 
     /**
-     * sortByColor function.
+     * Sort products by color
      *
      * @param array $params
      * @return void
@@ -362,13 +380,38 @@ class OnTap_Merchandiser_Model_Merchandiser
     public function sortByColor($params)
     {
         $categoryId = $params['catId'];
-        $resource = Mage::getResourceModel('merchandiser/merchandiser');
+        $resource = $this->getResourceModel();
+
+        /** @var Mage_Catalog_Model_Resource_Product_Collection $productCollection */
         $productCollection = $resource->getProductsOrderedByColor($categoryId);
 
         $position = 1;
+        /** @var Mage_Catalog_Model_Product $product */
         foreach ($productCollection as $product) {
             $resource->updateProductPosition($categoryId, $product->getId(), $position);
-            $position++;
+            if ($product->getColor()) {
+                $position++;
+            }
         }
+    }
+
+    /**
+     * Get merchandiser helper
+     *
+     * @return OnTap_Merchandiser_Helper_Data
+     */
+    public function getHelper()
+    {
+        return Mage::helper('merchandiser');
+    }
+
+    /**
+     * Get merchandiser resource model
+     *
+     * @return OnTap_Merchandiser_Model_Resource_Merchandiser
+     */
+    public function getResourceModel()
+    {
+        return Mage::getResourceModel('merchandiser/merchandiser');
     }
 }

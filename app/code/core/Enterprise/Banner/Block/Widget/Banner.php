@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Banner
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -202,7 +202,7 @@ class Enterprise_Banner_Block_Widget_Banner
      */
     public function getBannersContent()
     {
-        $aplliedRules = null;
+        $appliedRules = array();
         $segmentIds = array();
         $customer = Mage::registry('segment_customer');
         if (!$customer) {
@@ -228,9 +228,9 @@ class Enterprise_Banner_Block_Widget_Banner
             case self::BANNER_WIDGET_DISPLAY_SALESRULE :
                 if (Mage::getSingleton('checkout/session')->getQuoteId()) {
                     $quote = Mage::getSingleton('checkout/session')->getQuote();
-                    $aplliedRules = explode(',', $quote->getAppliedRuleIds());
+                    $appliedRules = explode(',', $quote->getAppliedRuleIds());
                 }
-                $bannerIds = $this->_bannerResource->getSalesRuleRelatedBannerIds($segmentIds, $aplliedRules, false);
+                $bannerIds = $this->_bannerResource->getSalesRuleRelatedBannerIds($segmentIds, $appliedRules, false);
                 $this->setBannerIds($bannerIds);
                 $bannerIds = $this->_filterActive($bannerIds);
                 $bannersContent = $this->_getBannersContent(!empty($bannerIds)? $bannerIds : array(0), $segmentIds);

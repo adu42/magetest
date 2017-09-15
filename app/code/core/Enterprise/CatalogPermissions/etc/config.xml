@@ -21,7 +21,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_CatalogPermissions
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 -->
@@ -184,6 +184,14 @@
                     </enterprise_catalogpermissions>
                 </observers>
             </enterprise_catalog_category_tree_init_inactive_category_ids>
+            <catalog_category_tree_init_inactive_category_ids>
+                <observers>
+                    <enterprise_catalogpermissions>
+                        <class>enterprise_catalogpermissions/observer</class>
+                        <method>applyCategoryInactiveIds</method>
+                    </enterprise_catalogpermissions>
+                </observers>
+            </catalog_category_tree_init_inactive_category_ids>
             <catalog_product_collection_apply_limitations_before>
                 <observers>
                     <enterprise_catalogpermissions>

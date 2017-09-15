@@ -19,7 +19,7 @@
  *
  * @category    design
  * @package     default_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 var searchJS = Class.create();
@@ -83,4 +83,4 @@ searchJS.prototype = {
     hideLoader : function() {
         $('loading-mask').style.display = 'none';
     }
-}
+};

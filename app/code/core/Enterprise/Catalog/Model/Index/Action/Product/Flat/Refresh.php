@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Catalog
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -549,10 +549,11 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh extends Enterpr
      * Fill temporary flat table by data from temporary flat table parts
      *
      * @param array $tables
+     * @param array $changedIds
      *
      * @return Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh
      */
-    protected function _fillTemporaryFlatTable(array $tables)
+    protected function _fillTemporaryFlatTable(array $tables, array $changedIds = array())
     {
         $select                   = $this->_connection->select();
         $temporaryFlatTableName   = $this->_getTemporaryTableName(
@@ -623,6 +624,13 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh extends Enterpr
                 $allColumns = array_merge($allColumns, $columnValueNames);
             }
         }
+
+        if (!empty($changedIds)) {
+            $select->where(
+                $this->_connection->quoteInto('e.entity_id IN (?)', $changedIds)
+            );
+        }
+
         $sql = $select->insertFromSelect($temporaryFlatTableName, $allColumns, false);
         $this->_connection->query($sql);
 
@@ -652,7 +660,7 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh extends Enterpr
                         . ' AND t.entity_type_id = ' . $attribute->getEntityTypeId()
                         . ' AND t.attribute_id=' . $attribute->getId()
                         . ' AND t.store_id = ' . $this->_storeId
-                        . ' AND t.value IS NOT NULL';
+                        . ' AND t.value_id > 0';
 
                     $select = $this->_connection->select()
                         ->joinInner(
@@ -761,7 +769,7 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh extends Enterpr
 
         try {
             //We should prepare temp. tables only for first call of reindex all
-            if (!self::$_calls && !$resetFlag) {
+            if (!self::$_calls) {
                 $temporaryEavAttributes = $eavAttributes;
 
                 //add status global value to the base table
@@ -797,7 +805,7 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh extends Enterpr
             }
             //Create and fill flat temporary table
             $this->_createTemporaryFlatTable();
-            $this->_fillTemporaryFlatTable($eavAttributes);
+            $this->_fillTemporaryFlatTable($eavAttributes, $changedIds);
             //Update zero based attributes by values from current store
             $this->_updateTemporaryTableByStoreValues($eavAttributes, $changedIds);
 
@@ -966,6 +974,15 @@ class Enterprise_Catalog_Model_Index_Action_Product_Flat_Refresh extends Enterpr
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function resetIndexer()
+    {
+        self::$_calls = 0;
         return $this;
     }
 }

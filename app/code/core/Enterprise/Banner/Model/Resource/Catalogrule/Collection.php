@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Banner
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -50,12 +50,19 @@ class Enterprise_Banner_Model_Resource_Catalogrule_Collection extends Mage_Catal
 
     /**
      * Reset collection select
+     * Set rules and banners relation table
      *
      * @return Enterprise_Banner_Model_Resource_Catalogrule_Collection
      */
     public function resetSelect()
     {
-        $this->getSelect()->reset();
+        $this->getSelect()
+            ->reset()
+            ->from(
+                array('rule_related_banners' => $this->getTable('enterprise_banner/catalogrule')),
+                array('banner_id')
+            );
+
         return $this;
     }
 
@@ -64,14 +71,23 @@ class Enterprise_Banner_Model_Resource_Catalogrule_Collection extends Mage_Catal
      *
      * @param int $websiteId
      * @param int $customerGroupId
+     *
      * @return Enterprise_Banner_Model_Resource_Catalogrule_Collection
      */
     public function addAppliedRuleFilter($websiteId, $customerGroupId)
     {
+        $joinConditions = array(
+            $this->getConnection()->quoteInto('rule_group_website.customer_group_id = ?', $customerGroupId),
+            $this->getConnection()->quoteInto('rule_group_website.website_id = ?', $websiteId),
+            'rule_group_website.rule_id = rule_related_banners.rule_id'
+        );
         $this->getSelect()
-            ->from(array('rule_group_website' => $this->getTable('catalogrule/rule_group_website')), array())
-            ->where('rule_group_website.customer_group_id = ?', $customerGroupId)
-            ->where('rule_group_website.website_id = ?', $websiteId);
+            ->join(
+                array('rule_group_website' => $this->getTable('catalogrule/rule_group_website')),
+                implode(' AND ', $joinConditions),
+                array()
+            );
+
         return $this;
     }
 
@@ -79,17 +95,13 @@ class Enterprise_Banner_Model_Resource_Catalogrule_Collection extends Mage_Catal
      * Set related banners to catalog rule
      *
      * @param bool $enabledOnly if true then only enabled banners will be joined
+     *
      * @return Enterprise_Banner_Model_Resource_Catalogrule_Collection
      */
     public function addBannersFilter($enabledOnly = false)
     {
         if (!$this->_isBannerFilterAdded) {
             $select = $this->getSelect();
-            $select->join(
-                array('rule_related_banners' => $this->getTable('enterprise_banner/catalogrule')),
-                'rule_related_banners.rule_id = rule_group_website.rule_id',
-                array('banner_id')
-            );
 
             if ($enabledOnly) {
                 $select->join(
@@ -102,6 +114,7 @@ class Enterprise_Banner_Model_Resource_Catalogrule_Collection extends Mage_Catal
 
             $this->_isBannerFilterAdded = true;
         }
+
         return $this;
     }
 
@@ -109,6 +122,7 @@ class Enterprise_Banner_Model_Resource_Catalogrule_Collection extends Mage_Catal
      * Filter banners by customer segments
      *
      * @param array $matchedCustomerSegments
+     *
      * @return Enterprise_Banner_Model_Resource_Catalogrule_Collection
      */
     public function addCustomerSegmentFilter($matchedCustomerSegments)
@@ -131,6 +145,7 @@ class Enterprise_Banner_Model_Resource_Catalogrule_Collection extends Mage_Catal
 
             $this->_isCustomerSegmentFilterAdded = true;
         }
+
         return $this;
     }
 }

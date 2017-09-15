@@ -19,7 +19,7 @@
  *
  * @category    design
  * @package     default_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 var AdminRma = new Class.create();
@@ -67,7 +67,9 @@ AdminRma.prototype = {
     itemReasonOtherRowClick: function(event){
         var divId = 'rma_reason_container';
         var itemId = this.getRowIdByClick(event);
-        Event.observe($(divId).down('button.ok_button'), 'click', function(){$('rma_reason_container').hide();$('popup-window-mask').hide()});
+        Event.observe($(divId).down('button.ok_button'), 'click', function(){
+            $('rma_reason_container').hide();$('popup-window-mask').hide();
+        });
         $$('input[type="hidden"]').each(function(element){
             if (element.name == 'items[' + itemId + '][reason_other]') {
                 $(divId).down('div#rma_reason_content').innerHTML = element.value.escapeHTML();
@@ -135,9 +137,9 @@ AdminRma.prototype = {
 
         parentTd.descendants().each(function(element) {
             if (element.hasClassName('attrsValues')) {
-                element.remove()
+                element.remove();
             }
-        })
+        });
         this.hidePopups();
     },
 
@@ -166,7 +168,7 @@ AdminRma.prototype = {
             divId = 'grid_result_' + itemId;
 
         if ($(divId)) {
-            this.splitLine(this, divId, itemId)
+            this.splitLine(this, divId, itemId);
         } else {
             new Ajax.Request(url, {
                 onSuccess: function(transport) {
@@ -216,7 +218,7 @@ AdminRma.prototype = {
                 var deleteLink = new Element('a', {href: '#', 'class': 'item_delete_line'}).update(obj.deleteLineLabel);
                 element.replace(deleteLink);
             }
-        })
+        });
 
         var detailsDivId = 'itemDiv_' + itemId;
         var newDetailsDivId = detailsDivId + '_' + timeSuffix;
@@ -254,7 +256,7 @@ AdminRma.prototype = {
             this.copyDetailsData(detailsDivId, newDetailsDivId, itemId, timeSuffix);
             $(newDetailsDivId).select('input[type="file"]').each(function(file) {
                 file.name = file.name + '_' + itemId + '_' + timeSuffix;
-            })
+            });
         }
 
         Event.observe(trSplit.down('a.item_details'), 'click', this.itemDetailsRowClick.bind(this));
@@ -287,11 +289,11 @@ AdminRma.prototype = {
                     element.value = '';
                 }
             }
-        })
+        });
 
         this.addPopupDivButtonsBindings(detailsDivId);
         this.addPopupDivButtonsBindings(newDetailsDivId);
-        this.okButtonClick(newDetailsDivId)
+        this.okButtonClick(newDetailsDivId);
     },
 
     deleteRowById : function(rowId, divId){
@@ -392,7 +394,7 @@ AdminRma.prototype = {
         ];
         var tableRma = $('rma_items_grid_table');
 
-        var newRmaItemId = this.newRmaItemId
+        var newRmaItemId = this.newRmaItemId;
 
         var tbody = tableRma.down('tbody.newRma');
         if (!tbody) {
@@ -424,7 +426,7 @@ AdminRma.prototype = {
                 data_other.name   = 'items[' + newRmaItemId + '][' + data_other.name + ']';
                 data_other.setStyle({display:'none'});
                 data_other.disabled = 'disabled';
-                column.insert(data_other)
+                column.insert(data_other);
             }
             row.insert(column);
         });
@@ -456,7 +458,7 @@ AdminRma.prototype = {
             }
             var link = Element.select(trElement, 'a[class="product_to_add"]');
             if (link[0]) {
-                rma.showBundleItems(event)
+                rma.showBundleItems(event);
             }
         }
     },
@@ -472,7 +474,7 @@ AdminRma.prototype = {
     },
 
     reasonChanged: function(event) {
-        var select = event.findElement('select')
+        var select = event.findElement('select');
         if (select.value === 'other') {
             select.next('input').show();
             select.next('input').disabled = '';
@@ -620,7 +622,7 @@ AdminRma.prototype = {
         } else {
             $$('input[value="'+itemId+'"]')[0].checked = false;
             delete this.bundleArray[itemId];
-            this.addProductCheckboxCheckCallback(this.grid, $$('input[value="'+itemId+'"]')[0], false)
+            this.addProductCheckboxCheckCallback(this.grid, $$('input[value="'+itemId+'"]')[0], false);
         }
 
         this.hidePopups();
@@ -631,7 +633,7 @@ AdminRma.prototype = {
             $$('input[value="'+itemId+'"]')[0].checked = "checked";
         } else {
             $$('input[value="'+itemId+'"]')[0].checked = false;
-            this.addProductCheckboxCheckCallback(this.grid, $$('input[value="'+itemId+'"]')[0], false)
+            this.addProductCheckboxCheckCallback(this.grid, $$('input[value="'+itemId+'"]')[0], false);
         }
 
         this.hidePopups();
@@ -756,4 +758,4 @@ AdminRma.prototype = {
             }
         }
     }
-}
+};

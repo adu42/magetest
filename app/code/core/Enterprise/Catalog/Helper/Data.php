@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Catalog
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -73,7 +73,7 @@ class Enterprise_Catalog_Helper_Data extends Mage_Core_Helper_Abstract
         $helper    = $this->_factory->getHelper('catalog/category');
         $urlSuffix = $helper->getCategoryUrlSuffix($storeId);
         if ($urlSuffix) {
-            $requestPath .= '.' . $urlSuffix;
+            $requestPath .= $urlSuffix;
         }
         return $requestPath;
     }
@@ -95,7 +95,7 @@ class Enterprise_Catalog_Helper_Data extends Mage_Core_Helper_Abstract
         $helper    = $this->_factory->getHelper('catalog/product');
         $urlSuffix = $helper->getProductUrlSuffix($storeId);
         if ($urlSuffix) {
-            $requestPath .= '.' . $urlSuffix;
+            $requestPath .= $urlSuffix;
         }
         if (!is_null($categoryId)) {
             /** @var $category Mage_Catalog_Model_Category */

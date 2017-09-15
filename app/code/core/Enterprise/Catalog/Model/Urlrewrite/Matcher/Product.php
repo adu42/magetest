@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Catalog
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -187,13 +187,18 @@ class Enterprise_Catalog_Model_Urlrewrite_Matcher_Product
         $rewriteTail = array_pop($rewriteParts);
 
         if (!empty($this->_seoSuffix)) {
-            $rewriteTail .= '.' . $this->_seoSuffix;
+            $rewriteTail .= $this->_seoSuffix;
         }
 
         $requestParts = explode('/', $requestPath);
         $requestTail = array_pop($requestParts);
 
-        if (strcmp($rewriteTail, $requestTail) === 0) {
+        $cmpRequestTail = $requestTail;
+        if ($this->_seoSuffix == '/' && substr($this->_request->getPathInfo(), -1) == '/') {
+            $cmpRequestTail .= '/';
+        }
+
+        if (strcmp($rewriteTail, $cmpRequestTail) === 0) {
 
             $categoryPath = implode('/', $requestParts);
 
@@ -270,7 +275,7 @@ class Enterprise_Catalog_Model_Urlrewrite_Matcher_Product
             if (!empty($rewrite)) {
                 $requestPath = $rewrite['request_path'];
                 if (!empty($this->_newStoreSeoSuffix)) {
-                    $requestPath .= '.' . $this->_newStoreSeoSuffix;
+                    $requestPath .= $this->_newStoreSeoSuffix;
                 }
                 if (!empty($categoryPath)) {
                     $requestPath = $this->_getNewStoreCategoryPath($categoryPath) . '/' . $requestPath;

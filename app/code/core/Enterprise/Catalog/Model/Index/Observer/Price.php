@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Catalog
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -204,5 +204,42 @@ class Enterprise_Catalog_Model_Index_Observer_Price
         $client = Mage::getModel('enterprise_mview/client');
         $client->init($metadataTableName);
         return $client;
+    }
+
+    /**
+     * Executes product re-index after mass update action
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function processMassUpdateAction(Varien_Event_Observer $observer)
+    {
+        $helper = Mage::helper('enterprise_cataloginventory/index');
+        if (!$helper->isLivePriceAndStockReindexEnabled()) {
+            return;
+        }
+
+        /** @var $action Mage_Adminhtml_Catalog_Product_Action_AttributeController */
+        $action            = $observer->getControllerAction();
+        $attributesData    = $action->getRequest()->getParam('attributes', array());
+        $websiteRemoveData = $action->getRequest()->getParam('remove_website_ids', array());
+        $websiteAddData    = $action->getRequest()->getParam('add_website_ids', array());
+        $productIds        = Mage::helper('adminhtml/catalog_product_edit_action_attribute')->getProductIds();
+
+        if (($attributesData || $websiteAddData || $websiteRemoveData) && !empty($productIds)) {
+            try {
+                /** @var $helper Enterprise_Index_Helper_Data */
+                $helper    = Mage::helper('enterprise_index');
+                $client    = $this->_getClient($helper->getIndexerConfigValue('catalog_product_price', 'index_table'));
+                $arguments = array(
+                    'value' => $productIds,
+                );
+                $client->execute('enterprise_catalog/index_action_product_price_refresh_row', $arguments);
+            } catch (Exception $e) {
+                Mage::logException($e);
+                Mage::getSingleton('adminhtml/session')->addError(
+                    Mage::helper('enterprise_catalog')->__('An error occured while reindexing the products.')
+                );
+            }
+        }
     }
 }

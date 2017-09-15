@@ -20,7 +20,7 @@
  *
  * @category    design
  * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 /* @var $this Enterprise_CustomerBalance_Block_Checkout_Onepage_Payment_Additional */
@@ -47,6 +47,7 @@
     //<![CDATA[
     var isFullyPaidAfterCustomerBalanceApplication = <?php echo ($this->isFullyPaidAfterApplication() ? 'true' : 'false'); ?>;
     var customerBalanceSubstracted = <?php if ($this->isCustomerBalanceUsed()): ?>true<?php else: ?>false<?php endif; ?>;
+    var customerBalanceAmount = <?php echo $this->getBalance(); ?>;
 
     if (customerBalanceSubstracted) {
         quoteBaseGrandTotal += <?php echo (float)$this->getQuote()->getBaseCustomerBalAmountUsed(); ?>;
@@ -63,6 +64,12 @@
         }
         if (customerBalanceSubstracted && !$('use_customer_balance').checked) {
             quoteBaseGrandTotal += <?php echo (float)$this->getBalance(); ?>;
+            if(quoteBaseGrandTotal > quoteGrandTotalClean) {
+                quoteBaseGrandTotal = quoteGrandTotalClean;
+                if($('use_reward_points') && $('use_reward_points').checked) {
+                    quoteBaseGrandTotal -= rewardPointsAmount;
+                }
+            }
             customerBalanceSubstracted = false;
             checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
         }
@@ -111,7 +118,7 @@
         } else {
             var elements = Form.getElements(this.form);
             for (var i=0; i<elements.length; i++) {
-                if (elements[i].name == 'payment[method]') {
+                if (elements[i].name == 'payment[method]' || elements[i].name == 'form_key') {
                     elements[i].disabled = false;
                 }
             }

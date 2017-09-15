@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Invitation
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -40,7 +40,7 @@ class Enterprise_Invitation_Block_Adminhtml_Invitation_View extends Mage_Adminht
     protected function _prepareLayout()
     {
         $invitation = $this->getInvitation();
-        $this->_headerText = Mage::helper('enterprise_invitation')->__('View Invitation for %s (ID: %s)', $invitation->getEmail(), $invitation->getId());
+        $this->_headerText = Mage::helper('enterprise_invitation')->__('View Invitation for %s (ID: %s)', Mage::helper('core')->escapeHtml($invitation->getEmail()), $invitation->getId());
         $this->_addButton('back', array(
             'label' => Mage::helper('enterprise_invitation')->__('Back'),
             'onclick' => "setLocation('{$this->getUrl('*/*/')}')",

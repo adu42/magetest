@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Support
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -2801,7 +2801,7 @@ class Enterprise_Support_Model_Resource_Sysreport_Tool
 
             $info = $this->_readConnection->fetchAll("SELECT * FROM `{$this->_getTableName('core/resource')}`");
             foreach ($info as $_moduleInfo) {
-                $setupNode = Mage::app()->getConfig()->getNode('global/resources')->$_moduleInfo['code'];
+                $setupNode = Mage::app()->getConfig()->getNode('global/resources')->{$_moduleInfo['code']};
                 if ($setupNode) {
                     $moduleName = (string)$setupNode->setup->module;
                     $dbVersions[$moduleName] = array(

@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_GiftCard
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -363,7 +363,8 @@ class Enterprise_GiftCard_Model_Observer extends Mage_Core_Model_Abstract
         );
 
         foreach ($order->getAllItems() as $item) {
-            if ($item->getProductType() == Enterprise_GiftCard_Model_Catalog_Product_Type_Giftcard::TYPE_GIFTCARD) {
+            if ($item->getId()
+                && $item->getProductType() == Enterprise_GiftCard_Model_Catalog_Product_Type_Giftcard::TYPE_GIFTCARD) {
                 //get how many additional giftcards are paid
                 $newlyPaidInvoiceItemQty = $this->_getAndUpdatePaidInvoiceItems($item);
 

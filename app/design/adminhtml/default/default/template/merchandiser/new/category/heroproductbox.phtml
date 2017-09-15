@@ -20,13 +20,16 @@
  *
  * @category    design
  * @package     default_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
 <?php
+    /** @var OnTap_Merchandiser_Helper_Data $helper */
     $helper = Mage::helper('merchandiser');
     $currentPosition = $this->getCurrentPosition();
+
+    /** @var Mage_Catalog_Model_Product $_product */
     $_product = $this->getCurrentProduct();
     $pId = $_product->getId();
 ?>

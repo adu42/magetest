@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_ImportExport
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -42,8 +42,8 @@ class Enterprise_ImportExport_Model_Export extends Mage_ImportExport_Model_Expor
      */
     public function runSchedule(Enterprise_ImportExport_Model_Scheduled_Operation $operation)
     {
-        $data = $this->export();
-        $result = $operation->saveFileSource($this, $data);
+        $file   = $this->exportFile();
+        $result = $operation->saveFileSource($this, $file);
 
         return (bool)$result;
     }

@@ -19,8 +19,11 @@
  *
  * @category    design
  * @package     enterprise_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
+ */
+/**
+ * @deprecated since 1.14.0
  */
 var Checkout = Class.create();
 Checkout.prototype = {
@@ -129,7 +132,7 @@ Checkout.prototype = {
                 //Remove the link
                 $(nextStep + '-progress-opcheckout').select('.changelink').each(function (item) {
                     item.remove();
-                })
+                });
                 //Remove the content
                 $(nextStep + '-progress-opcheckout').select('dd.complete').each(function (item) {
                     item.remove();
@@ -277,7 +280,7 @@ Checkout.prototype = {
         }
         return false;
     }
-}
+};
 
 // billing
 var Billing = Class.create();
@@ -316,7 +319,7 @@ Billing.prototype = {
     },
 
     resetSelectedAddress: function(){
-        var selectElement = $('billing-address-select')
+        var selectElement = $('billing-address-select');
         if (selectElement) {
             selectElement.value='';
         }
@@ -417,7 +420,7 @@ Billing.prototype = {
         // This moves the accordion panels of one page checkout and updates the checkout progress
         //checkout.setBilling();
     }
-}
+};
 
 // shipping
 var Shipping = Class.create();
@@ -458,7 +461,7 @@ Shipping.prototype = {
     },
 
     resetSelectedAddress: function(){
-        var selectElement = $('shipping-address-select')
+        var selectElement = $('shipping-address-select');
         if (selectElement) {
             selectElement.value='';
         }
@@ -580,7 +583,7 @@ Shipping.prototype = {
         */
         //checkout.setShipping();
     }
-}
+};
 
 // shipping method
 var ShippingMethod = Class.create();
@@ -670,7 +673,7 @@ ShippingMethod.prototype = {
 
         checkout.setShippingMethod();
     }
-}
+};
 
 
 // payment
@@ -707,7 +710,7 @@ Payment.prototype = {
         var elements = Form.getElements(this.form);
         var method = null;
         for (var i=0; i<elements.length; i++) {
-            if (elements[i].name=='payment[method]') {
+            if (elements[i].name=='payment[method]' || elements[i].name=='form_key') {
                 if (elements[i].checked) {
                     method = elements[i].value;
                 }
@@ -883,7 +886,7 @@ Payment.prototype = {
             Event.observe(element, 'click', toggleToolTip);
         });
     }
-}
+};
 
 var Review = Class.create();
 Review.prototype = {
@@ -957,4 +960,4 @@ Review.prototype = {
     },
 
     isSuccess: false
-}
+};

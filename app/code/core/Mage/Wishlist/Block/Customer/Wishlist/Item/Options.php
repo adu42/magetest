@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Wishlist
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -114,9 +114,12 @@ class Mage_Wishlist_Block_Customer_Wishlist_Item_Options extends Mage_Wishlist_B
         }
 
         $item = $this->getItem();
-        $data = $this->getOptionsRenderCfg($item->getProduct()->getTypeId());
-        if (empty($data['template'])) {
-            $data = $this->getOptionsRenderCfg('default');
+
+        if ($item instanceof Mage_Wishlist_Model_Item) {
+            $data = $this->getOptionsRenderCfg($item->getProduct()->getTypeId());
+            if (empty($data['template'])) {
+                $data = $this->getOptionsRenderCfg('default');
+            }
         }
 
         return empty($data['template']) ? '' : $data['template'];

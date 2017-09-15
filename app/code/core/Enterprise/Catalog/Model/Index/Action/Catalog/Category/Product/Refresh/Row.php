@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Catalog
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -122,12 +122,27 @@ class Enterprise_Catalog_Model_Index_Action_Catalog_Category_Product_Refresh_Row
     /**
      * Retrieve select for reindex products of non anchor categories
      *
+     * @deprecated
+     *
      * @param Mage_Core_Model_Store $store
      * @return Varien_Db_Select
      */
     protected function _getAnchorCategoriesSelect(Mage_Core_Model_Store $store)
     {
         $select = parent::_getAnchorCategoriesSelect($store);
+        return $select->where('ccp.product_id IN (?)', $this->_limitationByProducts);
+    }
+
+    /**
+     * Retrieve select for reindex products of non anchor categories
+     *
+     * @param Varien_Db_Select $subSelect
+     * @param Mage_Core_Model_Store $store
+     * @return Varien_Db_Select
+     */
+    protected function _getAnchorCategoriesSelectBySubSelect(Varien_Db_Select $subSelect, Mage_Core_Model_Store $store)
+    {
+        $select = parent::_getAnchorCategoriesSelectBySubSelect($subSelect, $store);
         return $select->where('ccp.product_id IN (?)', $this->_limitationByProducts);
     }
 

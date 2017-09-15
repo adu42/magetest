@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_Banner
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -50,12 +50,19 @@ class Enterprise_Banner_Model_Resource_Salesrule_Collection extends Mage_SalesRu
 
     /**
      * Reset collection select
+     * Set rules and banners relation table
      *
      * @return Enterprise_Banner_Model_Resource_Salesrule_Collection
      */
     public function resetColumns()
     {
-        $this->getSelect()->reset();
+        $this->getSelect()
+            ->reset()
+            ->from(
+                array('rule_related_banners' => $this->getTable('enterprise_banner/salesrule')),
+                array('banner_id')
+            );
+
         return $this;
     }
 
@@ -64,18 +71,15 @@ class Enterprise_Banner_Model_Resource_Salesrule_Collection extends Mage_SalesRu
      *
      * @param array $appliedRules
      * @param bool $enabledOnly if true then only enabled banners will be joined
+     *
      * @return Enterprise_Banner_Model_Resource_Salesrule_Collection
      */
     public function addBannersFilter($appliedRules, $enabledOnly = false)
     {
         if (!$this->_isBannerFilterAdded) {
             $select = $this->getSelect();
-            $select->from(
-                array('rule_related_banners' => $this->getTable('enterprise_banner/salesrule')),
-                array('banner_id')
-            );
             if (empty($appliedRules)) {
-                $aplliedRules = array(0);
+                $appliedRules = array(0);
             }
             $select->where('rule_related_banners.rule_id IN (?)', $appliedRules);
             if ($enabledOnly) {
@@ -89,6 +93,7 @@ class Enterprise_Banner_Model_Resource_Salesrule_Collection extends Mage_SalesRu
 
             $this->_isBannerFilterAdded = true;
         }
+
         return $this;
     }
 
@@ -96,6 +101,7 @@ class Enterprise_Banner_Model_Resource_Salesrule_Collection extends Mage_SalesRu
      * Filter banners by customer segments
      *
      * @param array $matchedCustomerSegments
+     *
      * @return Enterprise_Banner_Model_Resource_Salesrule_Collection
      */
     public function addCustomerSegmentFilter($matchedCustomerSegments)
@@ -116,6 +122,7 @@ class Enterprise_Banner_Model_Resource_Salesrule_Collection extends Mage_SalesRu
             }
             $this->_isCustomerSegmentFilterAdded = true;
         }
+
         return $this;
     }
 }

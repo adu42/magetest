@@ -20,7 +20,7 @@
  *
  * @category    Enterprise
  * @package     Enterprise_GiftWrapping
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -36,16 +36,24 @@ class Enterprise_GiftWrapping_Model_Observer
     /**
      * Prepare quote item info about gift wrapping
      *
-     * @param mixed $entity
+     * @param Mage_Sales_Model_Quote_Item $entity
      * @param array $data
      * @return Enterprise_GiftWrapping_Model_Observer
      */
     protected function _saveItemInfo($entity, $data)
     {
-        if (is_array($data)) {
-            $wrapping = Mage::getModel('enterprise_giftwrapping/wrapping')->load($data['design']);
-            $entity->setGwId($wrapping->getId())
+        $wrappingInfo = $this->_getGiftWrappingInfo($data);
+        if (isset($wrappingInfo['gw_id'])) {
+            $entity->setGwId($wrappingInfo['gw_id'])
                 ->save();
+        }
+        $quote = $entity->getQuote();
+
+        if ($quote){
+            if($quote->getShippingAddress()) {
+                $quote->getShippingAddress()->addData($wrappingInfo);
+            }
+            $quote->addData($wrappingInfo);
         }
         return $this;
     }
@@ -59,20 +67,33 @@ class Enterprise_GiftWrapping_Model_Observer
      */
     protected function _saveOrderInfo($entity, $data)
     {
-        if (is_array($data)) {
-            $wrappingInfo = array();
-            if (isset($data['design'])) {
-                $wrapping = Mage::getModel('enterprise_giftwrapping/wrapping')->load($data['design']);
-                $wrappingInfo['gw_id'] = $wrapping->getId();
-            }
-            $wrappingInfo['gw_allow_gift_receipt'] = isset($data['allow_gift_receipt']);
-            $wrappingInfo['gw_add_card'] = isset($data['add_printed_card']);
-            if ($entity->getShippingAddress()) {
-                $entity->getShippingAddress()->addData($wrappingInfo);
-            }
-            $entity->addData($wrappingInfo)->save();
+        $wrappingInfo = $this->_getGiftWrappingInfo($data);
+
+        if ($entity->getShippingAddress()) {
+            $entity->getShippingAddress()->addData($wrappingInfo);
         }
+        $entity->addData($wrappingInfo)->save();
         return $this;
+    }
+
+    /**
+     * Get gift wrapping info
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function _getGiftWrappingInfo($data)
+    {
+        $wrappingInfo = array();
+
+        if (isset($data['design'])) {
+            $wrapping = Mage::getModel('enterprise_giftwrapping/wrapping')->load($data['design']);
+            $wrappingInfo['gw_id'] = $wrapping->getId();
+        }
+        $wrappingInfo['gw_allow_gift_receipt'] = isset($data['allow_gift_receipt']);
+        $wrappingInfo['gw_add_card']           = isset($data['add_printed_card']);
+
+        return $wrappingInfo;
     }
 
     /**
@@ -83,40 +104,63 @@ class Enterprise_GiftWrapping_Model_Observer
      */
     public function checkoutProcessWrappingInfo($observer)
     {
-        $request = $observer->getEvent()->getRequest();
+        $request          = $observer->getEvent()->getRequest();
         $giftWrappingInfo = $request->getParam('giftwrapping');
+        $quote            = $observer->getEvent()->getQuote();
+        $giftOptionsInfo  = $request->getParam('giftoptions');
 
-        if (is_array($giftWrappingInfo)) {
-            $quote = $observer->getEvent()->getQuote();
-            $giftOptionsInfo = $request->getParam('giftoptions');
-            foreach ($giftWrappingInfo as $entityId => $data) {
-                $info = array();
-                if (!is_array($giftOptionsInfo) || empty($giftOptionsInfo[$entityId]['type'])) {
-                    continue;
+        if (is_array($giftOptionsInfo)) {
+            if (is_array($giftWrappingInfo)) {
+                foreach ($giftWrappingInfo as $entityId => $data) {
+                    if (isset($giftOptionsInfo[$entityId])) {
+                        $this->_setWrappingInfo($giftOptionsInfo[$entityId], $entityId, $quote, $data);
+                    }
                 }
-                switch ($giftOptionsInfo[$entityId]['type']) {
-                    case 'quote':
-                        $entity = $quote;
-                        $this->_saveOrderInfo($entity, $data);
-                        break;
-                    case 'quote_item':
-                        $entity = $quote->getItemById($entityId);
-                        $this->_saveItemInfo($entity, $data);
-                        break;
-                    case 'quote_address':
-                        $entity = $quote->getAddressById($entityId);
-                        $this->_saveOrderInfo($entity, $data);
-                        break;
-                    case 'quote_address_item':
-                        $entity = $quote
-                            ->getAddressById($giftOptionsInfo[$entityId]['address'])
-                            ->getItemById($entityId);
-                        $this->_saveItemInfo($entity, $data);
-                        break;
+            } else {
+                foreach ($giftOptionsInfo as $entityId => $data) {
+                    $this->_setWrappingInfo($data, $entityId, $quote, array());
                 }
             }
         }
         return $this;
+    }
+
+    /**
+     * Set wrapping info
+     *
+     * @param array $giftOptionsInfo
+     * @param int $entityId
+     * @param Mage_Sales_Model_Quote $quote
+     * @param array $data
+     */
+    protected function _setWrappingInfo($giftOptionsInfo, $entityId, $quote, $data)
+    {
+        if (isset($giftOptionsInfo['type'])) {
+            switch ($giftOptionsInfo['type']) {
+                case 'quote':
+                    $this->_saveOrderInfo($quote, $data);
+                    break;
+                case 'quote_item':
+                    $entity = $quote->getItemById($entityId);
+                    $this->_saveItemInfo($entity, $data);
+                    break;
+                case 'quote_address':
+                    $entity = $quote->getAddressById($entityId);
+                    $this->_saveOrderInfo($entity, $data);
+                    break;
+                case 'quote_address_item':
+                    if (isset($giftOptionsInfo['address'])) {
+                        $address = $quote->getAddressById($giftOptionsInfo['address']);
+                        if (!is_null($address)) {
+                            $entity = $address->getItemById($entityId);
+                            $this->_saveItemInfo($entity, $data);
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     /**
@@ -129,7 +173,6 @@ class Enterprise_GiftWrapping_Model_Observer
         $quote = $observer->getEvent()->getOrderCreateModel()->getQuote();
         $request = $observer->getEvent()->getRequest();
         if (isset($request['giftwrapping'])) {
-            $info = array();
             foreach ($request['giftwrapping'] as $entityId => $data) {
                 if (isset($data['type'])) {
                     switch ($data['type']) {
