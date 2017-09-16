@@ -51,3 +51,8 @@ else
         $PHP_BIN $CRONSCRIPT$MODE &
     fi
 fi
+
+WEBROOT=$(cd `dirname $0`; pwd)
+CACHEPATH=/var/cache
+CACHEPATH="$WEBROOT$CACHEPATH"
+find $CACHEPATH -mmin +120 -type f |xargs -I{} rm -rf {} 1>/dev/null 2>/dev/null
