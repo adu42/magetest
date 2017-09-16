@@ -32,7 +32,7 @@
 
     //Image size
     $imgWidth = intval($theme->getCfg('category/image_width'));
-
+    $imgHeight = $imgWidth;
 
     //If image width is not specified, use default values
     if ($imgWidth <= 0)
@@ -40,14 +40,12 @@
         $imgWidth = 295;
         $imgHeight = 295;
     }
-
-    $imgHeight = round($imgWidth*4/3,0) ;
     
     //Image aspect ratio settings
     $keepAspectRatio = $theme->getCfg('category/aspect_ratio');
     if ($keepAspectRatio)
     {
-       // $imgHeight = 0; //Height will be calculated automatically (based on width) to keep the aspect ratio
+        $imgHeight = 0; //Height will be calculated automatically (based on width) to keep the aspect ratio
         $catViewKeepFrame = FALSE;
     }
     else

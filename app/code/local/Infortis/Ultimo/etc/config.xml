@@ -2,13 +2,13 @@
 <!--
 /**
  * @author		Infortis
- * @copyright	Copyright 2012-2016 Infortis
+ * @copyright	Copyright 2012-2017 Infortis
  */
 -->
 <config>
 	<modules>
 		<Infortis_Ultimo>
-			<version>1.17.1</version>
+			<version>1.18.1</version>
 		</Infortis_Ultimo>
 	</modules>
 	<!--<frontend>
@@ -153,9 +153,10 @@
 				<search_position>primCentralCol</search_position>
 				<search_in_user_menu_position>1</search_in_user_menu_position>
 				<account_links_position>userMenu</account_links_position>
+				<!-- <top_links>1</top_links> -->
+				<signup>0</signup>
 				<user_menu_position>primRightCol</user_menu_position>
 				<toplinks_break_position>0</toplinks_break_position>
-				<signup>0</signup>
 				<main_menu_position>menuContainer</main_menu_position>
 				<cart_position>userMenu</cart_position>
 				<cart_label>1</cart_label>
@@ -168,7 +169,7 @@
 				<sticky_full_width>0</sticky_full_width>
 				<sticky_logo>0</sticky_logo>
 				<mobile_move_switchers>0</mobile_move_switchers>
-				<mode>1</mode>
+				<mode>1</mode> <!-- Deprecated -->
 			</header>
 			<category>
 				<aspect_ratio>0</aspect_ratio>
@@ -272,12 +273,14 @@
 				<custom_css>0</custom_css>
 			</customization>
 			<install>
+				<demo_number>1</demo_number>
 				<overwrite_blocks>0</overwrite_blocks>
 				<overwrite_pages>0</overwrite_pages>
 			</install>
 			<integration>
-				<bootstrap_grid>1</bootstrap_grid>
 				<!-- <bootstrap>0</bootstrap> -->
+				<bootstrap_grid>1</bootstrap_grid>
+				<fontawesome>0</fontawesome>
 			</integration>
 		</ultimo>
 		<!-- Design settings -->
@@ -306,6 +309,7 @@
 				<social_icon_color>#fff</social_icon_color>
 				<social_icon_hover_bg_color>#ff7214</social_icon_hover_bg_color>
 				<social_icon_hover_color>#fff</social_icon_hover_color>
+				<ban_cap_bg_color>rgba(91, 210, 236, 0.85)</ban_cap_bg_color>
 				<important_link_hover_color>#fff</important_link_hover_color>
 				<important_link_hover_bg_color>#de2666</important_link_hover_bg_color>
 				<label_new_bg_color>#3ec2df</label_new_bg_color>
@@ -337,9 +341,8 @@
 				<bg_positionx>center</bg_positionx>
 				<bg_positiony>top</bg_positiony>
 				<tex></tex>
-				<content_padding_side>12</content_padding_side>
-				<!-- TODO: -->
-				<!-- <content_padding_side>15</content_padding_side> -->
+				<!-- <content_padding_side>12</content_padding_side> -->
+				<content_padding_side>15</content_padding_side>
 			</page>
 			<header>
 				<top_border_color>#333</top_border_color>

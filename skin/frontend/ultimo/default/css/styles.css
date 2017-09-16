@@ -1,26 +1,61 @@
 /* Reset %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
-* { margin:0; padding:0; }
-html { font-size:16px; /* Fix for Opera */ }
-body          {	font:75%/150% Arial, Helvetica, sans-serif; background-color:#fff; color:#333; text-align:center; }
-#root-wrapper {}
+* {
+    margin: 0;
+    padding: 0;
+}
 
-img           { border:0; vertical-align:top; max-width:100%; }
+html {
+    font-size: 62.5%;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    font-size-adjust: 100%;
+}
 
-a             { color:#888; text-decoration:none; }
-a:hover       { text-decoration:none; color:#333; }
-:focus        { outline:0; }
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.42857143;
+    font-size: 1.4rem;
+    background-color: #fff;
+    color: #333;
+}
+
+img { border:0; max-width:100%; vertical-align:top; }
+
+a { color:#888; text-decoration:none; }
+a:hover { text-decoration:none; color:#333; }
+:focus { outline:0; }
 
 /* Headings */
 h1,h2,h3,
-h4,h5,h6      { margin:0 0 10px; font-weight:normal; }
-h1            { font-size:2.6666em;	line-height:1.25em;		/*32px, 40px*/		margin-bottom:20px; }
-h2            { font-size:2em;		line-height:1.25em;		/*24px, 30px*/ }
-h3            { font-size:1.6666em;	line-height:1.2em;		/*20px, 24px*/ }
-h4            { font-size:1.3333em;	line-height:1.25em;		/*16px, 20px*/ }
-h5            { font-size:1.1666em;	line-height:1.1428em;	/*14px, 16px*/ }
-h6            { font-size:1em;		line-height:1.1666em;	/*12px, 14px*/ }
+h4,h5,h6 { margin:0 0 10px; font-weight:normal; }
+
+h1 { font-size: 3.0rem; line-height: 1.1; margin-bottom:20px; }
+h2 { font-size: 2.4rem; line-height: 1.1; }
+h3 { font-size: 1.9rem; line-height: 1.1; }
+h4 { font-size: 1.6rem; line-height: 1.1; }
+h5 { font-size: 1.4rem; line-height: 1.1; }
+h6 { font-size: 1.4rem; line-height: 1.1; }
+
+/*h1 { font-size: 28rem; line-height: 1.1; margin-bottom:20px; }
+h2 { font-size: 28rem; line-height: 1.1; }
+h3 { font-size: 24rem; line-height: 1.1; }
+h4 { font-size: 19rem; line-height: 1.1; }
+h5 { font-size: 16rem; line-height: 1.1; }
+h6 { font-size: 14rem; line-height: 1.1; }*/
+
+h1.border-bottom,
+h2.border-bottom,
+h3.border-bottom,
+h4.border-bottom,
+h5.border-bottom,
+h6.border-bottom {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
 
 /* Forms */
 form          { display:inline; }
@@ -438,7 +473,7 @@ p.required,
 .notice-msg { 
 	background-position:25px center !important;
 	background-repeat:no-repeat !important;
-	padding:25px 25px 25px 80px !important;
+	padding:25px 25px 25px 75px !important;
 	font-size:12px !important; 
 }
 .error-msg {
@@ -954,7 +989,7 @@ tr.summary-details-excluded { font-style:italic; }
 .block .actions a { float:left; }
 .block .actions .button { float:right; }
 .block .actions .button ~ a { margin-right: 5px; line-height: 36px; /* The same height as buttons */ }
-.block .actions-popular-more{border:0px; font-size: x-small;float: right}
+
 
 /* Block lists
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1317,7 +1352,7 @@ tr.summary-details-excluded { font-style:italic; }
 .std dl,
 .std p,
 .std address,
-.std blockquote { margin:0 0 1em; padding:0; }
+.std blockquote { margin-top: 0rem; margin-bottom: 1rem; padding: 0; }
 .std table { margin-bottom: 20px; }
 .std .lead {
 	margin-bottom: 20px;
@@ -1756,7 +1791,10 @@ strong.product-name {
 a.availability-only { cursor:pointer; } /* It may also be a link to toggle more details */
 
 /* Enlarge the icon */
-.availability-only .ic { font-size: 20px; }
+.availability-only .ic {
+	font-size: 20px;
+	margin: 0 !important; /* Override default margin of icon inside "feature" element */
+}
 
 /* Inside the label */
 .availability-only strong { font-weight:normal; }
@@ -1894,7 +1932,7 @@ a.availability-only { cursor:pointer; } /* It may also be a link to toggle more 
 /* If displayed on product image */
 .addto-links-icons.addto-onimage {
 	float:right;
-	margin-top:-40px; /* Move up */
+	margin-top:-44px; /* Move up */
 	position:relative;
 	z-index:1;
 	padding-bottom:4px; /* Use padding to cover the bottom part of the product image below icons */
@@ -2062,8 +2100,8 @@ a.availability-only { cursor:pointer; } /* It may also be a link to toggle more 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
 .product-view .product-shop { float:left; }
-.product-view .product-shop .product-name {	margin:0 0 1.6666em; /*20px*/ }
-.product-view .product-shop .product-name h1 { margin:0; }
+.product-view .product-shop .product-name {	margin:0 0 20px; }
+.product-view .product-shop .product-name h1 { margin:0; font-size:3.2rem; }
 .product-view .product-shop .ratings-table { margin:15px 0 5px; }
 
 
@@ -2083,9 +2121,20 @@ a.availability-only { cursor:pointer; } /* It may also be a link to toggle more 
 .product-view .action-box { margin:20px 0; }
 
 /* Add-to links in different places of the product page */
-.product-view .add-to-links li { margin-right: 10px; }
-.product-view .add-to-links a { display: block; }
-.product-view .add-to-links .ic { font-size: 16px; }
+.product-view .add-to-links li {
+    margin-right: 10px;
+}
+.product-view .add-to-links a {
+    display: block;
+}
+.product-view .add-to-links a .ic {
+    font-size: 16px;
+
+    /* Override default margins of "feature" class icon */
+    margin-right: 5px;
+    margin-bottom: 0;
+}
+
 
 /* Other elements */
 .extrahint-wrapper { margin-bottom:15px; }
@@ -2341,7 +2390,7 @@ a.availability-only { cursor:pointer; } /* It may also be a link to toggle more 
 .product-view .collateral-block > h2:first-child, /* Rule required in case a heading is not a child of "box-collateral" */
 .product-view .box-collateral .section-title
 {
-	font-size: 24px;
+	font-size: 22px;
 	line-height: 30px;
 	margin-bottom: 15px;
 	padding: 7px 0;
@@ -3218,7 +3267,6 @@ a.availability-only { cursor:pointer; } /* It may also be a link to toggle more 
 */
 
 /* Clears */
-.clearfix:after,
 .configurable-swatch-list:after,
 .product-view .product-options .swatch-attr:after {
 	content: '';
@@ -3546,7 +3594,18 @@ body.cms-index-index .breadcrumbs { display:none; }
 
 /* Clear %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
+
+.clearfix:before,
+.clearfix:after {
+	content: '';
+	display: table;
+}
+.clearfix:after {
+	clear: both;
+}
+
 .clear { clear:both; font-size:0; line-height:0; height:0; } /* Additional simple clearing */
+
 .clearer:after { display:block; content:"."; clear:both; font-size:0; line-height:0; height:0; overflow:hidden; }
 .header-container:after,
 .header-container .top-container:after,

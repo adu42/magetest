@@ -24,6 +24,7 @@
          <social_icon_color>#ffffff</social_icon_color>
          <social_icon_hover_bg_color>#e50640</social_icon_hover_bg_color>
          <social_icon_hover_color>#ffffff</social_icon_hover_color>
+         <ban_cap_bg_color>#5bd2ec</ban_cap_bg_color>
          <important_link_hover_color>#ffffff</important_link_hover_color>
          <important_link_hover_bg_color>#e50640</important_link_hover_bg_color>
          <label_new_bg_color>#8fe1f3</label_new_bg_color>
@@ -34,12 +35,12 @@
          <additional_bg_color>#f5f5f5</additional_bg_color>
       </colors>
       <font>
-         <font_size>12</font_size>
+         <font_size>14</font_size>
          <primary_font_family_group>google</primary_font_family_group>
          <primary_font_family_custom>Arial, &quot;Helvetica Neue&quot;, Helvetica, sans-serif</primary_font_family_custom>
-         <primary_font_family>Ubuntu</primary_font_family>
+         <primary_font_family>Open Sans</primary_font_family>
          <primary_char_subset>latin</primary_char_subset>
-         <primary_font_weight>500</primary_font_weight>
+         <primary_font_weight>600</primary_font_weight>
       </font>
       <effects>
          <shadow>0</shadow>
@@ -55,7 +56,7 @@
          <bg_positionx>center</bg_positionx>
          <bg_positiony>top</bg_positiony>
          <tex>0</tex>
-         <content_padding_side>12</content_padding_side>
+         <content_padding_side>15</content_padding_side>
       </page>
       <header>
          <top_border_color>transparent</top_border_color>
@@ -71,7 +72,7 @@
          <tex>0</tex>
          <tex2>0</tex2>
          <padding_top> 0</padding_top>
-         <padding_bottom>0</padding_bottom>
+         <padding_bottom>20</padding_bottom>
          <inner_bg_color>transparent</inner_bg_color>
          <search_bg_color>#ffffff</search_bg_color>
          <search_hover_bg_color>#ffffff</search_hover_bg_color>
@@ -85,13 +86,6 @@
          <dropdown_color>#333333</dropdown_color>
          <dropdown_link_color>#333333</dropdown_link_color>
          <dropdown_link_hover_color>#e50640</dropdown_link_hover_color>
-         <mh_item_bg_color>#f5f5f5</mh_item_bg_color>
-         <mh_item_color>#333333</mh_item_color>
-         <mh_item_active_bg_color>#fafafa</mh_item_active_bg_color>
-         <mh_item_active_color>#e50640</mh_item_active_color>
-         <mh_content_color>#333333</mh_content_color>
-         <mh_content_link_color>#333333</mh_content_link_color>
-         <mh_content_link_hover_color>#e50640</mh_content_link_hover_color>
       </header>
       <header_top>
          <color>#cccccc</color>
@@ -104,7 +98,7 @@
          <inner_bg_color>transparent</inner_bg_color>
          <content_padding_top>0</content_padding_top>
          <content_padding_bottom>0</content_padding_bottom>
-         <content_padding_side/>
+         <content_padding_side>full</content_padding_side>
       </header_top>
       <header_primary>
          <font_size>14</font_size>
@@ -117,6 +111,23 @@
          <content_padding_bottom>10</content_padding_bottom>
          <content_padding_side/>
       </header_primary>
+      <m_header>
+         <bg_color/>
+         <padding_top/>
+         <padding_bottom/>
+         <inner_bg_color/>
+         <content_padding_side/>
+         <tab_item_bg_color>#f5f5f5</tab_item_bg_color>
+         <tab_item_color>#333333</tab_item_color>
+         <tab_item_hover_bg_color>#fafafa</tab_item_hover_bg_color>
+         <tab_item_hover_color>#e50640</tab_item_hover_color>
+         <tab_item_active_bg_color>#fafafa</tab_item_active_bg_color>
+         <tab_item_active_color>#e50640</tab_item_active_color>
+         <tab_content_bg_color>#fafafa</tab_content_bg_color>
+         <tab_content_color>#333333</tab_content_color>
+         <tab_content_link_color>#333333</tab_content_link_color>
+         <tab_content_link_hover_color>#e50640</tab_content_link_hover_color>
+      </m_header>
       <nav>
          <outer_bg_color>transparent</outer_bg_color>
          <padding_top>0</padding_top>
@@ -127,7 +138,7 @@
          <content_padding_side/>
          <content_padding_side_value>20</content_padding_side_value>
          <line_height>50</line_height>
-         <border>1</border>
+         <border>2</border>
          <border_color>#333333</border_color>
          <bg_color>#ffffff</bg_color>
          <color>#333333</color>
@@ -140,22 +151,35 @@
          <sticky_border>0</sticky_border>
          <level1_font_size>18</level1_font_size>
          <level1_font_uppercase>0</level1_font_uppercase>
+         <level2_font_size>16</level2_font_size>
          <mega_lev1_font_size>16</mega_lev1_font_size>
          <mega_lev1_font_uppercase>0</mega_lev1_font_uppercase>
-         <dropdown_border_top>0</dropdown_border_top>
-         <dropdown_border_top_color>#5bd2ec</dropdown_border_top_color>
-         <dropdown_border_all_levels>0</dropdown_border_all_levels>
-         <dropdown_bg_color>#ffffff</dropdown_bg_color>
-         <dropdown_color>#333333</dropdown_color>
-         <dropdown_link_color>#333333</dropdown_link_color>
-         <dropdown_link_hover_color>#e50640</dropdown_link_hover_color>
-         <dropdown_shadow>1</dropdown_shadow>
-         <mobile_link_separator_color>#f3f3f3</mobile_link_separator_color>
-         <mobile_shadow>1</mobile_shadow>
+         <mega_lev2_font_size>14</mega_lev2_font_size>
          <mobile_level1_font_size>16</mobile_level1_font_size>
          <mobile_level1_font_uppercase>1</mobile_level1_font_uppercase>
          <mobile_level2_font_size>16</mobile_level2_font_size>
          <mobile_level2_font_uppercase>0</mobile_level2_font_uppercase>
+         <dropdown_shadow>1</dropdown_shadow>
+         <dropdown_bg_color>#ffffff</dropdown_bg_color>
+         <dropdown_item_hover_bg_color>#f5f5f5</dropdown_item_hover_bg_color>
+         <dropdown_color>#333333</dropdown_color>
+         <dropdown_link_color>#333333</dropdown_link_color>
+         <dropdown_link_hover_color>#e50640</dropdown_link_hover_color>
+         <dropdown_border_top>0</dropdown_border_top>
+         <dropdown_border_top_color>#5bd2ec</dropdown_border_top_color>
+         <dropdown_border_all_levels>0</dropdown_border_all_levels>
+         <mobile_link_separator_color>#f3f3f3</mobile_link_separator_color>
+         <mobile_shadow>1</mobile_shadow>
+         <vert_item_line_height>36</vert_item_line_height>
+         <vert_item_bg_color>#f8f8f8</vert_item_bg_color>
+         <vert_item_color>#333333</vert_item_color>
+         <vert_item_hover_bg_color>#5bd2ec</vert_item_hover_bg_color>
+         <vert_item_hover_color>#ffffff</vert_item_hover_color>
+         <vert_item_active_bg_color>#333333</vert_item_active_bg_color>
+         <vert_item_active_color>#f5f5f5</vert_item_active_color>
+         <vert_shadow>1</vert_shadow>
+         <vert_trigger_bg_color>#f7f7f7</vert_trigger_bg_color>
+         <vert_trigger_color>#333333</vert_trigger_color>
          <label_bg_color>#5bd2ec</label_bg_color>
          <label_color>#ffffff</label_color>
          <label_bg_color2>#e50640</label_bg_color2>
@@ -179,7 +203,9 @@
       </category>
       <product_page>
          <addto_icon_bg_color>#eeeeee</addto_icon_bg_color>
+         <addto_icon_color>#333333</addto_icon_color>
          <addto_icon_hover_bg_color>#e50640</addto_icon_hover_bg_color>
+         <addto_icon_hover_color>#ffffff</addto_icon_hover_color>
          <tab_inner_bg_color>transparent</tab_inner_bg_color>
          <tab_panel_bg_color>#ffffff</tab_panel_bg_color>
          <tab_border_color>#e5e5e5</tab_border_color>

@@ -41,7 +41,7 @@ class Mage_Adminhtml_SurveyController extends Mage_Adminhtml_Controller_Action
     public function indexAction()
     {
         if ($this->getRequest()->getParam('isAjax', false)) {
-            Mage_AdminNotification_Model_Survey::saveSurveyViewed(true);
+          //  Mage_AdminNotification_Model_Survey::saveSurveyViewed(true);
         }
         $this->getResponse()->setBody(Zend_Json::encode(array('survey_decision_saved' => 1)));
     }

@@ -742,9 +742,23 @@ li.level2 > a > span > .cat-label {
 }
 
 /* Caret */
-.nav-regular li.level0 > a .caret { opacity: 0.3; }
-.nav-regular li.level0.active > a .caret { opacity: 1; }
-.nav-regular li.level0:hover > a .caret { opacity: 1; }
+.nav-regular li.level0 > a .caret {
+    opacity: 0.3;
+
+    /* Fix: IE11
+        Set small line height to avoid issues:
+        - menu doesn't get additional border below the menu when menu items have dropdowns 
+        - menu doesn't get additional padding below the menu when menu items have dropdowns
+        */
+    line-height: 1;
+}
+.nav-regular li.level0.active > a .caret {
+    opacity: 1;
+}
+.nav-regular li.level0:hover > a .caret {
+    opacity: 1;
+}
+
 
 
 /* Dropdowns
@@ -1004,7 +1018,7 @@ li.level2 > a > span > .cat-label {
 .nav-regular .nav-panel li.classic:hover > a {
     /* TODO - add z-index (must be greater than dropdown's) if the link should be displayed over the child dropdown 
        (link in "classic" dropdown has a background so it would cover the child dropdown and dropdown's shadow) */
-    /* z-index: 1; */
+    /* z-index: 2; */
     position: relative;
 }
 

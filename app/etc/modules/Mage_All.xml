@@ -73,14 +73,14 @@
                 <Mage_Admin/>
             </depends>
         </Mage_Adminhtml>
-        <Mage_AdminNotification>
+     <!--   <Mage_AdminNotification>
             <active>true</active>
             <codePool>core</codePool>
             <depends>
                <Mage_Core/>
                <Mage_Adminhtml/>
             </depends>
-        </Mage_AdminNotification>
+        </Mage_AdminNotification> -->
         <Mage_Cron>
             <active>true</active>
             <codePool>core</codePool>
@@ -216,7 +216,7 @@
                 <Mage_Paypal/>
             </depends>
         </Mage_PaypalUk>
-        <Mage_GoogleCheckout>
+    <!--    <Mage_GoogleCheckout>
             <active>true</active>
             <codePool>core</codePool>
             <depends>
@@ -224,7 +224,7 @@
                 <Mage_Payment/>
                 <Mage_Usa/>
             </depends>
-        </Mage_GoogleCheckout>
+        </Mage_GoogleCheckout> -->
         <Mage_Log>
             <active>true</active>
             <codePool>core</codePool>

@@ -563,6 +563,13 @@ class Infortis_UltraMegamenu_Block_Navigation extends Mage_Catalog_Block_Navigat
 		{
 			if ($catTarget_raw === "#")
 			{
+				//If custom target is the hash character return empty string so that 
+				//this item is not rendered at all. Important: only in simple sidebar menu.
+				if ($this->_isSimpleSidemenu)
+				{
+					return '';
+				}
+
 				//If custom target is the hash character, use the hash as the target URL and add special class to the link
 				$targetUrl = "#";
 				$linkClasses[] = "no-click";

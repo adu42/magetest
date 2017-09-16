@@ -29,7 +29,7 @@
 	cursor:pointer;
 	position:relative;
 }
-.accordiontop li{width:auto !important;}
+
 .accordion li a {
 	display:block;
 	padding:15px 10px;

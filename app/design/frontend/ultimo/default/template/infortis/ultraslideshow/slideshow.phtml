@@ -4,18 +4,43 @@
  */
 ?>
 <?php $slides = $this->getSlideIds(); ?>
-<?php if ($slides): ?>
+<?php if (!empty($slides)): ?>
 
     <?php
     $h = $this->helper('ultraslideshow');
-    $sliderId = "slideshow-{$this->getFrontendHash()}";
+    $isHomeSlideshow = $this->isPredefined();
+    $sliderHash = $this->getFrontendHash();
+    $sliderId = "slideshow-{$sliderHash}";
+    $bannersId = "slideshow-banners-{$sliderHash}";
 
-    //Slider parameters
-    //--------------------------------------------------------------
+    // Basic slider parameters
+    // --------------------------------------------------------------
+    
+    // By default the slideshow works in the "singleItem" mode.
+    // If the breakpoints parameter is set, the slideshow works in the "carousel" mode.
+    $breakpoints = $this->getBreakpoints(); // Param: breakpoints
+    if ($breakpoints !== NULL)
+    {
+        $carouselMode = true;
+    }
+    else
+    {
+        $carouselMode = false;
 
-    //Slider timeout. Set to enable automatic scrolling.
-    $timeout = $this->getTimeout(); //param: timeout
-    if ($timeout === NULL) //Param not set
+        // Slide transition effect
+        $fx = $this->getSlideTransition(); // Param: slide_transition
+        if ($fx === NULL) // Param not set
+        {
+            $fx = $h->getCfg('general/effect');
+        }
+    }
+
+    // Slider parameters for both modes
+    // --------------------------------------------------------------
+
+    // Slider timeout. Set to enable automatic scrolling.
+    $timeout = $this->getTimeout(); // Param: timeout
+    if ($timeout === NULL) // Param not set
     {
         $timeout = intval($h->getCfg('general/timeout'));
     }
@@ -24,109 +49,101 @@
         $timeout = intval($timeout);
     }
 
-    //If set, slider will loop.
-    $loop = $this->getLoop(); //param: loop
-    if ($loop === NULL) //Param not set
+    // If set, slider will loop.
+    $loop = $this->getLoop(); // Param: loop
+    if ($loop === NULL) // Param not set
     {
         $loop = $h->getCfg('general/loop');
     }
 
-    //Speed (arrows / touch swipe)
+    // Speed (arrows / touch swipe)
     $speed = intval($h->getCfg('general/speed'));
 
-    //Speed (automatic scrolling / pagination)
+    // Speed (automatic scrolling / pagination)
     $autoSpeed = intval($h->getCfg('general/auto_speed'));
 
-    //Pause slider on mouse hover
+    // Pause slider on mouse hover
     $pause = $h->getCfg('general/pause');
 
-    //Auto height
+    // Auto height
     $smoothHeight = $h->getCfg('general/smooth_height');
 
-    //Transition effect
-    $fx = $h->getCfg('general/effect');
-
-    //Other settings
-    //--------------------------------------------------------------
-
-    //Determin width (grid units) and position (left or right) of the slideshow and banners
-    $banners = $this->getBannersHtml();
-    $slideshowPositionClass = '';
-    $slideshowGridClass = '';
-    $bannersGridClass = '';
+    // Additional side banners
+    // --------------------------------------------------------------
+    
+    $banners = $this->getAdditionalBannerId();
     if ($banners)
     {
-        $bannersPosition = $h->getCfg('banners/position');
-        if ($bannersPosition == 'left') //Banners at the left, slideshow at the right
-        {
-            $slideshowPositionClass = 'right';
-            $slideshowGridClass = 'grid12-9 no-right-gutter';
-            $bannersGridClass = 'grid12-3 no-left-gutter';
-        }
-        else //Slideshow at the left, banners at the right
-        {
-            $slideshowGridClass = 'grid12-9 no-left-gutter';
-            $bannersGridClass = 'grid12-3 no-right-gutter';
-        }
-    }
-    /*else
-    {
-        $slideshowGridClass = 'grid-full no-gutter';
-    }*/
+        $banners = $this->getLayout()->createBlock('cms/block')->setBlockId($banners)->toHtml();
 
-    //Hide slides (not including banners) on mobile devices
-    $hideSlideshowClass = '';
-    if ($h->getCfg('general/hide'))
-    {
-        $hideSlideshowClass = 'hide-below-768';
+        // Get slideshow layout classes: width (in grid units), position of slider (left or right), 
+        // gutter between slider and additional banners, show/hide banners on mobile devices.
+        $classes = $this->getSlideshowLayoutClasses();
+        $sliderClasses[] = $classes['sliderGrid']; // Grid class for slider
+        $sliderClasses[] = $classes['sliderPosition']; // Position class for slider
+        $bannersClasses[] = $classes['bannersGrid']; // Grid class for banners
+        $bannersClasses[] = $classes['hideBanners']; // Show/hide banners
     }
 
-    //Slideshow strucural classes
-    $sliderClasses[] = $slideshowGridClass;
-    $sliderClasses[] = $slideshowPositionClass;
-    $sliderClasses[] = $hideSlideshowClass;
+    // Navigation and other settings
+    // --------------------------------------------------------------
 
-    //Additional classes
-    $sliderClasses[] = 'slider-arrows2';
-    $paginationClass = $h->getCfg('navigation/pagination');
-    if ($paginationClass)
+    // Navigation buttons
+    $navButtons = false;
+    $navButtonsClasses = $this->getNavButtonsClasses();
+    if ($navButtonsClasses)
     {
-        $sliderClasses[] = $paginationClass;
-        $sliderClasses[] = $h->getCfg('navigation/pagination_position');
+        $navButtons = true;
+        $sliderClasses[] = $navButtonsClasses;
     }
+
+    // Pagination
+    $pagination = false;
+    $paginationClasses = $this->getPaginationClasses();
+    if ($paginationClasses)
+    {
+        $pagination = true;
+        $sliderClasses[] = $paginationClasses;
+    }
+
+    // If this is predefined home page slideshow, optionally hide slides (not including side banners) on mobile devices
+    if ($isHomeSlideshow && $h->getCfg('general/hide'))
+    {
+        $sliderClasses[] = 'hidden-xs';
+    }
+
     ?>
 
-    <?php if($this->isPredefined()): ?>
-        <div class="the-slideshow-wrapper-outer" <?php echo $this->getMarginStyles(); ?>>
+    <?php if ($isHomeSlideshow): ?>
+        <div class="slideshow-wrapper-additional" <?php echo $this->getMarginStyles(); ?>>
     <?php endif; ?>
 
-            <div class="the-slideshow-wrapper">
+            <div class="slideshow-wrapper-outer">
 
-                <div class="the-slideshow <?php echo implode(' ', $sliderClasses); ?>">
-                    <div id="<?php echo $sliderId; ?>" class="slides">
-                    <?php foreach ($slides as $bid): ?>
-                        <?php if (!empty($bid)): ?>
-                            <div class="item slide">
-                                <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId($bid)->toHtml(); ?>
-                            </div>
+                <div class="slideshow-wrapper <?php echo implode(' ', $sliderClasses); ?>">
+                    <div id="<?php echo $sliderId; ?>" class="slideshow owl-carousel">
+                        <?php if ($this->isMultiBlock()): ?>
+                            <?php foreach ($slides as $sid): ?>
+                                <?php if (!empty($sid)): ?>
+                                    <div class="item">
+                                        <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId($sid)->toHtml(); ?>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId($slides[0])->toHtml(); ?>
                         <?php endif; ?>
-                    <?php endforeach; ?>
-                    </div> <!-- end: slides -->
-                </div> <!-- end: the-slideshow -->
+                    </div>
+                </div> <?php // end: slideshow-wrapper ?>
 
                 <?php if ($banners): ?>
-                    <?php //Hide banners on mobile devices? "Yes" is default.
-                        $hideBannersClass = 'hide-below-768';
-                        if ($h->getCfg('banners/hide') == false)
-                            $hideBannersClass = '';
-                    ?>
-                    <div class="the-slideshow-banners slideshow-banners <?php echo $bannersGridClass . ' ' . $hideBannersClass; ?>"><?php echo $banners; ?></div>
+                    <div id="<?php echo $bannersId; ?>" class="slideshow-banners <?php echo implode(' ', $bannersClasses); ?>"><?php echo $banners; ?></div>
                 <?php endif; ?>
 
-            </div> <!-- end: the-slideshow-wrapper -->
+            </div> <?php // end: slideshow-wrapper-outer ?>
 
-    <?php if($this->isPredefined()): ?>
-        </div> <!-- end: the-slideshow-wrapper-outer -->
+    <?php if ($isHomeSlideshow): ?>
+        </div> <?php // end: slideshow-wrapper-additional ?>
     <?php endif; ?>
 
 <script type="text/javascript">
@@ -136,45 +153,89 @@
         var owl = $('#<?php echo $sliderId; ?>');
         owl.owlCarousel({
 
-            singleItem: true,
+            navigationText: false
+            , addClassActive: true
+
+        <?php if ($carouselMode): ?>
+            , itemsCustom: [ <?php echo $breakpoints; ?> ]
+            , responsiveRefreshRate: 50
+        <?php else: ?>
+            , singleItem: true
+
+            <?php if (!empty($fx)): // Check if the effect name is not empty ?>
+                , transitionStyle: '<?php echo $fx; ?>'
+            <?php endif; ?>
+
+        <?php endif; ?>
 
         <?php if ($speed): ?>
-            slideSpeed: <?php echo $speed; ?>,
+            , slideSpeed: <?php echo $speed; ?>
         <?php endif; ?>
 
         <?php if ($autoSpeed): ?>
-            paginationSpeed: <?php echo $autoSpeed; ?>,
+            , paginationSpeed: <?php echo $autoSpeed; ?>
         <?php endif; ?>
 
         <?php if ($timeout): ?>
-            autoPlay: <?php echo $timeout; ?>,
+            , autoPlay: <?php echo $timeout; ?>
         <?php endif; ?>
 
         <?php if ($pause): ?>
-            stopOnHover: true,
+            , stopOnHover: true
         <?php endif; ?>
 
         <?php if ($loop): ?>
-            rewindNav: true,
-            rewindSpeed: 600,
+            , rewindNav: true
+            , rewindSpeed: 600
         <?php else: ?>
-            rewindNav: false,
+            , rewindNav: false
+        <?php endif; ?>
+
+        <?php if ($pagination): ?>
+            , pagination: true
+        <?php else: ?>
+            , pagination: false
+        <?php endif; ?>
+
+        <?php if ($navButtons): ?>
+            , navigation: true
+        <?php else: ?>
+            , navigation: false
         <?php endif; ?>
 
         <?php if ($smoothHeight): ?>
-            autoHeight: true,
+            , autoHeight: true
         <?php endif; ?>
 
-        <?php if ($fx): ?>
-            transitionStyle: '<?php echo $fx; ?>',
+            , beforeInit: function() {
+                var firstSlide = owl.find('.item:eq(0)');
+                firstSlide.find('[data-animate-in]').each(function() {
+                    $(this).addClass($(this).data('animate-in') + ' animated');
+                });
+            }
+
+            <?php // Based on examples from OwlCarousel website ?>
+            , afterMove: function() {
+                owl.find('.owl-item.active [data-animate-in]').each(function() {
+                    $(this).addClass($(this).data('animate-in') + ' animated');
+                });
+            }
+
+            , beforeMove: function() {
+                owl.find('.owl-item.active [data-animate-in]').each(function() {
+                    $(this).removeClass($(this).data('animate-in') + ' animated');
+                });
+            }
+
+        <?php if ($banners): ?>
+            , afterInit: function() {
+                owl.parent().parent().children('#<?php echo $bannersId; ?>').addClass('_show');
+            }
         <?php endif; ?>
 
-            navigation: true,
-            navigationText: false
-
-        }); //end: owl
+        }); // end: owl
 
     });
 //]]>
 </script>
-<?php endif; //end: if slides ?>
+<?php endif; // end: if slides ?>

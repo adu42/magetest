@@ -16,9 +16,6 @@
         $isMegamenu = $helper->getCfg('sidemenu/is_megamenu');
     }
 
-   $shopby_position = $this->helper('ultimo')->getCfg('category/shopby_position');
-   $shopby_class = ($shopby_position=='top')?' accordiontop':'';
-
     $menuId = '';
     if ($isMegamenu)
     {
@@ -90,7 +87,7 @@
                 </ul>
             </nav>
         <?php else: //Display simple accordion instead of mega menu ?>
-            <ul class="accordion accordion-style1 sideacco<?php echo $shopby_class; ?>">
+            <ul class="accordion accordion-style1 sideacco">
                 <?php echo $html; ?>
             </ul>
         <?php endif; ?>

@@ -251,6 +251,17 @@
     <?php //Mode: regular or both ?>
     <?php if ($mode >= 0): ?>
 
+        jQuery(function($) {
+
+            var itemsList = topMenuContainer.children('ul');
+
+            // Non-clickable links
+            itemsList.on('click', '.no-click', function(e) {
+                e.preventDefault();
+            });
+
+        }); //end: on document ready
+
         jQuery(window).on("load", function() {
 
             var menubar = topMenuContainer;
@@ -259,8 +270,7 @@
             {
                 menubar.on('click', 'a', function(e) {
 
-                    //var link = jQuery(this);
-                    link = jQuery(this);
+                    var link = jQuery(this);
                     if (!menubar.hasClass('nav-mobile') && link.parent().hasClass('nav-item--parent'))
                     {
                         if (!link.hasClass('ready'))

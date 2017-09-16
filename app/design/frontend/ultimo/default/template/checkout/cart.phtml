@@ -46,7 +46,7 @@
     </div>
     <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
     <?php echo $this->getChildHtml('form_before') ?>
-    <form action="<?php echo $this->getUrl('checkout/cart/updatePost') ?>" method="post" class="the-cart-form">
+    <form action="<?php echo $this->getFormActionUrl() ?>" method="post" class="the-cart-form">
         <?php echo $this->getBlockHtml('formkey'); ?>
         <fieldset>
         <div class="cart-table-wrapper">

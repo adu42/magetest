@@ -40,6 +40,9 @@
 .user-menu:after {
 	display: table;
 	content: " ";
+
+	/* TODO: test */
+	/* content: ''; */
 }
 .user-menu:after {
 	clear: both;
@@ -324,9 +327,7 @@
 	display: inline-block;
 	float: none;
 }
-.header-regular .header-top .central-column .item-interface {
-	float: left;
-}
+
 
 /* Top header - selected elements
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -336,8 +337,6 @@
 .header-regular .header-top #search_mini_form {
 	display: inline-block;
 	vertical-align: middle;
-	margin-left: 20px;
-	margin-right: 20px;
 }
 .header-regular .header-top .form-search .input-text {
 	height:28px;

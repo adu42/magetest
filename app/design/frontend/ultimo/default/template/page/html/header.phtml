@@ -318,6 +318,25 @@
         <div class="header-top header container clearer">
             <div class="inner-container">
 
+                <?php
+                    //Central column is displayed above left and right columns to avoid incorrect layout
+                    //because all columns contain inline elements.
+                    $containerHeaderTopCentral = $this->getChildHtml('container_header_top_central_1'); 
+                ?>
+                <?php if (isset($html['topCentral']) || $containerHeaderTopCentral): ?>
+                    <div class="central-column">
+
+                        <?php if (isset($html['topCentral'])): ?>
+                            <?php foreach ($html['topCentral'] as $element): ?>
+                                <div class="item item-interface"><?php echo $element; ?></div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+
+                        <?php echo $containerHeaderTopCentral; ?>
+
+                    </div> <!-- end: central column -->
+                <?php endif; ?>
+
                 <div class="left-column">
 
                     <?php if (isset($html['topLeft'])): ?>
@@ -339,25 +358,6 @@
                     </div>
 
                 </div> <!-- end: left column -->
-
-                <?php
-                //Central column is displayed above left and right columns to avoid incorrect layout
-                //because all columns contain inline elements.
-                $containerHeaderTopCentral = $this->getChildHtml('container_header_top_central_1');
-                ?>
-                <?php if (isset($html['topCentral']) || $containerHeaderTopCentral): ?>
-                    <div class="central-column">
-
-                        <?php if (isset($html['topCentral'])): ?>
-                            <?php foreach ($html['topCentral'] as $element): ?>
-                                <div class="item item-interface"><?php echo $element; ?></div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-
-                        <?php echo $containerHeaderTopCentral; ?>
-
-                    </div> <!-- end: central column -->
-                <?php endif; ?>
 
                 <div class="right-column">
 

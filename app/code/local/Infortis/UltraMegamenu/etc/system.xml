@@ -361,7 +361,7 @@
 						</enable_cms_right>
 						<enable_product_left translate="label">
 							<label>Product Page (Left Sidebar)</label>
-							<comment>You can enable the sidebar for product page in the "Page Layout" tab in product settings.</comment>
+							<comment><![CDATA[By default a product page have no sidebars, so you need to change the layout of a product page to display the sidebar menu. You can change the layout in product's settings.]]></comment>
 							<frontend_type>select</frontend_type>
 							<source_model>adminhtml/system_config_source_enabledisable</source_model>
 							<sort_order>70</sort_order>
@@ -371,7 +371,7 @@
 						</enable_product_left>
 						<enable_product_right translate="label">
 							<label>Product Page (Right Sidebar)</label>
-							<comment>You can enable the sidebar for product page in the "Page Layout" tab in product settings.</comment>
+							<comment><![CDATA[By default a product page have no sidebars, so you need to change the layout of a product page to display the sidebar menu. You can change the layout in product's settings.]]></comment>
 							<frontend_type>select</frontend_type>
 							<source_model>adminhtml/system_config_source_enabledisable</source_model>
 							<sort_order>80</sort_order>

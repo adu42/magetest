@@ -42,6 +42,7 @@ class Mage_Core_Model_Observer
      */
     public function addSynchronizeNotification(Varien_Event_Observer $observer)
     {
+        return $this;
         $adminSession = Mage::getSingleton('admin/session');
         if (!$adminSession->hasSyncProcessStopWatch()) {
             $flag = Mage::getSingleton('core/file_storage')->getSyncFlag();

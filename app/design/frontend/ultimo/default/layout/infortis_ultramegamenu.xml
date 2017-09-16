@@ -29,7 +29,6 @@
 		</reference>
 		
 		<reference name="catalog.topnav.menu">
-			<!-- Deprecated block. Add custom links via category manager. -->
 			<block type="cms/block" name="block_nav_links">
 				<action method="setBlockId"><block_id>block_nav_links</block_id></action>
 			</block>
@@ -54,7 +53,13 @@
 			<action method="insert" ifconfig="ultramegamenu/sidemenu/enable_category_left">
 				<block>umm.sidemenu</block>
 			</action>
+
+			<!-- Container displayed at the very top of the left sidebar (above layered navigation and sidebar menu) -->
+			<block type="core/text_list" name="left_top_before_laynav" as="left_top_before_laynav" translate="label" before="-">
+				<label>Left Sidebar, Top, Above Layered Navigation</label>
+			</block>
 		</reference>
+		
 		<reference name="right">
 			<action method="insert" ifconfig="ultramegamenu/sidemenu/enable_category_right">
 				<block>umm.sidemenu</block>
@@ -76,7 +81,13 @@
 			<action method="insert" ifconfig="ultramegamenu/sidemenu/enable_category_left">
 				<block>umm.sidemenu</block>
 			</action>
+
+			<!-- Container displayed at the very top of the left sidebar (above layered navigation and sidebar menu) -->
+			<block type="core/text_list" name="left_top_before_laynav" as="left_top_before_laynav" translate="label" before="-">
+				<label>Left Sidebar, Top, Above Layered Navigation</label>
+			</block>
 		</reference>
+
 		<reference name="right">
 			<action method="insert" ifconfig="ultramegamenu/sidemenu/enable_category_right">
 				<block>umm.sidemenu</block>
@@ -102,6 +113,7 @@
 				<alias>umm.sidemenu.cms.left</alias>
 			</action>
 		</reference>
+
 		<reference name="right">
 			<action method="insert" ifconfig="ultramegamenu/sidemenu/enable_cms_right">
 				<block>umm.sidemenu</block>
@@ -126,6 +138,7 @@
 			<!-- Remove sidebar menu added for CMS pages to get rid of duplicate -->
 			<action method="unsetChild"><alias>umm.sidemenu.cms.left</alias></action>
 		</reference>
+
 		<reference name="right">
 			<action method="insert" ifconfig="ultramegamenu/sidemenu/enable_home_right">
 				<block>umm.sidemenu</block>
@@ -149,6 +162,7 @@
 				<after>0</after>
 			</action>
 		</reference>
+
 		<reference name="right">
 			<action method="insert" ifconfig="ultramegamenu/sidemenu/enable_product_right">
 				<block>umm.sidemenu</block>

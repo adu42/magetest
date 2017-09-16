@@ -30,11 +30,7 @@ class Infortis_Ultimo_Model_Observer
 				Mage_Cms_Model_Block::CACHE_TAG,
 				$block->getBlockId(),
 				Mage::app()->getStore()->getId(),
-				intval(Mage::app()->getStore()->isCurrentlySecure()),
-                Mage::getDesign()->getPackageName(),
-                Mage::getDesign()->getTheme('template'),
-                Mage::getSingleton('customer/session')->getCustomerGroupId(),
-                Mage::helper('core/url')->getCurrentUrl()
+				intval(Mage::app()->getStore()->isCurrentlySecure())
 			);
 			$block->setCacheKey(implode('_', $cacheKeyData));
 			//set cache tags. This will help us to clear the cache related to
@@ -49,7 +45,7 @@ class Infortis_Ultimo_Model_Observer
 			//    - an integer value in seconds. eg : 86400 for one day cache
 			//    - NULL for not applying any cache
 			//    - 0 for never use cache (strongly discourage use of of zero)
-			$block->setCacheLifetime(7200);
+			$block->setCacheLifetime(false);
 		}
 		return $this;
 	}

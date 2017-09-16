@@ -25,10 +25,10 @@
 	background-image:url(../../../images/infortis/_shared/generic-nav/slider-arrows.png);
 	background-repeat:no-repeat;
 	background-color:#e5e5e5;
-	transition:			opacity 300ms ease-in-out, background-color 300ms ease-in-out, background-position 300ms ease-in-out;
-	-moz-transition:	opacity 300ms ease-in-out, background-color 300ms ease-in-out, background-position 300ms ease-in-out;
-	-webkit-transition:	opacity 300ms ease-in-out, background-color 300ms ease-in-out, background-position 300ms ease-in-out;
-	-o-transition:		opacity 300ms ease-in-out, background-color 300ms ease-in-out, background-position 300ms ease-in-out;
+	transition:			opacity 300ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
+	-moz-transition:	opacity 300ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
+	-webkit-transition:	opacity 300ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
+	-o-transition:		opacity 300ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
 }
 
 .slider-arrows1 .owl-controls.clickable .owl-buttons div:hover { background-color:#333; }
@@ -65,10 +65,10 @@
 	background-image:url(../../../images/infortis/_shared/generic-nav/slider-arrows.png);
 	background-repeat:no-repeat;
 	background-color:#fff;
-	transition:			opacity 300ms ease-in-out, background-color 300ms ease-in-out, background-position 300ms ease-in-out;
-	-moz-transition:	opacity 300ms ease-in-out, background-color 300ms ease-in-out, background-position 300ms ease-in-out;
-	-webkit-transition:	opacity 300ms ease-in-out, background-color 300ms ease-in-out, background-position 300ms ease-in-out;
-	-o-transition:		opacity 300ms ease-in-out, background-color 300ms ease-in-out, background-position 300ms ease-in-out;
+	transition:			opacity 300ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
+	-moz-transition:	opacity 300ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
+	-webkit-transition:	opacity 300ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
+	-o-transition:		opacity 300ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
 	
 	opacity:0;
 	filter:alpha(opacity=0);
@@ -99,10 +99,10 @@
 	background-image:url(../../../images/infortis/_shared/generic-nav/slider-arrows.png);
 	background-repeat:no-repeat;
 	background-color:#fff;
-	transition:			opacity 300ms ease-in-out, background-color 300ms ease-in-out, background-position 300ms ease-in-out;
-	-moz-transition:	opacity 300ms ease-in-out, background-color 300ms ease-in-out, background-position 300ms ease-in-out;
-	-webkit-transition:	opacity 300ms ease-in-out, background-color 300ms ease-in-out, background-position 300ms ease-in-out;
-	-o-transition:		opacity 300ms ease-in-out, background-color 300ms ease-in-out, background-position 300ms ease-in-out;
+	transition:			opacity 300ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
+	-moz-transition:	opacity 300ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
+	-webkit-transition:	opacity 300ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
+	-o-transition:		opacity 300ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
 }
 
 .slider-arrows3 .owl-controls.clickable .owl-buttons div:hover { background-color:#000; }
@@ -164,14 +164,14 @@
 	width:10px;
 	height:10px;
 	margin:8px;
-	transition:			background-color 300ms ease-in-out;
+	/*transition:			background-color 300ms ease-in-out;
 	-moz-transition:	background-color 300ms ease-in-out;
 	-webkit-transition:	background-color 300ms ease-in-out;
-	-o-transition:		background-color 300ms ease-in-out;
-/*	transition:			width 300ms ease-in-out, height 300ms ease-in-out, margin 300ms ease-in-out, background-color 300ms ease-in-out;
+	-o-transition:		background-color 300ms ease-in-out;*/
+	transition:			width 300ms ease-in-out, height 300ms ease-in-out, margin 300ms ease-in-out, background-color 300ms ease-in-out;
 	-moz-transition:	width 300ms ease-in-out, height 300ms ease-in-out, margin 300ms ease-in-out, background-color 300ms ease-in-out;
 	-webkit-transition:	width 300ms ease-in-out, height 300ms ease-in-out, margin 300ms ease-in-out, background-color 300ms ease-in-out;
-	-o-transition:		width 300ms ease-in-out, height 300ms ease-in-out, margin 300ms ease-in-out, background-color 300ms ease-in-out;*/
+	-o-transition:		width 300ms ease-in-out, height 300ms ease-in-out, margin 300ms ease-in-out, background-color 300ms ease-in-out;
 }
 .slider-pagination2 .owl-controls.clickable .owl-page:hover span,
 .slider-pagination2 .owl-controls .owl-page.active span {
@@ -193,6 +193,6 @@
 .pagination-pos-bottom-left 			.owl-pagination { padding: 10px 0; float: left; }
 
 /* Over the slider */
-.pagination-pos-over-bottom-centered	.owl-pagination { text-align: center; margin-top: -35px; position: absolute; width: 100%; }
-.pagination-pos-over-bottom-right		.owl-pagination { position:absolute; bottom:3.5%; right:1.5%; }
-.pagination-pos-over-bottom-left		.owl-pagination { position:absolute; bottom:3.5%; left:1.5%; }
+.pagination-pos-over-bottom-centered	.owl-pagination { position: absolute; bottom: 0; padding-bottom: 14px; width: 100%; text-align: center; }
+.pagination-pos-over-bottom-right		.owl-pagination { position: absolute; bottom: 0; right: 0; padding-bottom: 14px; padding-right: 14px; }
+.pagination-pos-over-bottom-left		.owl-pagination { position: absolute; bottom: 0; left: 0; padding-bottom: 14px; padding-left: 14px; }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout>
+
 	<default>
 	
 		<reference name="head">
@@ -26,11 +27,18 @@
 			<action method="removeItem"><type>js</type><name>infortis/jquery/jquery-1.7.2.min.js</name><params/></action>
 			
 		<!-- CSS: -->
-			
-			<!-- CSS base -->
+
+			<!-- Important: there's also styles.css which is loaded at the very beginning by Magento base theme -->
 			<action method="addItem"><type>skin_css</type><name>css/styles-infortis.css</name><params/></action>
-			
-			<!-- Shared components -->
+
+			<!-- Integrations (low priority - loaded before components) -->
+			<!-- Font Awesome icons have to be loaded before icons.css (to not override iconbox) -->
+			<action method="addItem"
+				ifconfig="ultimo/integration/fontawesome"><type>skin_css</type><name>css/font-awesome/css/font-awesome.css</name><params/></action>
+
+			<!-- Components -->
+			<action method="addItem"><type>skin_css</type><name>css/components/animate/animate.css</name><params/></action>
+			<action method="addItem"><type>skin_css</type><name>css/infortis/_shared/banners.css</name><params/></action>
 			<action method="addItem"><type>skin_css</type><name>css/infortis/_shared/generic-cck.css</name><params/></action>
 			<action method="addItem"><type>skin_css</type><name>css/infortis/_shared/accordion.css</name><params/></action>
 			<action method="addItem"><type>skin_css</type><name>css/infortis/_shared/dropdown.css</name><params/></action>
@@ -49,6 +57,7 @@
 			<action method="addItem"><type>skin_css</type><name>css/override-theme.css</name><params/></action>
 			<action method="addItem"><type>skin_css</type><name>css/header.css</name><params/></action>
 
+			<!-- Integrations -->
 			<!-- Bootstrap elements - have to be loaded before grid12.css and other built-in responsive layout styles -->
 			<action method="addItem"
 				ifconfig="ultimo/integration/bootstrap_grid"><type>skin_css</type><name>css/bootstrap/bootstrap-grid.css</name><params/></action>
@@ -812,8 +821,10 @@
 	
 	<!-- Default category (without layered navigation) -->
 	<catalog_category_default>
-
-		<reference name="root"> <action method="setTemplate"><template>page/2columns-main-top.phtml</template></action></reference>
+	
+		<reference name="root">
+			<action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+		</reference>
 
 		<reference name="product_list">
 
@@ -836,9 +847,10 @@
 
 	<!-- Category with layered navigation -->
 	<catalog_category_layered>
-
-
-		<reference name="root"> <action method="setTemplate"><template>page/2columns-main-top.phtml</template></action></reference>
+	
+		<reference name="root">
+			<action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+		</reference>
 		
 		<reference name="product_list">
 		
@@ -854,7 +866,7 @@
 
 		<!-- Remove currency switcher from sidebar -->
 		<reference name="left">
-			<action method="unsetChild"><name>currency</name></action>
+			<action method="unsetChild"><name>currency</name></action>			
 		</reference>
 		
 	</catalog_category_layered>
@@ -1011,7 +1023,7 @@
 			<action ifconfig="ultimo/sidebar_blocks_home/block_left_bottom" method="unsetChild"><name>block_left_bottom</name></action>
 		</reference>
 		
-		<!-- Deprecated -->
+		<!-- Deprecated. Blocks displayed even above "Left Column, Top" container -->
 		<reference name="home_left">
 			<block type="cms/block" name="block_home_left1">
 				<action method="setBlockId"><block_id>block_home_left1</block_id></action>

@@ -7,6 +7,7 @@ if (version_compare($version, '1.6.1.2', '>='))
 	$blockNames = array(
 		'cms/block',
 		'catalog/product_list',
+		'newsletter/subscribe',
 		'ultimo/product_list_featured',
 		'ultraslideshow/slideshow',
 		'brands/brands',

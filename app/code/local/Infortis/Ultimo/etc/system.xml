@@ -2,7 +2,7 @@
 <config>
 	<tabs>
 		<ultimo translate="label" module="ultimo">
-			<label>Ultimo (1.17.1)</label>
+			<label>Ultimo (1.18.1)</label>
 			<sort_order>151</sort_order>
 			<class>ultimo</class>
 		</ultimo>
@@ -97,6 +97,7 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</heading_search>
+
 						<search_position translate="label">
 							<label>Position</label>
 							<frontend_type>select</frontend_type>
@@ -106,7 +107,6 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</search_position>
-
 						<search_in_user_menu_position translate="label">
 							<label>Position Inside User Menu</label>
 							<frontend_type>select</frontend_type>
@@ -375,16 +375,6 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</mobile_move_switchers>
-						<mode translate="label">
-							<label>Mobile Header (deprecated)</label>
-							<comment><![CDATA[<strong>Important:</strong> this option is deprecated and will be removed in next updates.<br/>It transforms the standard header into a mobile-friendly header on small mobile devices (if browser viewport is narrower than 770 pixels).<br/><strong>Note 1:</strong> if enabled, position of blocks can't be set to "Inside User Menu" or "Inside Main Menu".<br/><strong>Note 2:</strong> if enabled, option <em>System > Configuration > Menu > Main Menu Mode</em> has to be set to <strong>Drop-down/Mobile</strong> or <strong>Mobile</strong>.]]></comment>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_enabledisable</source_model>
-							<sort_order>2099</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</mode>
 					</fields>
 				</header>
 				<category translate="label">
@@ -458,15 +448,6 @@
 								<alt_image>1</alt_image>
 							</depends>
 						</alt_image_column_value>
-						<shopby_position translate="label">
-							<label>ShopBy Position</label>
-							<frontend_type>select</frontend_type>
-							<source_model>ultimo/system_config_source_category_shopbyposition</source_model>
-							<sort_order>140</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</shopby_position>
 					</fields>
 				</category>
 				<category_grid translate="label">
@@ -1429,7 +1410,7 @@
 				</customization>
 				<install translate="label">
 					<label>Data Import</label>
-					<comment><![CDATA[<strong>IMPORTANT</strong>:<br/><strong style="color:red;">in case you need the original content of some static blocks or pages<br/>XML files with all static blocks and pages can be found in the following directory:<br/>app/code/local/Infortis/Ultimo/etc/import/</strong><br/><br/>]]></comment>
+					<comment><![CDATA[<strong>IMPORTANT</strong>:<br/><strong style="color: red; font-weight: normal;">in case you need the original content of some static blocks or pages<br/>XML files with all static blocks and pages can be found in the following directory:<br/>app/code/local/Infortis/Ultimo/etc/importexport/cms</strong><br/><br/>]]></comment>
 					<frontend_type>text</frontend_type>
 					<sort_order>900</sort_order>
 					<show_in_default>1</show_in_default>
@@ -1438,6 +1419,7 @@
 					<fields>
 						<heading_buttons translate="label">
 							<label>Theme Configuration Import/Export</label>
+							<comment><![CDATA[<strong>IMPORTANT</strong>:<br/><strong style="color: red; font-weight: normal;">in case you need the original content of some static blocks or pages<br/>XML files with all static blocks and pages can be found in the following directory:<br/>app/code/local/Infortis/Ultimo/etc/importexport/cms</strong><br/><br/>]]></comment>
 							<sublabel>Click to go to the import/export page</sublabel>
 							<package>Infortis_Ultimo</package>
 							<frontend_model>dataporter/system_config_form_field_configimpex</frontend_model>
@@ -1447,32 +1429,54 @@
 							<show_in_store>1</show_in_store>
 						</heading_buttons>
 
-						<heading_import_blocks translate="label">
-							<label>Import Static Blocks</label>
-							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+						<heading_demo_number translate="label">
+							<label>Import Static Blocks and Pages From Selected Demo</label>
+							<!-- <comment><![CDATA[Import static blocks and CMS pages from selected demo.]]></comment> -->
+							<frontend_model>infortis/adminhtml_system_config_form_field_heading</frontend_model>
 							<sort_order>100</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
+						</heading_demo_number>
+
+						<demo_number translate="label">
+							<label>Import From Demo</label>
+							<comment><![CDATA[Before importing, select the demo from which you want to import and then immediately save the configuration (click the "Save Config" button). Without saving, the option will remain unchanged after you refresh the admin page.]]></comment>
+							<frontend_type>select</frontend_type>
+							<source_model>ultimo/system_config_source_import_demo</source_model>
+							<sort_order>110</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</demo_number>
+
+						<heading_import_blocks translate="label">
+							<label>Import Static Blocks</label>
+							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+							<sort_order>200</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
 						</heading_import_blocks>
-						
+
 						<import_blocks translate="label">
-							<label>Static Blocks</label>
-							<comment><![CDATA[Click this button to create all static blocks provided with this theme.]]></comment>
+							<label></label>
+							<comment><![CDATA[Click this button to import static blocks.]]></comment>
 							<frontend_type>button</frontend_type>
 							<frontend_model>ultimo/adminhtml_button_import_cms</frontend_model>
 							<process>blocks</process>
-							<sort_order>110</sort_order>
+							<button_label>Import Static Blocks</button_label>
+							<sort_order>210</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</import_blocks>
 						<overwrite_blocks translate="label">
 							<label>Overwrite Existing Blocks</label>
-							<comment>If set to "Yes", imported blocks will overwrite existing blocks with the same identifiers (if any blocks with the same identifiers already exist). To change value of this field, save the configuration (without saving, the option will remain unchanged after you refresh the page).</comment>
+							<comment><![CDATA[If set to "Yes", imported blocks will overwrite existing blocks with the same identifiers (if any blocks with the same identifiers already exist). Change the value of this field and then immediately save the configuration (click the "Save Config" button). Without saving, the option will remain unchanged after you refresh the admin page.]]></comment>
 							<frontend_type>select</frontend_type>
 							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>120</sort_order>
+							<sort_order>220</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
@@ -1481,33 +1485,68 @@
 						<heading_import_pages translate="label">
 							<label>Import Pages</label>
 							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
-							<sort_order>200</sort_order>
+							<sort_order>300</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</heading_import_pages>
 						
 						<import_pages translate="label">
-							<label>Pages</label>
-							<comment><![CDATA[Click this button to create CMS pages provided with this theme.]]></comment>
+							<label></label>
+							<comment><![CDATA[Click this button to import CMS pages.]]></comment>
 							<frontend_type>button</frontend_type>
 							<frontend_model>ultimo/adminhtml_button_import_cms</frontend_model>
 							<process>pages</process>
-							<sort_order>210</sort_order>
+							<button_label>Import Pages</button_label>
+							<sort_order>310</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</import_pages>
 						<overwrite_pages translate="label">
 							<label>Overwrite Existing Pages</label>
-							<comment>If set to "Yes", imported pages will overwrite existing pages with the same identifiers (if any pages with the same identifiers already exist). To change value of this field, save the configuration (without saving, the option will remain unchanged after you refresh the page).</comment>
+							<comment><![CDATA[If set to "Yes", imported pages will overwrite existing pages with the same identifiers (if any pages with the same identifiers already exist). Change the value of this field and then immediately save the configuration (click the "Save Config" button). Without saving, the option will remain unchanged after you refresh the admin page.]]></comment>
 							<frontend_type>select</frontend_type>
 							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>220</sort_order>
+							<sort_order>320</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</overwrite_pages>
+
+						<!-- <heading_export translate="label">
+							<label>EXPORT</label>
+							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+							<sort_order>900</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</heading_export>
+						<expblocks_blocks translate="label">
+							<label></label>
+							<frontend_type>button</frontend_type>
+							<frontend_model>ultimo/adminhtml_button_import_cms</frontend_model>
+							<process>expblocks</process>
+							<params>s/all/withdefaultstore/1</params>
+							<button_label>EXPORT Static Blocks</button_label>
+							<sort_order>910</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</expblocks_blocks>
+						<exppages_pages translate="label">
+							<label></label>
+							<frontend_type>button</frontend_type>
+							<frontend_model>ultimo/adminhtml_button_import_cms</frontend_model>
+							<process>exppages</process>
+							<params>s/all/withdefaultstore/1</params>
+							<button_label>EXPORT Pages</button_label>
+							<sort_order>920</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</exppages_pages> -->
+
 					</fields>
 				</install>
 				<integration translate="label">
@@ -1521,15 +1560,25 @@
 						<heading_bootstrap translate="label">
 							<label>Bootstrap</label>
 							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
-							<sort_order>10</sort_order>
+							<sort_order>0</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</heading_bootstrap>
 
+						<!-- <bootstrap translate="label">
+							<label>bootstrap</label>
+							<comment></comment>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_enabledisable</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</bootstrap> -->
 						<bootstrap_grid translate="label">
 							<label>Grid System</label>
-							<comment>Enable the grid system from Bootstrap (version 3.3.7).</comment>
+							<comment><![CDATA[Enable the grid system from Bootstrap (version 3.3.7).<br/><strong style="color:red;">Important:</strong> disable this option <strong>only</strong> if you have custom modifications (or extensions) which already add the entire Bootstrap (including the grid system) to the frontend of your store.]]></comment>
 							<frontend_type>select</frontend_type>
 							<source_model>adminhtml/system_config_source_enabledisable</source_model>
 							<sort_order>20</sort_order>
@@ -1540,16 +1589,26 @@
 								<bootstrap>0</bootstrap>
 							</depends> -->
 						</bootstrap_grid>
-						<!-- <bootstrap translate="label">
-							<label>bootstrap</label>
-							<comment></comment>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_enabledisable</source_model>
-							<sort_order>30</sort_order>
+
+						<heading_fontawesome translate="label">
+							<label>Font Awesome</label>
+							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+							<sort_order>100</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-						</bootstrap> -->
+						</heading_fontawesome>
+
+						<fontawesome translate="label">
+							<label>Font Awesome</label>
+							<comment>Enable Font Awesome, an icon toolkit based on CSS (version 4.7.0).</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_enabledisable</source_model>
+							<sort_order>110</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</fontawesome>
 					</fields>
 				</integration>
 			</groups>
@@ -1756,15 +1815,15 @@
 							<show_in_store>1</show_in_store>
 						</tool_icon_active_color>
 						
-						<heading_custom_icons translate="label">
-							<label>Custom Icons With Background (Iconbox)</label>
-							<comment>Icons with CSS class "ib".</comment>
+						<heading_iconbox translate="label">
+							<label>Iconbox</label>
+							<comment>Icon with background color (icon with the "ib" class).</comment>
 							<frontend_model>infortis/adminhtml_system_config_form_field_heading</frontend_model>
 							<sort_order>300</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
-						</heading_custom_icons>
+						</heading_iconbox>
 						
 						<icon_bg_color translate="label">
 							<label>Icon Background Color</label>
@@ -1807,12 +1866,22 @@
 							<show_in_store>1</show_in_store>
 						</icon_hover_color>
 
+						<heading_social_iconbox translate="label">
+							<label>Iconbox (Social Icons)</label>
+							<comment>Iconbox wrapped inside a container with the "social-links" class.</comment>
+							<frontend_model>infortis/adminhtml_system_config_form_field_heading</frontend_model>
+							<sort_order>350</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</heading_social_iconbox>
+
 						<social_icon_bg_color translate="label">
 							<label>Social Icon Background Color</label>
 							<frontend_type>text</frontend_type>
 							<frontend_model>infortis/adminhtml_system_config_form_field_color</frontend_model>
 							<backend_model>infortis/system_config_backend_design_color_validatetransparent</backend_model>
-							<sort_order>350</sort_order>
+							<sort_order>355</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
@@ -1847,11 +1916,44 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</social_icon_hover_color>
+
+						<heading_banners translate="label">
+							<label>Banners</label>
+							<comment>Banners with image, caption and hover effects.</comment>
+							<frontend_model>infortis/adminhtml_system_config_form_field_heading</frontend_model>
+							<sort_order>400</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</heading_banners>
+
+						<ban_cap_bg_color translate="label">
+							<label>Caption Color</label>
+							<comment>Background color of an element with the "cap" class inside a banner.</comment>
+							<frontend_type>text</frontend_type>
+							<frontend_model>infortis/adminhtml_system_config_form_field_color</frontend_model>
+							<backend_model>infortis/system_config_backend_design_color_validatetransparent</backend_model>
+							<sort_order>410</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</ban_cap_bg_color>
+
+
+
+
+
+
+
+
+
+
 						
 						<heading_special_links translate="label">
 							<label>Horizontal Links</label>
-							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
-							<sort_order>400</sort_order>
+							<comment>Links inside an unordered list with the "links" class.</comment>
+							<frontend_model>infortis/adminhtml_system_config_form_field_heading</frontend_model>
+							<sort_order>450</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
@@ -1862,7 +1964,7 @@
 							<frontend_type>text</frontend_type>
 							<frontend_model>infortis/adminhtml_system_config_form_field_color</frontend_model>
 							<backend_model>infortis/system_config_backend_design_color_validatetransparent</backend_model>
-							<sort_order>410</sort_order>
+							<sort_order>460</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
@@ -1872,7 +1974,7 @@
 							<frontend_type>text</frontend_type>
 							<frontend_model>infortis/adminhtml_system_config_form_field_color</frontend_model>
 							<backend_model>infortis/system_config_backend_design_color_validatetransparent</backend_model>
-							<sort_order>420</sort_order>
+							<sort_order>470</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
@@ -2203,7 +2305,7 @@
 
 						<content_padding_side translate="label">
 							<label>Side Padding</label>
-							<comment><![CDATA[Add padding to the left and right side of inner container of all sections of the page. Leave empty to use default value. Specify value in pixels.]]></comment>
+							<comment><![CDATA[Add padding to the left and right side of inner container of all sections of the page. Specify value in pixels. Leave empty to use default value (15). Recommended value: not less than 15.]]></comment>
 							<frontend_type>text</frontend_type>
 							<validate>validate-number validate-number-range number-range-0-50</validate>
 							<sort_order>210</sort_order>
