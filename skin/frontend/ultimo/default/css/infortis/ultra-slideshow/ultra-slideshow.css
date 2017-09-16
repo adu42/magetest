@@ -2,8 +2,6 @@
  * Ultra Slideshow
  */
 
-
-
 /* Slideshow wrapper
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
@@ -16,7 +14,6 @@
 .slideshow-wrapper-outer:after {
     clear: both;
 }
-
 
 /* Slideshow
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -34,7 +31,6 @@
 .slideshow {
     display: none;
 }
-
 
 /* Additional banners
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -63,8 +59,6 @@
 .slideshow-banners .small-banner:last-child {
     margin-bottom: 0 !important;
 }
-
-
 
 /* Deprecated: */
 .slideshow-banners .banner {

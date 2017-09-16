@@ -1,297 +1,323 @@
 <?xml version="1.0"?>
 <config>
-	<tabs>
-		<infortis translate="label">
-			<label>Infortis Extensions</label>
-			<sort_order>152</sort_order>
-		</infortis>
-	</tabs>
-	<sections>
-		<ultraslideshow translate="label">
-			<label>Slideshow</label>
-			<tab>infortis</tab>
-			<frontend_type>text</frontend_type>
-			<sort_order>90</sort_order>
-			<show_in_default>1</show_in_default>
-			<show_in_website>1</show_in_website>
-			<show_in_store>1</show_in_store>
-			<groups>
-				<general translate="label">
-					<label>General</label>
-					<comment><![CDATA[<h2>Slideshow on any page:</h2>Slideshows can be displayed on any CMS page (and inside any static block). To add a slideshow to a page, use the following block code:<br/><code style="background-color: #eaf5f8; color: #00a3db; padding: 1px 2px; display: inline-block;">{{block type="ultraslideshow/slideshow" template="infortis/ultraslideshow/slideshow.phtml" slides="sample_slideshow_1"}}</code><br/>Enter the code in the content field of a page, Magento will automatically replace the code with a slideshow during page rendering.<br/>The code is described in the <strong>User Guide</strong> (chapter 11).<br/><br/><h2>Home page slideshow:</h2>To quickly add a slideshow to the home page, configure options under the <em>"Main Slideshow on the Home Page"</em> tab.<br/><br/><br/>]]></comment>
-					<frontend_type>text</frontend_type>
-					<sort_order>10</sort_order>
-					<show_in_default>1</show_in_default>
-					<show_in_website>1</show_in_website>
-					<show_in_store>1</show_in_store>
-					<fields>
-						<heading_home_slideshow translate="label">
-							<label>Main Slideshow on the Home Page</label>
-							<comment>These settings add a slideshow only to the home page.</comment>
-							<frontend_model>infortis/adminhtml_system_config_form_field_heading</frontend_model>
-							<sort_order>10</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</heading_home_slideshow>
+    <tabs>
+        <infortis translate="label">
+            <label>Infortis Extensions</label>
+            <sort_order>152</sort_order>
+        </infortis>
+    </tabs>
+    <sections>
+        <ultraslideshow translate="label">
+            <label>Slideshow</label>
+            <tab>infortis</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>90</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <comment>
+                        <![CDATA[<h2>Slideshow on any page:</h2>Slideshows can be displayed on any CMS page (and inside any static block). To add a slideshow to a page, use the following block code:<br/><code style="background-color: #eaf5f8; color: #00a3db; padding: 1px 2px; display: inline-block;">{{block type="ultraslideshow/slideshow" template="infortis/ultraslideshow/slideshow.phtml" slides="sample_slideshow_1"}}</code><br/>Enter the code in the content field of a page, Magento will automatically replace the code with a slideshow during page rendering.<br/>The code is described in the <strong>User Guide</strong> (chapter 11).<br/><br/><h2>Home page slideshow:</h2>To quickly add a slideshow to the home page, configure options under the <em>"Main Slideshow on the Home Page"</em> tab.<br/><br/><br/>]]></comment>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <heading_home_slideshow translate="label">
+                            <label>Main Slideshow on the Home Page</label>
+                            <comment>These settings add a slideshow only to the home page.</comment>
+                            <frontend_model>infortis/adminhtml_system_config_form_field_heading</frontend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </heading_home_slideshow>
 
-						<blocks translate="label">
-							<label>Slides</label>
-							<comment><![CDATA[Enter an identifier of a static block which contains your slides. You can use the default static block: <code style="background-color: #eaf5f8; color: #00a3db; padding: 1px 2px; display: inline-block;">sample_slideshow_1</code><br/>The slides from that static block will be displayed in the main slideshow on the home page.<br/><strong style="color:#F00;">Important:</strong> Leave this field empty to remove the main slideshow from the home page.<br/><strong style="color: #1795ee;">Notice:</strong> Value of this field will be applied only to the main slideshow on home page. To display slideshows in other places use slideshow block code described in the user guide.]]></comment>
-							<!-- <br/><strong style="color: #000;">Deprecated:</strong><br/>Alternatively you can also enter comma separated list of static block identifiers. Content of each block will be displayed as a separate slide. -->
-							<frontend_type>text</frontend_type>
-							<sort_order>20</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</blocks>
-						<position2 translate="label">
-							<label>Position: Above Content Area (Boxed)</label>
-							<comment><![CDATA[If enabled, the main slideshow will be displayed at the top of the main content area of the home page (just below the header).<br/><strong>Important:</strong> do not enable slideshow in both positions at the same time.]]></comment>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_enabledisable</source_model>
-							<sort_order>30</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</position2>
-						<position1 translate="label">
-							<label>Position: Above Content Area (Full Width)</label>
-							<comment><![CDATA[If enabled, the main slideshow will be displayed at the top of the main content area of the home page (just below the header). Slideshow will take full available width.<br/><strong>Important:</strong> do not enable slideshow in both positions at the same time.]]></comment>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_enabledisable</source_model>
-							<sort_order>40</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</position1>
-						<hide translate="label">
-							<label>Hide Slides On Mobile Devices</label>
-							<comment>If set to "Yes", slideshow will be hidden on narrow screens (if browser viewport width is less than 768 pixels). Important: additional banners can be hidden separately, see options below.</comment>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>50</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</hide>
-						<margin_top translate="label">
-							<label>Top Margin</label>
-							<comment>Additional top margin for the slideshow. You can set margin to add extra space above the slideshow. Enter negative value to pull the slideshow up.</comment>
-							<frontend_type>text</frontend_type>
-							<validate>validate-number</validate>
-							<sort_order>100</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</margin_top>
-						<margin_bottom translate="label">
-							<label>Bottom Margin</label>
-							<comment>Additional bottom margin for the slideshow. You can set margin to add extra space below the slideshow.</comment>
-							<frontend_type>text</frontend_type>
-							<validate>validate-number</validate>
-							<sort_order>110</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</margin_bottom>
+                        <blocks translate="label">
+                            <label>Slides</label>
+                            <comment>
+                                <![CDATA[Enter an identifier of a static block which contains your slides. You can use the default static block: <code style="background-color: #eaf5f8; color: #00a3db; padding: 1px 2px; display: inline-block;">sample_slideshow_1</code><br/>The slides from that static block will be displayed in the main slideshow on the home page.<br/><strong style="color:#F00;">Important:</strong> Leave this field empty to remove the main slideshow from the home page.<br/><strong style="color: #1795ee;">Notice:</strong> Value of this field will be applied only to the main slideshow on home page. To display slideshows in other places use slideshow block code described in the user guide.]]></comment>
+                            <!-- <br/><strong style="color: #000;">Deprecated:</strong><br/>Alternatively you can also enter comma separated list of static block identifiers. Content of each block will be displayed as a separate slide. -->
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </blocks>
+                        <position2 translate="label">
+                            <label>Position: Above Content Area (Boxed)</label>
+                            <comment>
+                                <![CDATA[If enabled, the main slideshow will be displayed at the top of the main content area of the home page (just below the header).<br/><strong>Important:</strong> do not enable slideshow in both positions at the same time.]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </position2>
+                        <position1 translate="label">
+                            <label>Position: Above Content Area (Full Width)</label>
+                            <comment>
+                                <![CDATA[If enabled, the main slideshow will be displayed at the top of the main content area of the home page (just below the header). Slideshow will take full available width.<br/><strong>Important:</strong> do not enable slideshow in both positions at the same time.]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </position1>
+                        <hide translate="label">
+                            <label>Hide Slides On Mobile Devices</label>
+                            <comment>If set to "Yes", slideshow will be hidden on narrow screens (if browser viewport
+                                width is less than 768 pixels). Important: additional banners can be hidden separately,
+                                see options below.
+                            </comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </hide>
+                        <margin_top translate="label">
+                            <label>Top Margin</label>
+                            <comment>Additional top margin for the slideshow. You can set margin to add extra space
+                                above the slideshow. Enter negative value to pull the slideshow up.
+                            </comment>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-number</validate>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </margin_top>
+                        <margin_bottom translate="label">
+                            <label>Bottom Margin</label>
+                            <comment>Additional bottom margin for the slideshow. You can set margin to add extra space
+                                below the slideshow.
+                            </comment>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-number</validate>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </margin_bottom>
 
-						<heading_general translate="label">
-							<label>General Settings</label>
-							<comment>These settings are applied to all slideshows.</comment>
-							<frontend_model>infortis/adminhtml_system_config_form_field_heading</frontend_model>
-							<sort_order>500</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</heading_general>
+                        <heading_general translate="label">
+                            <label>General Settings</label>
+                            <comment>These settings are applied to all slideshows.</comment>
+                            <frontend_model>infortis/adminhtml_system_config_form_field_heading</frontend_model>
+                            <sort_order>500</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </heading_general>
 
-						<effect translate="label">
-							<label>Transition Effect</label>
-							<comment><![CDATA[Leave empty to use simple horizontal scrolling animation.]]></comment>
-							<frontend_type>select</frontend_type>
-							<source_model>ultraslideshow/source_effects</source_model>
-							<sort_order>510</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</effect>
-						<!--<easing translate="label">
-							<label>Easing Method</label>
-							<comment>The type of easing applied to the transition animation.</comment>
-							<frontend_type>select</frontend_type>
-							<source_model>infortis/system_config_source_js_jquery_easing</source_model>
-							<sort_order>511</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</easing>-->
-						<speed translate="label">
-							<label>Scrolling Speed</label>
-							<comment>Duration (in milliseconds) of horizontal scrolling animation. Applied to horizontal scrolling with arrows and touch swipe.</comment>
-							<frontend_type>text</frontend_type>
-							<sort_order>520</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<depends>
-								<effect></effect>
-							</depends>
-						</speed>
-						<auto_speed translate="label">
-							<label>Automatic Scrolling Speed</label>
-							<comment><![CDATA[Duration (in milliseconds) of horizontal scrolling animation. Applied to automatic horizontal scrolling (if <strong>Timeout</strong> was specified) and to horizontal scrolling with pagination.]]></comment>
-							<frontend_type>text</frontend_type>
-							<sort_order>521</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-							<depends>
-								<effect></effect>
-							</depends>
-						</auto_speed>
-						<timeout translate="label">
-							<label>Timeout</label>
-							<comment>Time (in milliseconds) between slide transitions. Enter "0" to disable automatic transition. Note that 1000 miliseconds = 1 second.</comment>
-							<frontend_type>text</frontend_type>
-							<sort_order>540</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</timeout>
-						<smooth_height translate="label">
-							<label>Smooth Height</label>
-							<comment><![CDATA[Enable, if your slides do not have the same height. It will allow height of the slideshow to animate smoothly.]]></comment>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_enabledisable</source_model>
-							<sort_order>550</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</smooth_height>
-						<pause translate="label">
-							<label>Pause on Hover</label>
-							<comment>If enabled, when the mouse is over the slideshow the automatic transition functionality will pause.</comment>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_enabledisable</source_model>
-							<sort_order>560</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</pause>
-						<loop translate="label">
-							<label>Loop</label>
-							<comment>If enabled, slideshow will automatically loop.</comment>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_enabledisable</source_model>
-							<sort_order>570</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</loop>
-					</fields>
-				</general>
-				<banners translate="label">
-					<label>Additional Banners</label>
-					<comment><![CDATA[In this tab you can configure additional banners displayed at the side of the main slideshow on the home page.<br/>These settings are applied <strong>only</strong> to the main slideshow on the home page.<br/><br/>]]></comment>
-					<frontend_type>text</frontend_type>
-					<sort_order>20</sort_order>
-					<show_in_default>1</show_in_default>
-					<show_in_website>1</show_in_website>
-					<show_in_store>1</show_in_store>
-					<fields>
-						<!-- <heading_home_slideshow translate="label">
-							<label>Additional Banners for the Main Slideshow on the Home Page</label>
-							<comment>These settings are applied only to the main slideshow on the home page.</comment>
-							<frontend_model>infortis/adminhtml_system_config_form_field_heading</frontend_model>
-							<sort_order>10</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</heading_home_slideshow> -->
+                        <effect translate="label">
+                            <label>Transition Effect</label>
+                            <comment><![CDATA[Leave empty to use simple horizontal scrolling animation.]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ultraslideshow/source_effects</source_model>
+                            <sort_order>510</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </effect>
+                        <!--<easing translate="label">
+                            <label>Easing Method</label>
+                            <comment>The type of easing applied to the transition animation.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>infortis/system_config_source_js_jquery_easing</source_model>
+                            <sort_order>511</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </easing>-->
+                        <speed translate="label">
+                            <label>Scrolling Speed</label>
+                            <comment>Duration (in milliseconds) of horizontal scrolling animation. Applied to horizontal
+                                scrolling with arrows and touch swipe.
+                            </comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>520</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <effect></effect>
+                            </depends>
+                        </speed>
+                        <auto_speed translate="label">
+                            <label>Automatic Scrolling Speed</label>
+                            <comment>
+                                <![CDATA[Duration (in milliseconds) of horizontal scrolling animation. Applied to automatic horizontal scrolling (if <strong>Timeout</strong> was specified) and to horizontal scrolling with pagination.]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>521</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <effect></effect>
+                            </depends>
+                        </auto_speed>
+                        <timeout translate="label">
+                            <label>Timeout</label>
+                            <comment>Time (in milliseconds) between slide transitions. Enter "0" to disable automatic
+                                transition. Note that 1000 miliseconds = 1 second.
+                            </comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>540</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </timeout>
+                        <smooth_height translate="label">
+                            <label>Smooth Height</label>
+                            <comment>
+                                <![CDATA[Enable, if your slides do not have the same height. It will allow height of the slideshow to animate smoothly.]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>550</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </smooth_height>
+                        <pause translate="label">
+                            <label>Pause on Hover</label>
+                            <comment>If enabled, when the mouse is over the slideshow the automatic transition
+                                functionality will pause.
+                            </comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>560</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </pause>
+                        <loop translate="label">
+                            <label>Loop</label>
+                            <comment>If enabled, slideshow will automatically loop.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>570</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </loop>
+                    </fields>
+                </general>
+                <banners translate="label">
+                    <label>Additional Banners</label>
+                    <comment>
+                        <![CDATA[In this tab you can configure additional banners displayed at the side of the main slideshow on the home page.<br/>These settings are applied <strong>only</strong> to the main slideshow on the home page.<br/><br/>]]></comment>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <!-- <heading_home_slideshow translate="label">
+                            <label>Additional Banners for the Main Slideshow on the Home Page</label>
+                            <comment>These settings are applied only to the main slideshow on the home page.</comment>
+                            <frontend_model>infortis/adminhtml_system_config_form_field_heading</frontend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </heading_home_slideshow> -->
 
-						<banners translate="label">
-							<label>Banners</label>
-							<comment><![CDATA[Identifier of a single static block which contains additional banners for the slideshow. Banners will be displayed at the side of the slideshow. You can use the default static block: <code style="background-color: #eaf5f8; color: #00a3db; padding: 1px 2px; display: inline-block;">sample_slideshow_additional_banners_1</code><br/>The content of that static block will be added only to the main slideshow on the home page.<br/><strong style="color:#F00;">Important:</strong> Leave this field empty if you don't want to add side banners to the main slideshow on the home page.]]></comment>
-							<frontend_type>text</frontend_type>
-							<sort_order>20</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</banners>
-						<position translate="label">
-							<label>Position of Banners</label>
-							<frontend_type>select</frontend_type>
-							<source_model>ultraslideshow/source_banners_position</source_model>
-							<sort_order>30</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</position>
-						<gutter translate="label">
-							<label>Show Gutter Between Slides and Banners</label>
-							<comment>If set to "Yes", there will be space between the slides and the additional banners.</comment>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>40</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</gutter>
-						<hide translate="label">
-							<label>Hide Banners On Mobile Devices</label>
-							<comment>If set to "Yes", banners will be hidden on narrow screens (if browser viewport width is less than 768 pixels).</comment>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>50</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</hide>
+                        <banners translate="label">
+                            <label>Banners</label>
+                            <comment>
+                                <![CDATA[Identifier of a single static block which contains additional banners for the slideshow. Banners will be displayed at the side of the slideshow. You can use the default static block: <code style="background-color: #eaf5f8; color: #00a3db; padding: 1px 2px; display: inline-block;">sample_slideshow_additional_banners_1</code><br/>The content of that static block will be added only to the main slideshow on the home page.<br/><strong style="color:#F00;">Important:</strong> Leave this field empty if you don't want to add side banners to the main slideshow on the home page.]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </banners>
+                        <position translate="label">
+                            <label>Position of Banners</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ultraslideshow/source_banners_position</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </position>
+                        <gutter translate="label">
+                            <label>Show Gutter Between Slides and Banners</label>
+                            <comment>If set to "Yes", there will be space between the slides and the additional
+                                banners.
+                            </comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </gutter>
+                        <hide translate="label">
+                            <label>Hide Banners On Mobile Devices</label>
+                            <comment>If set to "Yes", banners will be hidden on narrow screens (if browser viewport
+                                width is less than 768 pixels).
+                            </comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </hide>
 
-					</fields>
-				</banners>
-				<navigation translate="label">
-					<label>Navigation</label>
-					<comment><![CDATA[In this tab you can configure navigation elements.<br/>These settings are applied to all slideshows.<br/><br/>]]></comment>
-					<frontend_type>text</frontend_type>
-					<sort_order>30</sort_order>
-					<show_in_default>1</show_in_default>
-					<show_in_website>1</show_in_website>
-					<show_in_store>1</show_in_store>
-					<fields>
-						<nav_buttons translate="label">
-							<label>Navigation Buttons</label>
-							<comment>Enable "next" and "previous" buttons.</comment>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_enabledisable</source_model>
-							<sort_order>10</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</nav_buttons>
-						<pagination translate="label">
-							<label>Pagination</label>
-							<comment>Enable pagination buttons.</comment>
-							<frontend_type>select</frontend_type>
-							<source_model>ultraslideshow/source_navigation_pagination</source_model>
-							<sort_order>110</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</pagination>
-						<pagination_position translate="label">
-							<label>Pagination Position</label>
-							<frontend_type>select</frontend_type>
-							<source_model>ultraslideshow/source_navigation_pagination_position</source_model>
-							<sort_order>120</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>1</show_in_website>
-							<show_in_store>1</show_in_store>
-						</pagination_position>
-					</fields>
-				</navigation>
-			</groups>
-		</ultraslideshow>
-	</sections>
+                    </fields>
+                </banners>
+                <navigation translate="label">
+                    <label>Navigation</label>
+                    <comment>
+                        <![CDATA[In this tab you can configure navigation elements.<br/>These settings are applied to all slideshows.<br/><br/>]]></comment>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <nav_buttons translate="label">
+                            <label>Navigation Buttons</label>
+                            <comment>Enable "next" and "previous" buttons.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </nav_buttons>
+                        <pagination translate="label">
+                            <label>Pagination</label>
+                            <comment>Enable pagination buttons.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ultraslideshow/source_navigation_pagination</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </pagination>
+                        <pagination_position translate="label">
+                            <label>Pagination Position</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ultraslideshow/source_navigation_pagination_position</source_model>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </pagination_position>
+                    </fields>
+                </navigation>
+            </groups>
+        </ultraslideshow>
+    </sections>
 </config> 

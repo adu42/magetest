@@ -43,11 +43,11 @@
     <?php if ($_product->isAvailable()): ?>
         <p class="availability in-stock"><?php echo $this->helper('catalog')->__('Availability:') ?>
             <span><?php echo $this->helper('catalog')->__('In stock') ?></span></p>
-            <meta itemprop="availability" content="http://schema.org/InStock">
+        <meta itemprop="availability" content="http://schema.org/InStock">
     <?php else: ?>
         <p class="availability out-of-stock"><?php echo $this->helper('catalog')->__('Availability:') ?>
             <span><?php echo $this->helper('catalog')->__('Out of stock') ?></span></p>
-            <meta itemprop="availability" content="http://schema.org/OutOfStock">
+        <meta itemprop="availability" content="http://schema.org/OutOfStock">
     <?php endif; ?>
 <?php endif; ?>
 <?php echo $this->getPriceHtml($_product) ?>

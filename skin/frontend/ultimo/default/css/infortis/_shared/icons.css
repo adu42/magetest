@@ -3,8 +3,6 @@
  * Part of the font icon styles based on Font Awesome - http://fontawesome.io
  */
 
-
-
 /* Icon %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
@@ -30,6 +28,7 @@ i:before {
     float: left;
     margin-right: 0.3em;
 }
+
 .ic.right {
     float: right;
     margin-left: 0.3em;
@@ -43,27 +42,35 @@ i:before {
     line-height: 0.75em;
     vertical-align: -15%;
 }
+
 .ic-2x {
     font-size: 2em;
 }
+
 .ic-3x {
     font-size: 3em;
 }
+
 .ic-4x {
     font-size: 4em;
 }
+
 .ic-5x {
     font-size: 5em;
 }
+
 .ic-6x {
     font-size: 6em;
 }
+
 .ic-7x {
     font-size: 7em;
 }
+
 .ic-8x {
     font-size: 8em;
 }
+
 .ic-fw {
     width: 1.28571429em;
     text-align: center;
@@ -76,9 +83,11 @@ i:before {
     margin-left: 2.14285714em;
     list-style-type: none;
 }
+
 .ic-ul > li {
     position: relative;
 }
+
 .ic-li {
     position: absolute;
     left: -2.14285714em;
@@ -86,9 +95,11 @@ i:before {
     top: 0.14285714em;
     text-align: center;
 }
+
 .ic-li.ic-lg {
     left: -1.85714286em;
 }
+
 .ic-border {
     padding: .2em .25em .15em;
     border: solid 0.08em #eeeeee;
@@ -101,14 +112,17 @@ i:before {
 .ic-pull-right {
     float: right;
 }
+
 .pull-left, /* Deprecated */
 .ic-pull-left {
     float: left;
 }
+
 .ic.pull-left, /* Deprecated */
 .ic-pull-left {
     margin-right: .3em;
 }
+
 .ic.pull-right, /* Deprecated */
 .ic-pull-right {
     margin-left: .3em;
@@ -124,6 +138,7 @@ i:before {
     line-height: 2em;
     vertical-align: middle;
 }
+
 .ic-stack-1x,
 .ic-stack-2x {
     position: absolute;
@@ -131,12 +146,15 @@ i:before {
     width: 100%;
     text-align: center;
 }
+
 .ic-stack-1x {
     line-height: inherit;
 }
+
 .ic-stack-2x {
     font-size: 2em;
 }
+
 .ic-inverse {
     color: #ffffff;
 }
@@ -149,6 +167,7 @@ i:before {
     -o-animation: spin 2s infinite linear;
     animation: spin 2s infinite linear;
 }
+
 @-moz-keyframes spin {
     0% {
         -moz-transform: rotate(0deg);
@@ -157,6 +176,7 @@ i:before {
         -moz-transform: rotate(359deg);
     }
 }
+
 @-webkit-keyframes spin {
     0% {
         -webkit-transform: rotate(0deg);
@@ -165,6 +185,7 @@ i:before {
         -webkit-transform: rotate(359deg);
     }
 }
+
 @-o-keyframes spin {
     0% {
         -o-transform: rotate(0deg);
@@ -173,6 +194,7 @@ i:before {
         -o-transform: rotate(359deg);
     }
 }
+
 @keyframes spin {
     0% {
         -webkit-transform: rotate(0deg);
@@ -183,6 +205,7 @@ i:before {
         transform: rotate(359deg);
     }
 }
+
 .ic-rotate-90 {
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
     -webkit-transform: rotate(90deg);
@@ -191,6 +214,7 @@ i:before {
     -o-transform: rotate(90deg);
     transform: rotate(90deg);
 }
+
 .ic-rotate-180 {
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
     -webkit-transform: rotate(180deg);
@@ -199,6 +223,7 @@ i:before {
     -o-transform: rotate(180deg);
     transform: rotate(180deg);
 }
+
 .ic-rotate-270 {
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
     -webkit-transform: rotate(270deg);
@@ -207,6 +232,7 @@ i:before {
     -o-transform: rotate(270deg);
     transform: rotate(270deg);
 }
+
 .ic-flip-horizontal {
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);
     -webkit-transform: scale(-1, 1);
@@ -215,6 +241,7 @@ i:before {
     -o-transform: scale(-1, 1);
     transform: scale(-1, 1);
 }
+
 .ic-flip-vertical {
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);
     -webkit-transform: scale(1, -1);
@@ -224,7 +251,6 @@ i:before {
     transform: scale(1, -1);
 }
 
-
 /* Characters as icon (letters, numbers etc.)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
@@ -232,7 +258,6 @@ i:before {
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif !important;
 }
-
 
 /* Images as icons
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -248,8 +273,6 @@ i:before {
     vertical-align: middle;
 }
 
-
-
 /* Iconbox - an icon with background color %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
@@ -262,12 +285,11 @@ i:before {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    -webkit-transition:     color 300ms ease-in-out, background-color 300ms ease-in-out;
-    -moz-transition:        color 300ms ease-in-out, background-color 300ms ease-in-out;    
-    -o-transition:          color 300ms ease-in-out, background-color 300ms ease-in-out;
-    transition:             color 300ms ease-in-out, background-color 300ms ease-in-out;
+    -webkit-transition: color 300ms ease-in-out, background-color 300ms ease-in-out;
+    -moz-transition: color 300ms ease-in-out, background-color 300ms ease-in-out;
+    -o-transition: color 300ms ease-in-out, background-color 300ms ease-in-out;
+    transition: color 300ms ease-in-out, background-color 300ms ease-in-out;
 }
-
 
 /* Size
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -277,27 +299,30 @@ i:before {
     width: 40px;
     height: 40px;
 }
+
 .ib-size-l {
     line-height: 60px;
     width: 60px;
     height: 60px;
 }
+
 .ib-size-xl {
     line-height: 80px;
     width: 80px;
     height: 80px;
 }
+
 .ib-size-xxl {
     line-height: 100px;
     width: 100px;
     height: 100px;
 }
+
 .ib-size-xxxl {
     line-height: 120px;
     width: 120px;
     height: 120px;
 }
-
 
 /* Labels
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -307,30 +332,31 @@ i:before {
     line-height: 40px;
     display: inline-block;
 }
+
 .ib-size-l + .label {
     line-height: 60px;
 }
+
 .ib-size-xl + .label {
     line-height: 80px;
 }
+
 .ib-size-xxl + .label {
     line-height: 100px;
 }
+
 .ib-size-xxxl + .label {
     line-height: 120px;
 }
-
 
 /* Hover state
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
 .ib-hover:hover, /* Apply hover state color only when special class is present */
-.feature-icon-hover:hover .ib
-{
+.feature-icon-hover:hover .ib {
     background-color: #333;
     color: #fff;
 }
-
 
 /* Characters as icon - modify styles if inside iconbox
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -341,7 +367,6 @@ i:before {
     /*font-size: 16px;*/ /* Important: do not add font size here, it would override standard classes such as "ic-2x" */
     text-align: center;
 }
-
 
 /* Additional utility classes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -374,11 +399,12 @@ i:before {
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
+
 .ib-rounded:after {
     /* If iconbox has effects, effect element needs to have the same shape */
     -webkit-border-radius: 5px !important;
     -moz-border-radius: 5px !important;
-    border-radius: 5px !important;  
+    border-radius: 5px !important;
 }
 
 .ib-square,
@@ -388,6 +414,7 @@ i:before {
     -moz-border-radius: 0;
     border-radius: 0;
 }
+
 .ib-square:after {
     /* If iconbox has effects, effect element needs to have the same shape */
     -webkit-border-radius: 0 !important;
@@ -404,8 +431,6 @@ i:before {
     -moz-border-radius: 0;
     border-radius: 0;
 }
-
-
 
 /* Iconbox effects %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
@@ -424,11 +449,10 @@ i:before {
     -moz-border-radius: 50%;
     border-radius: 50%;
     content: '';
-    -webkit-box-sizing: content-box; 
-    -moz-box-sizing: content-box; 
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
     box-sizing: content-box;
 }
-
 
 /* Effect 1
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -483,7 +507,6 @@ i:before {
     opacity: 1;
 }
 
-
 /* Effect 2
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
@@ -528,7 +551,6 @@ i:before {
     -moz-transition: -moz-transform 0.4s, opacity 0.2s;
     transition: transform 0.4s, opacity 0.2s;
 }
-
 
 /* Effect 3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -581,8 +603,6 @@ i:before {
     opacity: 1;
 }
 
-
-
 /* Feature - box with icons, images, text etc. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
@@ -590,17 +610,21 @@ i:before {
 .feature {
     margin: 0 0 10px;
 }
+
 .feature:before,
 .feature:after {
     content: '';
     display: table;
 }
+
 .feature:after {
     clear: both;
 }
+
 .feature.first {
     margin-top: 0;
 }
+
 .feature.last {
     margin-bottom: 0;
 }
@@ -613,17 +637,20 @@ i:before {
     margin-bottom: 20px;
     padding-top: 20px;
 }
+
 .feature.border-separated:first-child {
     border-top: none;
     margin-top: 0;
     padding-top: 0;
 }
+
 .feature.top-border, /* For backward compatibility */
 .feature.border-top {
     border-top: 1px solid #f5f5f5 !important;
     margin-top: 20px !important;
     padding-top: 20px !important;
 }
+
 .feature.bottom-border, /* For backward compatibility */
 .feature.border-bottom {
     border-bottom: 1px solid #f5f5f5;
@@ -637,12 +664,12 @@ i:before {
     margin-top: 20px;
     padding-top: 20px;
 }
+
 .feature-wrapper.bottom-border {
     border-bottom: 1px solid #f5f5f5;
     margin-bottom: 20px;
     padding-bottom: 20px;
 }
-
 
 /* Feature text paragraph
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -650,7 +677,6 @@ i:before {
 .feature p:last-child {
     margin-bottom: 0;
 }
-
 
 /* Feature headings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -661,6 +687,7 @@ i:before {
     margin-bottom: 10px;
     font-weight: normal;
 }
+
 .feature .above-heading {
     margin: 0 0 7px;
     font-size: 1.1rem;
@@ -668,13 +695,13 @@ i:before {
     text-transform: uppercase;
     color: #888;
 }
+
 .feature .below-heading {
     font-size: 1em;
     font-style: italic;
     line-height: 1.8rem;
     color: #bbb;
 }
-
 
 /* Feature and icons
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -708,7 +735,6 @@ i:before {
     margin: 0 20px 0 0;
 }
 
-
 /* Indented feature
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
@@ -728,6 +754,7 @@ i:before {
 .feature.indent {
     padding-left: 60px; /* 60 = 40 + 20 */
 }
+
 .rtl .feature.indent {
     padding-right: 60px;
     padding-left: 0;
@@ -737,6 +764,7 @@ i:before {
 .feature.indent > .left {
     margin-left: -60px;
 }
+
 .rtl .feature.indent > .ic:first-child, /* For backward compatibility */
 .feature.indent > .right {
     margin-right: -60px;
@@ -747,6 +775,7 @@ i:before {
 .feature.indent-size-l {
     padding-left: 80px;
 }
+
 .rtl .feature.indent-size-l {
     padding-right: 80px;
     padding-left: 0;
@@ -756,6 +785,7 @@ i:before {
 .feature.indent-size-l > .left {
     margin-left: -80px;
 }
+
 .rtl .feature.indent-size-l > .ic:first-child, /* For backward compatibility */
 .feature.indent-size-l > .right {
     margin-right: -80px;
@@ -766,6 +796,7 @@ i:before {
 .feature.indent-size-xl {
     padding-left: 100px;
 }
+
 .rtl .feature.indent-size-xl {
     padding-right: 100px;
     padding-left: 0;
@@ -775,6 +806,7 @@ i:before {
 .feature.indent-size-xl > .left {
     margin-left: -100px;
 }
+
 .rtl .feature.indent-size-xl > .ic:first-child, /* For backward compatibility */
 .feature.indent-size-xl > .right {
     margin-right: -100px;
@@ -785,6 +817,7 @@ i:before {
 .feature.indent-size-xxl {
     padding-left: 120px;
 }
+
 .rtl .feature.indent-size-xxl {
     padding-right: 120px;
     padding-left: 0;
@@ -794,6 +827,7 @@ i:before {
 .feature.indent-size-xxl > .left {
     margin-left: -120px;
 }
+
 .rtl .feature.indent-size-xxl > .ic:first-child, /* For backward compatibility */
 .feature.indent-size-xxl > .right {
     margin-right: -120px;
@@ -804,6 +838,7 @@ i:before {
 .feature.indent-size-xxxl {
     padding-left: 140px;
 }
+
 .rtl .feature.indent-size-xxxl {
     padding-right: 140px;
     padding-left: 0;
@@ -813,12 +848,12 @@ i:before {
 .feature.indent-size-xxxl > .left {
     margin-left: -140px;
 }
+
 .rtl .feature.indent-size-xxxl > .ic:first-child, /* For backward compatibility */
 .feature.indent-size-xxxl > .right {
     margin-right: -140px;
     margin-left: 0;
 }
-
 
 /* Feature centered
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -827,6 +862,7 @@ i:before {
 .feature.centered {
     text-align: center;
 }
+
 .feature.centered > .ic {
     /* When feature is centered, the first level icons can't float */
     float: none !important;
@@ -844,8 +880,6 @@ i:before {
     max-height: none;
 }
 
-
-
 /* Integration with FontAwesome icons %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
@@ -860,6 +894,7 @@ i:before {
 .fa-stack-1x {
     line-height: inherit;
 }
+
 .fa-stack-2x {
     font-size: 2em;
 }

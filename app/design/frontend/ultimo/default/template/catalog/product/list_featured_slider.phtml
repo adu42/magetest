@@ -4,10 +4,10 @@
  */
 ?>
 <?php
-    $_productCollection = $this->getLoadedProductCollection();
+$_productCollection = $this->getLoadedProductCollection();
 ?>
 <?php if ($_productCollection && ($_collectionSize = $this->getCollectionCount())): ?>
-<?php
+    <?php
     $_helper = $this->helper('catalog/output');
     $theme = $this->helper('ultimo');
     $helpLabels = $this->helper('ultimo/labels');
@@ -55,21 +55,16 @@
     if ($imgWidth === NULL) //Param not set
     {
         $imgWidth = 196; //Set default value
-    }
-    else
-    {
+    } else {
         $imgWidth = intval($imgWidth);
     }
 
-        //Image aspect ratio
-        if ($theme->getCfg('category/aspect_ratio'))
-        {
-            $imgHeight = 0; //Keep aspect ratio - height will be calculated automatically based on width
-        }
-        else
-        {
-            $imgHeight = $imgWidth; //Don't keep aspect ratio - height is the same as width
-        }
+    //Image aspect ratio
+    if ($theme->getCfg('category/aspect_ratio')) {
+        $imgHeight = 0; //Keep aspect ratio - height will be calculated automatically based on width
+    } else {
+        $imgHeight = $imgWidth; //Don't keep aspect ratio - height is the same as width
+    }
 
     //Image height
     if ($this->getImgHeight() !== NULL) //param: img_height
@@ -83,9 +78,7 @@
     if ($timeout === NULL) //Param not set
     {
         $timeout = intval($theme->getCfg('product_slider/timeout'));
-    }
-    else
-    {
+    } else {
         $timeout = intval($timeout);
     }
 
@@ -94,9 +87,7 @@
     if ($move === NULL) //Param not set
     {
         $move = 0; //By default scroll all visible items
-    }
-    else
-    {
+    } else {
         $move = intval($move);
     }
 
@@ -121,13 +112,11 @@
 
     //Slider classes
     //--------------------------------------------------------------
-    if($isResponsive)
-    {
+    if ($isResponsive) {
         $sliderClasses .= ' itemslider-responsive';
     }
 
-    if ($_collectionSize == 1)
-    {
+    if ($_collectionSize == 1) {
         $sliderClasses .= ' single-item';
     }
 
@@ -135,18 +124,12 @@
     //--------------------------------------------------------------
     //Size of grid elements
     $size = $this->getSize(); //param: size
-    if ($size)
-    {
+    if ($size) {
         $gridClasses = ' ' . $size;
-    }
-    else
-    {
-        if ($showItems >= 8)
-        {
+    } else {
+        if ($showItems >= 8) {
             $gridClasses = ' size-xs';
-        }
-        elseif ($showItems >= 6)
-        {
+        } elseif ($showItems >= 6) {
             $gridClasses = ' size-s';
         }
     }
@@ -162,140 +145,150 @@
     {
         $gridClasses .= ' equal-height';
     }
-?>
-<strong class="section-title padding-right"><?php echo $this->getBlockName(); ?></strong>
-<div class="itemslider-wrapper slider-arrows1 slider-arrows1-pos-top-right slider-pagination1">
-    <div id="<?php echo $sliderId; ?>" class="itemslider<?php if($sliderClasses) echo $sliderClasses; ?> products-grid<?php if($gridClasses) echo $gridClasses; ?>">
-    <?php foreach ($_productCollection as $_product): ?>
-        <div class="item">
-        
-            <div class="product-image-wrapper" style="max-width:<?php echo $imgWidth; ?>px;">
-            
-                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" class="product-image">
-                    
-                    <?php if ($lazy): ?>
-                        <img class="lazyOwl" data-src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
-                    <?php else: ?>
-                        <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
-                    <?php endif; ?>
+    ?>
+    <strong class="section-title padding-right"><?php echo $this->getBlockName(); ?></strong>
+    <div class="itemslider-wrapper slider-arrows1 slider-arrows1-pos-top-right slider-pagination1">
+        <div id="<?php echo $sliderId; ?>"
+             class="itemslider<?php if ($sliderClasses) echo $sliderClasses; ?> products-grid<?php if ($gridClasses) echo $gridClasses; ?>">
+            <?php foreach ($_productCollection as $_product): ?>
+                <div class="item">
 
-                    <?php if ($theme->getCfg('category/alt_image')): ?>
-                        <?php echo $theme->getAltImgHtml($_product, $imgWidth, $imgHeight); ?>
-                    <?php endif; ?>
+                    <div class="product-image-wrapper" style="max-width:<?php echo $imgWidth; ?>px;">
 
-                    <?php echo $helpLabels->getLabels($_product); //Product labels ?>
-                </a>
-            
-                <?php //Add-to links
-                    if ($theme->getCfg('category_grid/display_addtolinks') != 0 
-                        && $theme->getCfg('category_grid/addtolinks_simple'))
-                    {
-                        if ($theme->getCfg('category_grid/display_addtolinks') == 1) //Display on hover
-                        {
-                            echo $helpTemplate->getCategoryAddtoLinksIcons(
-                            $_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage visible-onhover');
+                        <a href="<?php echo $_product->getProductUrl() ?>"
+                           title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>"
+                           class="product-image">
+
+                            <?php if ($lazy): ?>
+                                <img class="lazyOwl"
+                                     data-src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>"
+                                     alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>"/>
+                            <?php else: ?>
+                                <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>"
+                                     alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>"/>
+                            <?php endif; ?>
+
+                            <?php if ($theme->getCfg('category/alt_image')): ?>
+                                <?php echo $theme->getAltImgHtml($_product, $imgWidth, $imgHeight); ?>
+                            <?php endif; ?>
+
+                            <?php echo $helpLabels->getLabels($_product); //Product labels ?>
+                        </a>
+
+                        <?php //Add-to links
+                        if ($theme->getCfg('category_grid/display_addtolinks') != 0
+                            && $theme->getCfg('category_grid/addtolinks_simple')) {
+                            if ($theme->getCfg('category_grid/display_addtolinks') == 1) //Display on hover
+                            {
+                                echo $helpTemplate->getCategoryAddtoLinksIcons(
+                                    $_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage visible-onhover');
+                            } else //Always display
+                            {
+                                echo $helpTemplate->getCategoryAddtoLinksIcons(
+                                    $_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage');
+                            }
                         }
-                        else //Always display
-                        {
-                            echo $helpTemplate->getCategoryAddtoLinksIcons(
-                            $_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage');
-                        }
-                    }
-                ?>
-                
-            </div> <!-- end: product-image-wrapper -->
+                        ?>
 
-            <strong class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></strong>
-            <?php if($_product->getRatingSummary()): ?>
-                <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
-            <?php endif; ?>
-            <?php echo $this->getPriceHtml($_product, true, $hash) ?>
-            <div class="actions">
+                    </div> <!-- end: product-image-wrapper -->
 
-                <?php if (!$this->getHideButton()): ?>
-                    <?php if(!$_product->canConfigure() && $_product->isSaleable()): ?>
-                        <button type="button" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Add to Cart')) ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
-                    <?php elseif($_product->getStockItem() && $_product->getStockItem()->getIsInStock()): ?>
-                        <a title="<?php echo $this->__('View Details') ?>" class="button btn-cart" href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->__('View Details') ?></a>
-                    <?php else: ?>
-                        <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <strong class="product-name"><a href="<?php echo $_product->getProductUrl() ?>"
+                                                    title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></strong>
+                    <?php if ($_product->getRatingSummary()): ?>
+                        <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
                     <?php endif; ?>
+                    <?php echo $this->getPriceHtml($_product, true, $hash) ?>
+                    <div class="actions">
+
+                        <?php if (!$this->getHideButton()): ?>
+                            <?php if (!$_product->canConfigure() && $_product->isSaleable()): ?>
+                                <button type="button"
+                                        title="<?php echo Mage::helper('core')->quoteEscape($this->__('Add to Cart')) ?>"
+                                        class="button btn-cart"
+                                        onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')">
+                                    <span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+                            <?php elseif ($_product->getStockItem() && $_product->getStockItem()->getIsInStock()): ?>
+                                <a title="<?php echo $this->__('View Details') ?>" class="button btn-cart"
+                                   href="<?php echo $_product->getProductUrl() ?>"><?php echo $this->__('View Details') ?></a>
+                            <?php else: ?>
+                                <p class="availability out-of-stock">
+                                    <span><?php echo $this->__('Out of stock') ?></span></p>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <?php //Add-to links
+                        if ($theme->getCfg('category_grid/display_addtolinks') != 0 && !$theme->getCfg('category_grid/addtolinks_simple')) {
+                            if ($theme->getCfg('category_grid/display_addtolinks') == 1) //Display on hover
+                                echo $helpTemplate->getCategoryAddtoLinks($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right addto-texticons display-onhover');
+                            else //Always display
+                                echo $helpTemplate->getCategoryAddtoLinks($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right addto-texticons');
+                        }
+                        ?>
+
+                    </div>
+
+                </div>
+            <?php endforeach; ?>
+        </div> <!-- end: itemslider -->
+    </div> <!-- end: itemslider-wrapper -->
+    <script type="text/javascript">
+        //<![CDATA[
+        jQuery(function ($) {
+
+            var owl = $('#<?php echo $sliderId; ?>');
+            owl.owlCarousel({
+
+                <?php if ($lazy): ?>
+                lazyLoad: true,
                 <?php endif; ?>
 
-                <?php //Add-to links
-                if ($theme->getCfg('category_grid/display_addtolinks') != 0 && !$theme->getCfg('category_grid/addtolinks_simple'))
-                {
-                    if ($theme->getCfg('category_grid/display_addtolinks') == 1) //Display on hover
-                        echo $helpTemplate->getCategoryAddtoLinks($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right addto-texticons display-onhover');
-                    else //Always display
-                        echo $helpTemplate->getCategoryAddtoLinks($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right addto-texticons');
-                }
-                ?>
+                <?php if(!$isResponsive): ?>
+                responsive: false,
+                items: <?php echo $showItems; ?>,
+                <?php else: ?>
+                itemsCustom: [ <?php echo $breakpoints; ?> ],
+                responsiveRefreshRate: 50,
+                <?php endif; ?>
 
-            </div>
-            
-        </div>
-    <?php endforeach; ?>
-    </div> <!-- end: itemslider -->
-</div> <!-- end: itemslider-wrapper -->
-<script type="text/javascript">
-//<![CDATA[
-    jQuery(function($) {
-        
-        var owl = $('#<?php echo $sliderId; ?>');
-        owl.owlCarousel({
+                <?php if ($speed): ?>
+                slideSpeed: <?php echo $speed; ?>,
+                <?php endif; ?>
 
-        <?php if ($lazy): ?>
-            lazyLoad: true,
-        <?php endif; ?>
+                <?php if ($autoSpeed): ?>
+                paginationSpeed: <?php echo $autoSpeed; ?>,
+                <?php endif; ?>
 
-        <?php if(!$isResponsive): ?>
-            responsive: false,
-            items: <?php echo $showItems; ?>,
-        <?php else: ?>
-            itemsCustom: [ <?php echo $breakpoints; ?> ],
-            responsiveRefreshRate: 50,
-        <?php endif; ?>
+                <?php if ($move !== 1): ?>
+                scrollPerPage: true,
+                <?php endif; ?>
 
-        <?php if ($speed): ?>
-            slideSpeed: <?php echo $speed; ?>,
-        <?php endif; ?>
+                <?php if ($timeout): ?>
+                autoPlay: <?php echo $timeout; ?>,
+                <?php endif; ?>
 
-        <?php if ($autoSpeed): ?>
-            paginationSpeed: <?php echo $autoSpeed; ?>,
-        <?php endif; ?>
+                <?php if ($pause): ?>
+                stopOnHover: true,
+                <?php endif; ?>
 
-        <?php if ($move !== 1): ?>
-            scrollPerPage: true,
-        <?php endif; ?>
+                <?php if ($loop): ?>
+                rewindNav: true,
+                rewindSpeed: 600,
+                <?php else: ?>
+                rewindNav: false,
+                <?php endif; ?>
 
-        <?php if ($timeout): ?>
-            autoPlay: <?php echo $timeout; ?>,
-        <?php endif; ?>
+                <?php if ($pagination): ?>
+                pagination: true,
+                <?php else: ?>
+                pagination: false,
+                <?php endif; ?>
 
-        <?php if ($pause): ?>
-            stopOnHover: true,
-        <?php endif; ?>
+                navigation: true,
+                navigationText: false
 
-        <?php if ($loop): ?>
-            rewindNav: true,
-            rewindSpeed: 600,
-        <?php else: ?>
-            rewindNav: false,
-        <?php endif; ?>
+            }); //end: owl
 
-        <?php if ($pagination): ?>
-            pagination: true,
-        <?php else: ?>
-            pagination: false,
-        <?php endif; ?>
-
-            navigation: true,
-            navigationText: false
-
-        }); //end: owl
-
-    });
-//]]>
-</script>
+        });
+        //]]>
+    </script>
 <?php endif; ?>
