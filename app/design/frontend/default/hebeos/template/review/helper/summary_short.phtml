@@ -32,7 +32,7 @@
             </div>
         <?php endif;?>
         <span class="amount">
-		<a href="<?php echo $this->getProduct()->getProductUrl();?>#tabs-7"><?php echo $this->__('%d Review(s)', $this->getReviewsCount()) ?></a>
+		<a href="<?php echo $this->getProduct()->getProductUrl();?>#tabs-9">(<?php echo $this->__('%d', $this->getReviewsCount()) ?>)</a>
         </span>
     </div>
 <?php elseif ($this->getDisplayIfEmpty()): ?>

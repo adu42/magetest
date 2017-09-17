@@ -285,7 +285,9 @@ class Mage_Catalog_Model_Category extends Mage_Catalog_Model_Abstract
     {
         $collection = Mage::getResourceModel('catalog/product_collection')
             ->setStoreId($this->getStoreId())
-            ->addCategoryFilter($this);
+            ->addCategoryFilter($this)
+            ->addColorFilter($this->getColor())
+        ;
         return $collection;
     }
 
@@ -1067,7 +1069,23 @@ class Mage_Catalog_Model_Category extends Mage_Catalog_Model_Abstract
         return $attribute_id ;
     }
 
+    /**
+     * --------color----
+     * by@ado
+     * @param null $color
+     * @return $this
+     */
+    public function setColor($color=null){
+        $this->setData('color',$color);
+        return $this;
+    }
 
+    public function getColor(){
+        return $this->getData('color');
+    }
+    /**
+     * -------color end----
+     *
+     */
 
-    
 }

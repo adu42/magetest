@@ -49,7 +49,7 @@
                      $first_item_images = $helper->getImages($first_item);
                           ?>
                 <a title="Facebook" class="share-icon facebook-share-icon"></a>
-                <div class="share-icon pinterest-share-icon" href="http://pinterest.com/pin/create/button/?url=<?php echo $catalogReviewUrl; ?>&amp;media=<?php echo $first_item_images['big']; ?>&amp;description=<?php echo nl2br($this->escapeHtml($helper->shareTitle())) ?>">
+                <div class="share-icon pinterest-share-icon" href="http://pinterest.com/pin/create/button/?url=<?php echo $catalogReviewUrl; ?>&amp;media=<?php echo @$first_item_images['big']; ?>&amp;description=<?php echo nl2br($this->escapeHtml($helper->shareTitle())) ?>">
                     <span class="PIN_1460190687192_button_pin" data-pin-log="button_pinit_bookmarklet" data-pin-href="https://www.pinterest.com/pin/create/button/"></span>
                 </div>
                 <a title="Google+" class="share-icon googleplus-share-icon" href="https://plus.google.com/share?url=<?php echo $catalogReviewUrl; ?>" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"></a>
@@ -76,7 +76,7 @@
             <div class="clearfix sort-by">
                 <div class="list-name">
 				    <?php $_cur_catalog_id = $this->getCatalogId(); ?>
-                    <a href="<?php echo $this->getCatalogReviewsUrl(); ?>"<?php echo (!$_cur_catalog_id)?' class="on"':''; ?> id="va" rel="nofollow">
+                    <a href="<?php echo $this->getCatalogReviewsUrl($_cur_catalog_id); ?>"<?php echo (!$_cur_catalog_id)?' class="on"':''; ?> id="va" rel="nofollow">
                         View All
                     </a>
                     <?php 

@@ -2174,4 +2174,32 @@ class Mage_Catalog_Model_Resource_Product_Collection extends Mage_Catalog_Model_
 
         return $this->_pricesCount;
     }
+
+    /**
+     * 
+     * by@ado
+     */
+    public function addColorFilter($color=null){
+
+        if(!$color)return $this;
+        if ($this->getFlag('color_filter_added')) {
+
+            return $this;
+        }
+        $this->getSelect()
+            ->join(array('med_gal' => $this->getTable('catalog/product_attribute_media_gallery')),
+                'med_gal.entity_id=e.entity_id',
+                array())
+            ->joinLeft(array('med_gal_val' => $this->getTable('catalog/product_attribute_media_gallery_value')),
+                'med_gal_val.value_id=med_gal.value_id',
+                array())
+            ->where('med_gal_val.title = ?', $color)
+            ->where('med_gal_val.disabled = 0')
+            ->where('med_gal_val.store_id = 0')
+        ;
+        $this->setFlag('color_filter_added', true);
+  
+        return $this;
+    }
+
 }

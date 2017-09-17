@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author		Dock
+ * @copyright	Copyright (c) 2015 Dock
+ */
+-->
+<config>
+	<modules>
+		<Dock_Dataporter>
+			<version>1.0.0</version>
+		</Dock_Dataporter>
+	</modules>
+	<global>
+		<blocks>
+			<dataporter>
+				<class>Dock_Dataporter_Block</class>
+			</dataporter>
+		</blocks>
+		<helpers>
+			<dataporter>
+				<class>Dock_Dataporter_Helper</class>
+			</dataporter>
+		</helpers>
+		<models>
+			<dataporter>
+				<class>Dock_Dataporter_Model</class>
+			</dataporter>
+		</models>
+		<!--<resources>
+			<dataporter_setup>
+				<setup>
+					<module>Dock_Dataporter</module>
+					<class>Dock_Dataporter_Model_Resource_Mysql4_Setup</class>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</dataporter_setup>
+			<dataporter_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</dataporter_write>
+			<dataporter_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</dataporter_read>
+		</resources>-->
+	</global>
+	<admin>
+		<routers>
+			<adminhtml>
+				<args>
+					<modules>
+						<dataporter after="Mage_Adminhtml">Dock_Dataporter_Adminhtml</dataporter>
+					</modules>
+				</args>
+			</adminhtml>
+		</routers>
+	</admin>
+	<!--<adminhtml>
+        <layout>
+            <updates>
+                <dataporter>
+                    <file>dock_dataporter.xml</file>
+                </dataporter>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Dock_Dataporter>
+                    <files>
+                        <default>Dock_Dataporter.csv</default>
+                    </files>
+                </Dock_Dataporter>
+            </modules>
+        </translate>
+	</adminhtml>-->
+</config>

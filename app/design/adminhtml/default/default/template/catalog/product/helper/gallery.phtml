@@ -47,20 +47,24 @@ $_block = $this;
 <table cellspacing="0" class="data border" id="<?php echo $_block->getHtmlId() ?>_grid" width="100%">
     <col width="1" />
     <col />
+    <col />
     <col width="70" />
     <?php foreach ($_block->getImageTypes() as $typeId=>$type): ?>
     <col />
     <?php endforeach; ?>
     <col width="70" />
     <col width="70" />
+    <col width="70" />
     <thead>
         <tr class="headings">
             <th><?php echo Mage::helper('catalog')->__('Image') ?></th>
             <th><?php echo Mage::helper('catalog')->__('Label') ?></th>
+            <th><?php echo Mage::helper('catalog')->__('Color') ?></th>
             <th><?php echo Mage::helper('catalog')->__('Sort Order') ?></th>
             <?php foreach ($_block->getImageTypes() as $typeId=>$type): ?>
             <th><?php echo $type['label'] ?></th>
             <?php endforeach; ?>
+            <th><?php echo Mage::helper('catalog')->__('Default Show') ?></th>
             <th><?php echo Mage::helper('catalog')->__('Exclude') ?></th>
             <th class="last"><?php echo Mage::helper('catalog')->__('Remove') ?></th>
         </tr>
@@ -69,16 +73,19 @@ $_block = $this;
         <tr id="<?php echo $_block->getHtmlId() ?>_template" class="template no-display">
                 <td class="cell-image"><div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage('__file__')"><span><?php echo Mage::helper('catalog')->__('Roll Over for preview') ?></span></div><img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;" alt="" /></td>
                 <td class="cell-label"><input type="text" <?php if($_block->getElement()->getReadonly()):?> disabled="disabled"<?php endif;?> class="input-text" onkeyup="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" onchange="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" /></td>
+                <td class="cell-title"><input type="text" <?php if($_block->getElement()->getReadonly()):?> disabled="disabled"<?php endif;?> class="input-text" onkeyup="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" onchange="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" /></td>
                 <td class="cell-position"><input type="text" <?php if($_block->getElement()->getReadonly()):?> disabled="disabled"<?php endif;?> class="input-text validate-number" onkeyup="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" onchange="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" /></td>
                 <?php foreach ($_block->getImageTypes() as $typeId=>$type): ?>
                 <td class="cell-<?php echo $typeId ?> a-center"><input <?php if($_block->getElement()->getAttributeReadonly($typeId)) :?> disabled="disabled" <?php endif;?> type="radio" name="<?php echo $type['field'] ?>" onclick="<?php echo $_block->getJsObjectName(); ?>.setProductImages('__file__')" value="__file__" /></td>
                 <?php endforeach; ?>
+            <td class="cell-show a-center"><input type="checkbox" <?php if($_block->getElement()->getReadonly()):?> disabled="disabled"<?php endif;?> onclick="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" /></td>
                 <td class="cell-disable a-center"><input type="checkbox" <?php if($_block->getElement()->getReadonly()):?> disabled="disabled"<?php endif;?> onclick="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" /></td>
                 <td class="cell-remove a-center last"><input type="checkbox" <?php if($_block->getElement()->getReadonly()):?> disabled="disabled"<?php endif;?> onclick="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" /></td>
         </tr>
         <?php if($_block->hasUseDefault()): ?>
         <tr id="<?php echo $_block->getHtmlId() ?>_default">
                 <td><?php echo Mage::helper('catalog')->__('Use Default Value') ?></td>
+                <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <?php foreach ($_block->getMediaAttributes() as $_attribute): ?>
@@ -90,16 +97,19 @@ $_block = $this;
                 </td>
                 <?php endforeach; ?>
                 <td>&nbsp;</td>
+            <td>&nbsp;</td>
                 <td class="last">&nbsp;</td>
         </tr>
     <?php endif ?>
         <tr id="<?php echo $_block->getHtmlId() ?>-image-0">
                 <td class="cell-image"><?php echo Mage::helper('catalog')->__('No image') ?></td>
                 <td class="cell-label"><input type="hidden" />&nbsp;</td>
+                <td class="cell-title"><input type="hidden" />&nbsp;</td>
                 <td class="cell-position"><input type="hidden" />&nbsp;</td>
                 <?php foreach ($_block->getImageTypes() as $typeId=>$type): ?>
                 <td class="cell-<?php echo $typeId ?> a-center"><input type="radio" <?php if($_block->getElement()->getAttributeReadonly($typeId)) :?> disabled="disabled" <?php endif;?> name="<?php echo $type['field'] ?>" onclick="<?php echo $_block->getJsObjectName(); ?>.setProductImages('no_selection')" value="no_selection" /></td>
                 <?php endforeach; ?>
+                <td class="cell-show"><input type="hidden" />&nbsp;</td>
                 <td class="cell-disable"><input type="hidden" />&nbsp;</td>
                 <td class="cell-remove last"><input type="hidden" />&nbsp;</td>
         </tr>

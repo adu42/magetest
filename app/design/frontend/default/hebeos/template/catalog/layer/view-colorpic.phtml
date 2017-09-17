@@ -1,0 +1,214 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Category layered navigation
+ *
+ * @see Mage_Catalog_Block_Layer_View
+ */
+?>
+<?php
+ $isEnable = Mage::getStoreConfig('ch_colorpic/colorpic/enabled_colorpic');
+$currentCategoryId = Mage::registry('current_category')->getId();
+$isEnabelColorpicCategory = $this->helper('ch_colorpic')->isEnabelColorpicCategory($currentCategoryId) ; 
+ $colorContent = Mage::getSingleton('core/session')->getColorpicValue();
+ $colorTitle = Mage::getSingleton('core/session')->getColorpicTitle();
+ if($isEnable ): ?>
+ <?php if ($isEnabelColorpicCategory): ?>
+    <div class=" block-layered-colorpic-nav">
+        <div class="block-content">     
+                <dl id="colorpic-by-list">
+                        <dt><span class="xijie-nav"></span><?php echo $this->__($colorTitle) ?></dt>
+                        <dd class="<?php echo str_replace(' ','_',strtolower($colorTitle)); ?>"><?php echo $colorContent; ?></dd>
+                </dl>     
+        </div>
+    </div>
+ <?php endif ?>
+<?php endif; ?>
+
+
+<style type="text/css">
+.block-layered-colorpic-nav {
+    width: 100%;
+    clear: both;
+}
+
+.block-layered-colorpic-nav dd.shown_color ol li {
+    float: left;
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    display: block!important;
+}
+.block-layered-colorpic-nav dd ol li {
+    color: #666;
+    padding: 3px 0 0;
+    position: relative;
+}
+
+.block-layered-colorpic-nav dd ol li a {
+    clear: both;
+    color: #666;
+    padding-left: 0;
+}
+
+#colorpic-by-list dd.shown_color .checkSpan{width:30px;height:30px;border-radius:16px;margin-right:0;}
+#colorpic-by-list dd.shown_color  .multi_colors {
+    background: rgba(0, 0, 0, 0) url("../images/ombre.png") no-repeat scroll 0 0!important;
+    border-color: transparent !important;
+}
+#colorpic-by-list dd.shown_color  .other {
+    background: rgba(0, 0, 0, 0) url("../images/ombre.png") no-repeat scroll 0 0!important;
+    border-color: transparent !important;
+}
+#colorpic-by-list dd .checkSpan{
+    border: 1px solid #eee;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+.block-layered-colorpic-nav dd.shown_color ol li a:hover .checkSpan{background:none; background-color:none;border-color: none!important;}
+.block-layered-colorpic-nav dd.hemline_train ol li{float:left;width:62px;height:61px;display:block!important;margin-right:5px;margin-bottom:5px;}
+#colorpic-by-list dd.hemline_train .checkSpan{width:62px;height:61px;margin-right:0;}
+
+.block-layered-colorpic-nav dd.silhouette ol li{float:left;width:62px;height:61px;display:block!important;margin-right:5px;margin-bottom:5px;}
+#colorpic-by-list dd.silhouette .checkSpan{width:62px;height:61px;margin-right:0;}
+.block-layered-colorpic-nav dd.hemline_train ol li .short_mini{background:url(../images/short_mini.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.hemline_train ol li .knee_length{background:url(../images/knee_length.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.hemline_train ol li .tea_length{background:url(../images/tea_length.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.hemline_train ol li .ankle_length{background:url(../images/ankle_length.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.hemline_train ol li .floor_length{background:url(../images/floor_length.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.hemline_train ol li .sweep_brush_train{background:url(../images/sweep_train.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.hemline_train ol li .asymmetrical{background:url(../images/asymmetrical.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.hemline_train ol li .court_train{background:url(../images/court_train.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.hemline_train ol li .chapel_train{background:url(../images/chapel_train.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.hemline_train ol li .cathedral_train{background:url(../images/cathedral_train.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.hemline_train ol li .watteau_train{background:url(../images/watteau_train.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.hemline_train ol li .floor_length{background:url(../images/floor_length.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+
+.block-layered-colorpic-nav dd.silhouette  ol li .a_line_princess{background:url(../images/a_line_princess.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.silhouette  ol li .sheath_column{background:url(../images/sheath_column.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.silhouette  ol li .trumpet_mermaid{background:url(../images/trumpet_mermaid.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+.block-layered-colorpic-nav dd.silhouette  ol li .ball_gown{background:url(../images/ball_gown.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+
+.block-layered-colorpic-nav dd.silhouette  ol li .empire{background:url(../images/empire.jpg)no-repeat scroll 0 1px;background-size:60px 60px;}
+
+#colorpic-by-list dd.category .checkSpan{
+    display: inline-block;
+    height: 10px;
+    left: 0;
+    margin-right: 8px;
+    position: absolute;
+    top: 6px;
+    width: 10px;  
+}
+
+.block-layered-colorpic-nav dd.category ol li a{
+    clear: both;
+    color: #666;
+    padding-left: 20px; 
+}
+.block-layered-colorpic-nav dd ol li a:hover .checkSpan.other{background:rgba(0, 0, 0, 0) url("../images/bgwidget.png") no-repeat scroll -129px -368px!important; background-color:#ff008a!important;border-color: #ff008a!important;}
+.block-layered-colorpic-nav dd ol li a:hover .checkSpan{border-color: #ff008a!important;}
+.block-layered-colorpic-nav dd.fabric ol li .checkSpan.chiffon{background:url(../images/layer/small11.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.fabric ol li .checkSpan.satin{background:url(../images/layer/small12.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.fabric ol li .checkSpan.taffeta{background:url(../images/layer/small13.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.fabric ol li  .checkSpan.elastic_woven_satin{background:url(../images/layer/small14.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.fabric ol li  .checkSpan.tulle{background:url(../images/layer/small15.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.fabric ol li  .checkSpan.lace{background:url(../images/layer/small16.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.fabric ol li  .checkSpan.organza{background:url(../images/layer/small17.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.fabric ol li  .checkSpan.silk_like_satin{background:url(../images/layer/small18.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.fabric ol li  .checkSpan.net{background:url(../images/layer/small21.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.fabric ol li  .checkSpan.sequins{background:url(../images/layer/small22.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.fabric ol li  .checkSpan.jersey{background:url(../images/layer/small25.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.fabric ol li  .checkSpan.spandex{background:url(../images/layer/small125.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.fabric ol li  .checkSpan.satin_chiffon{background:url(../images/layer/small19.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.fabric ol li  .checkSpan.other,.block-layered-colorpic-nav dd.fabric ol li a:hover .checkSpan.other{background:url(../images/ombre.png) no-repeat scroll -10px -10px!important;background-size:50px 50px!important;}
+
+.block-layered-colorpic-nav dd.fabric ol li  .displaySpan.other,.block-layered-colorpic-nav dd.neckline  ol li  .displaySpan.other,.block-layered-colorpic-nav dd.embellishment  ol li  .displaySpan.other,.block-layered-colorpic-nav dd.back_style  ol li  .displaySpan.other{background:none!important;}
+
+
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.strapless{background:url(../images/layer/small27.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.sweetheart{background:url(../images/layer/small28.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.v_neck{background:url(../images/layer/small29.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.one_shoulder{background:url(../images/layer/small30.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.straps{background:url(../images/layer/small31.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.square{background:url(../images/layer/small32.jpg)no-repeat scroll 0 0;background-size:30px 60px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.halter{background:url(../images/layer/small33.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.spaghetti_straps{background:url(../images/layer/small34.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.off_the_shoulder{background:url(../images/layer/small35.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.scoop{background:url(../images/layer/small36.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.high_neck{background:url(../images/layer/small37.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.bateau{background:url(../images/layer/small38.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.jewel{background:url(../images/layer/small39.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.sheer_neck{background:url(../images/layer/small154.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.neckline ol li .checkSpan.checkSpan.other,.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.other,.block-layered-colorpic-nav dd.back_style ol li .checkSpan.other,.block-layered-colorpic-nav dd.neckline ol li a:hover .checkSpan.other,.block-layered-colorpic-nav dd.embellishment ol li a:hover .checkSpan.other,.block-layered-colorpic-nav dd.back_style li a:hover .checkSpan.other{background:url(../images/layer/small40.jpg)no-repeat scroll 0 0!important;background-size:30px 30px!important;}
+
+.block-layered-colorpic-nav dd.sleeve ol li .checkSpan.sleeveless{background:url(../images/layer/small44.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.sleeve ol li .checkSpan.short_sleeves{background:url(../images/layer/small45.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.sleeve ol li .checkSpan.1_2_sleeves{background:url(../images/layer/small46.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.sleeve ol li .checkSpan.3_4_sleeves{background:url(../images/layer/small47.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.sleeve ol li .checkSpan.long_sleeves{background:url(../images/layer/small48.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.sleeve ol li:nth-child(3) span.checkSpan{background:url(../images/layer/small46.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.sleeve ol li:nth-child(4) span.checkSpan{background:url(../images/layer/small47.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.beading{background:url(../images/layer/small49.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.ruffles{background:url(../images/layer/small50.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.hand_made_flower{background:url(../images/layer/small51.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.embroidery{background:url(../images/layer/small52.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.applique{background:url(../images/layer/small53.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.sequin{background:url(../images/layer/small54.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.bowknot{background:url(../images/layer/small55.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.crystal{background:url(../images/layer/small56.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.sash_ribbon_belt{background:url(../images/layer/small57.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.lace{background:url(../images/layer/small58.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.rhinestone{background:url(../images/layer/small59.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.ruched{background:url(../images/layer/small60.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.paillette{background:url(../images/layer/small61.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.layers{background:url(../images/layer/small62.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.pleats{background:url(../images/layer/small63.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.pearls{background:url(../images/layer/small64.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.acrylic_jewels{background:url(../images/layer/small65.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.embellishment ol li .checkSpan.feathers_fur{background:url(../images/layer/small67.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+
+.block-layered-colorpic-nav dd.back_style ol li .checkSpan.zipper{background:url(../images/layer/small69.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.back_style ol li .checkSpan.lace_up{background:url(../images/layer/small70.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.back_style ol li .checkSpan.backless{background:url(../images/layer/small71.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+
+.block-layered-colorpic-nav dd.season ol li .checkSpan.spring{background:url(../images/layer/small7.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.season ol li .checkSpan.summer{background:url(../images/layer/small8.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.season ol li .checkSpan.fall{background:url(../images/layer/small9.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.season ol li .checkSpan.winter{background:url(../images/layer/small10.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+
+.block-layered-colorpic-nav dd.waist ol li .checkSpan.empire{background:url(../images/layer/small41.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.waist ol li .checkSpan.natural{background:url(../images/layer/small42.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd.waist ol li .checkSpan.dropped{background:url(../images/layer/small43.jpg)no-repeat scroll 0 0;background-size:30px 30px;}
+.block-layered-colorpic-nav dd .checkSpan.other{background:none!important;border:1px solid #eee!important;}
+.block-layered-colorpic-nav dd .displaySpan.other{background:none!important;}
+</style>

@@ -27,7 +27,9 @@
  * @var Mage_Page_Block_Html_Header $this
  */
 ?>
+
 <div class="header-container">
+<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('top-tip')->toHtml();?>
     <div class="header">
 		<div class="header-link">
 			<div class="header-top">
@@ -38,8 +40,41 @@
 			<div class="header-right">
 			
 			<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('top-language')->toHtml();?>
-			<?php echo $this->getChildHtml('top.currency') ?> 
-	 <?php echo $this->getChildHtml('topLinks') ?><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('live-help')->toHtml();?></div>
+			<?php echo $this->getChildHtml('top.currency') ?>
+	 <!-- Login S -->
+<?php if(!Mage::helper('customer')->isLoggedIn()): ?>
+	
+<div class="top-links">
+<em class="rightline"></em>
+    <div class="myaccount">
+		<div class="user_nickname">
+			<p class="user_title"><a class="dib icon_head_foot" rel="nofollow" href="<?php echo $this->helper('customer')->getAccountUrl() ?>"> <?php echo $this->__('Log In / Register') ?></a></p>
+		</div>
+    </div>
+</div>
+<?php else: ?>
+	<div class="top-links">
+<em class="rightline"></em>	
+    <div class="myaccount">
+		<div class="user_nickname">
+			<p class="user_title"><span> <?php echo 'Hi,'.Mage::helper('customer')->getCustomerName(); ?></span></p>
+		</div>
+		<div class="user-panel">
+			<div class="account-links">
+				<ul>
+					<li><a href="<?php echo Mage::helper('customer')->getAccountUrl();?>"><?php echo $this->__("My Account") ?></a></li>
+					<li><a href="<?php echo $this->helper('customer')->getLogoutUrl() ?>"><?php echo $this->__("Logout") ?></a></li>
+				</ul>
+			</div>
+			<em class="triangle bg_tri"></em>
+		</div>
+    </div>		
+</div>
+<?php endif; ?>
+<!-- Login E -->			
+	 <?php echo $this->getChildHtml('topLinks') ?>
+	 <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('live-help')->toHtml();?>
+	 </div>
 			</div>
 		</div>
 	<div class="header-centont">

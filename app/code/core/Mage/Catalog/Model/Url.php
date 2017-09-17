@@ -657,8 +657,17 @@ class Mage_Catalog_Model_Url
             if ($lastRequestPath) {
                 $match[3] = $lastRequestPath;
             }
+            //+ by@ado
+            $appId = '';
+            if($idPath){
+                $_appId = explode('/',$idPath);
+                $appId = end($_appId);
+                if(isset($match[3])){
+                    $appId =($match[3]!=$appId)?$match[3].'-'.$appId:$match[3];
+                }
+            }
             return $match[1]
-                . (isset($match[3]) ? ($match[3]+1) : '1')
+                . $appId
                 . $match[4];
         }
         else {
@@ -699,8 +708,9 @@ class Mage_Catalog_Model_Url
     {
         $storeId = $category->getStoreId();
         $idPath  = $this->generatePath('id', null, $category);
-        $suffix  = $this->getCategoryUrlSuffix($storeId);
-
+        //-by@ado
+        //  $suffix  = $this->getCategoryUrlSuffix($storeId);
+        $categoryUrlSuffix = $this->getCategoryUrlSuffix($category->getStoreId());
         if (isset($this->_rewrites[$idPath])) {
             $this->_rewrite = $this->_rewrites[$idPath];
             $existingRequestPath = $this->_rewrites[$idPath]->getRequestPath();
@@ -712,8 +722,8 @@ class Mage_Catalog_Model_Url
         else {
             $urlKey = $this->getCategoryModel()->formatUrlKey($category->getUrlKey());
         }
-
-        $categoryUrlSuffix = $this->getCategoryUrlSuffix($category->getStoreId());
+        /*
+        //- by@ado
        // if (null === $parentPath) {
        //     $parentPath = $this->getResource()->getCategoryParentPath($category);
       //  }
@@ -722,9 +732,10 @@ class Mage_Catalog_Model_Url
      //   }
         $parentPath = Mage::helper('catalog/category')->getCategoryUrlPath($parentPath,
                                                                            true, $category->getStoreId());
-
+         */
+        $parentPath = '';
         $requestPath = $parentPath . $urlKey . $categoryUrlSuffix;
-        if (isset($existingRequestPath) && $existingRequestPath == $requestPath . $suffix) {
+        if (isset($existingRequestPath) && $existingRequestPath == $requestPath . $categoryUrlSuffix) {
             return $existingRequestPath;
         }
 
@@ -801,8 +812,9 @@ class Mage_Catalog_Model_Url
         if (isset($this->_rewrites[$idPath])) {
             $this->_rewrite = $this->_rewrites[$idPath];
             $existingRequestPath = $this->_rewrites[$idPath]->getRequestPath();
-
-            if ($existingRequestPath == $requestPath . $suffix) {
+            //+ by@ado
+            $alias = $requestPath .'-'.$category->getId(). $suffix;
+            if ($existingRequestPath == $requestPath . $suffix || $existingRequestPath == $alias) {
                 return $existingRequestPath;
             }
 
@@ -829,8 +841,15 @@ class Mage_Catalog_Model_Url
         /**
          * Check 2 variants: $requestPath and $requestPath . '-' . $productId
          */
+        /*
+        //- by@ado
         $validatedPath = $this->getResource()->checkRequestPaths(
             array($requestPath.$suffix, $requestPath.'-'.$product->getId().$suffix),
+            $storeId
+        );
+        */
+        $validatedPath = $this->getResource()->checkRequestPaths(
+            array($requestPath.$suffix),
             $storeId
         );
 
@@ -886,6 +905,8 @@ class Mage_Catalog_Model_Url
                 }
 
                 $categoryUrlSuffix = $this->getCategoryUrlSuffix($category->getStoreId());
+                /*
+                 //- by@ado
                 if (null === $parentPath) {
                     $parentPath = $this->getResource()->getCategoryParentPath($category);
                 }
@@ -894,6 +915,8 @@ class Mage_Catalog_Model_Url
                 }
                 $parentPath = Mage::helper('catalog/category')->getCategoryUrlPath($parentPath,
                     true, $category->getStoreId());
+                */
+                $parentPath = '';
 
                 return $this->getUnusedPath($category->getStoreId(), $parentPath . $urlKey . $categoryUrlSuffix,
                     $this->generatePath('id', null, $category)

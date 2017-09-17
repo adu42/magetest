@@ -44,11 +44,16 @@ if(stripos($_uri,'search')===false){
          $__uri=explode('/',$_uri);
         $_current_id='?catid=tags'.end($__uri);
   }  }
+$color = $this->getRequestColor();
+
 ?>
 <?php if(!$_productCollection->count()): ?>
+<div class="clear">
 <p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+</div>
 <?php else: ?>
 <div class="category-products">
+    <?php echo $this->getColorFilterHtml() ?>
     <?php echo $this->getToolbarHtml() ?>
     <?php // List mode ?>
     <?php if($this->getMode()!='grid'): ?>
@@ -57,7 +62,7 @@ if(stripos($_uri,'search')===false){
     <?php foreach ($_productCollection as $_product): ?>
         <li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
             <?php // Product Image ?>
-            <a href="<?php echo $_product->getProductUrl().$_current_id;  ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+            <a href="<?php echo $_product->getProductUrl().$_current_id;  ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image',$color), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image',$color)->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image',$color), null, true) ?>" /></a>
             <?php // Product description ?>
             <div class="product-shop">
                 <div class="f-fix">
@@ -101,8 +106,12 @@ if(stripos($_uri,'search')===false){
     <?php $i=0; foreach ($_productCollection as $_product): ?>
  
             <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
-                <a href="<?php echo $_product->getProductUrl().$_current_id;  ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image" ><img class="pro-list" src="<?php echo $this->getSkinUrl('images/loader.gif') ?>" original="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(600,800); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" width="225" height="300" /></a>
-                <h3 class="product-name"><a href="<?php echo $_product->getProductUrl().$_current_id;  ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>" ><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h3>
+                <a href="<?php echo $_product->getProductUrl().$_current_id;  ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image',$color), null, true) ?>" class="product-image" >
+					<img class="pro-list" id="item-image-<?php echo $_product->getId(); ?>" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image',$color)->resize(450,600); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image',$color), null, true) ?>" width="225" height="300" />
+                </a>
+               		<?php echo $this->getMiniColorHtml($_product);  ?>
+
+                <h3 class="product-name"><a href="<?php echo $_product->getProductUrl().$_current_id;  ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h3>
 				<?php
 					if($_product->getIsoff()){
 					 $old_price = $_product->getPrice();  ?>
@@ -141,14 +150,7 @@ if(stripos($_uri,'search')===false){
     </div>
 </div>
 <?php endif; ?>
-<script type="text/javascript">
-        jQuery(function(){
-		jQuery(".products-grid .pro-list").lazyload({
-			placeholder:"/skin/frontend/default/missydress/images/loader.gif",
-			effect:"fadeIn"
-			});
-		});
-</script>
+
 <!--add likes +1-->
 <script>
 function _getBaseUrl(){
@@ -180,5 +182,31 @@ jQuery(function($) {
         });
   });
 });
+
+function doChangeColorImage(flag,image,color) {
+    var _param_name = '<?php echo $this->getColorQueryVarname() ?>';
+    var _obj = jQuery('#item-image-'+flag);
+    jQuery(_obj).attr('src',image);
+    jQuery(_obj).attr('alt',color);
+    var _href = jQuery(_obj).parent('a').attr('href');
+    if(_href && _href.length>0){
+        var url_arr = _href.split('?');
+        var _query = new Array();
+        if(url_arr[1]){
+            var query_params= url_arr[1].split('&');
+            for(i=0;i<query_params.length;i++){
+                var  _query_param = query_params[i].split('=');
+                if(_query_param[0] && _query_param[0]!=_param_name){
+                    _query.push(query_params[i]);
+                }
+            }
+        }
+        _query.push(_param_name+'='+color);
+        _href = url_arr[0]+'?'+_query.join('&');
+        jQuery(_obj).parent('a').attr('href',_href);
+        jQuery(_obj).parent('a').removeAttr('title');
+    }
+}
+
 </script>
 <!--add likes +1 the end-->

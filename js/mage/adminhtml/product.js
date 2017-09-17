@@ -112,6 +112,8 @@ Product.Gallery.prototype = {
             newImage.url = response.url;
             newImage.file = response.file;
             newImage.label = '';
+            newImage.title = '';
+            newImage.show = 0;
             newImage.position = this.getNextPosition();
             newImage.disabled = 0;
             newImage.removed = 0;
@@ -168,14 +170,12 @@ Product.Gallery.prototype = {
     },
     updateImage : function(file) {
         var index = this.getIndexByFile(file);
-        this.images[index].label = this
-                .getFileElement(file, 'cell-label input').value;
-        this.images[index].position = this.getFileElement(file,
-                'cell-position input').value;
-        this.images[index].removed = (this.getFileElement(file,
-                'cell-remove input').checked ? 1 : 0);
-        this.images[index].disabled = (this.getFileElement(file,
-                'cell-disable input').checked ? 1 : 0);
+        this.images[index].label = this.getFileElement(file, 'cell-label input').value;
+        this.images[index].title = this.getFileElement(file, 'cell-title input').value;
+        this.images[index].show = (this.getFileElement(file,'cell-show input').checked ? 1 : 0);
+        this.images[index].position = this.getFileElement(file,'cell-position input').value;
+        this.images[index].removed = (this.getFileElement(file,'cell-remove input').checked ? 1 : 0);
+        this.images[index].disabled = (this.getFileElement(file,'cell-disable input').checked ? 1 : 0);
         this.getElement('save').value = Object.toJSON(this.images);
         this.updateState(file);
         this.container.setHasChanges();
@@ -202,7 +202,9 @@ Product.Gallery.prototype = {
     updateVisualisation : function(file) {
         var image = this.getImageByFile(file);
         this.getFileElement(file, 'cell-label input').value = image.label;
+        this.getFileElement(file, 'cell-title input').value = image.title;
         this.getFileElement(file, 'cell-position input').value = image.position;
+        this.getFileElement(file, 'cell-show input').checked = (image.show == 1);
         this.getFileElement(file, 'cell-remove input').checked = (image.removed == 1);
         this.getFileElement(file, 'cell-disable input').checked = (image.disabled == 1);
         $H(this.imageTypes)

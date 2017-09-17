@@ -84,9 +84,8 @@
 							<span><span><?php echo $this->__('Login') ?></span></span>
 						</button>
 					</div>
-                </div>
-				<!--<div class="fb-login">
-					<div class="fb-sep"><span><?php echo $this->__('OR') ?></span></div>
+					<p>or</p>
+					<div class="fb-login">
 					<div class="fb-button clearfix">					
 					<?php
                     if(Mage::getStoreConfig('le_sociallogin/general/showonloginpage') == 'inloginbox'){ ?>
@@ -110,7 +109,11 @@
                         <?php endif;
                     } ?>																		
 					</div>
-				</div>-->
+				</div>
+                </div>
+				
+				
+
             </div>
         </div>
         <?php if (Mage::helper('checkout')->isContextCheckout()): ?>
@@ -136,8 +139,8 @@
         <div class="fieldset">
             <input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>" />
             <input type="hidden" name="error_url" value="<?php echo $this->getErrorUrl() ?>" />
-            <?php echo $this->getBlockHtml('formkey') ?>
-            <h2 class="account-title" ><?php echo $this->__('Register a New Account') ?></h2>
+		<?php echo $this->getBlockHtml('formkey') ?>     
+       <h2 class="account-title" ><?php echo $this->__('Register a New Account') ?></h2>
             <ul class="form-list">
                 <li class="fields">
                     <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
@@ -283,4 +286,6 @@
     //]]>
     </script>
 </div>
+<p class="xy"><em></em>Hebeos.com is secure and your personal details are protected</p>
+
 

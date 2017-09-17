@@ -78,7 +78,7 @@
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
         <reference name="head">
-            <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/product.js</script></action><action method="addJs"><script>varien/product_options.js</script></action>
             <action method="addJs"><script>varien/configurable.js</script></action>
             <action method="addItem"><type>js_css</type><name>calendar/calendar2.css</name><params/></action>
             <action method="addCss"><stylesheet>color-chart/css/styles.css</stylesheet></action>
@@ -142,7 +142,7 @@
         </reference>
         <reference name="head">
 			<action method="addItem"><type>skin_css</type><name>css/review.css</name></action>
-            <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/product.js</script></action><action method="addJs"><script>varien/product_options.js</script></action>
             <action method="addJs"><script>varien/configurable.js</script></action>
         </reference>
         <reference name="content">

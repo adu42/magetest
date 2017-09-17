@@ -174,4 +174,15 @@ abstract class Mage_Catalog_Block_Product_View_Options_Abstract extends Mage_Cor
         $store = $this->getProduct()->getStore();
         return $this->helper('core')->currencyByStore($price, $store, false);
     }
+
+    /**
+     *
+     * @return string
+     */
+    public function getflagStr($labelTitle){
+        $labelTitle = str_replace(array(' '),'_',$labelTitle);
+        $labelTitle=trim($labelTitle);
+        if($labelTitle=='colour')$labelTitle='color';
+        return strtolower($labelTitle);
+    }
 }

@@ -2,7 +2,7 @@
 <layout version="0.1.0">
     <catalog_viewed_index translate="label">
         <reference name="head">
-            <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/product.js</script></action><action method="addJs"><script>varien/product_options.js</script></action>
             <action method="addJs"><script>varien/configurable.js</script></action>
          <!--   <action method="addItem"><type>js_css</type><name>calendar/calendar2.css</name><params/></action>
             <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params/></action>

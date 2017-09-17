@@ -113,6 +113,17 @@ class Mage_Catalog_Helper_Image extends Mage_Core_Helper_Abstract
     protected $_placeholder;
 
     /**
+     * color filter
+     * by@ado
+     * @var array
+     */
+    protected $_colors;
+    protected $_color_attribute_id;
+    protected $_reader;
+    protected $_color_images;  //单颜色多商品图
+    protected $_colors_images;  //单商品多颜色图
+
+    /**
      * Reset all previous data
      *
      * @return Mage_Catalog_Helper_Image
@@ -161,7 +172,17 @@ class Mage_Catalog_Helper_Image extends Mage_Core_Helper_Abstract
         );
 
         if ($imageFile) {
-            $this->setImageFile($imageFile);
+            if(!stripos($imageFile,'.')){
+                $image = $this->getColorImage($imageFile);
+                if($image){
+                    $imageFile =$image['value'];
+                    $this->setImageFile($imageFile);
+                }else{
+                    $this->_getModel()->setBaseFile($this->getProduct()->getData($this->_getModel()->getDestinationSubdir()));
+                }
+            }else{
+                $this->setImageFile($imageFile);
+            }
         } else {
             // add for work original size
             $this->_getModel()->setBaseFile($this->getProduct()->getData($this->_getModel()->getDestinationSubdir()));
@@ -647,6 +668,184 @@ class Mage_Catalog_Helper_Image extends Mage_Core_Helper_Abstract
 
         $_processor = new Varien_Image($filePath);
         return $_processor->getMimeType() !== null;
+    }
+
+    /**
+     *
+     * 获得所有在后台属性里定义的颜色
+     * @return array
+     */
+    public function getColors(){
+        if(!$this->_colors){
+            $exclude = array('Other','Multi Colors');
+            $colors = array();
+            $attributeModel = Mage::getModel('eav/entity_attribute')->loadByCode(Mage_Catalog_Model_Product::ENTITY, Ado_SEO_Block_Catalog_Product_List_Colors::COLOR_ATTRIBUTE_CODE);
+            $attributeId = $attributeModel->getAttributeId();
+            $attribute = Mage::getModel('catalog/resource_eav_attribute')->load($attributeId);
+            $attributeOptions = $attribute ->getSource()->getAllOptions(false);
+            foreach ($attributeOptions as $option){
+                if(in_array($option['label'],$exclude))continue;
+                $colors[]=$option['label'];
+            }
+            $this->_colors=$colors;
+        }
+        return $this->_colors;
+    }
+
+    /**
+     * by@ado
+     * 从缓存中读一条数据
+     * @param null $color
+     * @return bool|mixed
+     */
+    public function getColorImage($color=null){
+        $colors = $this->getColors();
+        if(!$color && !in_array($color,$colors)){
+            return false;
+        }
+        $product = $this->getProduct();
+        if(!$product || !$product->getId())return false;
+        $entityId = $product->getId();
+
+        $cacheKey =md5('color'.$color);
+        $cacheTag = 'block_html';
+        if (($data_cached = Mage::app()->getCache()->load($cacheKey))) {
+            //if cache was found then unserialize it and assign to our variable
+            $data_cached = unserialize($data_cached);
+            if(!empty($data_cached) && is_array($data_cached)){
+                $this->_color_images = $data_cached;
+            }
+        }
+        if(isset($this->_color_images[$entityId])){
+            $image = $this->_color_images[$entityId];
+        }else{
+            $image = $this->getColorImageByProductId($entityId,$color);
+            if($image){
+                $this->_color_images[$entityId]=$image;
+                Mage::app()->getCache()->save(serialize($this->_color_images), $cacheKey, array($cacheTag),600);
+            }
+        }
+        return $image;
+    }
+
+
+    /**
+     * by@ado
+     * 从缓存中读一条数据
+     * @param null $color
+     * @return bool|mixed
+     */
+    public function getColorImages(){
+        $product = $this->getProduct();
+        if(!$product || !$product->getId())return false;
+        $entityId = $product->getId();
+
+        $cacheKey =md5('colorimages'.$entityId);
+        $cacheTag = 'block_html';
+        if (($data_cached = Mage::app()->getCache()->load($cacheKey))) {
+            //if cache was found then unserialize it and assign to our variable
+            $data_cached = unserialize($data_cached);
+            if(!empty($data_cached) && is_array($data_cached)){
+                $this->_colors_images = $data_cached;
+            }
+        }
+        if(isset($this->_colors_images[$entityId])){
+            $images = $this->_colors_images[$entityId];
+        }else{
+            $images = $this->getColorImagesByProductId($entityId);
+            if($images){
+                $this->_colors_images[$entityId]=$images;
+                Mage::app()->getCache()->save(serialize($this->_colors_images), $cacheKey, array($cacheTag),600);
+            }
+        }
+        return $images;
+    }
+
+    /**
+     * by@ado
+     * 从数据库中读一条数据
+     * @param $productId
+     * @param $color
+     * @return bool
+     */
+    protected function getColorImageByProductId($productId,$color){
+        $attributeId = $this->getColorImageAttributeId();
+        if(!$attributeId)return false;
+        $_reader = $this->getReader();
+        $storeId = Mage::app()->getStore()->getId();
+
+        if($storeId){
+            $sql = "SELECT `main`.`value_id`, `main`.`value`, `main`.`entity_id` AS `product_id`, IF(value.label IS NULL, default_value.label, value.label) as label,  `default_value`.`title`
+FROM `catalog_product_entity_media_gallery` AS `main`
+ LEFT JOIN `catalog_product_entity_media_gallery_value` AS `value` ON main.value_id = value.value_id AND (value.store_id = '$storeId')
+ LEFT JOIN `catalog_product_entity_media_gallery_value` AS `default_value` ON main.value_id = default_value.value_id AND default_value.store_id = 0 
+ WHERE (main.attribute_id = '$attributeId') AND (main.entity_id = '$productId') AND (`default_value`.title = '$color') AND (default_value.disabled != 1) 
+ ORDER BY IF(value.position IS NULL, default_value.position, value.position) ASC limit 1";
+        }else{
+            $sql = "SELECT `main`.`value_id`, `main`.`value`, `main`.`entity_id` AS `product_id`,  `value`.`label`,  `value`.`title`
+FROM `catalog_product_entity_media_gallery` AS `main`
+ LEFT JOIN `catalog_product_entity_media_gallery_value` AS `value` ON main.value_id = value.value_id  AND (value.store_id = '$storeId')
+ WHERE (main.attribute_id = '$attributeId') AND (main.entity_id = '$productId') AND (`value`.title = '$color') AND (value.disabled != 1) 
+ ORDER BY IF(value.position IS NULL, default_value.position, value.position) ASC limit 1";
+        }
+
+        // $sql = "select b.value,a.label,a.value_id from catalog_product_entity_media_gallery_value a inner join catalog_product_entity_media_gallery b on a.value_id=b.value_id where a.title='$color' and b.attribute_id='$attributeId' and b.entity_id='$productId' limit 1";
+        return $_reader->fetchRow($sql);
+    }
+
+    /**
+     * by@ado
+     * 获得单个商品的多个颜色图
+     * @param $productId
+     * @return bool
+     */
+    public function getColorImagesByProductId($productId){
+        $attributeId = $this->getColorImageAttributeId();
+        if(!$attributeId)return false;
+        $_reader = $this->getReader();
+        $storeId = Mage::app()->getStore()->getId();
+
+        if($storeId){
+        $sql = "SELECT `main`.`value_id`, `main`.`value`, `main`.`entity_id` AS `product_id`, IF(value.label IS NULL, default_value.label, value.label) as label,  `default_value`.`title`
+FROM `catalog_product_entity_media_gallery` AS `main`
+ LEFT JOIN `catalog_product_entity_media_gallery_value` AS `value` ON main.value_id = value.value_id AND (value.store_id = '$storeId')
+ LEFT JOIN `catalog_product_entity_media_gallery_value` AS `default_value` ON main.value_id = default_value.value_id AND default_value.store_id = 0 
+ WHERE (main.attribute_id = '$attributeId') AND (main.entity_id = '$productId') AND (default_value.disabled != 1) AND (default_value.show = 1)
+ ORDER BY IF(value.position IS NULL, default_value.position, value.position) ASC";
+        }else{
+            $sql = "SELECT `main`.`value_id`, `main`.`value`, `main`.`entity_id` AS `product_id`,  `value`.`label`,  `value`.`title`
+FROM `catalog_product_entity_media_gallery` AS `main`
+ LEFT JOIN `catalog_product_entity_media_gallery_value` AS `value` ON main.value_id = value.value_id  AND (value.store_id = '$storeId')
+ WHERE (main.attribute_id = '$attributeId') AND (main.entity_id = '$productId') AND (value.disabled != 1)  AND (value.show = 1)
+ ORDER BY IF(value.position IS NULL, default_value.position, value.position) ASC";
+        }
+
+       // $sql = "select b.value,a.label,a.value_id,a.title from catalog_product_entity_media_gallery_value a inner join catalog_product_entity_media_gallery b on a.value_id=b.value_id where a.show=1 and b.attribute_id='$attributeId' and b.entity_id='$productId'";
+        return $_reader->fetchAll($sql);
+    }
+
+    /**
+     * by@ado
+     * @return mixed
+     */
+    protected function getColorImageAttributeId(){
+        if(!$this->_color_attribute_id){
+            $_reader = $this->getReader();
+            $sql = "select attribute_id from eav_attribute where attribute_code='media_gallery' and entity_type_id=4 limit 1";
+            $this->_color_attribute_id = $_reader->fetchOne($sql);
+        }
+        return $this->_color_attribute_id;
+    }
+
+    /**
+     * 数据库读方法
+     * @return mixed
+     */
+    protected function getReader(){
+        if(!$this->_reader){
+            $this->_reader = Mage::getSingleton('core/resource')->getConnection('core_read');
+        }
+        return $this->_reader;
     }
 
 }

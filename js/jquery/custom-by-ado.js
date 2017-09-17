@@ -32,43 +32,70 @@ function _cnstra(key){
 
 //下面不需要翻译
 var _hideLabel = false;
-var _inch='inch';
-var _cm='cm';
-var _customSizeOptionFlag='custom size'; //自定义size标识
-var _jacketOptionFlag='with jacket'; //衣服带夹克标识
-var _sizeLable='size';//尺码标题
-var _sizeLables=["hips","hollow to floor","height","bust","waist","measurement unit"];
-var _sizeUnitLable='measurement unit';
-var _jacketLable='jacket';//夹克标题
-var _jacketLablesStartWith=["shoulder","armseye","arm length"];
+var _inch = 'inch';
+var _cm = 'cm';
+var _customSizeOptionFlag = 'custom_size'; //自定义size标识
+var _jacketOptionFlag = 'with_jacket'; //衣服带夹克标识
+var _sizeLable = 'size';//尺码标题
+var _sizeLables = ["hips", "hollow_to_floor", "height", "bust", "waist", "measurement_unit"];
+var _sizeUnitLable = 'measurement_unit';
+var _jacketLable = 'jacket';//夹克标题
+var _jacketLablesStartWith = ["shoulder", "armseye", "arm_length"];
 //元素标识，固定
-var _sizeUnitFlag='#sizeUnit'; //尺码单位元素标识
-var _mainProductOptionsContainer='.product-options'; //主商品options容器
-var _optionsContainer='.divShowSizeVals';//尺码展示容器
-var _optionsPopContainer='.product-details-options'; //相关商品options容器
-var _productTypeContainer='.related-product-type'; //商品类别容器
-var _sizeTypeGuide='guide'; //向导图片标识
-var _sizeHeight='height';
-var _relatedCheckboxFlag='input.related-checkbox'; //相关产品的选中域
-var _relatedOptionsSubmitLable='  ok  ';
-var _relatedOptionsCancelLable='cancel';
-var _optionTypeGuide={1:{"image":"/js/jquery/"+_lang+"/images/guide_weddingdress.png","flag":"waist","bigImage":"/js/jquery/"+_lang+"/images/68-large.png"},2:{"image":"/js/jquery/"+_lang+"/images/guide_jacket.png","flag":"shoulder","bigImage":"/js/jquery/"+_lang+"/images/guide-jacket-large.png"}};
-var _mainProductOptionsContainerWidth=450;
-var _relatedProductOptionsContainerWidth=400;
+var _sizeUnitFlag = '#sizeUnit'; //尺码单位元素标识
+var _mainProductOptionsContainer = '.product-options'; //主商品options容器
+var _optionsContainer = '.divShowSizeVals';//尺码展示容器
+var _optionsPopContainer = '.product-details-options'; //相关商品options容器
+var _productTypeContainer = '.related-product-type'; //商品类别容器
+var _sizeTypeGuide = 'guide'; //向导图片标识
+var _sizeHeight = 'height';
+var _relatedCheckboxFlag = 'input.related-checkbox'; //相关产品的选中域
+var _relatedOptionsSubmitLable = '  ok  ';
+var _relatedOptionsCancelLable = 'cancel';
+var _optionTypeGuide = {
+    1: {
+        "image": "/js/jquery/" + _lang + "/images/guide_weddingdress.png",
+        "flag": "waist",
+        "bigImage": "/js/jquery/" + _lang + "/images/68-large.png"
+    },
+    2: {
+        "image": "/js/jquery/" + _lang + "/images/guide_jacket.png",
+        "flag": "shoulder",
+        "bigImage": "/js/jquery/" + _lang + "/images/guide-jacket-large.png"
+    }
+};
+var _mainProductOptionsContainerWidth = 450;
+var _relatedProductOptionsContainerWidth = 400;
+var _inited = false;
 
 
-jQuery(document).ready(function(){
-    //绑定size事件
-	resetSliderMoveWidth();
-	setInit();
-    setRelatedOptionsInit();
-	initRalatedProductsOldTotalPrice()
-});
+/**
+ * 改造绑定事件到选择框上
+ * @private
+ */
+function CustomSizeOrJacket(select) {
+    var selectedIndex = select.selectedIndex;
+    if (!_inited) {
+        setInit();
+        _inited = true;
+        setRelatedOptionsInit();
+        initRalatedProductsOldTotalPrice();
+        resetSliderMoveWidth();
+    }
+    if (_inited) {
+        select.options[selectedIndex].selected = true;
+        var _selectName = jQuery(select).attr('title');
+        if (_selectName == _sizeLable) {
+            CustomSize(select);
+        } else if (_selectName == _jacketLable) {
+            CustomJacket(select);
+        }
+        opConfig.reloadPrice();
+    }
+}
 
-
-function getSelectText(selectObj){
-  return getLowerString(jQuery(selectObj).find('option:selected').attr('as'));
-  // return getLowerString(jQuery(selectObj).find('option:selected').text());
+function getSelectText(selectObj) {
+    return getLowerString(jQuery(selectObj).find('option:selected').attr('as'));
 }
 
 function getSelectValue(selectObj){
@@ -92,14 +119,7 @@ function getStartWord(str,sper){
 
 function getSelectLabel(selectObj){
    var _lable='';
-   /*
-   if(jQuery(selectObj).attr('type')=='radio'){
-        _lable=jQuery(selectObj).parent().parent('dd').prev('dt').children('label').html();
-   }else{
-        _lable=jQuery(selectObj).parent().parent('dd').prev('dt').children('label').attr('for');
-   } 
-   */
-  _lable=jQuery(selectObj).parent().parent('dd').prev('dt').children('label').attr('as');	
+  _lable=jQuery(selectObj).parent().parent('dd').prev('dt').children('label').attr('as');
    return getLowerString(_lable);
 }
 
@@ -162,7 +182,6 @@ function CustomSize(obj){
 		var unit=getSizeUnit();
 		if(unit==undefined)unit=_inch;
 		 var size=getSelectText(obj);
-		// size = getStartWord(size);
 		 if(size==_customSizeOptionFlag){ 
 							hideDivShowSizeVals(obj); //隐藏赋值层
 							showhideSizeInputs(obj,'show'); //显示各表单域
@@ -238,7 +257,7 @@ function createJacketGuideFromLabel(obj,_lable){
 	var _guideImage='';
     jQuery(obj).parents('dd:eq(0)').siblings('dt').each(function(){
              var _label_as=getDtSelectLabel(jQuery(this));
-             _label_as=getStartWord(_label_as,' (');
+        _label_as = getStartWord(_label_as, '_(');
 			 if(_guideImage==""){
 				_guideImage=getGuideDivByLabelFlag(_label_as);
 			 }
@@ -267,55 +286,60 @@ function appendToGuide(obj,_guide){
 //设置默认值
 function setInit(){ //select obj
     _resetAllFormEv();
-    jQuery("select").each(function(){
-            var _label=getSelectLabel(jQuery(this));
-            if(_label==_sizeLable){
-				jQuery(this).parent('div.input-box').addClass('has-guide');
-                createSizeGuideFromSelect(jQuery(this),_label); //转移属性到单独层
-                jQuery(this).bind('change',function(){  //绑定事件
-					CustomSize(jQuery(this));
-				});
-               // showhideSizeInputs(jQuery(this),'hide'); //默认隐藏单独层
-			    resetMainUnitFromSizeUnit();
-	            hideDivShowSizeVals(jQuery(this)); //隐藏赋值层
-            }else if(_label==_jacketLable){
-				jQuery(this).parent('div.input-box').addClass('has-guide');
-                createJacketGuideFromLabel(jQuery(this),_label);  //转移属性到单独层
-                jQuery(this).bind('change',function(){  //绑定事件
-					CustomJacket(jQuery(this));
-				});
-                showhideSizeInputs(jQuery(this),'hide');
-            }
-        });
+    jQuery("select").each(function () {
+        var _label = getSelectLabel(jQuery(this));
+        if (_label == _sizeLable) {
+            jQuery(this).parent('div.input-box').addClass('has-guide');
+            createSizeGuideFromSelect(jQuery(this), _label); //转移属性到单独层
+            // showhideSizeInputs(jQuery(this),'hide'); //默认隐藏单独层
+            resetMainUnitFromSizeUnit();
+            hideDivShowSizeVals(jQuery(this)); //隐藏赋值层
+        } else if (_label == _jacketLable) {
+            jQuery(this).parent('div.input-box').addClass('has-guide');
+            createJacketGuideFromLabel(jQuery(this), _label);  //转移属性到单独层
+            showhideSizeInputs(jQuery(this), 'hide');
+        }
+    });
 }
 
-function _resetAllFormEv(){
-    jQuery('label').each(function(){
-		var _label=getLabel(jQuery(this));
-		if(_label==_sizeUnitLable && _isMainProductOptions(jQuery(this))){
-			  var _inputRadio=jQuery(this).parents('dt:eq(0)').next('dd').find('input:first');
-			  _inputRadio.prop('checked',true);
-			  setSizeUnit(_inputRadio);
-			  jQuery(this).parents('dt:eq(0)').next('dd').find('input[type=radio]').each(function(){
-					//if(jQuery(this).parent().next().children().html()!=null){
-						jQuery(this).removeAttr('onclick');
-						jQuery(this).attr('onclick','setSizeUnit(this)');
-						//jQuery(this).bind('click',function(){ 
-						//alert('=======');
-						//setSizeUnit(this); 
-						//});
-					//}
-					//if(jQuery(this).parent().prev().children().html()!=null){
-					//	jQuery(this).bind('click',function(){ setSizeUnit(jQuery(this)); });
-					//}
-			  });
-		}else{
-		  var _input = jQuery(this).parent().next('dd').find('input');
-			resetFormEv(_input);
-			var _input_select = jQuery(this).parent().next('dd').find('select');
-			resetFormEv(_input_select);
-		}
-		});
+function _labelIsSizes(label) {
+    label = getStartWord(label, '_(');
+    if(label==_sizeLable)return true;
+    if(jQuery.inArray(label, _sizeLables) > -1)return true;
+    if(_jacketLable == label)return true;
+    if (jQuery.inArray(label, _jacketLablesStartWith) > -1)return true;
+    return false;
+}
+
+
+function _resetAllFormEv() {
+    jQuery('label').each(function () {
+        var _label = getLabel(jQuery(this));
+        if(!_labelIsSizes(_label))return true;
+        if (_label == _sizeUnitLable && _isMainProductOptions(jQuery(this))) {
+            var _inputRadio = jQuery(this).parents('dt:eq(0)').next('dd').find('input:first');
+            _inputRadio.prop('checked', true);
+            setSizeUnit(_inputRadio);
+            jQuery(this).parents('dt:eq(0)').next('dd').find('input[type=radio]').each(function () {
+                //if(jQuery(this).parent().next().children().html()!=null){
+                jQuery(this).removeAttr('onclick');
+                jQuery(this).attr('onclick', 'setSizeUnit(this)');
+                //jQuery(this).bind('click',function(){
+                //alert('=======');
+                //setSizeUnit(this);
+                //});
+                //}
+                //if(jQuery(this).parent().prev().children().html()!=null){
+                //	jQuery(this).bind('click',function(){ setSizeUnit(jQuery(this)); });
+                //}
+            });
+        } else {
+            var _input = jQuery(this).parent().next('dd').find('input');
+            resetFormEv(_input);
+            var _input_select = jQuery(this).parent().next('dd').find('select');
+            resetFormEv(_input_select);
+        }
+    });
 }
 
 function resetSliderMoveWidth(){
@@ -378,6 +402,7 @@ function setCustomSizeVals(obj,size,unit){
                     }
                 }else{
                     _lable=ucFirst(_lable);
+                    _lable = _lable.replace(new RegExp(/(_)/g),' ');
                     if(values[_lable]!=undefined){
                         setValueFromLable(jQuery(this),values[_lable]);
                     }
@@ -420,7 +445,8 @@ function setDivShowSizeVals(obj,size,unit){
             }
             jQuery(obj).parents('dl:eq(0)').find(_optionsContainer).html(htmlTxt).show();
         }
-	}}
+        }
+    }
 }
 //隐藏赋值层
 function hideDivShowSizeVals(obj){
@@ -471,7 +497,7 @@ function resetMainUnitFromSizeUnit(){
 						setRalatedUnitFromLable(jQuery(this),2);
                     }
 					resetUnitFromSizeUnit(jQuery(this));
-					return false; 
+                    return true;
 				}
             });
 		});
@@ -563,14 +589,13 @@ function resetUnit(obj,_unit,unit){
 }
 //显示各小尺码表单域 act = ‘show’ 显示 ，‘hide’ 隐藏
 function showhideSizeInputs(obj,act){
-	var _unitInput;
-	var unit=getSizeUnit();
-	var _unit=(unit==_inch)?_cm:_inch;
     if(jQuery(obj).parents('div:eq(0)').next('div')){
         if(act=='show'){
-            jQuery(obj).parents('div:eq(0)').next('div').show();
-        }else{
+			jQuery(obj).parents('div:eq(0)').next('div').show();
+            jQuery(obj).parents('div:eq(0)').next('div').find('dt,dd').removeClass('hidden');
+        } else {
             jQuery(obj).parents('div:eq(0)').next('div').hide();
+            jQuery(obj).parents('div:eq(0)').next('div').find('dt,dd').addClass('hidden');
         }
     }
 }
@@ -862,7 +887,7 @@ function getGuideDivByLabelFlag(label){
 function getGuideDiv(typeId){
 	if(_optionTypeGuide[typeId]!=undefined){
 		return '<div class="image-guide"><img src="'+_optionTypeGuide[typeId]["image"]+'"><span>+</span></div>'
-		+'<div class="measurement_pop" style="position: fixed;margin:0 auto;display: none;left:20%;top:20px; width:808px;z-index:999;background-color: #FFFFFF;border: 1px solid #EEEEEE;">'
+		+'<div class="measurement_pop" style="position: fixed;margin:0 auto;display: none;left:30%;top:127px; width:808px;z-index:9999;background-color: #FFFFFF;border: 1px solid #EEEEEE;">'
 		+'<span class="closeme"></span><img src="'+_optionTypeGuide[typeId]["bigImage"]+'"/>'
 		+'<br><b>Note: </b>For a better fitting on high heels, an extra 5cm will be added to those floor-length dresses and dresses with trains.'
 		+'</div>'
@@ -966,9 +991,9 @@ var JPlaceHolder = {
     }
 };
 //执行
-jQuery(function(){
+jQuery(function () {
     JPlaceHolder.init();
-	if(_hideLabel){
-		jQuery('#product-options-wrapper dt').hide();
-	}
+    if (_hideLabel) {
+        jQuery('#product-options-wrapper dt').hide();
+    }
 });

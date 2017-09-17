@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * @category	Dock
+ * @package		Dock_UltraSlideshow
+ * @author		Dock
+ * @copyright	Copyright 2012 Dock
+ */
+ -->
+<config>
+    <modules>
+        <Dock_UltraSlideshow>
+            <active>true</active>
+            <codePool>local</codePool>
+			<depends>
+				<Dock_Dock />
+			</depends>
+        </Dock_UltraSlideshow>
+    </modules>
+</config> 

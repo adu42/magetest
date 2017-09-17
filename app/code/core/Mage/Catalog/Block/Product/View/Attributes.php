@@ -71,8 +71,9 @@ class Mage_Catalog_Block_Product_View_Attributes extends Mage_Core_Block_Templat
                     $value = Mage::app()->getStore()->convertPrice($value, true);
                 }
 
-                $_as = '';
+                // $_as = '';
                 if (is_string($value) && strlen($value)) {
+                  /*
                     if ($attribute->getAttributeCode() == 'fabric') {
                         $bv = $product->getData($attribute->getAttributeCode());
                         if ($bv) {
@@ -91,6 +92,7 @@ class Mage_Catalog_Block_Product_View_Attributes extends Mage_Core_Block_Templat
                             }
                         }
                     }
+                   */
 
                     $_value = explode(',', $value);
                     foreach ($_value as &$_val) {

@@ -141,7 +141,7 @@ Compare products page
         </reference>
         <reference name="head">
             <action method="addJs"><script>scriptaculous/scriptaculous.js</script></action>
-            <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/product.js</script></action><action method="addJs"><script>varien/product_options.js</script></action>
         </reference>
         <reference name="content">
             <block type="catalog/product_compare_list" name="catalog.compare.list" template="catalog/product/compare/list.phtml"/>
@@ -165,7 +165,7 @@ Product view
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
         <reference name="head">
-            <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/product.js</script></action><action method="addJs"><script>varien/product_options.js</script></action>
             <action method="addJs"><script>varien/configurable.js</script></action>
             <!--<action method="addItem"><type>js_css</type><name>calendar/calendar2.css</name><params/></action>
 			<action method="addItem"><type>js</type><name>calendar/calendar_as.js</name></action>
@@ -324,7 +324,7 @@ Product send to friend
             <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
         </reference>
         <reference name="head">
-            <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/product.js</script></action><action method="addJs"><script>varien/product_options.js</script></action>
         </reference>
         <reference name="content">
             <block type="catalog/product_send" name="product.send" template="catalog/product/send.phtml">

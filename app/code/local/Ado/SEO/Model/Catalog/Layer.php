@@ -35,4 +35,27 @@ class Ado_SEO_Model_Catalog_Layer extends Mage_Catalog_Model_Layer
         return $collection;
     }
 
+    /**
+     * --------color----
+     * by@ado
+     * @param null $color
+     * @return $this
+     */
+    public function setColor($color=null){
+        $this->setData('color',$color);
+        return $this;
+    }
+
+    public function getColor(){
+        return $this->getData('color');
+    }
+
+    public function getProductCollection(){
+        $this->getCurrentCategory()->setColor($this->getColor());
+        return parent::getProductCollection();
+    }
+    /**
+     * -------color end----
+     *
+     */
 }

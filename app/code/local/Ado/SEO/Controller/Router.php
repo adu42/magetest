@@ -43,13 +43,6 @@ class Ado_SEO_Controller_Router extends Mage_Core_Controller_Varien_Router_Stand
             return false;
         }
         $suffix = Mage::getStoreConfig('catalog/seo/category_url_suffix');
-        /*
-        $identifier = ltrim($request->getPathInfo(), '/');
-        $identifier = str_replace(Ado_SEO_Model_System_Rewrite::MULTIPLE_FILTERS_SIBLING_DELIMITER,'',$identifier);
-        $identifier = substr($identifier, 0, strlen($identifier) - strlen($suffix));
-        $urlSplit = explode($helper->getRoutingSuffix(), $identifier, 2);
-        */
-
         $urlRewrite = Mage::getModel('core/url_rewrite');
         list($cata, $param) = $urlRewrite->checkIsTags($request->getPathInfo());
 
@@ -58,6 +51,7 @@ class Ado_SEO_Controller_Router extends Mage_Core_Controller_Varien_Router_Stand
         /*========搜索强制设置mvc路由，默认的设置好像没有找到对应的路由，这里强制处理一下=========*/
         if ($cata == '/catalogsearch/result/index') {
             $modules = $this->getModuleByFrontName('catalogsearch');
+            if($modules){
             foreach ($modules as $realModule) {
                 $request->setRouteName($this->getRouteByFrontName('catalogsearch'));
                 // Check if this place should be secure
@@ -72,18 +66,17 @@ class Ado_SEO_Controller_Router extends Mage_Core_Controller_Varien_Router_Stand
                 }
                 break;
             }
-            $request->setModuleName('ado_seo')
+                $q = isset($param['q'])?$param['q']:'';
+                $request->setModuleName('ado_seo')
                 ->setControllerName('result')
                 ->setActionName('index')
                 ->setControllerModule('catalogsearch')
-                ->setParam('q', $request->getParam('q'))
-                ->setAlias(
-                    Mage_Core_Model_Url_Rewrite::REWRITE_REQUEST_PATH_ALIAS, $catafull
-                );
+                ->setParam('q', $q);
             $controllerInstance = Mage::getControllerInstance($controllerClassName, $request, $this->getFront()->getResponse());
             $request->setDispatched(true);
             $controllerInstance->dispatch('index');
             return true;
+            }
         }
         return false;
         //=== 强制搜索路由完毕 ===//

@@ -235,6 +235,7 @@ class Ado_SEO_Model_System_Rewrite extends Enterprise_UrlRewrite_Model_Url_Rewri
         $isRedirectOption = $this->hasOption('R');
         if ($isRedirectOption || $isPermanentRedirectOption) {
             if (Mage::getStoreConfig('web/url/use_store') && $storeCode = Mage::app()->getStore()->getCode()) {
+                if($this->getStoreId()!=1)
                 $targetUrl = $request->getBaseUrl(). '/' . $storeCode . '/' .$this->getTargetPath();
             }
             
@@ -242,6 +243,7 @@ class Ado_SEO_Model_System_Rewrite extends Enterprise_UrlRewrite_Model_Url_Rewri
         }
 
         if (Mage::getStoreConfig('web/url/use_store') && $storeCode = Mage::app()->getStore()->getCode()) {
+             if($this->getStoreId()!=1)
                 $targetUrl = $request->getBaseUrl(). '/' . $storeCode . '/' .$this->getTargetPath();
             }
 

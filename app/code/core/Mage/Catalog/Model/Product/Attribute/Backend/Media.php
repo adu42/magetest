@@ -46,8 +46,7 @@ class Mage_Catalog_Model_Product_Attribute_Backend_Media extends Mage_Eav_Model_
         $value = array();
         $value['images'] = array();
         $value['values'] = array();
-        $localAttributes = array('label', 'position', 'disabled');
-
+        $localAttributes = array('label', 'position', 'disabled','title','show');
         foreach ($this->_getResource()->loadGallery($object, $this) as $image) {
             foreach ($localAttributes as $localAttribute) {
                 if (is_null($image[$localAttribute])) {
@@ -56,7 +55,6 @@ class Mage_Catalog_Model_Product_Attribute_Backend_Media extends Mage_Eav_Model_
             }
             $value['images'][] = $image;
         }
-
         $object->setData($attrCode, $value);
     }
 
@@ -65,7 +63,6 @@ class Mage_Catalog_Model_Product_Attribute_Backend_Media extends Mage_Eav_Model_
         if (isset($image[$key . '_default'])) {
             return $image[$key . '_default'];
         }
-
         return '';
     }
 
@@ -92,7 +89,6 @@ class Mage_Catalog_Model_Product_Attribute_Backend_Media extends Mage_Eav_Model_
                 Mage::throwException(Mage::helper('eav')->__('The value of attribute "%s" must be unique.', $label));
             }
         }
-
         return true;
     }
 
@@ -111,8 +107,6 @@ class Mage_Catalog_Model_Product_Attribute_Backend_Media extends Mage_Eav_Model_
         if (!is_array($value['images'])) {
            $value['images'] = array();
         }
-
-
 
         $clearImages = array();
         $newImages   = array();
@@ -141,7 +135,9 @@ class Mage_Catalog_Model_Product_Attribute_Backend_Media extends Mage_Eav_Model_
                 $newFile = $this->_copyImage($image['file']);
                 $newImages[$image['file']] = array(
                     'new_file' => $newFile,
-                    'label' => $image['label']
+                    'label' => $image['label'],
+                    'title' => $image['title'],
+                    'show' => $image['show']
                 );
                 $duplicate[$image['value_id']] = $newFile;
             }
@@ -160,17 +156,17 @@ class Mage_Catalog_Model_Product_Attribute_Backend_Media extends Mage_Eav_Model_
             if (in_array($attrData, array_keys($newImages))) {
                 $object->setData($mediaAttrCode, $newImages[$attrData]['new_file']);
                 $object->setData($mediaAttrCode.'_label', $newImages[$attrData]['label']);
+                $object->setData($mediaAttrCode.'_title', $newImages[$attrData]['title']);
+                $object->setData($mediaAttrCode.'_show', $newImages[$attrData]['show']);
             }
-
             if (in_array($attrData, array_keys($existImages))) {
                 $object->setData($mediaAttrCode.'_label', $existImages[$attrData]['label']);
+                $object->setData($mediaAttrCode.'_title', $existImages[$attrData]['title']);
+                $object->setData($mediaAttrCode.'_show', $existImages[$attrData]['show']);
             }
         }
-
         Mage::dispatchEvent('catalog_product_media_save_before', array('product' => $object, 'images' => $value));
-
         $object->setData($attrCode, $value);
-
         return $this;
     }
 
@@ -185,7 +181,6 @@ class Mage_Catalog_Model_Product_Attribute_Backend_Media extends Mage_Eav_Model_
         if (isset($this->_renamedImages[$file])) {
             return $this->_renamedImages[$file];
         }
-
         return $file;
     }
 
@@ -244,6 +239,8 @@ class Mage_Catalog_Model_Product_Attribute_Backend_Media extends Mage_Eav_Model_
             $data = array();
             $data['value_id'] = $image['value_id'];
             $data['label']    = $image['label'];
+            $data['title']    = $image['title'];
+            $data['show']    =  ($image['show']?1:0);
             $data['position'] = (int) $image['position'];
             $data['disabled'] = (int) $image['disabled'];
             $data['store_id'] = (int) $object->getStoreId();
@@ -337,9 +334,9 @@ class Mage_Catalog_Model_Product_Attribute_Backend_Media extends Mage_Eav_Model_
             'file'     => $fileName,
             'position' => $position,
             'label'    => '',
+            'title'   => '',
             'disabled' => (int) $exclude
         );
-
         $product->setData($attrCode, $mediaGalleryData);
 
         if (!is_null($mediaAttribute)) {
@@ -399,9 +396,10 @@ class Mage_Catalog_Model_Product_Attribute_Backend_Media extends Mage_Eav_Model_
             'label'    => 'label',
             'position' => 'position',
             'disabled' => 'disabled',
-            'exclude'  => 'disabled'
+            'exclude'  => 'disabled',
+            'title'  => 'title',
+            'show'  => 'show',
         );
-
         $attrCode = $this->getAttribute()->getAttributeCode();
 
         $mediaGalleryData = $product->getData($attrCode);

@@ -35,12 +35,13 @@
 class Mage_Catalog_Block_Product_View_Options_Type_Select
     extends Mage_Catalog_Block_Product_View_Options_Abstract
 {
+    protected $_images = null;
     /**
      * Return html for control element
-     *
+     * $showType>0 PC
      * @return string
      */
-    public function getValuesHtml()
+    public function getValuesHtml($showType=0)
     {
         $_option = $this->getOption();
         $configValue = $this->getProduct()->getPreconfiguredValues()->getData('options/' . $_option->getId());
@@ -50,11 +51,15 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
             || $_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_MULTIPLE) {
             $require = ($_option->getIsRequire()) ? ' required-entry' : '';
             $extraParams = '';
+            $hide = '';
+            $defaultHide = $this->getDefaultHideClass();
+            if($defaultHide==3 && $showType)$hide=' hidden';
+            $optionTitle = $this->getflagStr($_option->getTitle());
             $select = $this->getLayout()->createBlock('core/html_select')
                 ->setData(array(
                     'id' => 'select_'.$_option->getId(),
-                    'class' => $require.' product-custom-option',
-                    'title'=> strtolower($_option->getTitle()),
+                    'class' => $require.' product-custom-option product-custom-option-'.$optionTitle.$hide,
+                    'title'=> $optionTitle,
                 ));
             if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_DROP_DOWN) {
                 $select->setName('options['.$_option->getid().']')
@@ -63,7 +68,28 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
                 $select->setName('options['.$_option->getid().'][]');
                 $select->setClass('multiselect'.$require.' product-custom-option');
             }
-            foreach ($_option->getValues() as $_value) {
+            $optionValues = $_option->getValues();
+            $i=0;$defaultSelected = 0;
+            /**
+             * start
+             * pc 0
+             * mb 1
+             */
+            if($showType==1){
+                $defaultSelected=0;
+            }
+            $defaultColor= $this->getCurrentColor();
+            foreach ($optionValues as $_value) {
+                $selected = false;
+                $_valueTitle = $this->getflagStr($_value->getTitle());
+                if(empty($defaultColor) && in_array($optionTitle,array('color','colour')) &&  $i===$defaultSelected){
+                    $selected = true;
+                }else if($defaultColor && $_valueTitle==$defaultColor){
+                    $selected = true;
+                }
+                if($selected){
+                    $select->setValue($_value->getOptionTypeId());
+                }
                 $priceStr = $this->_formatPrice(array(
                     'is_percent'    => ($_value->getPriceType() == 'percent'),
                     'pricing_value' => $_value->getPrice(($_value->getPriceType() == 'percent'))
@@ -71,8 +97,9 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
                 $select->addOption(
                     $_value->getOptionTypeId(),
                     $this->__($this->getSizeType($_value->getTitle(),$_value)). ' ' . $priceStr . '',
-                    array('price' => $this->helper('core')->currencyByStore($_value->getPrice(true), $store, false),'as'=>strtolower($_value->getTitle()))
+                    array('price' => $this->helper('core')->currencyByStore($_value->getPrice(true), $store, false),'as'=>$this->getflagStr($_value->getTitle()))
                 );
+                $i++;
             }
             if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_MULTIPLE) {
                 $extraParams = ' multiple="multiple"';
@@ -86,7 +113,10 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
                 $select->setValue($configValue);
             }
 
-            return $select->getHtml();
+            $html = $select->getHtml();
+            if($showType==1)
+            $html .= $this->getColorHtml($_option,$optionValues);
+            return $html;
         }
 
         if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_RADIO
@@ -138,7 +168,7 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
 						. ' name="options[' . $_option->getId() . ']' . $arraySign . '" id="options_' . $_option->getId()
 						. '_' . $count . '" value="' . $htmlValue . '" ' . $checked . ' price="'
 						. $this->helper('core')->currencyByStore($_value->getPrice(true), $store, false) . '" />'
-						. '<span class="label"><label for="options_' . $_option->getId() . '_' . $count . '" as="'.$_value->getTitle().'">'
+						. '<span class="label"><label for="options_' . $_option->getId() . '_' . $count . '" as="'.$this->getflagStr($_value->getTitle()).'">'
 						. $this->__($this->getSizeType($_value->getTitle(),$_value)) . ' ' . $priceStr . '</label></span>';
 					if ($_option->getIsRequire()) {
 						$selectHtml .= '<script type="text/javascript">' . '$(\'options_' . $_option->getId() . '_'
@@ -157,6 +187,13 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
         }
     }
 
+    /**
+     * by@ado
+     *
+     * @param $_title
+     * @param $_value
+     * @return mixed
+     */
 	protected function getSizeType($_title,$_value){ 
 		    $isSize = false;
 			$_title = strtolower(trim($_title));
@@ -165,5 +202,157 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
 			if(!$isSize) return $value;
 		return Mage::helper('ado_seo')->getSizeType($_title,$value);
 	}
+
+
+    /**
+     * by@ado
+     * show as picture
+     * colors
+     *  as == kvalue
+     * @param $optionValues
+     * @return string
+     */
+	protected function getColorHtml($_option,$optionValues,$defaultValue=''){
+	    $optionTitle = $_option->getTitle();
+        $optionTitle = strtolower($optionTitle);
+	    if($optionTitle!='color' && $optionTitle!='colour')return $this->getSelectHtml($_option,$optionValues,$defaultValue);
+        $_template = '<div class="color-chart-box">';
+        $fabric = $this->getFabric();
+        $_color_small_image = 'color-chart/'.$fabric.'/%s.jpg'; //$this->getSkinUrl('color-chart/'.$fabric.'/%s.jpg');
+        $i=0;
+        $defaultColor= $this->getCurrentColor();
+        foreach($optionValues as $_value){
+            $selected = '';
+            $_is_show_as = false;
+            $_valueTitle = $this->getflagStr($_value->getTitle());
+            if(stripos($_valueTitle,'show')!==false){  //show as picture
+                $_small_image = $this->getShowAsPicture($_valueTitle,$i);
+                $_is_show_as = true;
+            }else{  //
+                $_small_image = vsprintf($_color_small_image,array($this->getFileStr($_value->getTitle())));
+                $_small_image = $this->getSkinUrl($_small_image);
+            }
+            if(empty($defaultColor) && $i===0)$selected = ' on';
+            if($defaultColor && $_valueTitle==$defaultColor)$selected = ' on';
+            /**
+             *
+             */
+            $_template .= '<a href="javascript:void(0);" onclick="doPickColor(\''.$_valueTitle.'\')" id="pis-'.$_valueTitle.'" class="pis-color-a" title="'. $this->__($_value->getTitle()) .'">' ;
+            $_template .= '<dl class="pis-color'.$selected.'">';
+            if($fabric || $_is_show_as){
+                $_template .= '<dt><img src="'.$_small_image.'" width="28" height="28" /> <div class="pis-box-img "><img src="'.$_small_image.'" /><p>'.$this->__($_value->getTitle()).'</p></div></dt>';
+            }else{
+                $_template .= '<dt><span class="'. $_valueTitle .'" ></span></dt>';
+            }
+            $_template .= '<i></i></dl>';
+            $_template .= '</a>';
+            $i++;
+        }
+        $_template .= '</div>' ;
+	    return $_template;
+    }
+
+
+    protected function getSelectHtml($_option,$optionValues,$defaultValue=''){
+        $optionTitle = $_option->getTitle();
+        $optionTitle = strtolower($optionTitle);
+        $_template = '<div class="select-box-'.$optionTitle.'">';
+        $i=0;
+        foreach($optionValues as $_value){
+            $selected = '';
+            $_valueTitle = $this->getflagStr($_value->getTitle());
+            if($i===0)$selected = ' on';
+            if($defaultValue && ($_valueTitle==$defaultValue || $defaultValue==$_value->getOptionTypeId()))$selected = ' on';
+            $_template .= '<a href="javascript:void(0);" onclick="doPick'.ucfirst($optionTitle).'(\'select_'.$_option->getId().'\','.$_value->getOptionTypeId().')" id="pick-'.$_valueTitle.'" class="pick-a-'.$optionTitle.'" title="'. $this->__($_value->getTitle()) .'">' ;
+            $_template .= '<dl class="pick-'.$optionTitle.''.$selected.'">';
+            $_template .= '<dt><span class="'. $_valueTitle .'" >'.$_value->getTitle().'</span></dt>';
+            $_template .= '<i></i></dl>';
+            $_template .= '</a>';
+            $i++;
+        }
+        $_template .= '</div>' ;
+        return $_template;
+    }
+
+    /**
+     * by@ado
+     * //
+     * @param $labelTitle
+     * @return mixed|string
+     */
+    private function getFileStr($labelTitle){
+        $labelTitle = ucwords($labelTitle);
+        $labelTitle = str_replace(array('-',' '),'_',$labelTitle);
+        return $labelTitle;
+    }
+
+    /**
+     * by@ado
+     * ���show as pictureСͼ
+     * @param $selectAsPicture
+     * @param int $defaultIndex
+     * @return string
+     */
+    private function getShowAsPicture($selectAsPicture,$defaultIndex = 0){
+        $imgUrl = '';
+        $helper = Mage::helper('catalog/image');
+        if(empty($this->_images)){
+            $galleryImages = $this->getProduct()->getMediaGalleryImages();
+            $images = array();
+            $i=0;
+            foreach ($galleryImages as $_image){
+              //  print_r($_image->getData());die();
+                $images[$i]['label'] = $this->getflagStr($_image->getLabel());
+                $images[$i]['file']= $_image->getFile();
+                if(stripos($images[$i]['label'],$selectAsPicture)!==false && $images[$i]['file']){
+                    try{
+                      $image = $helper->init($this->getProduct(), 'image',$images[$i]['file'])->resize(160);
+                      $imgUrl = $images[$i]['src'] = (string)$image;
+                    }catch (Exception $e){
+                        $imgUrl='';
+                    }
+                }
+                $i++;
+            }
+                // if(empty($imgUrl))$imgUrl= isset($this->_images[$defaultIndex])?$this->_images[$defaultIndex]['src']:'';
+            $this->_images = $images;
+        }
+
+
+        if(empty($imgUrl) && !empty($this->_images)){
+            foreach ($this->_images as $image){
+                if(stripos($image['label'],$selectAsPicture)!==false){
+                    try{
+                        $image = $helper->init($this->getProduct(), 'image',$image['file'])->resize(160);
+                        $imgUrl = (string)$image;
+                    }catch (Exception $e){
+                        $imgUrl='';
+                    }
+                    break;
+                }
+            }
+
+            if(empty($imgUrl)){
+                if(isset($this->_images[$defaultIndex])){
+                    try{
+                        $image = $helper->init($this->getProduct(), 'image',$this->_images[$defaultIndex]['file'])->resize(160);
+                        $imgUrl = (string)$image;
+                    }catch (Exception $e){
+                        $imgUrl=$this->getSkinUrl('color-chart/show_as_picture.jpg');
+                    }
+                }else{
+                    $imgUrl=$this->getSkinUrl('color-chart/show_as_picture.jpg');
+                }
+            }
+        }
+        return $imgUrl;
+
+    }
+
+
+    public function getCurrentColor(){
+        $defaultColor=$this->getRequest()->getParam(Ado_SEO_Block_Catalog_Product_List_Colors::COLOR_ATTRIBUTE_CODE,'');
+        return strtolower($defaultColor);
+    }
 
 }

@@ -93,13 +93,15 @@ Category default layout
 			</block>-->
         </reference>
         <reference name="content">
-
-
-
             <block type="catalog/category_view" name="category.products" template="catalog/category/view.phtml">  
-
+            <!-- Colorpic -->
+         <!--   <block type="core/template" name="catalog.colorpic" as="colorpic" >
+                <action method="setTemplate" ifconfig="ch_colorpic/colorpic/enabled_colorpic">
+                   <template>catalog/layer/view-colorpic.phtml</template>
+                </action>         
+            </block>
+            -->
               <block type="catalog/category_rating" name="category_rating"  as="category_rating" before="-"  template="catalog/category/rating.phtml"/>           
-
                 <block type="catalog/product_list" name="product_list" template="catalog/product/list.phtml">
 					<action method="setColumnCount"><count>4</count></action>
                     <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
@@ -143,8 +145,15 @@ Category layered navigation layout
 			<block type="catalog/layer_view" name="catalog.leftnav" before="-" template="catalog/layer/view.phtml"/>
         </reference>
         <reference name="content">
-
             <block type="catalog/category_view" name="category.products" template="catalog/category/view.phtml">
+            <!-- Colorpic -->
+          <!--  <block type="core/template" name="catalog.colorpic" as="colorpic" >
+                <action method="setTemplate" ifconfig="ch_colorpic/colorpic/enabled_colorpic">
+                   <template>catalog/layer/view-colorpic.phtml</template>
+                </action>         
+            </block>
+            -->
+                                  
 			 <block type="catalog/category_rating" name="category_rating"  as="category_rating" before="-"  template="catalog/category/rating.phtml"/> 
                 <block type="catalog/product_list" name="product_list" template="catalog/product/list.phtml">
 					<action method="setColumnCount"><count>4</count></action>
@@ -190,6 +199,7 @@ Compare products page
         <reference name="head">
             <action method="addJs"><script>scriptaculous/scriptaculous.js</script></action>
             <action method="addJs"><script>varien/product.js</script></action>
+			<action method="addJs"><script>varien/product_options.js</script></action>
         </reference>
         <reference name="content">
             <block type="catalog/product_compare_list" name="catalog.compare.list" template="catalog/product/compare/list.phtml"/>
@@ -214,13 +224,14 @@ Product view
         </reference>
         <reference name="head">
             <action method="addJs"><script>varien/product.js</script></action>
+			<action method="addJs"><script>varien/product_options.js</script></action>
             <action method="addJs"><script>varien/configurable.js</script></action>
-            <action method="addItem"><type>js_css</type><name>calendar/calendar2.css</name><params/></action>
+          <!--   <action method="addItem"><type>js_css</type><name>calendar/calendar2.css</name><params/></action>-->
 			<action method="addCss"><stylesheet>color-chart/css/styles.css</stylesheet></action>
             <!--<action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params/><if/><condition>can_load_calendar_js</condition></action>-->
-            <action method="addItem"><type>js</type><name>calendar/calendar_as.js</name><!--<params/><if/><condition>can_load_calendar_js</condition>--></action>
+         <!--   <action method="addItem"><type>js</type><name>calendar/calendar_as.js</name></action>  -->
             <!--<action method="addItem"><type>js</type><name>calendar/calendar-setup.js</name><params/><if/><condition>can_load_calendar_js</condition></action>-->
-            <action method="addItem"><type>js</type><name>calendar/calendar.en.js</name></action>
+          <!--  <action method="addItem"><type>js</type><name>calendar/calendar.en.js</name></action>-->
             <action method="addItem"><type>js</type><name>jquery/jquery-1.8.3.min.js</name></action>
 			<action method="addItem"><type>js</type><name>jquery/jquery.easing.js</name></action>
             <action method="addItem"><type>js</type><name>jquery/no-conflict.js</name></action>

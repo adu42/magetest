@@ -101,7 +101,7 @@ if(stripos($_uri,'search')===false){
     <?php $i=0; foreach ($_productCollection as $_product): ?>
  
             <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
-                <a href="<?php echo $_product->getProductUrl().$_current_id;  ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image" ><img class="pro-list" src="<?php echo $this->getSkinUrl('images/loader.gif') ?>" original="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(225,300); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" width="225" /></a>
+                <a href="<?php echo $_product->getProductUrl().$_current_id;  ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image" ><img class="pro-list" src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(225,300); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" width="225" /></a>
                 <h3 class="product-name"><a href="<?php echo $_product->getProductUrl().$_current_id;  ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>" ><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h3>
 				<?php
 					if($_product->getIsoff()){
@@ -141,19 +141,21 @@ if(stripos($_uri,'search')===false){
     </div>
 </div>
 <?php endif; ?>
+<!--
 <script type="text/javascript">
         jQuery(function(){
 		jQuery(".products-grid .pro-list").lazyload({
-			placeholder:"/skin/frontend/default/missydress/images/loader.gif",
+			// placeholder:"/skin/frontend/default/missydress/images/loader.gif",
 			effect:"fadeIn"
 			});
 		});
 </script>
+-->
 <!--add likes +1-->
 <script>
 function _getBaseUrl(){
     var url=document.domain;
-    url='http://'+url;
+    url='//'+url;
     return url;    
 }
 function clicklikes(obj,id){

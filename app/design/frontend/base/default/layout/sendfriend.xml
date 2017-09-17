@@ -32,7 +32,7 @@
             <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
         </reference>
         <reference name="head">
-            <action method="addJs"><script>varien/product.js</script></action>
+            <action method="addJs"><script>varien/product.js</script></action><action method="addJs"><script>varien/product_options.js</script></action>
         </reference>
         <reference name="content">
             <block type="sendfriend/send" name="sendfriend.send" template="sendfriend/send.phtml" />

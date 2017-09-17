@@ -41,7 +41,7 @@
                 <?php endif; ?>
                 <div class="product">
                     <a href="<?php echo $_item->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_item->getName()) ?>" class="product-image">
-		    <img class="pro-list" src="<?php echo $this->getSkinUrl('images/loader.gif') ?>" original="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(90,120) ?>" width="90" height="120" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" /></a>
+		    <img class="pro-list" src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->resize(90,120) ?>" width="90" height="120" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" /></a>
                     <div class="product-details">
                         <p class="product-name"><a href="<?php echo $_item->getProductUrl() ?>"><?php echo $this->htmlEscape($_item->getName()) ?></a></p>
                         <?php echo $this->getPriceHtml($_item, true, '-related') ?>
@@ -54,14 +54,7 @@
         <?php endforeach ?>
         </ol>
         <script type="text/javascript">decorateList('block-related', 'none-recursive')</script>
-	<script type="text/javascript">
-        jQuery(function(){
-		jQuery("#block-related .pro-list").lazyload({
-			placeholder:"/skin/frontend/default/missydress/images/loader.gif",
-			effect:"fadeIn"
-			});
-		});
-</script>
+
     </div>
     <script type="text/javascript">
     //<![CDATA[

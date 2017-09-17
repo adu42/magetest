@@ -27,13 +27,27 @@
 
 <?php /* @var $this Mage_Catalog_Block_Product_View_Options_Type_Select */ ?>
 <?php $_option = $this->getOption() ?>
+<?php
+// $fabric = $this->getFabric();
+// $_optionTitle = $_option->getTitle();
+$_isDefaultHide = $this->getDefaultHideClass();
+$dtHide = '';
+$ddHide = '';
 
-<dt><label<?php if ($_option->getIsRequire()) echo ' class="required"' ?> for="<?php echo  strtolower($this->htmlEscape($_option->getTitle())); ?>" as="<?php echo  strtolower($this->htmlEscape($_option->getTitle())); ?>"><?php if ($_option->getIsRequire()) echo '<em>*</em>' ?><?php echo  $this->__($this->htmlEscape($_option->getTitle())) ?></label></dt>
-<dd<?php if ($_option->decoratedIsLast){?> class="last"<?php }?>>
+if($_isDefaultHide==2){
+    $dtHide = ' class="hidden"';
+    $ddHide = ' class="hidden"';
+}else if($_isDefaultHide == 1)$ddHide = ' class="hidden"';
+if ($_option->decoratedIsLast){
+    $ddHide=empty($ddHide)?' class="last"':' class="last hidden"';
+}
+?>
+<dt<?php echo $dtHide; ?>><label<?php if ($_option->getIsRequire()) echo ' class="required"' ?> for="<?php echo  $this->htmlEscape($_option->getTitle()); ?>" as="<?php echo  $this->getflagStr($this->htmlEscape($_option->getTitle())); ?>"><?php if ($_option->getIsRequire()) echo '<em>*</em>' ?><?php echo  $this->__($this->htmlEscape($_option->getTitle())) ?></label></dt>
+<dd<?php echo $ddHide; ?>>
     <div class="input-box">
         <?php 
         $_title='Select '.$this->htmlEscape($_option->getTitle()).':';
-        echo str_replace($this->__('-- Please Select --'),$this->__($_title),$this->getValuesHtml()); ?>
+        echo str_replace($this->__('-- Please Select --'),$this->__($_title),$this->getValuesHtml(1)); ?>
         <?php if ($_option->getIsRequire()): ?>
             <?php if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_RADIO || $_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX): ?>
                 <span id="options-<?php echo $_option->getId() ?>-container"></span>

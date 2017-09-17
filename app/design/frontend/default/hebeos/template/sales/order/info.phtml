@@ -27,13 +27,14 @@
 <?php /** @var $this Mage_Sales_Block_Order_Info */ ?>
 <?php $_order = $this->getOrder() ?>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<div class="sales-view">
 <div class="page-title title-buttons">
-    <h1><?php echo $this->__('Order #%s - %s', $_order->getRealOrderId(), $_order->getStatusLabel()) ?></h1>
+    <h1><?php echo $this->__('<strong>Your Order:</strong>#%s - %s', $_order->getRealOrderId(), $_order->getStatusLabel()) ?></h1>
     <?php echo $this->getChildHtml('buttons') ?>
 </div>
 <?php echo $this->getStatusHistoryRssUrl($_order) ?>
 <dl class="order-info">
-    <dt><?php echo $this->__('About This Order:') ?></dt>
+    <dt><strong><?php echo $this->__('About This Order:') ?></strong></dt>
     <dd>
         <?php $_links = $this->getLinks(); ?>
         <ul id="order-info-tabs">
@@ -48,9 +49,10 @@
         <script type="text/javascript">decorateGeneric($('order-info-tabs').select('LI'),['first','last']);</script>
     </dd>
 </dl>
-<p class="order-date"><?php echo $this->__('Order Date: %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long')) ?></p>
+
+<p class="order-date"><?php echo $this->__('<strong>Order Date:</strong> %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long')) ?></p></div>
 <?php if (!$_order->getIsVirtual()): ?>
-<div class="col2-set order-info-box">
+<div class="col2-set order-info-box" style="float:left;">
     <div class="col-1">
         <div class="box">
             <div class="box-title">
@@ -77,7 +79,7 @@
     </div>
 </div>
 <?php endif; ?>
-<div class="col2-set order-info-box">
+<div class="col2-set order-info-box" style="float:right;">
     <div class="col-1">
         <div class="box">
             <div class="box-title">

@@ -27,7 +27,7 @@ if($_collections):
     <?php $i = 1; foreach ($_collections as $_product): ?>
         <li <?php if($i==$_collectionSize) {echo ' class="last"'; } ?>>
                 <a class="product-img" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>" target="_blank">
-                   <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(600, 800) ?>" width="132" height="176" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" /> </a>
+                   <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(300, 400) ?>" width="132" height="176" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" /> </a>
 	       <div class="other-info">
 	       <div class="home-name"><h3 class="product-name"><a  href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h3></div>
                <?php echo $this->getPriceHtml($_product, true, $this->getPriceSuffix()) ?>

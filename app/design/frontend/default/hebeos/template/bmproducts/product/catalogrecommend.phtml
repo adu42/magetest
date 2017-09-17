@@ -14,9 +14,9 @@ if($_collections):
 <script src='<?php echo $this->getSkinUrl('js/view-slider.js') ?>'></script> 
 <script>
 		jQuery(function(){
-			jQuery('.product-catalog-views-recommend').mySlider({  //参数可选,以下为默认参数
+			jQuery('.product-catalog-views-recommend').mySlider({
 					speed: 300,
-					direction: 'left', //  运动方向 可选 left,top
+					direction: 'left', // left,top
 					prevClass: 'slider-prev',
 					nextClass: 'slider-next',
 					prevClass: 'slider-prev',
@@ -38,7 +38,7 @@ if($_collections):
     ?>
         <li <?php if($i==$_collectionSize) {echo ' class="last"'; } ?>>
                 <a class="product-img" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>" target="_blank">
-                   <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(600, 800) ?>" width="125" height="176" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" /> </a>
+                   <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(300, 400) ?>" width="125" height="176" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" /> </a>
 	       <div class="other-info">
 	       <div class="home-name"><h3 class="product-name"><a  href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h3></div>
                <?php echo $this->getPriceHtml($_product, true, $this->getPriceSuffix()) ?>

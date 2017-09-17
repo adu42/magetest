@@ -1,0 +1,16 @@
+<?php
+$items =$this->getUrls();
+ if(!empty($items)): ?>
+         <div class="block-layered-colors-filter-nav">
+             <div class="block-content">
+                 <ul>
+                     <?php foreach ($items as $item):
+                         $selected = '';
+                         if($item['selected'])$selected=' class="selected"';
+                         ?>
+                         <li<?php echo $selected; ?>><a href="<?php echo $item['url'] ; ?>" title="<?php echo $this->__($item['label']) ; ?>"><i class="<?php echo $item['color'] ; ?>"><?php echo $this->__($item['label']) ; ?></i></a> </li>
+                    <?php endforeach; ?>
+                </ul>
+             </div>
+         </div>
+ <?php endif; ?>

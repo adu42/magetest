@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * @category	Dock
+ * @package		Dock_UltraMegamenu
+ * @author		Dock
+ * @copyright	Copyright 2012 Dock
+ */
+ -->
+<config>
+    <modules>
+        <Dock_UltraMegamenu>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Dock_UltraMegamenu>
+    </modules>
+</config> 

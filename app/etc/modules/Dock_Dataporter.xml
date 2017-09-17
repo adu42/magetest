@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * @category    Dock
+ * @package     Dock_Dataporter
+ * @author      Dock
+ * @copyright   Copyright 2014 Dock
+ */
+ -->
+<config>
+    <modules>
+        <Dock_Dataporter>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Dock_Dock />
+            </depends>
+        </Dock_Dataporter>
+    </modules>
+</config> 

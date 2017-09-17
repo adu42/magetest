@@ -1162,9 +1162,9 @@ class Mage_Core_Model_Store extends Mage_Core_Model_Abstract
             $storeParsedQuery['___store'] = $this->getCode();
         }
         if ($fromStore !== false) {
-            $storeParsedQuery['___from_store'] = $fromStore === true ? Mage::app()->getStore()->getCode() : $fromStore;
+          //  $storeParsedQuery['___from_store'] = $fromStore === true ? Mage::app()->getStore()->getCode() : $fromStore;
         }
-
+        $requestString =  Mage::getResourceModel('core/url_rewrite')->loadByRequestPathString($requestString,$this->getId());
         return $storeParsedUrl['scheme'] . '://' . $storeParsedUrl['host']
             . (isset($storeParsedUrl['port']) ? ':' . $storeParsedUrl['port'] : '')
             . $storeParsedUrl['path'] . $requestString

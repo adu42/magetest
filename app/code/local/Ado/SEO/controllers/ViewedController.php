@@ -77,17 +77,21 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
             case('nin'):
                 $html = $this->createPostAction();
                 break;
+             case('guest'):
+                 $this->checkGuestLogin();
+                 break;
             default:
         endswitch;
-        echo $html;
+        $this->getResponse()->setBody($html);
     }
 
     /**
      * 确认是否有商品数据
      * @return bool
      */
-    public function setProduct()
-    {
+    public function setProduct(){
+        $product = Mage::registry('product');
+        if($product && $product->id())return true;
         $productId = $this->getRequest()->getParam('id');
         if ($productId) {
             $productId = (int)$productId;
@@ -240,6 +244,7 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
                     $customerForm->compactData($customerData);
                     $customer->setPassword($this->getRequest()->getPost('password'));
                     $customer->setConfirmation($this->getRequest()->getPost('confirmation'));
+					$customer->setPasswordConfirmation($this->getRequest()->getPost('confirmation'));
                     $customerErrors = $customer->validate();
                     if (is_array($customerErrors)) {
                         $errors = array_merge($customerErrors, $errors);
@@ -296,5 +301,44 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
         return $message;
     }
 
-
+    /**
+     * 自动登陆
+     */
+    public function checkGuestLogin(){
+        $w = isset($_GET['w'])?$_GET['w']:'';
+        $h = isset($_GET['h'])?$_GET['h']:'';
+        $token = isset($_GET['token'])?$_GET['token']:'';
+        if(!$w || !$h)die();
+        $canLogin = false;
+        if(!empty($token)){
+            $token = Mage::helper('core')->decrypt($token);
+            $token = explode('|',$token);
+            if(count($token)===3){
+                if($w==$token[0] && $h==$token[1]){
+                    $canLogin = $token[2];
+                }
+            }
+        }
+        $session = Mage::getSingleton('customer/session');
+        $newToken = '';
+        $cookie = Mage::getSingleton('core/cookie');
+        if($canLogin){
+            if(!$session->isLoggedIn()){
+                $customer = Mage::getModel('customer/customer')->setWebsiteId(Mage::app()->getStore()->getWebsiteId())->loadByEmail($canLogin);
+                if($customer && $customer->getId()){
+                    $session->setCustomerAsLoggedIn($customer);
+                    $newToken = $w.'|'.$h.'|'.$canLogin;
+                    $newToken = Mage::helper('core')->encrypt($newToken);
+                }
+            }
+        }
+        if($session->isLoggedIn()){
+            $canLogin =  $session->getCustomer()->getEmail();
+            $newToken = $w.'|'.$h.'|'.$canLogin;
+            $newToken = Mage::helper('core')->encrypt($newToken);
+        }
+        if(!empty($newToken)){
+            $cookie->set('guest_token', $newToken ,60,'/',null,false,false);
+        }
+    }
 }

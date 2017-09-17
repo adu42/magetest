@@ -196,9 +196,73 @@ class Mage_Catalog_Block_Product_View_Options extends Mage_Core_Block_Template
             $renderer['renderer'] = $this->getLayout()->createBlock($renderer['block'])
                 ->setTemplate($renderer['template']);
         }
-        return $renderer['renderer']
+        $_option = $renderer['renderer']
             ->setProduct($this->getProduct())
             ->setOption($option)
-            ->toHtml();
+            ->setDefaultHideClass($this->isDefaultHideClass($option));
+        $title = strtolower($option->getTitle());
+        if ($title == 'color' || $title == 'colour')
+            $_option->setFabric($this->getFabric($this->getProduct()));
+        return $_option->toHtml();
+    }
+
+    /**
+     *
+     * @param $_option
+     */
+    protected function isDefaultHideClass($_option)
+    {
+        $title = '';
+        $hides = array(
+            'color'=>3,  // hide field  1,hide dd
+            'colour'=>3,
+            'size'=>3,
+            'measurement unit' => 2,  //hide dt & dd
+            'inch' => 2,
+            'cm' => 2,
+            'bust' => 2,
+            'waist' => 2,
+            'hips' => 2,
+            'hollow to floor' => 2,
+            'height' => 2,
+            'shoulder (inch)' => 2,
+            'armseye (inch)' => 2,
+            'arm length (inch)' => 2,
+            //  'jacket'=>2,
+            //  'note'=>2,
+        );
+        $title = $_option->getTitle();
+        if ($title) {
+            $title = strtolower(trim($title));
+        }
+        return (isset($hides[$title]) ? $hides[$title] : 0);
+    }
+
+    /**
+     * by@ado
+     *
+     * @param $_product
+     * @return mixed
+     */
+    protected function getFabric($_product)
+    {
+        $_value = '';
+        $code = 'fabric';
+        $fabricCodes = array("Chiffon","Elastic-Woven-Satin","Matte-Satin","Organza","Satin","Silk-Like-Satin","Taffeta");
+        $fabric = $_product
+            ->getResource()
+            ->getAttribute($code);
+        if(!$fabric)return $_value;
+
+        $fabricValue = $fabric->setStoreId(0)->getFrontend()->getValue($_product);
+        $fabricValue = explode(',', $fabricValue);
+          foreach ($fabricValue as $value) {
+            $value = ucwords($value);
+            $value = str_replace(array(' '), '-', $value);
+            if(in_array($value,$fabricCodes)){
+                $_value = $value;break;
+            }
+        }
+        return $_value;
     }
 }

@@ -205,8 +205,9 @@ class Mage_Catalog_Helper_Category extends Mage_Core_Helper_Abstract
     protected function _countratingrang($count)
     {
         $counts = explode('.', $count);
-        // ÅĞ¶ÏÓàÊı
+        $_rangTemplete = '';
         $remainder_y = $counts[1] ; //ÓàÊı
+        $_rcount_y = 0.5;
         if($remainder_y >= 0 && $remainder_y < 0.5){
             $_rcount_y = 0;
         }elseif(($remainder_y >= 5 &&  $remainder_y < 10) || ($remainder_y >= 50 &&  $remainder_y < 100)){

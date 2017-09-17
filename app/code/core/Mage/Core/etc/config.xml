@@ -456,6 +456,14 @@
                 <public_files_valid_paths>
                     <protected>
                         <app>/app/*/*</app>
+                        <dev>/dev/*/*</dev>
+                        <downloader>/downloader/*/*</downloader>
+                        <errors>/errors/*/*</errors>
+                        <includes>/includes/*/*</includes>
+                        <js>/js/*/*</js>
+                        <lib>/lib/*/*</lib>
+                        <shell>/shell/*/*</shell>
+                        <skin>/skin/*/*</skin>
                     </protected>
                 </public_files_valid_paths>
             </file>
@@ -492,7 +500,7 @@
                 <run><model>core/email_queue::send</model></run>
             </core_email_queue_send_all>
             <core_email_queue_clean_up>
-                <schedule><cron_expr>0 0 * * *</cron_expr></schedule>
+                <schedule><cron_expr>0 12 * * *</cron_expr></schedule>
                 <run><model>core/email_queue::cleanQueue</model></run>
             </core_email_queue_clean_up>
         </jobs>

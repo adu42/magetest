@@ -293,4 +293,17 @@ class Mage_Catalog_Model_Layer extends Varien_Object
 
         return $setIds;
     }
+    /**
+     * by@ado
+     * @param null $color
+     * @return $this
+     */
+    public function setColor($color=null){
+        $this->setData('color',$color);
+        return $this;
+    }
+
+    public function getColor(){
+        return $this->getData('color');
+    }
 }

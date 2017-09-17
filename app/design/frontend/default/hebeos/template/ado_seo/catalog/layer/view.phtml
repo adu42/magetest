@@ -18,7 +18,11 @@
                         <?php foreach ($_filters as $_filter): ?>
                             <?php if ($_filter->getItemsCount()): ?>
                                 <dt><?php echo $this->__($_filter->getName()) ?></dt>
-                                <dd><?php echo $_filter->getHtml() ?></dd>
+                                <dd class="<?php 	
+		$bs = str_replace(' ','_',strtolower($_filter->getName()));
+		$bs = str_replace("/",'_',$bs);
+		$bs = str_replace("-",'_',$bs);
+		echo $bs; ?>"><?php echo $_filter->getHtml() ?></dd>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </dl>

@@ -11,7 +11,7 @@ foreach($deliveryOptions as $_option):
         $defaultCheck=false;
     	if($deliveryFeeId && $_option['id']==$deliveryFeeId){
     		$defaultCheck=true;
-    	}else if(!$deliveryFeeId && $_option['checked']=='checked'){
+    	}else if(!$deliveryFeeId && isset($_option['checked']) && $_option['checked']=='checked'){
     		$defaultCheck=true;
     	}
        ?>

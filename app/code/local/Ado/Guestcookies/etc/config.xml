@@ -117,6 +117,22 @@
     			</observers>
     		</controller_front_send_response_before>
     	</events>
+		<layout>
+			<updates>
+				<guestcookies module="Ado_Guestcookies">
+					<file>guestcookies.xml</file>
+				</guestcookies>
+			</updates>
+		</layout>
+		<routers>
+			<guestcookies>
+				<use>standard</use>
+				<args>
+					<module>Ado_Guestcookies</module>
+					<frontName>guest</frontName>
+				</args>
+			</guestcookies>
+		</routers>
     </frontend>
 
     <default>
@@ -124,6 +140,7 @@
     		<guestcookies>
     			<!-- 10 Years -->
     			<cookie_lifetime>315576000</cookie_lifetime>
+				<quote>1</quote>
     			<quote_name>cart</quote_name>
     			<compare_name>compare</compare_name>
     			<viewed_name>viewed</viewed_name>

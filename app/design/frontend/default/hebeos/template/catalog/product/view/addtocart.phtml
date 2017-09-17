@@ -26,6 +26,7 @@
 ?>
 
 <?php $_product = $this->getProduct(); ?>
+<?php $_wishlistSubmitUrl = $this->helper('wishlist')->getAddUrl($_product); ?>
 <?php $buttonTitle = $this->__('Add To Cart');
       $buttonAddToTitle=$this->__(''); ?>
 <?php if($_product->isSaleable()): ?>
@@ -44,16 +45,16 @@
 	<div class="buy-fav">
    <div class="buy-now"><a title="<?php echo $buttonTitle ?>" class="button btn-cart" onclick="productAddToCartForm.submitLight(this)"><?php echo $buttonTitle ?></a></div>
    <div class="favorite">
-          <a target="_blank" rel="nofollow" id="favorite-category" href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="fav-atc"> <i class="icon-shopping-cart"></i><?php echo $this->__('Add to Favorites')?></a>
-   <!-- <span id="favCount" style="display: inline-block;">		
+          <a href="<?php echo $_wishlistSubmitUrl ?>" onclick="productAddToCartForm.submitLight(this, this.href); return false;" title="<?php echo $this->__('Add to Wishlist') ?>" class="link-wishlist" id="favorite-product-desktop"><?php //echo $this->__('Add to Wishlist') ?><i class="wishlist-icon-cart"></i></a>
+<span id="favCount" style="display: inline-block;">		
 	<span id="goods_favorite_count"><?php
-			//$resource = Mage::getSingleton('core/resource');
-			//$readConnection = $resource->getConnection('core_read');
-			//$productid = $_product->getId();
-			//$total_wishlist = $readConnection->fetchCol("SELECT count(*) FROM wishlist_item where product_id = '$productid' ");
+			$resource = Mage::getSingleton('core/resource');
+			$readConnection = $resource->getConnection('core_read');
+			$productid = $_product->getId();
+			$total_wishlist = $readConnection->fetchCol("SELECT count(*) FROM wishlist_item where product_id = '$productid' ");
 													   
-			//echo ''.$total_wishlist['0'];
-			?></span>	</span>	-->
+			echo ''.$total_wishlist['0'];
+			?></span>	</span>
     </div>
 	
 	<div class="made-to-order_img_pos"><img src="<?php echo $this->getSkinUrl('images/made-to-drder-_en.png'); ?>"></div>

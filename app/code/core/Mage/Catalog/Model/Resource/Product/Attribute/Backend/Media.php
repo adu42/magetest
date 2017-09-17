@@ -73,11 +73,11 @@ class Mage_Catalog_Model_Resource_Product_Attribute_Backend_Media extends Mage_C
         if ($eventObjectWrapper->hasProductIdsOverride()) {
             $productIds = $eventObjectWrapper->getProductIdsOverride();
         } else {
+            if(!$product || !$product->getId()) return $this;
             $productIds = array($product->getId());
         }
 
         $select = $this->_getLoadGallerySelect($productIds, $product->getStoreId(), $object->getAttribute()->getId());
-
         $adapter = $this->_getReadAdapter();
         $result = $adapter->fetchAll($select);
         $this->_removeDuplicates($result);
@@ -152,7 +152,6 @@ class Mage_Catalog_Model_Resource_Product_Attribute_Backend_Media extends Mage_C
     {
         $data = $this->_prepareDataForTable(new Varien_Object($data), $this->getTable(self::GALLERY_VALUE_TABLE));
         $this->_getWriteAdapter()->insert($this->getTable(self::GALLERY_VALUE_TABLE), $data);
-
         return $this;
     }
 
@@ -245,7 +244,7 @@ class Mage_Catalog_Model_Resource_Product_Attribute_Backend_Media extends Mage_C
             ->joinLeft(
                 array('value' => $this->getTable(self::GALLERY_VALUE_TABLE)),
                 $adapter->quoteInto('main.value_id = value.value_id AND value.store_id = ?', (int)$storeId),
-                array('label','position','disabled')
+                array('label','position','disabled','title','show')
             )
             ->joinLeft( // Joining default values
                 array('default_value' => $this->getTable(self::GALLERY_VALUE_TABLE)),
@@ -253,7 +252,9 @@ class Mage_Catalog_Model_Resource_Product_Attribute_Backend_Media extends Mage_C
                 array(
                     'label_default' => 'label',
                     'position_default' => 'position',
-                    'disabled_default' => 'disabled'
+                    'disabled_default' => 'disabled',
+                    'title_default' => 'title',
+                    'show_default' => 'show'
                 )
             )
             ->where('main.attribute_id = ?', $attributeId)

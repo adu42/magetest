@@ -297,7 +297,7 @@ button::-moz-focus-inner {
 	left:43px;
 	width:80px;
 }
-.mfp-arrow-left,.mfp-arrow-right{background: rgba(0, 0, 0, 0) url("../star-rating/images/carousel.png") no-repeat scroll 0 0;
+.mfp-arrow-left,.mfp-arrow-right{background: rgba(0, 0, 0, 0) url("images/carousel.png") no-repeat scroll 0 0;
     cursor: pointer;
     display: block;
     height: 84px;
@@ -499,7 +499,7 @@ img.mfp-img {
     margin-top: 20px;
 }
 .mfp-goods{text-indent:-9999px;}
-.mfp-goods a{background: rgba(0, 0, 0, 0) url("../star-rating/images/style_shop_now.png") no-repeat scroll 0 -399px;
+.mfp-goods a{background: rgba(0, 0, 0, 0) url("images/style_shop_now.png") no-repeat scroll 0 -399px;
     color: #666666;
     font-size: 15px;
     height: 30px;
@@ -928,7 +928,7 @@ img.mfp-img {
     width: 170px;
 }
 .user-gallery-viewport .user-photos-next, .user-gallery-viewport .user-photos-prev {
-    background: transparent url("../images/bgwidget.png") no-repeat scroll 0 0;
+    background: transparent url("images/bgwidget.png") no-repeat scroll 0 0;
     cursor: pointer;
     display: block;
     height: 50px;
@@ -1050,13 +1050,13 @@ img.mfp-img {
     width: 100%;
 }
 .facebook-share-icon {
-    background: rgba(0, 0, 0, 0) url("../images/new_fb.jpg") no-repeat scroll 0 0;
+    background: rgba(0, 0, 0, 0) url("images/new_fb.jpg") no-repeat scroll 0 0;
 }
 .pinterest-share-icon {
-    background: #fff url("../images/new_pin.jpg") no-repeat scroll 0 0;
+    background: #fff url("images/new_pin.jpg") no-repeat scroll 0 0;
 }
 .googleplus-share-icon {
-    background: rgba(0, 0, 0, 0) url("../images/new_g+.jpg") no-repeat scroll 0 0;
+    background: rgba(0, 0, 0, 0) url("images/new_g+.jpg") no-repeat scroll 0 0;
 }
 .share-icon {
     display: inline-block;
@@ -1161,7 +1161,7 @@ img.mfp-img {
     border: 1px solid #eee;
 }
 .show.as {
-    background: rgba(0, 0, 0, 0) url("../images/colorlumps.png") no-repeat scroll -518px -12px!important;
+    background: rgba(0, 0, 0, 0) url("images/colorlumps.png") no-repeat scroll -518px -12px!important;
     border: 0 none;
 }
 .ivory {

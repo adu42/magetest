@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * @category	Dock
+ * @package		Dock_CloudZoom
+ * @author		Dock
+ * @copyright	Copyright 2012 Dock
+ */
+ -->
+<config>
+    <modules>
+        <Dock_CloudZoom>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Dock_CloudZoom>
+    </modules>
+</config>

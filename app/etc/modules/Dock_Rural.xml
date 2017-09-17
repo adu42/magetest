@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * @category	Dock
+ * @package		Dock_Rural
+ * @author		Dock
+ * @copyright	Copyright 2012-2014 Dock
+ */
+ -->
+<config>
+	<modules>
+		<Dock_Rural>
+			<active>true</active>
+			<codePool>local</codePool>
+			<depends>
+				<Dock_Dock/>
+				<Dock_Brands/>
+				<Dock_CloudZoom/>
+				<Dock_Dataporter/>
+				<Dock_UltraMegamenu/>
+				<Dock_UltraSlideshow/>
+			</depends>
+		</Dock_Rural>
+	</modules>
+</config> 

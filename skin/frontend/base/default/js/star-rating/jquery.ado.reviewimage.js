@@ -402,7 +402,7 @@ function getTemplateData(id,imgUrl){
     return templatedata;
 }
     function likesEvent(){
-        jQuery('.review-likes').click(function () {
+        jQuery('.review-likes').unbind("click").on('click',function () {
             var id = jQuery(this).attr('id');
             var _num = jQuery(this).text().trim();
             var num = parseInt(_num);
@@ -587,30 +587,33 @@ var sWidth = 930;
         var winH = jQuery(window).height(); //页面可视区域高度
         var i = 2;
         var j = false;
-        jQuery(window).scroll(function() {
-        var pageH = jQuery(document).height();
-        var scrollT = jQuery(window).scrollTop(); //滚动条top
-        var outer = (scrollT+winH) > (pageH-50) ;
-        if (outer) {
-            if(!j && maxPage>=i){
-                j=true;
-                jQuery(loading).show();
-            jQuery.get(loadurl, {p: i}, function(data) {
-                if (data){
-                    jQuery(loading).before(data);
-                    initThumbnailImages();
-                    likesEvent();
-                    i++;
-                    j=false;
-                    jQuery(loading).hide();
-                } else {
-                    jQuery(loading).hide();
-                    return false;
+        var scrollChange = function () {
+            var pageH = jQuery(document).height();
+            var scrollT = jQuery(window).scrollTop(); //滚动条top
+            var outer = (scrollT+winH) > (pageH-100*(i-1)) ;
+           // console.log(outer+' scrollT '+scrollT+'winH '+winH+' pageH '+(pageH-100*(i-1)));
+            if (outer) {
+                if(!j && maxPage>=i){
+                    j=true;
+                    jQuery(loading).show();
+                    jQuery.get(loadurl, {p: i}, function(data) {
+                        if (data){
+                            jQuery(loading).before(data);
+                            initThumbnailImages();
+                            likesEvent();
+                            i++;
+                            j=false;
+                            jQuery(loading).hide();
+                        } else {
+                            jQuery(loading).hide();
+                            return false;
+                        }
+                    });
                 }
-            });
             }
         }
-    });
+        jQuery(window).scroll(scrollChange);
+        jQuery(window).resize(scrollChange);
     }
 });
 /********************** load page in bottom **********************/

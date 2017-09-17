@@ -31,12 +31,7 @@
 <meta name="robots" content="<?php echo htmlspecialchars($this->getRobots()) ?>" />
 <link rel="icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
 <link rel="shortcut icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
-<script language="JavaScript">
-function killErrors() {
-return true;
-}
-// window.onerror = killErrors;
-</script>
+<script language="JavaScript">function killErrors(){return true;}window.onerror = killErrors;</script>
 <!--[if lt IE 7]>
 <script type="text/javascript">
 //<![CDATA[
@@ -47,10 +42,11 @@ return true;
 <![endif]-->
 <?php /* Open Graph Protocol for Facebook and SEO START */ ?>
 <?php
+if(!function_exists('getPageType')){
 function getPageType($type){
     $moduleName=Mage::app()->getRequest()->getModuleName();
     $controllerName=Mage::app()->getRequest()->getControllerName();
-    $actionName=Mage::app()->getRequest()->getActionName();
+    // $actionName=Mage::app()->getRequest()->getActionName();
 	$cmsHome = Mage::getSingleton('cms/page')->getIdentifier();
 	$routeName = Mage::app()->getFrontController()->getRequest()->getRouteName();
 	
@@ -62,8 +58,7 @@ function getPageType($type){
 	}
     return false;
 }
-
-
+}
 $_og_site_name='Hebeos';
 $product = Mage::registry('current_product');
 if(getPageType('catalogproduct')):
@@ -104,9 +99,8 @@ if($product && $product->getId()): ?>
 <?php echo $this->getChildHtml() ?>
 <?php echo $this->helper('core/js')->getTranslatorScript() ?>
 <?php echo $this->getIncludes() ?>
-<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/common.js') ?>"></script> 
-<script type="text/javascript">var _gaq = _gaq || [];</script> 
-
-<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery.lazyload.mini.js') ?>"></script>
+<script type="text/javascript" defer src="<?php echo $this->getSkinUrl('js/common.js') ?>"></script> 
+<script type="text/javascript">var _gaq = _gaq || [];</script>
+<!-- <script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery.lazyload.mini.js') ?>"></script> -->
 
 

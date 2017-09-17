@@ -505,11 +505,12 @@ abstract class Mage_Catalog_Block_Product_Abstract extends Mage_Core_Block_Templ
      *
      * @return string
      */
-    public function getImageLabel($product = null, $mediaAttributeCode = 'image')
+    public function getImageLabel($product = null, $mediaAttributeCode = 'image', $color='')
     {
         if (is_null($product)) {
             $product = $this->getProduct();
         }
+        if(!empty($color))return $label=$this->getColorImageLabel($color);
 
         $label = $product->getData($mediaAttributeCode . '_label');
         if (empty($label)) {
@@ -669,4 +670,17 @@ abstract class Mage_Catalog_Block_Product_Abstract extends Mage_Core_Block_Templ
 
         return $this;
     }
+
+    /**
+     * by@ado
+     * 本文件中使用这个方法
+     *
+     * 取带颜色的产品label
+     */
+    public function getColorImageLabel($color){
+        $image = Mage::helper('catalog/image')->getColorImage($color);
+        if($image && isset($image['label']))return $image['label'];
+        return '';
+    }
+
 }

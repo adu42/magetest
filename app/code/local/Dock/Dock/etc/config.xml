@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category	Dock
+ * @package		Dock_Dock
+ * @author		Dock
+ * @copyright	Copyright 2013 Dock
+ */
+-->
+<config>
+    <modules>
+        <Dock_Dock>
+            <version>0.9.0</version>
+        </Dock_Dock>
+    </modules>
+	<!--<admin>
+		<routers>
+			<dock>
+				<use>admin</use>
+				<args>
+					<module>Dock_Dock</module>
+					<frontName>dock</frontName>
+				</args>
+			</dock>
+		</routers>
+	</admin>-->
+    <global>
+        <blocks>
+            <dock>
+                <class>Dock_Dock_Block</class>
+            </dock>
+        </blocks>
+        <helpers>
+            <dock>
+                <class>Dock_Dock_Helper</class>
+            </dock>
+        </helpers>
+        <models>
+            <dock>
+                <class>Dock_Dock_Model</class>
+            </dock>
+        </models>
+    </global>
+</config>

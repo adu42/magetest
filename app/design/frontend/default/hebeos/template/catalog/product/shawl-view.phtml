@@ -63,12 +63,12 @@
 				
             </div>
 			<div class="rating-question">
-			<span>Item Code:<?php echo nl2br($_product->getSku()) ?></span>
+			<span>SKU:<?php echo nl2br($_product->getSku()) ?></span>
 	    <?php if($_product->getRatingSummary()): ?>
 			<?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
             <?php endif; ?>
 		<div style=" color: #666666;float: left;font-size: 11px;padding:0px;height:30px;line-height:29px;">
-		<a class="write-review" href="<?php //echo Mage::helper("reviewimage")->getWriteUrl();  ?>#tabs-7">Write a review</a>
+		<a class="write-review" href="<?php //echo Mage::helper("reviewimage")->getWriteUrl();  ?>#tabs-9">Write a review</a>
 		
 		</div> 
 
@@ -86,7 +86,7 @@
 			
 	    <div class="timelist">
 		<!-- daoji shi-->
-		<span><?php if($percent){?>(<?php echo $percent ?>% OFF)<?php }?></span>
+		<span><?php if($percent){?><?php echo $percent ?>% OFF<?php }?></span>
 </div>
 </div>
 
@@ -342,9 +342,9 @@ showtime();
 				<li class="tab4"><a class="" href="#tabs-4"><?php echo $this->__('Delivery') ?></a></li>
 				<li class="tab5"><a class="" href="#tabs-5"><?php echo $this->__('Measurement') ?></a></li>
 				<li class="tab6"><a class="" href="#tabs-6"><?php echo $this->__('FAQs') ?></a></li>
-				<li class="tab7"><a class="" href="#tabs-7"><?php echo $this->__('Reviews') ?></a></li>
-				<li class="tab8"><a class="" href="#tabs-8"><?php echo $this->__('Quality Guarantee') ?></a></li>
-				<li class="tab9"><a class="" href="#tabs-9"><?php echo $this->__('Style') ?></a></li>
+				<li class="tab7"><a class="" href="#tabs-7"><?php echo $this->__('Quality Guarantee') ?></a></li>
+				<li class="tab8"><a class="" href="#tabs-8"><?php echo $this->__('Style') ?></a></li>
+				<li class="tab9"><a class="" href="#tabs-9"><?php echo $this->__('Reviews') ?></a></li>
 			</ul>
 			<div style="display: block;" id="tabs-1" class="tabs-content">
 				<?php foreach ($this->getChildGroup('detailed_info', 'getChildHtml') as $alias => $html):?>
@@ -381,14 +381,14 @@ showtime();
 				<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('faq-view')->toHtml() ?>
 			</div>
 			<div style="display: none;" id="tabs-7" class="tabs-content">
-			   <span style="text-align:center;margin:10px 0;display:block;"><a href="<?php echo Mage::helper("reviewimage")->getWriteUrl(); ?>"><img src="/skin/frontend/default/hebeos/images/review.jpg"/></a></span>
-				<?php echo $this->getChildHtml('reviews') ?>
-			</div>
-			<div style="display: none;" id="tabs-8" class="tabs-content">
 				<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('dressdetail-view')->toHtml() ?>
 			</div>
-			<div style="display: none;" id="tabs-9" class="tabs-content">
+			<div style="display: none;" id="tabs-8" class="tabs-content">
 				<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('style-view')->toHtml() ?>
+			</div>
+			<div style="display: none;" id="tabs-9" class="tabs-content">
+			   <span style="text-align:center;margin:10px 0;display:block;"><a href="<?php echo Mage::helper("reviewimage")->getWriteUrl(); ?>"><img src="/skin/frontend/default/hebeos/images/review.jpg"/></a></span>
+				<?php echo $this->getChildHtml('reviews') ?>
 			</div>
 		</div>
        

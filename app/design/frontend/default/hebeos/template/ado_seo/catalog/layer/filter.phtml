@@ -23,11 +23,19 @@
                 <?php endif; ?>
                 <a<?php if ($_item->isSelected()): ?> onclick="$(this).previous().checked = false;"<?php else: ?> onclick="$(this).previous().checked = true;" 
                     <?php endif; ?>                            
-                    href="<?php echo ($_item->isSelected()) ? $_item->getRemoveUrl() : $_item->getUrl() ?>"<?php echo $nofollow;?>><span class="checkSpan<?php echo (stripos($_filerName,'color')!==false)?' '.strtolower(str_replace(array(' ','/'),'-',$_item->getLabel())):''; ?>"></span><?php echo $this->__($_item->getLabel()) ?></a>
+                    href="<?php echo ($_item->isSelected()) ? $_item->getRemoveUrl() : $_item->getUrl() ?>"<?php echo $nofollow;?> title="<?php echo $this->__($_item->getLabel()) ?>"><span class="checkSpan <?php 	
+		$bs = str_replace(' ','_',strtolower($_item->getLabel()));
+		$bs = str_replace("/",'_',$bs);
+		$bs = str_replace("-",'_',$bs);
+		echo $bs; ?>"></span><span class="displaySpan <?php 	
+		$bs = str_replace(' ','_',strtolower($_item->getLabel()));
+		$bs = str_replace("/",'_',$bs);
+		$bs = str_replace("-",'_',$bs);
+		echo $bs; ?>"><?php echo $this->__($_item->getLabel()) ?>(<?php echo $_item->getCount() ?>)</span></a>
                 <?php else: ?>
-                    <?php echo $this->__($_item->getLabel()) ?>
+                    <?php echo $this->__($_item->getLabel()) ?>(<?php echo $_item->getCount() ?>)
                 <?php endif; ?>
-            (<?php echo $_item->getCount() ?>)
+            
         </li>
     <?php endforeach ?>
 </ol>

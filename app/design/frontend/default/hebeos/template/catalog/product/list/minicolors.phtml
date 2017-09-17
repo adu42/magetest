@@ -1,0 +1,30 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2017-8-4
+ * Time: 16:26
+ */
+$images = $this->getColors();
+if($images && is_array($images)){
+    $template = '<div class="color-chart-box">';
+    foreach ($images as $image){
+        $active=(isset($image['selected']) && $image['selected'])?' active':'';
+        $template .= '<a onclick="doChangeColorImage(\''.($this->getProduct()->getId()).'\',\''. $this->getImageUrl($image['value']) .'\',\''. ($image['title']) .'\')"  class="colorpic-click pis-color-a'. $active .'" title="'.$this->__($image['title']) .'">' ;
+        $template .= '<dl data-kvalue="'. $image['title'] .'" data-value="'. $image['title'] .'" class="pis-color">';
+        $template .= '<dt><span class="'. (isset($image['color'])?$image['color']:strtolower(str_replace(' ','-',$image['title']))) .'" ></span></dt>';
+        $template .= '<div class="text-tip" style="display: none;">';
+        $template .= '<div class="colorImg"><span class="img-tip '. $image['title'] .'"></span></div>';
+        $template .= '<div class="colorAlt"><span class="text-tip">'. $image['title'] .'</span></div>';
+        $template .= '</div>';
+        $template .= '</dl>';
+        $template .= '</a>';
+    }
+    $template .= '</div>';
+    echo $template;
+}
+?>
+
+
+
+

@@ -10,3 +10,5 @@ LICENSE_EE.html
 LICENSE_EE.txt
 RELEASE_NOTES.txt
 var/
+media/catalog/product/cache/
+media/tmp/

@@ -15,7 +15,7 @@ if (Mage::getStoreConfig('le_sociallogin/general/showonloginpage') == 'inloginbo
         if ($this->checkEnable() == true):?>
             <a onclick="showLESocialPopup('<?php echo $this->_getButtonUrl(); ?>', <?php echo $this->getWidth(); ?>, <?php echo $this->getHeight(); ?>);">
                 <div class="<?php echo $this->getClass(); ?> le-icon-social"
-                     title="<?php echo $this->__('Connect with ') . $this->__($this->getTitle()); ?>"></div>
+                     title="<?php echo $this->__('Connect with ') . $this->__($this->getTitle()); ?>"><em>&nbsp;</em>Sign in with Facebook</div>
             </a>
         <?php endif;
     } else {
