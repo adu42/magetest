@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -30,15 +30,15 @@
 ?>
 <?php if ($this->isMultipleEnabled() && (count($wishlists) || $this->canCreateWishlists($wishlists))): ?>
     <div class="split-button light">
-        <strong class="split-button-title" onclick="Enterprise.Wishlist.copyItemTo(<?php echo $item->getId(); ?>, $(this).up('tr').down('input.qty').value, <?php echo $this->getDefaultWishlist()->getId(); ?>);"><span><?php echo $this->__('Add to Wishlist'); ?></span></strong>
-        <a href="#" class="change"><?php echo $this->__('Add to') ?></a>
+        <strong onclick="Enterprise.Wishlist.copyItemTo(<?php echo $item->getId(); ?>, $(this).up('tr').down('input.qty').value, <?php echo $this->getDefaultWishlist()->getId(); ?>);"><span><?php echo $this->__('Add to Wishlist'); ?></span></strong>
+        <a href="#" class="change"><?php echo $this->__('Add to:') ?></a>
         <div class="list-container">
             <ul>
                 <?php foreach ($wishlists as $wishlist): ?>
                     <li onclick="Enterprise.Wishlist.copyItemTo(<?php echo $item->getId(); ?>, $(this).up('tr').down('input.qty').value, <?php echo $wishlist->getId();?>);"><span title="<?php echo $this->escapeHtml($wishlist->getName()); ?>"><?php echo $this->escapeHtml($wishlist->getName()); ?></span></li>
                 <?php endforeach; ?>
                 <?php if ($this->canCreateWishlists($wishlists)): ?>
-                    <li class="new" onclick="Enterprise.Wishlist.copyItemToNew(<?php echo $item->getId(); ?>, $(this).up('tr').down('input.qty').value);"><span title="<?php echo Mage::helper('core')->quoteEscape($this->__('Create New Wishlist')) ?>"><?php echo $this->__('Create New Wishlist') ?></span></li>
+                    <li class="new" onclick="Enterprise.Wishlist.copyItemToNew(<?php echo $item->getId();?>, $(this).up('tr').down('input.qty').value);"><span title="<?php echo Mage::helper('core')->quoteEscape($this->__('Create New Wishlist')) ?>"><?php echo $this->__('Create New Wishlist') ?></span></li>
                 <?php endif; ?>
             </ul>
         </div>

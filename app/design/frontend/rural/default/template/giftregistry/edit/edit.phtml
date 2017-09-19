@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -30,8 +30,7 @@
 </div>
 <?php echo $this->getMessagesBlock()->toHtml() ?>
 <form action="<?php echo $this->getEditPostActionUrl(); /*$this->getAddPostActionUrl();*/ ?>" method="post" id="form-validate">
-    <div class="fieldset gift-registry-edit">
-        <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+    <div class="fieldset">
         <?php echo $this->getBlockHtml('formkey')?>
 
         <script type="text/javascript">
@@ -46,6 +45,7 @@
             <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
             <button type="submit" class="button" id="submit.save" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Save')) ?>"><span><span><?php echo $this->__('Save') ?></span></span></button>
         </div>
+        <p class="required"><?php echo $this->__('* Required Fields') ?></p>
     </div>
 </form>
 <script type="text/javascript">

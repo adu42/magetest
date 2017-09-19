@@ -75,4 +75,53 @@
             </template>
         </parameters>
     </cms_hierarchy_node>
+    <cms_hierarchy_menu type="enterprise_cms/widget_menu" translate="name description" module="enterprise_cms">
+        <name>CMS Hierarchy Menu</name>
+        <description>Link to Specified CMS Hierarchy Menu</description>
+        <is_email_compatible>1</is_email_compatible>
+        <parameters>
+            <node_id translate="label">
+                <label>Root Node</label>
+                <visible>1</visible>
+                <required>0</required>
+                <type>label</type>
+                <helper_block>
+                    <type>enterprise_cms/adminhtml_cms_hierarchy_widget_chooser</type>
+                    <data>
+                        <button translate="open">
+                            <open>Select Page or Node...</open>
+                        </button>
+                    </data>
+                </helper_block>
+                <sort_order>10</sort_order>
+            </node_id>
+            <anchor_text translate="label description">
+                <visible>1</visible>
+                <label>Anchor Custom Text</label>
+                <description>If empty, will use the Node or Page Name</description>
+                <type>text</type>
+            </anchor_text>
+            <title translate="label">
+                <visible>1</visible>
+                <label>Anchor Custom Title</label>
+                <type>text</type>
+            </title>
+            <template translate="label">
+                <label>Template</label>
+                <visible>1</visible>
+                <type>select</type>
+                <value>cms/hierarchy/widget/menu/menu_block.phtml</value>
+                <values>
+                    <default translate="label">
+                        <value>cms/hierarchy/widget/menu/menu_block.phtml</value>
+                        <label>CMS Page Menu Block Template</label>
+                    </default>
+                    <menu_inline translate="label">
+                        <value>cms/hierarchy/widget/menu/menu_inline.phtml</value>
+                        <label>CMS Page Menu Inline Template</label>
+                    </menu_inline>
+                </values>
+            </template>
+        </parameters>
+    </cms_hierarchy_menu>
 </widgets>

@@ -20,8 +20,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -93,9 +93,6 @@
     </customer_account>
 
     <enterprise_giftregistry_search_index>
-        <reference name="root">
-            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
-        </reference>
         <update handle="calendar"/>
         <reference name="left">
             <remove name="giftregistry.quick.search" />
@@ -106,9 +103,6 @@
     </enterprise_giftregistry_search_index>
 
     <enterprise_giftregistry_search_results>
-        <reference name="root">
-            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
-        </reference>
         <update handle="calendar"/>
         <reference name="left">
             <remove name="giftregistry.quick.search" />
@@ -142,6 +136,7 @@
                 <block type="enterprise_giftregistry/customer_items" name="giftregistry.view.items" template="giftregistry/view/items.phtml"/>
             </block>
         </reference>
+        <update handle="MAP_popup" />
         <reference name="product.tooltip">
             <block type="page/html_wrapper" name="product.info.addtocart.paypal.wrapper" translate="label">
                 <block type="paypal/express_shortcut" name="product.info.addtocart.paypal" template="paypal/express/shortcut.phtml" module="paypal">

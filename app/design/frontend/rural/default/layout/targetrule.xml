@@ -20,24 +20,22 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 -->
 <layout version="0.1.0">
     <catalog_product_view>
         <reference name="product.info">
-            <!-- <remove name="catalog.product.related" /> -->
-            <!--<block type="enterprise_targetrule/catalog_product_list_related" name="catalog.product.related" as="relatedProducts" template="targetrule/catalog/product/list/related.phtml">-->
-            <!-- Renamed the block alias from relatedProducts to related_product to consistent with CE -->
-            <block type="enterprise_targetrule/catalog_product_list_related" name="catalog.product.related" as="related_products" template="targetrule/catalog/product/list/related.phtml">
+            <!-- remove name="catalog.product.related" / -->
+            <block type="enterprise_targetrule/catalog_product_list_related" name="catalog.product.related" as="relatedProducts" template="targetrule/catalog/product/list/related.phtml">
                 <action method="setColumnCount"><columns>3</columns></action>
                 <block type="enterprise_targetrule/catalog_product_item" name="catalog.product.related.item" template="targetrule/catalog/product/list/related/item.phtml" />
             </block>
             <!-- remove name="product.info.upsell" / -->
             <block type="enterprise_targetrule/catalog_product_list_upsell" name="product.info.upsell" as="upsell_products" template="targetrule/catalog/product/list/upsell.phtml">
-                <action method="setColumnCount"><columns>6</columns></action>
+                <action method="setColumnCount"><columns>4</columns></action>
                 <block type="enterprise_targetrule/catalog_product_item" name="catalog.product.upsell.item" template="targetrule/catalog/product/list/upsell/item.phtml" />
             </block>
         </reference>

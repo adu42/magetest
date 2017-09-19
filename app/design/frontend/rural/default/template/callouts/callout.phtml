@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -29,7 +29,7 @@
 <?php elseif($this->getLinkUrl()): ?>
     <a href="<?php echo $this->getUrl($this->getLinkUrl()) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__($this->getImgAlt())) ?>">
 <?php endif; ?>
-<img src="<?php echo $this->getSkinUrl($this->getImgSrc()) ?>"<?php if(!$this->getLinkUrl()): ?> title="<?php echo Mage::helper('core')->quoteEscape($this->__($this->getImgAlt())) ?>"<?php endif; ?> alt="<?php echo $this->__($this->getImgAlt()) ?>" class="callout" />
+<img src="<?php echo $this->getSkinUrl($this->getImgSrc()) ?>"<?php if(!$this->getLinkUrl()): ?> title="<?php echo Mage::helper('core')->quoteEscape($this->__($this->getImgAlt())) ?>"<?php endif; ?> alt="<?php echo Mage::helper('core')->quoteEscape($this->__($this->getImgAlt())) ?>" class="callout" />
 <?php if($this->getLinkUrl()): ?>
     </a>
 <?php endif ?>

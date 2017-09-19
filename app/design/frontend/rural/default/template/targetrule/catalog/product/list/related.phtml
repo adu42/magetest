@@ -19,35 +19,32 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 /* @var $this Enterprise_TargetRule_Block_Catalog_Product_List_Related */
 ?>
 <?php if ($this->hasItems()):?>
-<div class="box-collateral box-related block-related">
-    <div class="block-title">
+<div class="box-collateral box-related">
+    <div class="box-title">
         <h2><?php echo $this->__('Related Products') ?></h2>
     </div>
-    <p class="note block-subtitle"><?php echo $this->__('Check items to add to the cart or') ?>&nbsp;<a href="#" onclick="selectAllRelated(this); return false;"><strong><?php echo $this->__('select all') ?></strong></a></p>
-    <ol class="box-content mini-products-list">
+    <p class="note"><?php echo $this->__('Check items to add to the cart or') ?>&nbsp;<a href="#" onclick="selectAllRelated(this); return false;"><strong><?php echo $this->__('select all') ?></strong></a></p>
     <?php $i=0; foreach($this->getItemCollection() as $_item): ?>
-        <?php $i++ ?>
-        <?php /*if ($i % $this->getColumnCount() == 0): ?>
-        <ul class="box-content mini-products-list">
-        <?php endif*/ ?>
+        <?php if ($i++ % $this->getColumnCount() == 0): ?>
+        <ul class="box-content">
+        <?php endif ?>
         <li class="item<?php if (($i - 1) % $this->getColumnCount() == 0):?> first<?php elseif ($i % $this->getColumnCount() == 0): ?> last<?php endif; ?>">
             <?php
                 $itemBlock = $this->getChild('catalog.product.related.item')->setItem($_item)->setPosition($i);
                 echo $itemBlock->toHtml();
             ?>
         </li>
-        <?php /*if ($i % $this->getColumnCount() == 0 || $i == $this->getItemsCount()): ?>
+        <?php if ($i % $this->getColumnCount() == 0 || $i == $this->getItemsCount()): ?>
         </ul>
-        <?php endif*/ ?>
+        <?php endif ?>
     <?php endforeach ?>
-    </ol>
     <script type="text/javascript">decorateGeneric($$('.box-related ul.box-content'), ['odd','even','first','last'])</script>
 
     <script type="text/javascript">
@@ -63,13 +60,13 @@
                 elem.checked = true;
             });
             relatedProductsCheckFlag = true;
-            txt.innerHTML = "<strong><?php echo $this->jsQuoteEscape($this->__('unselect all')) ?><\/strong>";
+            txt.innerHTML="<strong><?php echo Mage::helper('core')->quoteEscape($this->__('unselect all'), true) ?><\/strong>";
         } else {
             $$('.related-checkbox').each(function(elem){
                 elem.checked = false;
             });
             relatedProductsCheckFlag = false;
-            txt.innerHTML = "<strong><?php echo $this->jsQuoteEscape($this->__('select all')) ?><\/strong>";
+            txt.innerHTML="<strong><?php echo Mage::helper('core')->quoteEscape($this->__('select all'), true) ?><\/strong>";
         }
         addRelatedToProduct();
     }

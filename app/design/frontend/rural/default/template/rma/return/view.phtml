@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 /** @var $this Enterprise_Rma_Block_Return_View */
@@ -38,10 +38,11 @@
 <div class="col2-set">
     <div class="box">
         <div class="box-content">
-            <div class="col-1 rma-view">
+            <div class="col-1">
                 <div class="info-box">
                     <h3 class="box-title"><?php echo $this->__('Request Information') ?></h3>
                     <p class="box-content">
+                        <br />
                         <?php echo $this->__('ID') ?>: <?php echo $this->escapeHtml($_rma->getIncrementId()) ?><br />
                         <?php echo $this->__('Order ID') ?>: <a href="<?php echo $this->getOrderUrl($_rma) ?>"><?php echo $this->escapeHtml($_rma->getOrderIncrementId()) ?></a><br />
                         <?php echo $this->__('Date Requested') ?>: <?php echo Mage::helper('enterprise_rma')->getFormatedDate($_rma->getDateRequested()) ?><br />
@@ -50,7 +51,7 @@
                     </p>
                 </div>
             </div>
-            <div class="col-2 rma-view">
+            <div class="col-2">
                 <div class="info-box">
                     <h3 class="box-title"><?php echo $this->__('Shipping Address') ?></h3>
                     <address class="box-content">
@@ -62,7 +63,6 @@
     </div>
 </div>
 <div class="wrapper"></div>
-
 
 <span id="rma-please-wait" class="please-wait" style="display:none;">
     <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="" class="v-middle" /> <?php echo $this->__('Please wait, loading...') ?>
@@ -80,7 +80,7 @@
                             <a class="f-left"
                                 href="#"
                                 onclick="popWin('<?php echo $this->helper('enterprise_rma')->getTrackingPopupUrlBySalesModel($this->getRma()) ?>','trackshipment','width=800,height=600,top=0,left=0,resizable=yes,scrollbars=yes'); return false;"
-                                title="<?php echo $this->quoteEscape($this->__('Track this shipment')) ?>">
+                                title="<?php echo Mage::helper('core')->quoteEscape($this->__('Track this shipment')) ?>">
                                     <?php echo $this->__('Track this shipment') ?>
                             </a>
                         <?php endif ?>
@@ -119,7 +119,7 @@
                                             <input type="text" class="input-text required-entry f-fix" value="" name="tracking_number_input" id="tracking_number_input">
                                         </td>
                                         <td>
-                                            <button type="button" class="button" onclick="addTrackNumber()" title="<?php echo $this->quoteEscape($this->__('Add')) ?>"><span><span><?php echo $this->__('Add') ?></span></span></button>
+                                            <button type="button" class="button" onclick="addTrackNumber()" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Add')) ?>"><span><span><?php echo $this->__('Add') ?></span></span></button>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -157,7 +157,7 @@
 <?php endif ?>
 
 <h3 class="box-title"><?php echo $this->__('Items Return Requested For') ?></h3>
-<table class="data-table linearize-table-large" id="my-returns-items-table">
+<table class="data-table" id="my-returns-items-table">
     <col width="200" />
     <col width="200" />
     <col />
@@ -165,7 +165,7 @@
     <col />
     <col />
     <col />
-    <col />
+    <col width="200" />
     <thead>
         <tr>
             <th><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
@@ -186,31 +186,24 @@
                 <?php if($_options = $this->getItemOptions($item)): ?>
                 <dl class="item-options">
                 <?php foreach ($_options as $_option) : ?>
-                    <dt><?php echo $this->escapeHtml($_option['label']) ?>:</dt>
+                    <dt><?php echo $this->escapeHtml($_option['label']) ?></dt>
                     <dd><?php echo $_option['value'] ?></dd>
                 <?php endforeach; ?>
                 </dl>
                 <?php endif; ?>
             </td>
-
-            <td data-rwd-label="<?php echo $this->__('SKU') ?>"><?php echo $this->escapeHtml($item->getProductSku()) ?></span></td>
-
-            <td data-rwd-label="<?php echo $this->__('Condition') ?>"><?php echo $this->escapeHtml($this->getAttributeValue($item->getId(), 'condition')) ?></td>
-
-            <td data-rwd-label="<?php echo $this->__('Resolution') ?>"><?php echo $this->escapeHtml($this->getAttributeValue($item->getId(), 'resolution')) ?></td>
-
-            <td data-rwd-label="<?php echo $this->__('Request Qty') ?>"><?php echo $this->escapeHtml($this->helper('enterprise_rma')->parseQuantity($item->getQtyRequested(), $item)); ?></td>
-            <td data-rwd-label="<?php echo $this->__('Qty') ?>"><?php echo $this->escapeHtml($this->helper('enterprise_rma')->getQty($item));?></td>
-
-            <td data-rwd-label="<?php echo $this->__('Status') ?>"><span class="nobr"><?php echo $this->escapeHtml($item->getStatusLabel()) ?></span></td>
-
-             <td>
-                <a id="as_<?php  echo $key ?>" href="javascript:void(0)" onclick="showHiddenForm(<?php  echo $key ?>)"><?php  echo $this->__('Show Details') ?></a>
-                <a id="ah_<?php  echo $key ?>" style="display:none" href="javascript:void(0)" onclick="hideHiddenForm(<?php  echo $key ?>)"><?php  echo $this->__('Hide Details') ?></a>
+            <td><?php echo $this->escapeHtml($item->getProductSku()) ?></span></td>
+            <td><?php echo $this->escapeHtml($this->getAttributeValue($item->getId(), 'condition')) ?></td>
+            <td><?php echo $this->escapeHtml($this->getAttributeValue($item->getId(), 'resolution')) ?></td>
+            <td><?php echo $this->escapeHtml($this->helper('enterprise_rma')->parseQuantity($item->getQtyRequested(), $item)); ?></td>
+            <td><?php echo $this->escapeHtml($this->helper('enterprise_rma')->getQty($item));?></td>
+            <td><span class="nobr"><?php echo $this->escapeHtml($item->getStatusLabel()) ?></span></td>
+            <td>
+                <a id="as_<?php echo $key ?>" href="javascript:void(0)" onclick="showHiddenForm(<?php echo $key ?>)"><?php echo $this->__('Show Details') ?></a>
+                <a id="ah_<?php echo $key ?>" style="display:none" href="javascript:void(0)" onclick="hideHiddenForm(<?php echo $key ?>)"><?php echo $this->__('Hide Details') ?></a>
             </td>
-
         </tr>
-        <tr id="shf_<?php  echo $key ?>" style="display:none">
+        <tr id="shf_<?php echo $key ?>" style="display:none">
             <td colspan="8" style="background:#F5F5F5;">
                 <div style="display:inline; float:left;width:40%;"><?php echo $this->__('Questions') ?>:</div>
                 <div style="display:inline; float:left;width:40%;"><?php echo $this->__('Answers') ?>:</div>
@@ -235,8 +228,7 @@
             </script>
         <?php endif; ?>
         <?php endforeach; ?>
-
-        <!-- <tr><td colspan="8"></td></tr> -->
+        <tr><td colspan="8"></td></tr>
     </tbody>
 </table>
 <script type="text/javascript">
@@ -258,15 +250,14 @@
 //]]>
 </script>
 <div class="wrapper"></div>
-<br>
 <form method="post" id="rma_comment" action="<?php echo $this->getSubmitUrl() ?>">
     <div class="box">
         <div class="box-content">
             <div class="info-box">
                 <h3 class="box-title"><?php echo $this->__('Leave Comment') ?></h3>
                 <p class="box-content">
-                    <label><?php echo $this->__('Comment Text') ?></label>
-                    <textarea id="rma_comment_text" style="height:6em;min-width:100%;width:99%;" cols="5" rows="3" name="comment" class="input-text required-entry"></textarea>
+                    <?php echo $this->__('Comment Text') ?>
+                    <textarea id="rma_comment_text" style="height:6em;width:99%;" cols="5" rows="3" name="comment" class="required-entry"></textarea>
                 </p>
                 <div class="box-content buttons-set">
                     <button type="submit" class="button" id="submit.save"><span><span><?php echo $this->__('Submit Comment')?></span></span></button>
@@ -279,21 +270,19 @@
                     <?php foreach($_comments as $_comment): ?>
                         <?php if ($_comment->getIsVisibleOnFront()): ?>
                         <li>
-                            <?php echo $this->formatDate($_comment->getCreatedAt()) ?> <?php echo $this->formatTime($_comment->getCreatedAt()) ?>
+                            <strong><?php echo $this->formatDate($_comment->getCreatedAt()) ?> <?php echo $this->formatTime($_comment->getCreatedAt()) ?></strong>
                             <span class="separator">|</span>
-
-                            <?php if ($_comment->getIsAdmin()): ?>
-                                <?php echo $this->__('Customer Service')?>
-                            <?php else: ?>
-                                <?php echo $this->escapeHtml($this->getCustomerName())?>
-                           <?php endif; ?>
-
+                            <strong>
+                                <?php if ($_comment->getIsAdmin()): ?>
+                                    <?php echo $this->__('Customer Service')?>
+                                <?php else: ?>
+                                    <?php echo $this->escapeHtml($this->getCustomerName())?>
+                               <?php endif; ?>
+                            </strong>
                             <br />
-
                             <span>
                                 <?php echo nl2br($this->escapeHtml($_comment->getComment())); ?>
                             </span>
-
                             <div class="divider"></div>
                         </li>
                         <?php endif; ?>

@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -43,9 +43,9 @@ $entityValues = $this->getEntityValues();
 
     <?php if ($this->hasWishlistItems()): ?>
     <form id="wishlist-view-form" action="<?php echo $this->getUrl('*/*/update') ?>" method="post">
-        <div class="fieldset">
+        <fieldset>
             <?php echo $this->getBlockHtml('formkey')?>
-            <table class="data-table linearize-table" id="wishlist-table">
+            <table class="data-table" id="wishlist-table">
             <col width="1" />
             <col />
             <?php if ($this->getEnabled()): ?>
@@ -101,7 +101,7 @@ $entityValues = $this->getEntityValues();
                             <?php endif;?>
                             <td class="a-center">
                             <?php if ($item->canHaveQty() && $isVisibleProduct): ?>
-                                <p><input type="number" pattern="\d*" class="input-text qty" name="qty[<?php echo $item->getId() ?>]" value="<?php echo $this->getAddToCartQty($item) * 1 ?>" /></p>
+                                <p><input type="text" class="input-text qty" name="qty[<?php echo $item->getId() ?>]" value="<?php echo $this->getAddToCartQty($item) * 1 ?>" /></p>
                             <?php endif; ?>
                             <?php if ($product->isSaleable()): ?>
                                 <?php if ($isVisibleProduct): ?>
@@ -135,7 +135,7 @@ $entityValues = $this->getEntityValues();
                 <?php endif;?>
                 <button type="submit" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Update Wishlist')) ?>" onclick="this.name='do'" class="button btn-update"><span><span><?php echo $this->__('Update Wishlist') ?></span></span></button>
             </div>
-        </div>
+        </fieldset>
     </form>
     <?php else: ?>
         <p><?php echo $this->__('You have no items in your wishlist.') ?></p>

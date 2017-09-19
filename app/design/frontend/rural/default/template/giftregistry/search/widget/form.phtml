@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -108,7 +108,7 @@
                 <?php echo $this->getBlockHtml('formkey')?>
                 <label for="quick_search_email" class="required"><?php echo Mage::helper('enterprise_giftregistry')->__('Recipient Email') ?> <em>*</em></label>
                 <div class="input-box">
-                    <input type="email" autocapitalize="off" autocorrect="off" spellcheck="false" class="input-text required-entry validate-email" id="quick_search_email" name="params[email]" />
+                    <input type="text" class="input-text required-entry validate-email" id="quick_search_email" name="params[email]" />
                 </div>
             </li>
         </ul>

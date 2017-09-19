@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -39,9 +39,5 @@
         <?php endif; ?>
     </div>
 <?php else: ?>
-    <?php // Wrapping in the same HTML used for global errors so it will inherit the same styling ?>
-    <?php // The inline styling prevents the block from being hidden when loaded via AJAX ?>
-    <ul class="messages" style="display: block !important;"><li class="error-msg"><ul><li><span>
-                        <?php echo $this->__('Wrong or expired Gift Card Code.'); ?>
-    </span></li></ul></li></ul>
+    <p class="error-msg"><?php echo $this->__('Wrong or expired Gift Card Code.'); ?></p>
 <?php endif; ?>

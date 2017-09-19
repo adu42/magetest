@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -34,7 +34,7 @@
 ?>
 <?php if ($this->hasUserDefinedAttributes()): ?>
     <?php if ($this->isShowContainer()): ?>
-<li class="customer-user-attributes">
+<div>
     <ul class="form-list">
     <?php endif;?>
     <?php foreach ($this->getUserDefinedAttributes() as $attribute):?>
@@ -45,6 +45,6 @@
     <?php endforeach;?>
     <?php if ($this->isShowContainer()): ?>
     </ul>
-</li>
+</div>
     <?php endif;?>
 <?php endif; ?>

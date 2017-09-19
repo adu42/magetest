@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -34,7 +34,7 @@
     <h2 class="sub-title"><?php echo $this->__('Products Requiring Attention') ?></h2>
     <form action="<?php echo $this->getFormActionUrl() ?>" method="post">
         <?php echo $this->getBlockHtml('formkey') ?>
-        <div class="fieldset">
+        <fieldset>
             <table id="failed-products-table" class="data-table cart-table">
                 <col width="1" />
                 <col />
@@ -92,7 +92,7 @@
                 </tbody>
             </table>
             <script type="text/javascript">decorateTable('failed-products-table')</script>
-        </div>
+        </fieldset>
     </form>
 </div>
 <script type="text/javascript">

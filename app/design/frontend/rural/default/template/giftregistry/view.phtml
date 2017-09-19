@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -48,9 +48,7 @@
         </table>
     </div>
 </div>
-<div class="gift-registry-view">
-    <?php echo $this->getChildHtml('giftregistry_items') ?>
-</div>
+<?php echo $this->getChildHtml('giftregistry_items') ?>
 <?php endif; ?>
 <div class="buttons-set">
     <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getSearchBackUrl()) ?>"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>

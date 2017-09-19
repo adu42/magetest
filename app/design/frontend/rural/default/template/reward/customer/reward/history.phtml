@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -44,24 +44,24 @@
         <col width="1" />
         <thead>
             <tr>
-                <th class="balance"><?php echo $this->__('Balance'); ?></th>
-                <th class="amount"><?php echo $this->__('Amount'); ?></th>
-                <th class="points"><?php echo $this->__('Points'); ?></th>
-                <th class="reason"><?php echo $this->__('Reason'); ?></th>
-                <th class="date"><?php echo $this->__('Date'); ?></th>
+                <th><?php echo $this->__('Balance'); ?></th>
+                <th><?php echo $this->__('Amount'); ?></th>
+                <th><?php echo $this->__('Points'); ?></th>
+                <th><?php echo $this->__('Reason'); ?></th>
+                <th><?php echo $this->__('Date'); ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach($history as $item): ?>
             <tr>
-                <td class="a-right balance"><?php echo $this->getPointsBalance($item)?></td>
-                <td class="a-right amount"><?php echo $this->getCurrencyBalance($item)?></td>
-                <td class="a-right points"><?php echo $this->getPointsDelta($item)?></td>
-                <td class="reason">
+                <td class="a-right"><?php echo $this->getPointsBalance($item)?></td>
+                <td class="a-right"><?php echo $this->getCurrencyBalance($item)?></td>
+                <td class="a-right"><?php echo $this->getPointsDelta($item)?></td>
+                <td>
                     <?php echo $this->escapeHtml($this->getMessage($item))?>
                     <?php if ($explanation = $this->getExplanation($item)):?><br /><small><?php echo $this->escapeHtml($explanation);?></small><?php endif;?>
                 </td>
-                <td class="date">
+                <td>
                     <span class="nobr"><?php echo $this->getDate($item)?></span>
                     <?php if ($expirationDate = $this->getExpirationDate($item)):?>
                     <small class="nobr"><?php echo $this->__('Expires on %s', $expirationDate);?></small>

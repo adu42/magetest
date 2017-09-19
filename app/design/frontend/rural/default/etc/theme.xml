@@ -20,39 +20,11 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 -->
 <theme>
-    <parent>rwd/default</parent>
-    <layout>
-        <updates>
-            <enterprise_catalogsearch>
-                <file>enterprise/catalogsearch.xml</file>
-            </enterprise_catalogsearch>
-            <enterprise_checkout>
-                <file>enterprise/checkout.xml</file>
-            </enterprise_checkout>
-            <enterprise_cms>
-                <file>enterprise/cms.xml</file>
-            </enterprise_cms>
-            <enterprise_customer>
-                <file>enterprise/customer.xml</file>
-            </enterprise_customer>
-            <enterprise_newsletter>
-                <file>enterprise/newsletter.xml</file>
-            </enterprise_newsletter>
-            <enterprise_oauth>
-                <file>enterprise/oauth.xml</file>
-            </enterprise_oauth>
-            <enterprise_page>
-                <file>enterprise/page.xml</file>
-            </enterprise_page>
-            <enterprise_review>
-                <file>enterprise/review.xml</file>
-            </enterprise_review>
-        </updates>
-    </layout>
+    <parent />
 </theme>

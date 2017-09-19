@@ -20,8 +20,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
  
@@ -29,20 +29,16 @@
 <layout version="0.1.0">
 
     <catalogsearch_result_index>
-        <reference name="left_first">
+        <reference name="left">
             <remove name="catalogsearch.leftnav"/>
-            <block type="enterprise_search/catalogsearch_layer" name="enterprisesearch.leftnav" before="-" template="catalog/layer/view.phtml">
-                <block type="core/text_list" name="catalog.leftnav.state.renderers" as="state_renderers" />
-            </block>
+            <block type="enterprise_search/catalogsearch_layer" name="enterprisesearch.leftnav" before="-" template="catalog/layer/view.phtml"/>
         </reference>
     </catalogsearch_result_index>
 
     <catalog_category_layered>
-        <reference name="left_first">
+        <reference name="left">
             <remove name="catalog.leftnav"/>
-            <block type="enterprise_search/catalog_layer_view" name="enterprisecatalog.leftnav" before="-" template="catalog/layer/view.phtml">
-                <block type="core/text_list" name="catalog.leftnav.state.renderers" as="state_renderers" />
-            </block>
+            <block type="enterprise_search/catalog_layer_view" name="enterprisecatalog.leftnav" before="-" template="catalog/layer/view.phtml"/>
         </reference>
     </catalog_category_layered>
 

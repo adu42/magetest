@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -38,7 +38,7 @@
     <?php echo $this->getChildHtml('check_result') ?>
 <?php endif; ?>
     <form method="post" id="codeForm">
-        <div class="fieldset">
+        <fieldset>
             <ul class="form-list">
                 <li>
                     <label for="code"><?php echo Mage::helper('enterprise_giftcardaccount')->__('Enter Gift Card code'); ?></label>
@@ -47,7 +47,7 @@
                     </div>
                 </li>
             </ul>
-        </div>
+        </fieldset>
         <div class="buttons-set form-buttons btn-only">
              <button class="button" type="button" onclick="cForm.submit()"><span><span><?php echo Mage::helper('enterprise_giftcardaccount')->__('Check'); ?></span></span></button>
         </div>

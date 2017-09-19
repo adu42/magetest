@@ -20,8 +20,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 
@@ -41,7 +41,6 @@
         </reference>
 
         <reference name="before_body_end">
-            <block type="core/template" name="wishlist.multiple.wrapper" template="wishlist/catalog/product/wrapper.phtml" ifconfig="wishlist/general/multiple_enabled"/>
             <block type="enterprise_wishlist/behaviour" name="wishlist_behaviour" as="wishlist_behaviour" template="wishlist/behaviour.phtml" />
         </reference>
     </default>
@@ -70,11 +69,7 @@
             <block type="enterprise_wishlist/customer_wishlist_management" name="customer.wishlist.management" as="top" template="wishlist/view/management.phtml">
             </block>
             <reference name="customer.wishlist.items">
-                <block type="enterprise_wishlist/customer_wishlist_item_column_selector" name="customer.wishlist.item.selector" before="-" template="wishlist/item/column/selector.phtml">
-                    <action method="setRwdTitle" translate="rwdtitle" module="enterprise_wishlist" ifconfig="wishlist/general/multiple_enabled">
-                        <rwdtitle>Select Item</rwdtitle>
-                    </action>
-                </block>
+                <block type="enterprise_wishlist/customer_wishlist_item_column_selector" name="customer.wishlist.item.selector" before="-" template="wishlist/item/column/selector.phtml" />
                 <reference name="customer.wishlist.item.info">
                     <block type="enterprise_wishlist/customer_wishlist_item_column_management" name="customer.wishlist.item.mananagement" before="-" template="wishlist/item/column/management.phtml"></block>
                 </reference>
@@ -91,26 +86,6 @@
         </reference>
     </wishlist_index_share>
 
-    <wishlist_search_index>
-        <reference name="content">
-            <block type="enterprise_wishlist/search_form" name="wishlist.search.form" template="wishlist/search/form.phtml">
-            </block>
-        </reference>
-    </wishlist_search_index>
-
-    <wishlist_search_results>
-        <reference name="content">
-            <block type="enterprise_wishlist/search_form" name="wishlist.search.form" template="wishlist/search/form.phtml"></block>
-            <block type="enterprise_wishlist/search_results" name="wishlist.search.results" template="wishlist/search/results.phtml"></block>
-        </reference>
-    </wishlist_search_results>
-
-    <rss_index_wishlist>
-        <block type="enterprise_wishlist/rss" name="rss.wishlist" output="toHtml">
-            <action method="addPriceBlockType"><type>msrp_rss</type><block>catalog/product_price</block><template>wishlist/render/item/price_msrp_rss.phtml</template></action>
-        </block>
-    </rss_index_wishlist>
-
     <wishlist_search_view>
         <reference name="head">
             <action method="setTitle" translate="title" module="enterprise_wishlist" ifconfig="wishlist/general/multiple_enabled">
@@ -126,9 +101,6 @@
             <block type="enterprise_wishlist/info" name="customer.wishlist.info" template="wishlist/info.phtml" >
                 <block type="wishlist/customer_wishlist_items" name="wishlist.view.items" as="items" template="wishlist/item/list.phtml">
                     <block type="enterprise_wishlist/customer_wishlist_item_column_selector_cart" name="customer.wishlist.item.selector" after="-" template="wishlist/item/column/selector.phtml" >
-                        <action method="setRwdTitle" translate="rwdtitle" module="enterprise_wishlist">
-                            <rwdtitle>Select Item</rwdtitle>
-                        </action>
                         <action method="setIsEnabled">
                             <isEnabled>true</isEnabled>
                         </action>
@@ -160,8 +132,33 @@
                             <title>Qty</title>
                         </action>
                     </block>
+                    <block type="enterprise_wishlist/customer_wishlist_item_column_copy" name="customer.wishlist.item.to_wishlist" template="wishlist/item/column/copy.phtml">
+                        <action method="setTitle" translate="title" module="enterprise_wishlist">
+                            <title>Add to Wishlist</title>
+                        </action>
+                    </block>
                 </block>
             </block>
         </reference>
     </wishlist_search_view>
+
+    <wishlist_search_index>
+        <reference name="content">
+            <block type="enterprise_wishlist/search_form" name="wishlist.search.form" template="wishlist/search/form.phtml">
+            </block>
+        </reference>
+    </wishlist_search_index>
+
+    <wishlist_search_results>
+        <reference name="content">
+            <block type="enterprise_wishlist/search_form" name="wishlist.search.form" template="wishlist/search/form.phtml"></block>
+            <block type="enterprise_wishlist/search_results" name="wishlist.search.results" template="wishlist/search/results.phtml"></block>
+        </reference>
+    </wishlist_search_results>
+
+    <rss_index_wishlist>
+        <block type="enterprise_wishlist/rss" name="rss.wishlist" output="toHtml">
+            <action method="addPriceBlockType"><type>msrp_rss</type><block>catalog/product_price</block><template>wishlist/render/item/price_msrp_rss.phtml</template></action>
+        </block>
+    </rss_index_wishlist>
 </layout>

@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -36,15 +36,15 @@
 <?php echo $this->getChildHtml('form_before')?>
 <?php if ($maxPerSend = (int)Mage::helper('enterprise_invitation')->getMaxInvitationsPerSend()): ?>
 <form id="invitationForm" action="" method="post">
+    <?php echo $this->getBlockHtml('formkey'); ?>
     <div class="fieldset">
     <h2 class="legend"><?php echo Mage::helper('enterprise_invitation')->__('Invite your friends by entering their email addresses below'); ?></h2>
-        <p class="required"><?php echo Mage::helper('enterprise_invitation')->__('* Required Fields') ?></p>
         <ul class="form-list">
             <?php $_perRow = ceil($maxPerSend/3); for($_index = 1; $_index <= $maxPerSend; $_index ++): ?>
             <li>
                 <label for="email_<?php echo $_index ?>"<?php if ($_index == 1) echo ' class="required"' ?>><?php if ($_index == 1) echo '<em>*</em>' ?><?php echo $_index; ?>:</label>
                 <div class="input-box">
-                    <input tabindex="<?php echo $_index ?>" name="email[]" id="email_<?php echo $_index ?>" title="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('enterprise_invitation')->__('Email')) ?>" value="" class="<?php if ($_index == 1): ?>required-entry <?php endif;?>input-text validate-email" type="email" autocapitalize="off" autocorrect="off" spellcheck="false" />
+                    <input tabindex="<?php echo $_index ?>" name="email[]" id="email_<?php echo $_index ?>" title="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('enterprise_invitation')->__('Email')) ?>" value="" class="<?php if ($_index == 1): ?>required-entry <?php endif;?>input-text validate-email" type="text" />
                 </div>
             </li>
             <?php endfor; ?>
@@ -58,6 +58,7 @@
         </ul>
         <?php endif;?>
     </div>
+   <p class="required"><?php echo Mage::helper('enterprise_invitation')->__('* Required Fields') ?></p>
     <div class="buttons-set form-buttons">
         <p class="back-link"><a href="<?php echo Mage::helper('enterprise_invitation')->getCustomerInvitationUrl() ?>"><small>&laquo; </small><?php  echo Mage::helper('enterprise_invitation')->__('Back to Invitations') ?></a></p>
         <button class="button" type="submit"><span><span><?php echo Mage::helper('enterprise_invitation')->__('Send Invitations') ?></span></span></button>

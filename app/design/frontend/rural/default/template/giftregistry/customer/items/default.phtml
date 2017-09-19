@@ -19,15 +19,15 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
 <?php $_item = $this->getItem()?>
 <tr>
-    <td class="gift-image"><?php if ($this->hasProductUrl()):?><a href="<?php echo $this->getProductUrl() ?>" class="product-image" title="<?php echo $this->escapeHtml($this->getProductName()) ?>"><?php endif;?><img src="<?php echo $this->getProductThumbnail()->resize(75); ?>" alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" /><?php if ($this->hasProductUrl()):?></a><?php endif;?></td>
-    <td class="gift-info">
+    <td><?php if ($this->hasProductUrl()):?><a href="<?php echo $this->getProductUrl() ?>" class="product-image" title="<?php echo $this->escapeHtml($this->getProductName()) ?>"><?php endif;?><img src="<?php echo $this->getProductThumbnail()->resize(75); ?>" alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" /><?php if ($this->hasProductUrl()):?></a><?php endif;?></td>
+    <td>
         <h2 class="product-name">
         <?php if ($this->hasProductUrl()):?>
             <a href="<?php echo $this->getProductUrl() ?>"><?php echo $this->escapeHtml($this->getProductName()) ?></a>
@@ -60,17 +60,17 @@
         <?php endforeach; ?>
         <?php endif; ?>
     </td>
-    <td class="a-left left-note">
-        <textarea class="gift-note" name="items[<?php echo $_item->getId() ?>][note]" rows="3" cols="5" style="height:10em;"><?php echo $this->escapeHtml($_item->getNote()) ?></textarea>
+    <td class="a-center">
+        <textarea name="items[<?php echo $_item->getId() ?>][note]" rows="3" cols="5" style="width:99%; height:10em;"><?php echo $this->escapeHtml($_item->getNote()) ?></textarea>
     </td>
-    <td class="a-left add-date">
+    <td class="a-center">
         <span class="nobr"><?php echo $this->formatDate($_item->getAddedAt(), Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM) ?></span>
     </td>
     <td class="a-center">
-        <input type="number" class="input-text qty gift-qty" pattern="\d*" name="items[<?php echo $_item->getId() ?>][qty]" value="<?php echo $_item->getQty()*1 ?>"/>
+        <input class="input-text qty" name="items[<?php echo $_item->getId() ?>][qty]" value="<?php echo $_item->getQty()*1 ?>"/>
 
     </td>
-    <td class="a-center gift-secondary">
+    <td class="a-center">
         <?php echo $_item->getQtyFulfilled()*1 ?>
     </td>
     <td class="a-center">

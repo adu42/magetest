@@ -55,7 +55,6 @@ class magebird_popup{
     }else{
       $popups = $this->model->getPopups($this->helper);
     }
-    
     echo $this->view->toHtml($popups,$this->helper,$product,$cartProduct);
   }  
   
@@ -117,5 +116,4 @@ class magebird_popup{
         }
       }
   }
-       
 }

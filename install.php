@@ -24,7 +24,7 @@
  * @license http://www.magento.com/license/enterprise-edition
  */
 
-
+die('error for install begin install.php');
 /**
  * There are two modes to run this script:
  *

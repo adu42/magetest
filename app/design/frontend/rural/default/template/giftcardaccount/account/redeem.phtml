@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -37,23 +37,23 @@
         <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="" class="v-middle" /> <?php echo $this->__('Please wait, loading...') ?>
     </span>
     <?php echo $this->getMessagesBlock()->toHtml() ?>
-    <form id="giftcard-form" action="<?php echo $this->getRedeemActionUrl(); ?>" method="post"<?php if (!$this->canRedeem()): ?> onsubmit="giftCardAccountLookupBalance(); return false;"<?php endif; ?>>
+    <form id="giftcard-form" action="<?php echo $this->getRedeemActionUrl() ?>" method="post"<?php if (!$this->canRedeem()): ?> onsubmit="giftCardAccountLookupBalance(); return false;"<?php endif; ?>>
         <div id="giftcard_balance_lookup"></div>
         <div class="fieldset">
             <ul class="form-list">
                 <li>
                     <label for="giftcard_code"><?php echo $this->__('Enter gift card code') ?></label>
                     <div class="input-box">
-                        <input class="required-entry input-text" type="text" id="giftcard_code" name="giftcard_code" value="<?php echo $this->getCurrentGiftcard(); ?>" />
+                        <input class="required-entry input-text" id="giftcard_code" name="giftcard_code" value="<?php echo $this->getCurrentGiftcard(); ?>" />
                     </div>
                 </li>
             </ul>
         </div>
         <div class="buttons-set form-buttons btn-only">
 <?php if ($this->canRedeem()): ?>
-            <button class="button" onclick="giftcardForm.submit()" type="button" value="<?php echo $this->__('Redeem Gift Card') ?>"><span><span><?php echo $this->__('Redeem Gift Card') ?></span></span></button>
+            <button class="button" onclick="giftcardForm.submit()" type="button" value="<?php echo Mage::helper('core')->quoteEscape($this->__('Redeem Gift Card')) ?>"><span><span><?php echo $this->__('Redeem Gift Card') ?></span></span></button>
 <?php endif; ?>
-            <button class="button check-gc-status" id="gca_balance_button" type="button" value="<?php echo $this->__('Check status and balance') ?>"><span><span><?php echo $this->__('Check status and balance') ?></span></span></button>
+            <button class="button check-gc-status" id="gca_balance_button" type="button" value="<?php echo Mage::helper('core')->quoteEscape($this->__('Check status and balance')) ?>"><span><span><?php echo $this->__('Check status and balance') ?></span></span></button>
         </div>
     </form>
     <script type="text/javascript">

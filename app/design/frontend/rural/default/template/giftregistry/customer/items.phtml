@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -31,26 +31,24 @@
 
 <?php if (count($this->getItems()) > 0): ?>
 <form action="<?php echo $this->getActionUpdateUrl() ?>" method="post">
-    <div class="fieldset">
+    <fieldset>
         <?php echo $this->getBlockHtml('formkey')?>
-        <table id="shopping-cart-table" class="data-table gr-manage-items">
-            <colgroup>
-                <col width="1" />
-                <col />
-                <col width="210" class="note-col" />
-                <col width="1" class="date-col" />
-                <col width="1" />
-                <col width="1" />
-                <col width="1" />
-            </colgroup>
+        <table id="shopping-cart-table" class="data-table">
+            <col width="1" />
+            <col />
+            <col width="210" />
+            <col width="1" />
+            <col width="1" />
+            <col width="1" />
+            <col width="1" />
             <thead>
                 <tr>
-                    <th class="gift-image"><span class="nobr"><?php echo $this->__('Product') ?></span></th>
+                    <th><span class="nobr"><?php echo $this->__('Product') ?></span></th>
                     <th><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
-                    <th class="head-note"><span class="nobr"><?php echo $this->__('Note') ?></span></th>
-                    <th class="head-add-date"><span class="nobr"><?php echo $this->__('Added On') ?></span></th>
+                    <th><span class="nobr"><?php echo $this->__('Note') ?></span></th>
+                    <th><span class="nobr"><?php echo $this->__('Added On') ?></span></th>
                     <th class="a-center"><span class="nobr"><?php echo $this->__('Qty') ?></span></th>
-                    <th class="a-center gift-secondary"><span class="nobr"><?php echo $this->__('Qty Fulfilled') ?></span></th>
+                    <th class="a-center"><span class="nobr"><?php echo $this->__('Qty Fulfilled') ?></span></th>
                     <th class="a-center"><?php echo $this->__('Delete') ?></th>
                 </tr>
             </thead>
@@ -64,7 +62,7 @@
         <div class="buttons-set2">
             <button type="submit" class="button btn-update"><span><span><?php echo $this->__('Update Gift Registry') ?></span></span></button>
         </div>
-    </div>
+    </fieldset>
 </form>
 <?php else: ?>
     <p><?php echo $this->__('Gift Registry has no items.') ?></p>

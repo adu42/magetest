@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -64,7 +64,7 @@
     <div class="fieldset" id="gr-type-specific-fieldset" style="display:none;">
         <h2 class="legend"><?php echo $this->__('Type Specific Options') ?></h2>
         <ul class="form-list">
-            <li class="fields gr-type-specific-options" id="gr-type-specific-options">
+            <li class="fields" id="gr-type-specific-options">
             </li>
         </ul>
     </div>
@@ -84,7 +84,7 @@
             <li>
                  <label for="params_email" class="required"><em>*</em><?php echo $this->__('Recipient Email') ?></label>
                  <div class="input-box">
-                     <input name="params[email]" id="params_email" type="email" autocapitalize="off" autocorrect="off" spellcheck="false" value="<?php echo $this->getFormData('email') ?>" class="input-text required-entry validate-email" />
+                     <input name="params[email]" id="params_email" type="text" value="<?php echo $this->getFormData('email') ?>" class="input-text required-entry validate-email" />
                  </div>
             </li>
         </ul>
@@ -150,7 +150,7 @@ $('params_type_id').observe('change', advancedFormUpdate);
     <h2 class="legend"><?php echo $this->__('Search Results') ?></h2>
 </div>
 <?php echo $this->getChildHtml('pager') ?>
-<table class="data-table giftregistry-search-results" id="giftregistry-search-results">
+<table class="data-table" id="giftregistry-search-results">
     <thead>
         <tr>
             <th><?php echo $this->__('Name') ?></th>

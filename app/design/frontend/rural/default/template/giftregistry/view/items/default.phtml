@@ -19,14 +19,14 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
 <?php $_item = $this->getItem()?>
 <tr>
-    <td class="gift-image"><?php if ($this->hasProductUrl()):?><a href="<?php echo $this->getProductUrl() ?>" class="product-image" title="<?php echo $this->escapeHtml($this->getProductName()) ?>"><?php endif;?><img src="<?php echo $this->getProductThumbnail()->resize(75); ?>" alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" /><?php if ($this->hasProductUrl()):?></a><?php endif;?></td>
+    <td><?php if ($this->hasProductUrl()):?><a href="<?php echo $this->getProductUrl() ?>" class="product-image" title="<?php echo $this->escapeHtml($this->getProductName()) ?>"><?php endif;?><img src="<?php echo $this->getProductThumbnail()->resize(75); ?>" alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" /><?php if ($this->hasProductUrl()):?></a><?php endif;?></td>
     <td>
         <h3 class="product-name">
         <?php if ($this->hasProductUrl()):?>
@@ -60,13 +60,13 @@
         <?php endforeach; ?>
         <?php endif; ?>
     </td>
-    <td class="a-center gift-secondary head-requested">
+    <td class="a-center">
         <?php echo $_item->getQty()*1 ?>
     </td>
-    <td class="a-center gift-secondary head-fulfilled">
+    <td class="a-center">
         <?php echo $_item->getQtyFulfilled()*1 ?>
     </td>
-    <td class="a-center gift-secondary head-remaining">
+    <td class="a-center">
         <?php echo ($_item->getRemainingQty())*1 ?>
     </td>
     <td class="a-right">
@@ -82,7 +82,7 @@
         <?php if ($_item->getRemainingQty() < 1):?>
             <?php echo $this->__('Fulfilled')?>
         <?php else:?>
-            <input type="number" name="items[<?php echo $_item->getItemId() ?>][qty]" pattern="\d*" value="0" size="4" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Qty')) ?>" class="input-text qty" maxlength="12" />
+            <input name="items[<?php echo $_item->getItemId() ?>][qty]" value="0" size="4" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Qty')) ?>" class="input-text qty" maxlength="12" />
         <?php endif;?>
     </td>
 </tr>

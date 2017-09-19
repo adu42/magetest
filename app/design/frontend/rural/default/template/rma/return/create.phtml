@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 /** @var $this Enterprise_Rma_Block_Return_Create */
@@ -37,36 +37,36 @@
         <ul class="form-list">
             <li>
                 <label><?php echo $this->__('Order ID') ?></label>
-                <h5><?php echo $_order->getIncrementId() ?></h5>
+                <h5 style="float:left;"><?php echo $_order->getIncrementId() ?></h5>
             </li>
             <li>
                 <label><?php echo $this->__('Customer Name') ?></label>
-                <h5><?php echo $this->escapeHtml($_order->getCustomerName()) ?></h5>
+                <h5 style="float:left;"><?php echo $this->escapeHtml($_order->getCustomerName()) ?></h5>
             </li>
             <li>
                 <label><?php echo $this->__('Order Shipping Address') ?></label>
-                <h5><?php echo $_order->getShippingAddress()->format('html') ?></h5>
+                <h5 style="float:left;"><?php echo $_order->getShippingAddress()->format('html') ?></h5>
             </li>
             <li>
                 <label><?php echo $this->__('Email Address') ?></label>
-                <h5 class="rma-email"><?php echo $_order->getCustomerEmail()?></h5>
+                <h5 style="float:left;"><?php echo $_order->getCustomerEmail()?></h5>
             </li>
             <li>
                 <label><?php echo Mage::helper('enterprise_rma')->getContactEmailLabel() ?></label>
                 <div class="input-box">
-                     <input type="email" autocapitalize="off" autocorrect="off" spellcheck="false" name="customer_custom_email" id="email" title="Contact Email Address" class="input-text validate-email" value="<?php echo $this->getContactEmail()?>">
+                     <input type="text" name="customer_custom_email" id="email" title="Contact Email Address" class="input-text validate-email" value="<?php echo $this->getContactEmail()?>">
                 </div>
             </li>
         </ul>
     </div>
-    <div class="order-page"><dl class="order-info"></dl></div>
+    <div class="order-page"><dl class="order-info"></dl></div><br>
 
     <?php $_items = $this->getItems(); ?>
 
     <div id="template_container" class="template" style="display:none;">
         <div id="template_registrant">
-            <p id="btn-remove_index_" style="text-align:right">
-                <a class="button" href="#" onclick="removeRegistrant(_index_); return false" ><?php echo $this->__('Remove'); ?></a>
+            <p class="btn-remove" id="btn-remove_index_"><a href="#" onclick="removeRegistrant(_index_); return false" class="btn-remove">
+                <img src="<?php echo $this->getSkinUrl('images/btn_remove.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Remove')) ?>" /></a>
             </p>
             <div class="field">
                 <label for="items:item_index_" class="required"><em>*</em><?php echo $this->__('Item') ?></label>
@@ -74,7 +74,7 @@
                 <?php $bundleID     = 0; ?>
                 <?php $firstId = $i = $productType = $availableQty = 0; ?>
                 <?php $html         = array(); ?>
-                    <select name="items[_index_][order_item_id]" class="required-entry" id="items:item_index_" onchange="showBundle('_index_', this.value); return false;">
+                    <select name="items[_index_][order_item_id]" class="input-text required-entry" id="items:item_index_" onchange="showBundle('_index_', this.value); return false;">
                 <?php foreach($_items as $_item): ?>
                     <?php if ($i == 0): ?>
                         <?php
@@ -147,7 +147,7 @@
                                             <td class="a-center"><?php echo $item[2] ?></td>
                                             <td width="65">
                                                 <?php if (!$item[3]): ?>
-                                                    <input id="items[_index_][<?php echo $bundleID ?>][checkbox][qty][<?php echo $item[0]?>]" pattern="\d*" name="items[_index_][items][<?php echo $item[0]?>]" size="7" class="validate-greater-than-zero required-entry" style="display:none;" disabled="disabled"/>
+                                                    <input id="items[_index_][<?php echo $bundleID ?>][checkbox][qty][<?php echo $item[0]?>]" name="items[_index_][items][<?php echo $item[0]?>]" size="7" class="validate-greater-than-zero required-entry" style="display:none;" disabled="disabled"/>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>
@@ -164,13 +164,13 @@
             <div class="field" id="qty_requested_block__index_">
                 <label for="items:qty_requested_index_" class="required"><em>*</em><?php echo $this->__('Quantity To Return') ?></label>
                 <div class="input-box">
-                    <input type="text" pattern="\d*" class="input-text validate-greater-than-zero required-entry" value="" name="items[_index_][qty_requested]" id="items:qty_requested_index_">
+                    <input type="text" class="input-text validate-greater-than-zero required-entry" value="" name="items[_index_][qty_requested]" id="items:qty_requested_index_">
                 </div>
             </div>
             <div class="field" id="remaining_quantity_block__index_">
-                <label class="required"><?php echo $this->__('Remaining quantity:'); ?> </label>
+                <label class="required"></label>
                 <div class="input-box">
-                    <span id="remaining_quantity__index_"></span>
+                    Remaining quantity: <span id="remaining_quantity__index_"></span>
                 </div>
             </div>
 
@@ -179,9 +179,9 @@
                 <?php $attributeCode = $attribute->getAttributeCode(); ?>
                 <?php if ($attributeContent): ?>
                     <?php if ($attributeCode == 'reason_other'): ?>
-                        <div id="reason_other_index_" class="field" style="display: none;"><?php echo $attributeContent;?></div>
+                        <li id="reason_other_index_" style="display: none;"><?php echo $attributeContent;?></li>
                     <?php else: ?>
-                        <div class="field"><?php echo $attributeContent;?></div>
+                        <li><?php echo $attributeContent;?></li>
                     <?php endif; ?>
                 <?php endif;?>
             <?php endforeach;?>
@@ -327,14 +327,14 @@
             <li class="no-display">&nbsp;</li>
         </ul>
         <div class="buttons-set form-buttons" style="text-align:right">
-            <a class="button" href="javascript:void(0)" onclick="addRegistrant();"><?php echo $this->__('Add Item To Return') ?></a>
+            <a href="javascript:void(0)" onclick="addRegistrant();"><?php echo $this->__('Add Item To Return') ?></a>
         </div>
     </div>
 
     <div class="order-page"><dl class="order-info"></dl></div>
-
+    <br />
     <ul class="form-list">
-        <li class="fields last">
+        <li class="fields">
             <div class="field">
                 <label for="rma_comment"><?php echo $this->__('Comments') ?></label>
                 <div class="input-box">
@@ -344,10 +344,10 @@
         </li>
     </ul>
 
-
+    <br />
     <div class="buttons-set form-buttons">
         <p class="back-link a-left"><a href="<?php echo $this->getBackUrl() ?>"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
-        <button type="submit" class="button" id="submit.save" title="<?php echo $this->quoteEscape($this->__('Save')) ?>"><span><span><?php echo $this->__('Submit') ?></span></span></button>
+        <button type="submit" class="button" id="submit.save" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Save')) ?>"><span><span><?php echo $this->__('Submit') ?></span></span></button>
     </div>
 </form>
 
@@ -423,7 +423,7 @@ document.observe("dom:loaded", function() {
 
 <?php if(!empty($html)): ?>
     <?php foreach($html as $key=>$value): ?>
-    Validation.add('validate-one-checkbox-<?php echo $key?>', '<?php echo $this->jsQuoteEscape($this->__('Please select one of the options.')) ?>', function(value, entity) {
+    Validation.add('validate-one-checkbox-<?php echo $key?>', '<?php echo  Mage::helper('core')->jsQuoteEscape($this->__('Please select one of the options.')) ?>', function(value, entity) {
         var error = 1;
         $$('input[id*="][<?php echo $key?>][checkbox][item]["]').each(function(input) {
             if(input.checked == true) {

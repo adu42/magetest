@@ -19,8 +19,8 @@
  * needs please refer to http://www.magento.com for more information.
  *
  * @category    design
- * @package     rwd_enterprise
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @package     enterprise_default
+ * @copyright Copyright (c) 2006-2017 X.commerce, Inc. and affiliates (http://www.magento.com)
  * @license http://www.magento.com/license/enterprise-edition
  */
 ?>
@@ -35,26 +35,24 @@
     $_itemsCount = count($this->getItems());
 ?>
 <h2 class="subtitle"><?php echo $this->__('Gift Registry Items') ?></h2>
-<form action="<?php echo $this->getActionUrl() ?>" method="post" class="gift-registry-items">
+<form action="<?php echo $this->getActionUrl() ?>" method="post">
     <?php echo $this->getBlockHtml('formkey') ?>
-    <div class="fieldset">
-        <table id="shopping-cart-table" class="data-table">
-            <colgroup>
-                <col width="1" class="img-col" />
-                <col />
-                <col width="1" />
-                <col width="1" />
-                <col width="1" />
-                <col width="1" />
-                <col width="1" />
-            </colgroup>
+    <fieldset>
+        <table id="shopping-cart-table" class="data-table cart-table">
+            <col width="1" />
+            <col />
+            <col width="1" />
+            <col width="1" />
+            <col width="1" />
+            <col width="1" />
+            <col width="1" />
             <thead>
                 <tr>
-                    <th class="gift-image">&nbsp;</th>
+                    <th>&nbsp;</th>
                     <th><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
-                    <th class="a-center gift-secondary head-requested"><?php echo $this->__('Requested') ?></th>
-                    <th class="a-center gift-secondary head-fulfilled"><?php echo $this->__('Fulfilled') ?></th>
-                    <th class="a-center gift-secondary head-remaining"><?php echo $this->__('Remaining') ?></th>
+                    <th class="a-center"><?php echo $this->__('Requested') ?></th>
+                    <th class="a-center"><?php echo $this->__('Fulfilled') ?></th>
+                    <th class="a-center"><?php echo $this->__('Remaining') ?></th>
                     <th class="a-center"><span class="nobr"><?php echo $this->__('Unit Price') ?></span></th>
                     <th class="a-center"><?php echo $this->__('Qty') ?></th>
                 </tr>
@@ -75,7 +73,7 @@
             </tbody>
         </table>
         <script type="text/javascript">decorateTable('shopping-cart-table')</script>
-    </div>
+    </fieldset>
 </form>
 <?php if (!$_itemsCount): ?>
     <p><?php echo $this->__('Gift Registry has no items.') ?></p>

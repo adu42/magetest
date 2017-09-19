@@ -344,14 +344,14 @@ class Enterprise_Cms_Block_Hierarchy_Menu extends Mage_Core_Block_Template
     {
         $template = $this->_getData('_span_template');
         if (!$template) {
-            $template = '<strong';
+            $template = '<h6 class="block-title heading"';
             foreach ($this->_allowedSpanAttributes as $attribute) {
                 $value = $this->getData('span_' . $attribute);
                 if (!empty($value)) {
                     $template .= ' '.$attribute.'="'.$this->escapeHtml($value).'"';
                 }
             }
-            $template .= '>__LABEL__</strong>';
+            $template .= '>__LABEL__</h6>';
             $this->setData('_span_template', $template);
         }
 
