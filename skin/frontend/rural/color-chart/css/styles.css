@@ -1,0 +1,33 @@
+.color-chart-title, .color-chart-content {
+    font-size: 12px;
+    font-family: Tahoma,Verdana,Arial,Helvetica,sans-serif;
+    line-height: 50px;
+text-transform: capitalize; 
+}
+dl.color-chart-content dt, dl.color-chart-content dd {
+    float: left;
+}
+dl.color-chart-content dt {
+/* background: url('../images/progress.gif') no-repeat center center transparent; */
+    width: 180px;
+    height: 180px;
+    text-align: center;
+}
+dl.color-chart-content dt img {
+    display: block;
+    width: 157px;
+    height: 157px;
+    padding:5px;
+    border: 1px solid #cccccc;
+}
+dd.color-chart-focus {
+    position: relative;
+    margin-left: 30px;
+}
+dd.color-chart-focus div {
+    background-color: #ffffff;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    position: absolute;
+}

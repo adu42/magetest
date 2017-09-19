@@ -1,0 +1,71 @@
+/**
+ * Ultra Slideshow
+ */
+
+/* Slideshow wrapper
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+.slideshow-wrapper-outer:before,
+.slideshow-wrapper-outer:after {
+    content: '';
+    display: table;
+}
+
+.slideshow-wrapper-outer:after {
+    clear: both;
+}
+
+/* Slideshow
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+.slideshow-wrapper {
+    margin: 0 auto;
+}
+
+/* When additional banners are on the left side, the slideshow needs to be on the right side */
+.slideshow-wrapper._right {
+    float: right !important;
+}
+
+/* Deprecated: default class .owl-carousel already has "display:none" */
+.slideshow {
+    display: none;
+}
+
+/* Additional banners
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+.slideshow-banners {
+    -webkit-backface-visibility: hidden; /* Fix possible glitches during animation */
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+    margin-bottom: 0.1%; /* Important: a little bit bigger than slideshow bottom margin to avoid jumping on slide transition */
+    opacity: 0;
+    /*-webkit-transition: opacity 300ms ease;
+    -moz-transition: opacity 300ms ease;
+    -o-transition: opacity 300ms ease;
+    transition: opacity 300ms ease;*/
+}
+
+.slideshow-banners._show {
+    opacity: 1;
+}
+
+.slideshow-banners .small-banner {
+
+}
+
+.slideshow-banners .small-banner:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Deprecated: */
+.slideshow-banners .banner {
+    position: relative; /* Container for caption */
+}
+
+.slideshow-banners a.banner, /* For backward compatibility, link could have "banner" class */
+.slideshow-banners .banner a {
+    display: block;
+}
