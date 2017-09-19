@@ -106,7 +106,6 @@ class Enterprise_Cms_Block_Widget_Node
         } else {
             $this->_node = Mage::registry('current_cms_hierarchy_node');
         }
-
         if (!$this->_node) {
             return '';
         }

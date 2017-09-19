@@ -594,7 +594,8 @@ class Enterprise_Cms_Model_Resource_Hierarchy_Node extends Mage_Core_Model_Resou
                 $where = $adapter->quoteInto('parent_node_id IN (?) OR parent_node_id IS NULL', $parentIds);
             }
         } else {
-            $where = 'parent_node_id IS NULL';
+            //by@ado
+            $where =  $adapter->quoteInto($this->getMainTable() . '.node_id=? AND parent_node_id IS NULL', $object->getNodeId());
         }
 
         $select = $this->_getLoadSelectWithoutWhere()
