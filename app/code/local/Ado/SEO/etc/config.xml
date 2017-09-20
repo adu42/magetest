@@ -136,6 +136,32 @@
                 </args>
             </catalogsearch>
         </routers>
+        <events>
+            <controller_action_postdispatch_directory_currency_switch>
+                <observers>
+                    <frontend_currency_change>
+                        <class>Ado_SEO_Model_Observer</class>
+                        <method>hookCurrencyChangeDispatch</method>
+                    </frontend_currency_change>
+                </observers>
+            </controller_action_postdispatch_directory_currency_switch>
+            <sales_quote_product_add_after>
+                <observers>
+                    <ado_cart_product_price>
+                        <class>Ado_SEO_Model_Observer</class>
+                        <method>applyDiscount</method>
+                    </ado_cart_product_price>
+                </observers>
+            </sales_quote_product_add_after>
+            <checkout_cart_update_items_after>
+                <observers>
+                    <ado_checkout_product_price>
+                        <class>Ado_SEO_Model_Observer</class>
+                        <method>applyDiscounts</method>
+                    </ado_checkout_product_price>
+                </observers>
+            </checkout_cart_update_items_after>
+        </events>
         <layout>
             <updates>
                 <ado_seo module="Ado_SEO">
