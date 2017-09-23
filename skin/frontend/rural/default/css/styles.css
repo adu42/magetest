@@ -3914,6 +3914,8 @@ a.availability-only {
 
 .product-options dt {
     font-weight: normal;
+    clear: both;
+    line-height: 28px;
 }
 
 .product-options dt label {

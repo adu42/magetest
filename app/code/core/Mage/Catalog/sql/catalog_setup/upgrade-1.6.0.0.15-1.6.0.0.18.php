@@ -27,3 +27,10 @@
 /**
  * Dummy script for maintainig data and schema version integrity
  */
+$installer = $this;
+/* @var $installer Mage_Catalog_Model_Resource_Eav_Mysql4_Setup */
+
+$installer->startSetup();
+$installer->run("ALTER TABLE `{$installer->getTable('catalog/product_option_type_title')}` ADD `is_default` TINYINT( 1 ) NULL DEFAULT '0'");
+$installer->run("ALTER TABLE `{$installer->getTable('catalog/product_option_type_title')}` ADD `note` VARCHAR( 200 ) NULL ");
+$installer->endSetup();

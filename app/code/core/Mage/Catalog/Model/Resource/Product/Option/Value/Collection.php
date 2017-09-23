@@ -83,6 +83,14 @@ class Mage_Catalog_Model_Resource_Product_Option_Value_Collection
             'default_value_title.title',
             'store_value_title.title'
         );
+        $noteExpr = $adapter->getCheckSql(
+            'store_value_title.note IS NULL',
+            'default_value_title.note',
+            'store_value_title.note'
+        );
+        $isDefaultExpr = $this->getConnection()
+            ->getCheckSql('store_value_title.is_default IS NULL', 'default_value_title.is_default', 'store_value_title.is_default');
+
         $joinExprDefaultPrice = 'default_value_price.option_type_id = main_table.option_type_id AND '
                   . $adapter->quoteInto('default_value_price.store_id = ?', Mage_Catalog_Model_Abstract::DEFAULT_STORE_ID);
 
@@ -111,14 +119,19 @@ class Mage_Catalog_Model_Resource_Product_Option_Value_Collection
             ->join(
                 array('default_value_title' => $optionTitleTable),
                 'default_value_title.option_type_id = main_table.option_type_id',
-                array('default_title' => 'title')
+                array('default_title' => 'title','default_note'=>'note','default_is_default' =>'is_default')
             )
             ->joinLeft(
                 array('store_value_title' => $optionTitleTable),
                 $joinExprTitle,
                 array(
                     'store_title' => 'title',
-                    'title'       => $titleExpr)
+                    'title'       => $titleExpr,
+                    'store_note' => 'note',
+                    'note'       => $noteExpr,
+                    'store_is_default'   => 'is_default',
+                    'is_default'         => $isDefaultExpr,
+                    )
             )
             ->where('default_value_title.store_id = ?', Mage_Catalog_Model_Abstract::DEFAULT_STORE_ID);
 
@@ -136,21 +149,29 @@ class Mage_Catalog_Model_Resource_Product_Option_Value_Collection
         $optionTitleTable = $this->getTable('catalog/product_option_type_title');
         $titleExpr = $this->getConnection()
             ->getCheckSql('store_value_title.title IS NULL', 'default_value_title.title', 'store_value_title.title');
+        $noteExpr = $this->getConnection()
+            ->getCheckSql('store_value_title.note IS NULL', 'default_value_title.note', 'store_value_title.note');
+        $isDefaultExpr = $this->getConnection()
+            ->getCheckSql('store_value_title.is_default IS NULL', 'default_value_title.is_default', 'store_value_title.is_default');
 
-        $joinExpr = 'store_value_title.option_type_id = main_table.option_type_id AND '
+        $joinExpr = 'store_value_title.option_type_id = `main_table`.option_type_id AND '
                   . $this->getConnection()->quoteInto('store_value_title.store_id = ?', $storeId);
         $this->getSelect()
             ->join(
                 array('default_value_title' => $optionTitleTable),
-                'default_value_title.option_type_id = main_table.option_type_id',
-                array('default_title' => 'title')
+                'default_value_title.option_type_id = `main_table`.option_type_id',
+                array('default_title' => 'title','default_note' => 'note','default_is_default' =>'is_default')
             )
             ->joinLeft(
                 array('store_value_title' => $optionTitleTable),
                 $joinExpr,
                 array(
                     'store_title'   => 'title',
-                    'title'         => $titleExpr
+                    'title'         => $titleExpr,
+                    'store_note'   => 'note',
+                    'note'         => $noteExpr,
+                    'store_is_default'   => 'is_default',
+                    'is_default'         => $isDefaultExpr,
                 )
             )
             ->where('default_value_title.store_id = ?', Mage_Catalog_Model_Abstract::DEFAULT_STORE_ID);

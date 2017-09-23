@@ -115,7 +115,7 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
 
             $html = $select->getHtml();
             if($showType==1)
-            $html .= $this->getColorHtml($_option,$optionValues);
+            $html .= $this->getColorHtml($_option,$optionValues,$configValue);
             return $html;
         }
 
@@ -194,7 +194,7 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
      * @param $_value
      * @return mixed
      */
-	protected function getSizeType($_title,$_value){ 
+	protected function getSizeType($_title,$_value){
 		    $isSize = false;
 			$_title = strtolower(trim($_title));
 			if($_title=='size')$isSize = true;
@@ -216,7 +216,7 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
 	    $optionTitle = $_option->getTitle();
         $optionTitle = strtolower($optionTitle);
 	    if($optionTitle!='color' && $optionTitle!='colour')return $this->getSelectHtml($_option,$optionValues,$defaultValue);
-        $_template = '<div class="color-chart-box">';
+        $_template = '<ul class="color-chart-box">';
         $fabric = $this->getFabric();
         $_color_small_image = 'color-chart/'.$fabric.'/%s.jpg'; //$this->getSkinUrl('color-chart/'.$fabric.'/%s.jpg');
         $i=0;
@@ -232,23 +232,22 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
                 $_small_image = vsprintf($_color_small_image,array($this->getFileStr($_value->getTitle())));
                 $_small_image = $this->getSkinUrl($_small_image);
             }
-            if(empty($defaultColor) && $i===0)$selected = ' on';
-            if($defaultColor && $_valueTitle==$defaultColor)$selected = ' on';
-            /**
-             *
-             */
-            $_template .= '<a href="javascript:void(0);" onclick="doPickColor(\''.$_valueTitle.'\')" id="pis-'.$_valueTitle.'" class="pis-color-a" title="'. $this->__($_value->getTitle()) .'">' ;
-            $_template .= '<dl class="pis-color'.$selected.'">';
+            if(empty($defaultColor) && $_value->getIsDefault()){
+                $selected = ' on';
+            }elseif($defaultColor && $_valueTitle==$defaultColor)$selected = ' on';
+
+            $_template .= '<li data-optionkey="'.$_option->getId().'" data-optionvalue="'.$_value->getOptionTypeId().'" onclick="doPickColor(this)" id="pis-'.$_valueTitle.'" class="pis-color-a pis-color'.$selected.'" data-color="'.$_valueTitle.'" data-alt="'.$this->__($_value->getTitle()).'">' ;
+           // $_template .= '<dl class="pis-color'.$selected.'">';
             if($fabric || $_is_show_as){
-                $_template .= '<dt><img src="'.$_small_image.'" width="28" height="28" /> <div class="pis-box-img "><img src="'.$_small_image.'" /><p>'.$this->__($_value->getTitle()).'</p></div></dt>';
+                $_template .= '<div><img src="'.$_small_image.'" width="28" height="28" /><div class="pis-box-img "><img src="'.$_small_image.'" /><p>'.$this->__($_value->getTitle()).'</p></div></div>';
             }else{
-                $_template .= '<dt><span class="'. $_valueTitle .'" ></span></dt>';
+                $_template .= '<div><span class="'. $_valueTitle .'" ></span></div>';
             }
-            $_template .= '<i></i></dl>';
-            $_template .= '</a>';
+         //   $_template .= '<i></i></dl>';
+            $_template .= '</li>';
             $i++;
         }
-        $_template .= '</div>' ;
+        $_template .= '</ul>' ;
 	    return $_template;
     }
 
@@ -256,21 +255,27 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
     protected function getSelectHtml($_option,$optionValues,$defaultValue=''){
         $optionTitle = $_option->getTitle();
         $optionTitle = strtolower($optionTitle);
-        $_template = '<div class="select-box-'.$optionTitle.'">';
+        $_template = '<ul class="select-box-'.$optionTitle.'">';
         $i=0;
+        $defaultNote = '';
         foreach($optionValues as $_value){
             $selected = '';
             $_valueTitle = $this->getflagStr($_value->getTitle());
-            if($i===0)$selected = ' on';
-            if($defaultValue && ($_valueTitle==$defaultValue || $defaultValue==$_value->getOptionTypeId()))$selected = ' on';
-            $_template .= '<a href="javascript:void(0);" onclick="doPick'.ucfirst($optionTitle).'(\'select_'.$_option->getId().'\','.$_value->getOptionTypeId().')" id="pick-'.$_valueTitle.'" class="pick-a-'.$optionTitle.'" title="'. $this->__($_value->getTitle()) .'">' ;
-            $_template .= '<dl class="pick-'.$optionTitle.''.$selected.'">';
-            $_template .= '<dt><span class="'. $_valueTitle .'" >'.$_value->getTitle().'</span></dt>';
-            $_template .= '<i></i></dl>';
-            $_template .= '</a>';
+            if($defaultValue && ($_valueTitle==$defaultValue || $defaultValue==$_value->getOptionTypeId())){
+                $defaultNote = $_value->getNote();
+                $selected = ' on';
+            }elseif ($_value->getIsDefault()){
+                $defaultNote = $_value->getNote();
+                $selected = ' on';
+            }
+            $_template .= '<li data-optionkey="'.$_option->getId().'" data-optionvalue="'.$_value->getOptionTypeId().'" onclick="doPickSize(this)" id="pick-'.$_valueTitle.'" class="pick-option pick-a-'.$optionTitle.$selected.'" data-alt="'.$this->escapeHtml($_value->getNote()).'">' ;
+            $_template .= '<span class="'. $_valueTitle .'" >'.$_value->getTitle().'</span>';
+            $_template .= '<i></i>';
+            $_template .= '</li>';
             $i++;
         }
-        $_template .= '</div>' ;
+        $_template .= '</ul>' ;
+        $_template .= '<div class="select-box-description">'.$defaultNote.'</div>' ;
         return $_template;
     }
 
@@ -288,7 +293,7 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
 
     /**
      * by@ado
-     * ���show as pictureСͼ
+     * show as pictureСͼ
      * @param $selectAsPicture
      * @param int $defaultIndex
      * @return string

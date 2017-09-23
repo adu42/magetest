@@ -36,7 +36,7 @@
 						</enable>
 						<use_cloud_zoom translate="label">
 							<label>Use Cloud Zoom</label>
-							<comment>If set to "Yes", Cloud Zoom will be used to zoom product images.</comment>
+							<comment>If set to "Yes", Cloud Zoom will be used to zoom product images.Plase Set "Use Side Show" to "No"</comment>
 							<frontend_type>select</frontend_type>
 							<source_model>adminhtml/system_config_source_yesno</source_model>
 							<sort_order>10</sort_order>
@@ -44,6 +44,16 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>1</show_in_store>
 						</use_cloud_zoom>
+						<use_sideshow translate="label">
+							<label>Use Side Show</label>
+							<comment>If set to "Yes", Cloud Zoom will Not be used to zoom product images.Plase Set "Use Cloud Zoom" to "No"</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</use_sideshow>
 						<position translate="label">
 							<label>Position</label>
 							<comment>Specify the position of the zoom area relative to the main image.</comment>

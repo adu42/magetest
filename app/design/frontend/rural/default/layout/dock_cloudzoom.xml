@@ -20,9 +20,15 @@
 		<!--	<action method="addJs"><script>dock/jquery/plugins/jquery.owlcarousel.min.js</script></action>  -->
 			
 			<action method="addJs"
-				ifconfig="cloudzoom/general/enable"><script>dock/jquery/plugins/jquery.cloudzoom.min.js</script></action>
+				ifconfig="cloudzoom/general/use_cloud_zoom"><script>dock/jquery/plugins/jquery.cloudzoom.min.js</script></action>
 			<action method="addJs"
 				ifconfig="cloudzoom/lightbox/enable"><script>dock/jquery/plugins/jquery.colorbox.min.js</script></action>
+
+			<action method="addItem"
+					ifconfig="cloudzoom/general/use_sideshow"><type>skin_js</type><name>js/swiper.jquery.min.js</name></action>
+			<action method="addItem"
+					ifconfig="cloudzoom/general/use_sideshow"><type>skin_css</type><name>css/swiper.css</name></action>
+
 			    <action method="addItem"><type>skin_js</type><name>js/adospin.jquery.js</name><params/></action>
 		</reference>
 
