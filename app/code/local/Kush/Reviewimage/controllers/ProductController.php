@@ -258,7 +258,6 @@ class Kush_Reviewimage_ProductController extends Mage_Review_ProductController
             $rating = $this->getRequest()->getParam('ratings', array());
         }
         $data['review_rating'] = isset($rating[1]) ? $rating[1] : 4;
-
         foreach (array('title', 'nickname', 'detail') as $param) {
             if (isset($data[$param])) {
                 if (stripos($data[$param], 'http') !== false || stripos($data[$param], '<script>') !== false) {
@@ -351,7 +350,6 @@ class Kush_Reviewimage_ProductController extends Mage_Review_ProductController
         /* @var $session Mage_Core_Model_Session */
         $review = Mage::getModel('review/review')->setData($data);
         /* @var $review Mage_Review_Model_Review */
-
         $validate = $review->validate();
         if ($validate === true) {
             /*** 获取分类id 和 商品id 如果有传递商品信息过来的话 **/
@@ -396,14 +394,8 @@ class Kush_Reviewimage_ProductController extends Mage_Review_ProductController
                     ->save();
 
                 $reviewId = $review->getId();
-                // Url重写
-                $data = array(
-                    'request_path' => $this->getReviewUrl($reviewId),
-                    'target_path' => 'review/product/view/id/' . $reviewId,
-                    'id_path' => 'review/' . $reviewId
-                );
 
-                $helper->saveReviewUrl($data);
+
                 /*
                                     foreach ($rating as $ratingId => $optionId) {
                                         Mage::getModel('rating/rating')
@@ -456,33 +448,10 @@ class Kush_Reviewimage_ProductController extends Mage_Review_ProductController
             }
         }
         $productName = $product->getName();
-        // 
         $head->setTitle($productName . '  ' . $helper->formTitle());
         $head->setKeywords($helper->formKeywords());
         $head->setDescription($helper->formDescription());
         $this->renderLayout();
-    }
-
-    /**
-     * 重写拼装 review url
-     */
-    public function getReviewUrl($reviewId)
-    {
-        // 获取产品名称
-        $product_name = $_POST['product-name'] ? $_POST['product-name'] : false;
-        try {
-            if ($product_name) {
-                $keyword = strtolower($product_name);
-                $keyword = str_replace(array(' ', '+'), '_', $keyword);
-                $url = 'product-review/' . $reviewId . '-' . $keyword . '.html';
-
-            }
-        } catch (Exception $e) {
-            Mage::log($e->getLine() . '-' . $e->getMessage(), null, 'reviewimage.log');
-            $session->addError($this->__('Save Action is Error!'));
-        }
-
-        return $url;
     }
 
     /**

@@ -84,10 +84,10 @@ input[type=file]:hover{
 .reviewimagediv{
     float: left !important;
     height: 40px;
-    margin-top: 25px;
+    margin-top: 5px;
     position: relative;
 }
-
+.review_image_a{display: none;}
 .btn-c {
     background: url('images/add_photo.png') no-repeat;
     color: #fff;
@@ -711,14 +711,11 @@ img.mfp-img {
     float: left;
 }
 .review-form-right-tips{
-    float: left;
-    margin-left: 30px;
-    margin-top: 50px;
-    width: 40%;
+    width: 90%;
 	padding:10px;
-	border:3px solid #ccc;
+	margin: 0 auto;
 }
-/*-----*/
+
 .user-gallery-title .title {
     background: #fff none repeat scroll 0 0;
     font-family: Verdana;
@@ -791,27 +788,26 @@ img.mfp-img {
 .product-review-left{float: left;}
 .review-product-form .product-review-left{width:495px;}
 .review-product-form .product-review-left .product-name h1{font-size:12px; margin:10px 0;}
-.review-product-form .custom-review-form-left .buttons-set .button{float:right;bottom: 65px;
-    float: right;
-    position: absolute;
-    right: 25px;}
-.fieldset-write-form{float: left; margin-left: 40px;margin-top:35px;padding: 10px 30px 90px; position:absolute;right:0px;}
+.review-product-form .custom-review-form-left .buttons-set .button{float:right;bottom: 65px;  }
+
 #review-form h2{font-size: 20px;
     margin: 6px 32px;
     padding: 10px 0 2px;}
-#review-form .form-list {
+#review-form ul.form-list-sub li {
     float: left;
-    width: 345px;
+    margin-right: 30px;
+    line-height: 30px;
 }
 .custom-review-form-left .buttons-set {
     border-top: 0 none;
     margin-top: 5px;
-	width:385px;
-	float:right;
 }
 .custom-review-form-left .buttons-set .button {
-    float: left;
 	margin-bottom:10px;
+    background-color: #000;
+}
+.custom-review-form-left .buttons-set .button:hover {
+    background-color: rgba(52, 52, 52, 0.59);
 }
 .custom-review-form-left .buttons-set .button span {
     border-radius: 5px;
@@ -830,7 +826,6 @@ img.mfp-img {
     padding-left: 25px;
 }
 .review-product-form  .custom-review-form-left .buttons-set{margin-top:0px;}
-.custom-review-form-left{float: left;}	
 .review-product-form .custom-review-form-left {
     border: 1px solid #ccc;
     display: block;
@@ -848,7 +843,6 @@ img.mfp-img {
 }
 .product-review-left .product-name {
     color: #f76793;
-    position: absolute;
     right: 15px;
     width: 500px;
 }
@@ -857,14 +851,11 @@ img.mfp-img {
     font-size: 16px;
     margin: 0 10px 6px 0;
     padding: 10px 0 ;
-	border-bottom:1px solid #ccc;
 }
 .product-review-left .product-image {
     margin-top: 13px;
 }
-.review-product-form .fieldset-write-form  h2 {
-    display: none;
-}
+
 .review-product-form .fieldset-write-form .form-list{width:480px!important;}
 .review-product-form .fieldset-write-form .form-list label.required{top:0;float:none;}
 .review-product-form .fieldset-write-form .form-list .input-box{float:none; width:100%;}
@@ -1005,10 +996,11 @@ img.mfp-img {
     margin: 0 6px 5px;
     width: 315px;
 }
-#customer-reviews.box-reviews{
-    width: 996px;
-}
 
+.customer-reviews-container{
+    margin: 0 auto;
+    padding-top: 30px;
+}
 .style-gallery-category .list-name{
     border-bottom: 1px solid #ddd;
     font-size: 0;
@@ -1088,7 +1080,9 @@ img.mfp-img {
 #tabs-detail #customer-reviews .review-form-right-tips{
     display: none;
 }
- 
+.form-add.custom-review-form{
+    background-color: #FAFAFA;
+}
 
 #tabs-detail h2 {
     border-bottom: 1px solid #ddd;
@@ -1137,7 +1131,12 @@ img.mfp-img {
     float: left;
     margin-right: 5px;
 }
-
+.custom-review-form-left{
+    max-width: 500px;
+    margin: 0 auto;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
 
 
 .product-options dl .input-box {
@@ -1151,7 +1150,6 @@ img.mfp-img {
     position: relative;
     width: 26px;
     padding: 3px;
-    text-indent: -9999px;
 }
 .pis-color span {
     display: block;
@@ -1343,7 +1341,7 @@ img.mfp-img {
 .input-box ul li{
     float: left;
     display: block;
-    height: 27px;
+    height: 28px;
     border-radius: 5px;
     border: 1px solid #eee;
     vertical-align: middle;
@@ -1356,7 +1354,7 @@ img.mfp-img {
 }
 
 .input-box ul li.on{
-    height: 27px;
+    height: 28px;
     border-radius: 5px;
     border: 1px solid #ee001c;
 }
@@ -1393,4 +1391,31 @@ img.mfp-img {
 }
 .pis-color-a:hover .pis-box-img {
     display: block!important;
+}
+ul.review-list li:nth-child(1){border-top: 1px solid #e5e5e5;}
+ul.review-list li:last-child{border-bottom: 1px solid #e5e5e5;}
+ul.review-list li{
+    display: flex;
+    border-bottom: 1px solid #e5e5e5;
+}
+.review-right{float: right; border-left: 1px solid #f5f5f5; padding: 30px 10px 30px 30px;}
+.review-left{float: left;margin-top: 14px;    padding: 30px 0; border-right: 1px solid #fafafa;}
+.review-right img{ max-width: 80px;max-height: 100px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    position: relative;
+    vertical-align: top;
+}
+.review-header{clear: both;display: block; max-height: 36px; line-height: 36px;}
+.review-header .ratings-table{
+    margin-left: 20px;
+    float: left;
+}
+.review-header small{
+    float: right;
+}
+.review-detail-content{
+    clear: both;
+    line-height: 30px;
 }

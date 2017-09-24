@@ -447,6 +447,7 @@ li.level2 > a > span > .cat-label {
     /* Override styles of search box when its inside element with class ".hp-blocks-holder--stacked" */
     max-width: none;
     margin: 0;
+    margin-top: 3px;
 }
 
 .nav-regular .nav-holder .search-wrapper .input-text, /* <-- Deprecated */

@@ -1639,8 +1639,8 @@ tr.summary-details-excluded {
     float: right; /* Float in the same direction as position of button */
     width: 100%;
     display: block;
-    height: 36px;
-    line-height: 36px; /*IE8*/
+    height: 30px;
+    line-height: 30px; /*IE8*/
     padding: 0px 35px 0 7px;
     color: #bbb;
     background-color: #fff;
@@ -3923,6 +3923,10 @@ a.availability-only {
     font-weight: bold;
 }
 
+.product-options dt span {
+    margin-left: 20px;
+}
+
 .product-options dt label.required em {
     float: right;
     margin-left: 3px;
@@ -4212,6 +4216,15 @@ a.availability-only {
 
 .product-view .box-reviews .pager {
     margin-bottom: 25px;
+    clear: both;
+    padding-left: 10px;
+    border: none;
+}
+
+.product-view .box-reviews .pager .limiter,.product-view .box-reviews .pager .sorter .product-view .box-reviews .pager .limiter,
+.product-view .box-reviews .pager .amount, .product-view .box-reviews .pager .sorter .amount
+{
+   float: right;
 }
 
 .product-view .box-reviews .form-add .form-list {

@@ -27,54 +27,49 @@
 <?php $_items = $this->getReviewsCollection()->getItems(); ?>
 <?php $_products = array(); //getEntityPkValue ?>
 <div class="box-collateral box-reviews" id="customer-reviews">
-    <div class="customer-reviews-container">
+
     <div id="shareTitle" class="hidden" dir="reviews"><?php echo Mage::helper("reviewimage")->shareTitle(); ?></div>
     <div id="likeUrl" class="hidden" dir="reviews"><?php echo Mage::helper("reviewimage")->likeUrl(); ?></div>
 
     <?php if (count($_items)): ?>
         <h2><?php echo $this->__('Customer Reviews') ?>:
-            <a class="write-review" href="#review-form-add<?php //echo Mage::helper("reviewimage")->getWriteUrl(); ?>"><span><?php echo $this->__('Write A Review') ?></span></a></h2>
+        <a class="write-review" href="#review-form-add<?php //echo Mage::helper("reviewimage")->getWriteUrl(); ?>"><span><?php echo $this->__('Write A Review') ?></span></a></h2>
         <?php echo $this->getChildHtml('toolbar') ?>
-        <div>
-        <ul class="review-list">
+        <dl>
             <?php foreach ($_items as $_review): ?>
-            <li>
             <?php
             $_productId = $_review->getEntityPkValue();
             $_product = isset($_products[$_productId]) ? $_products[$_productId] : ($_products[$_productId] = Mage::getModel('catalog/product')->load($_productId)); ?>
-            <div class="review-left col-md-3">
-
-                <?php echo $this->__('Review by <span>%s</span>', $this->escapeHtml($_review->getNickname())) ?>
-
-            </div>
-            <div class="review-right col-md-9">
+            <dt>
+                <?php $_votes = $_review->getRatingVotes(); ?>
+                <?php if (count($_votes)): ?>
+            <table class="ratings-table">
+                <col width="1"/>
+                <col/>
+                <tbody>
+                <?php foreach ($_votes as $_vote): ?>
+                    <tr>
+                        <th><?php echo $this->escapeHtml($_vote->getRatingCode()) ?></th>
+                        <td>
+                            <div class="rating-box">
+                                <div class="rating" style="width:<?php echo $_vote->getPercent() ?>%;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+            <?php echo $this->__('Review by <span>%s</span>', $this->escapeHtml($_review->getNickname())) ?>
+            <small
+                class="date"><?php echo $this->__('(Posted on %s)', $this->formatDate($_review->getCreatedAt()), 'long') ?></small>
+            </dt>
+            <dd style="margin:5px 5px;">
+                <!---!!--->
                 <div id="review-<?php echo $_review->getReviewId() ?>" class="white-popup" dir="reviews">
-                   <div class="review-header">
-                    <?php $_votes = $_review->getRatingVotes(); ?>
-                    <?php if (count($_votes)): ?>
-                        <table class="ratings-table">
-                            <col width="1"/>
-                            <col/>
-                            <tbody>
-                            <?php foreach ($_votes as $_vote): ?>
-                                <tr>
-                                    <th><?php //echo $this->escapeHtml($_vote->getRatingCode()) ?></th>
-                                    <td>
-                                        <div class="rating-box">
-                                            <div class="rating" style="width:<?php echo $_vote->getPercent() ?>%;"></div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    <?php endif; ?>
-                    <small
-                            class="date"><?php echo $this->__('(Posted on %s)', $this->formatDate($_review->getCreatedAt()), 'long') ?></small>
-                   </div>
                     <div class="review-detail-content" dir="reviews" id="review-detail-content-<?php echo $_review->getReviewId() ?>"><?php echo nl2br($this->escapeHtml($_review->getDetail())) ?></div>
                     <div class="review-detail-product hidden"  dir="reviews"  id="review-detail-product-<?php echo $_review->getReviewId() ?>"><a
-                                href="<?php echo Mage::helper("reviewimage")->getProductUrlByProduct($_product); ?>"><?php echo $this->__('Shop Now') ?></a>
+                            href="<?php echo Mage::helper("reviewimage")->getProductUrlByProduct($_product); ?>"><?php echo $this->__('Shop Now') ?></a>
                     </div>
                     <div class="review-detail-nicename hidden"  dir="reviews"
                          id="review-detail-nicename-<?php echo $_review->getReviewId() ?>"><?php echo $this->__('Worn by <span>%s</span>', $this->escapeHtml($_review->getNickname())) ?></div>
@@ -92,27 +87,26 @@
                         $images = Mage::helper("reviewimage")->getImages($_review);
                         if ($images):
                             ?>
+
                             <div class="main-image" dir="reviews"></div>
-                            <div class="review-thumbnail-images"  dir="reviews"  data-id="<?php echo $_review->getReviewId() ?>">
+                              <div class="review-thumbnail-images"  dir="reviews"  data-id="<?php echo $_review->getReviewId() ?>">
                                 <?php  foreach ($images as $image):  ?>
                                     <!-- <a href="#review-<?php echo $_review->getReviewId() ?>" class="gallery-item" data-id="<?php echo $_review->getReviewId() ?>"> </a> -->
                                     <img class="gallery-thumbnail-image" src="<?php echo $image['thumbnail']; ?>" dir="reviews"  data-zoom-image="<?php echo $image['big']; ?>"/>
 
                                 <?php endforeach; ?>
                             </div>
+
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>
-            </div>
-            </li>
-            <?php endforeach; ?>
-        </ul>
-        </div>
+                <?php endforeach; ?>
+            </dd>
+        </dl>
         <?php echo $this->getChildHtml('toolbar') ?>
     <?php endif; ?>
-    </div>
-    <div class="review-form-right-tips">
-        <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('review-form-right-tips')->toHtml() ?>
-    </div>
     <?php echo $this->getChildHtml('review_form') ?>
+	 <div class="review-form-right-tips">
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('review-form-right-tips')->toHtml() ?>
+        </div>  
 </div>

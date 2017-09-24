@@ -12,9 +12,17 @@ function doPickColor(event) {
     var _key = jQuery(event).data('optionkey');
     var _value = jQuery(event).data('optionvalue');
     var _alt = jQuery(event).data('alt');
+    var _title =jQuery(event).data('label');
     if(jQuery('#select_'+_key) && jQuery('#select_'+_key).length>0){
         jQuery('#select_'+_key).val(_value);
         if(opConfig)opConfig.reloadPrice();
+    }
+    if(jQuery('#value-'+_key) && jQuery('#value-'+_key).length>0){
+        if(_title){
+            jQuery('#value-'+_key).html(_title).show();
+        }else{
+            jQuery('#value-'+_key).html('').hide();
+        }
     }
     // 设置当前选中元素的样式 先清除 后设置
     jQuery('.pis-color-a.pis-color').each(function(){
@@ -77,15 +85,23 @@ function doPickSize(event) {
         var _key = jQuery(event).data('optionkey');
         var _value = jQuery(event).data('optionvalue');
         var _alt = jQuery(event).data('alt');
+        var _title =jQuery(event).data('label');
         if(jQuery('#select_'+_key) && jQuery('#select_'+_key).length>0){
             jQuery('#select_'+_key).val(_value);
             jQuery('.pick-option').removeClass('on');
         }
-        if(jQuery('.select-box-description') && jQuery('.select-box-description').length>0){
+        if(jQuery('#select-box-description-'+_key) && jQuery('#select-box-description-'+_key).length>0){
             if(_alt){
-                jQuery('.select-box-description').html(_alt).show();
+                jQuery('#select-box-description-'+_key).html(_alt).show();
             }else{
-                jQuery('.select-box-description').html('').hide();
+                jQuery('#select-box-description-'+_key).html('').hide();
+            }
+        }
+        if(jQuery('#value-'+_key) && jQuery('#value-'+_key).length>0){
+            if(_title){
+                jQuery('#value-'+_key).html(_title).show();
+            }else{
+                jQuery('#value-'+_key).html('').hide();
             }
         }
         jQuery(event).addClass('on');

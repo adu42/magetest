@@ -36,6 +36,9 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
     extends Mage_Catalog_Block_Product_View_Options_Abstract
 {
     protected $_images = null;
+    protected $_defaultLabel;
+   // protected $_defaultId;
+
     /**
      * Return html for control element
      * $showType>0 PC
@@ -218,7 +221,8 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
 	    if($optionTitle!='color' && $optionTitle!='colour')return $this->getSelectHtml($_option,$optionValues,$defaultValue);
         $_template = '<ul class="color-chart-box">';
         $fabric = $this->getFabric();
-        $_color_small_image = 'color-chart/'.$fabric.'/%s.jpg'; //$this->getSkinUrl('color-chart/'.$fabric.'/%s.jpg');
+        if(!$fabric)$fabric='Elastic-Woven-Satin';
+        $_color_small_image = '../color-chart/'.$fabric.'/%s.jpg'; //$this->getSkinUrl('color-chart/'.$fabric.'/%s.jpg');
         $i=0;
         $defaultColor= $this->getCurrentColor();
         foreach($optionValues as $_value){
@@ -234,9 +238,11 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
             }
             if(empty($defaultColor) && $_value->getIsDefault()){
                 $selected = ' on';
-            }elseif($defaultColor && $_valueTitle==$defaultColor)$selected = ' on';
-
-            $_template .= '<li data-optionkey="'.$_option->getId().'" data-optionvalue="'.$_value->getOptionTypeId().'" onclick="doPickColor(this)" id="pis-'.$_valueTitle.'" class="pis-color-a pis-color'.$selected.'" data-color="'.$_valueTitle.'" data-alt="'.$this->__($_value->getTitle()).'">' ;
+                $this->setDefaultLabel($_value->getTitle());
+            }elseif($defaultColor && $_valueTitle==$defaultColor){
+                $selected = ' on';$this->setDefaultLabel($_value->getTitle());
+            }
+            $_template .= '<li data-optionkey="'.$_option->getId().'" data-optionvalue="'.$_value->getOptionTypeId().'" onclick="doPickColor(this)" id="pis-'.$_valueTitle.'" class="pis-color-a pis-color'.$selected.'" data-color="'.$_valueTitle.'" data-alt="'.$this->__($_value->getTitle()).'" data-label="'.$this->__($_value->getTitle()).'">' ;
            // $_template .= '<dl class="pis-color'.$selected.'">';
             if($fabric || $_is_show_as){
                 $_template .= '<div><img src="'.$_small_image.'" width="28" height="28" /><div class="pis-box-img "><img src="'.$_small_image.'" /><p>'.$this->__($_value->getTitle()).'</p></div></div>';
@@ -264,18 +270,20 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
             if($defaultValue && ($_valueTitle==$defaultValue || $defaultValue==$_value->getOptionTypeId())){
                 $defaultNote = $_value->getNote();
                 $selected = ' on';
+                $this->setDefaultLabel($_value->getTitle());
             }elseif ($_value->getIsDefault()){
                 $defaultNote = $_value->getNote();
                 $selected = ' on';
+                $this->setDefaultLabel($_value->getTitle());
             }
-            $_template .= '<li data-optionkey="'.$_option->getId().'" data-optionvalue="'.$_value->getOptionTypeId().'" onclick="doPickSize(this)" id="pick-'.$_valueTitle.'" class="pick-option pick-a-'.$optionTitle.$selected.'" data-alt="'.$this->escapeHtml($_value->getNote()).'">' ;
+            $_template .= '<li data-optionkey="'.$_option->getId().'" data-optionvalue="'.$_value->getOptionTypeId().'" onclick="doPickSize(this)" id="pick-'.$_valueTitle.'" class="pick-option pick-a-'.$optionTitle.$selected.'" data-alt="'.$this->escapeHtml($_value->getNote()).'" data-label="'.$this->__($_value->getTitle()).'">' ;
             $_template .= '<span class="'. $_valueTitle .'" >'.$_value->getTitle().'</span>';
             $_template .= '<i></i>';
             $_template .= '</li>';
             $i++;
         }
         $_template .= '</ul>' ;
-        $_template .= '<div class="select-box-description">'.$defaultNote.'</div>' ;
+        $_template .= '<div id="select-box-description-'.$_option->getId().'" class="select-box-description">'.$defaultNote.'</div>' ;
         return $_template;
     }
 
@@ -309,9 +317,10 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
               //  print_r($_image->getData());die();
                 $images[$i]['label'] = $this->getflagStr($_image->getLabel());
                 $images[$i]['file']= $_image->getFile();
-                if(stripos($images[$i]['label'],$selectAsPicture)!==false && $images[$i]['file']){
+                $images[$i]['color']= $_image->getColor();
+                if((stripos($images[$i]['label'],$selectAsPicture)!==false ||stripos($images[$i]['color'],$selectAsPicture)!==false)&& $images[$i]['file']){
                     try{
-                      $image = $helper->init($this->getProduct(), 'image',$images[$i]['file'])->resize(160);
+                      $image = $helper->init($this->getProduct(), 'small_image',$images[$i]['file'])->resize(160);
                       $imgUrl = $images[$i]['src'] = (string)$image;
                     }catch (Exception $e){
                         $imgUrl='';
@@ -326,9 +335,9 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
 
         if(empty($imgUrl) && !empty($this->_images)){
             foreach ($this->_images as $image){
-                if(stripos($image['label'],$selectAsPicture)!==false){
+                if(stripos($image['label'],$selectAsPicture)!==false || stripos($image['color'],$selectAsPicture)!==false){
                     try{
-                        $image = $helper->init($this->getProduct(), 'image',$image['file'])->resize(160);
+                        $image = $helper->init($this->getProduct(), 'small_image',$image['file'])->resize(160);
                         $imgUrl = (string)$image;
                     }catch (Exception $e){
                         $imgUrl='';
@@ -340,7 +349,7 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
             if(empty($imgUrl)){
                 if(isset($this->_images[$defaultIndex])){
                     try{
-                        $image = $helper->init($this->getProduct(), 'image',$this->_images[$defaultIndex]['file'])->resize(160);
+                        $image = $helper->init($this->getProduct(), 'small_image',$this->_images[$defaultIndex]['file'])->resize(160);
                         $imgUrl = (string)$image;
                     }catch (Exception $e){
                         $imgUrl=$this->getSkinUrl('color-chart/show_as_picture.jpg');
@@ -360,4 +369,14 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
         return strtolower($defaultColor);
     }
 
+    public function getDefaultLabel(){
+        Mage::log($this->_defaultLabel,null,'aa.txt');
+        return $this->_defaultLabel;
+    }
+
+    public function setDefaultLabel($label){
+        $this->_defaultLabel=$label;
+        Mage::log($this->_defaultLabel,null,'aa.txt');
+        return $this;
+    }
 }

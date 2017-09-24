@@ -39,11 +39,11 @@ $isHomepage = ($this->getUrl('') == $this->getUrl('*/*/*', array('_current' => t
     //Set variable indicating that the top menu (categories, custom links, or both) exists and is rendered
     if ($isTypeVerticalDropdown) {
         if ($showCategories) {
-            Mage::register('umm_top_menu_exists', true);
+            if(!Mage::registry('umm_top_menu_exists'))Mage::register('umm_top_menu_exists', true);
         }
     } else {
         if ($showCategories || $linksHtml) {
-            Mage::register('umm_top_menu_exists', true);
+            if(!Mage::registry('umm_top_menu_exists'))Mage::register('umm_top_menu_exists', true);
         }
     }
 
