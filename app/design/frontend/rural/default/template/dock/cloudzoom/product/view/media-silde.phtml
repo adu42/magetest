@@ -1,0 +1,128 @@
+<?php
+$_product = $this->getProduct();
+$_helper = $this->helper('catalog/output');
+$helpZoom = $this->helper('dock_cloudzoom');
+$helpImg = $this->helper('dock/image');
+
+//Get image sizes. If height is not specified, aspect ratio will be kept.
+$imgWidth = intval($helpZoom->getCfg('images/main_width'));
+$imgHeight = intval($helpZoom->getCfg('images/main_height'));
+$bigImageWidth = intval($helpZoom->getCfg('general/big_image_width'));
+$bigImageHeight = intval($helpZoom->getCfg('general/big_image_height'));
+$thumbImgWidth = 72; //intval($helpZoom->getCfg('images/thumbnail_width'));
+$thumbImgHeight = 96; //intval($helpZoom->getCfg('images/thumbnail_height'));
+
+//If main image width is not specified, use default values
+if ($imgWidth <= 0) {
+    $imgWidth = 363;
+    $imgHeight = 363;
+}
+
+//If main image width is not specified, use default values
+if ($bigImageWidth <= 0) {
+    $bigImageWidth = 650;
+    $bigImageHeight = 650;
+}
+
+//Aspect ratio settings
+if ($helpZoom->getCfg('images/aspect_ratio')) {
+    //Height will be calculated automatically based on width to keep the aspect ratio of each image
+    $imgHeight = 0;
+    $bigImageHeight = 0;
+    $thumbImgHeight = 0;
+}
+$defailtSelectedIndex=0;
+?>
+
+<?php if (count($this->getGalleryImages()) > 0): ?>
+    <div class="swiper-container-thumbnail swiper-container">
+        <div class="swiper-wrapper">
+            <?php $i=0; foreach ($this->getGalleryImages() as $_image): ?>
+                <?php if ($this->isGalleryImageVisible($_image)): ?>
+                    <?php
+                    $seleted = '';
+
+                    if($_currentColor && strcasecmp($_currentColor,$_image->getTitle())===0){
+                    $defailtSelectedIndex = $i;
+                    $mainImagePath = $this->getGalleryUrl($_image);
+                    $seleted = ' class="active"';
+
+                    }else if ($_image->getFile() == $_product->getData('small_image')) {
+                    $mainImagePath = $this->getGalleryUrl($_image);
+                    }
+                    ?>
+                    <div class="swiper-slide">
+                        <a class="thumb-link" href="#" title="<?php echo $this->escapeHtml($_image->getLabel()) ?>" data-image-index="<?php echo $i; ?>">
+                            <img src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize($thumbImgWidth,$thumbImgHeight); ?>"
+                                 width="62" height="85"  alt="<?php echo $this->escapeHtml($_image->getLabel()) ?>" />
+                        </a>
+                    </div>
+                <?php endif; ?>
+                <?php $i++; endforeach; ?>
+        </div>
+        <div class="swiper-button-next">&nbsp;</div>
+        <div class="swiper-button-prev">&nbsp; </div>
+    </div>
+
+
+    <div class="swiper-container-product-main-image swiper-container">
+        <div class="swiper-wrapper">
+            <?php $i=0; foreach ($this->getGalleryImages() as $_image): ?>
+                <?php if ($this->isGalleryImageVisible($_image)): ?>
+                    <div class="swiper-slide">
+                        <a class="thumb-link" href="#" title="<?php echo $this->escapeHtml($_image->getLabel()) ?>" data-image-index="<?php echo $i; ?>">
+                            <img src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'image', $_image->getFile())->resize($bigImageWidth,$bigImageHeight); ?>"
+                                 alt="<?php echo $this->escapeHtml($_image->getLabel()) ?>" />
+                        </a>
+                    </div>
+                <?php endif; ?>
+                <?php $i++; endforeach; ?>
+        </div>
+        <div class="swiper-button-next">&nbsp;</div>
+        <div class="swiper-button-prev">&nbsp;</div>
+    </div>
+<?php endif; ?>
+    <script>
+        var galleryTop = new Swiper('.swiper-container-product-main-image', {
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 10,
+        });
+        var galleryThumbs = new Swiper('.swiper-container-thumbnail', {
+            spaceBetween: 10,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            direction: 'vertical',
+            touchRatio: 0.2,
+            slideToClickedSlide: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+        });
+        galleryTop.params.control = galleryThumbs;
+        galleryThumbs.params.control = galleryTop;
+        /*
+        // 轮播
+        var  mySwiper = new Swiper('.swiper-container-products', {
+            loop : false,
+            pagination: '.swiper-pagination',
+            effect: 'coverflow',
+            grabCursor: true,
+            centeredSlides: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 'auto',
+            coverflow: {
+                rotate: -10,// 旋转的角度
+                stretch: 2,// 拉伸   图片间左右的间距和密集度
+                depth: 70,// 深度   切换图片间上下的间距和密集度
+                modifier: 5,// 修正值 该值越大前面的效果越明显
+                slideShadows : false// 页面阴影效果
+            }
+        });
+        */
+    </script>
+    <script type="text/javascript">
+        var currentNo=<?php echo $defailtSelectedIndex; ?>;
+    </script>
+
+<?php echo $this->getChildHtml('after'); ?>

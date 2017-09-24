@@ -1137,6 +1137,7 @@ ul.item-options li { padding-left:.7em; }
 .custom-options  .type-order  {width:60px; }
 .custom-options  .type-butt  {width:33px; }
 .custom-options  .type-last  {width:auto; }
+.custom-options  .type-note  {width:300px; }
 
 .custom-options .option-box .border input.input-text,
 .custom-options .option-box .border select.select { width:90% !important; }

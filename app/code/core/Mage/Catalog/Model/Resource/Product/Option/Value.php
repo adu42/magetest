@@ -187,7 +187,9 @@ class Mage_Catalog_Model_Resource_Product_Option_Value extends Mage_Core_Model_R
                         'store_id = ?'          => Mage_Catalog_Model_Abstract::DEFAULT_STORE_ID
                     );
                     $bind  = array(
-                        'title' => $object->getTitle()
+                        'title' => $object->getTitle(),
+                        'note' => $object->getNote(),
+                        'is_default' => $object->getIsDefault(),
                     );
                     $this->_getWriteAdapter()->update($titleTable, $bind, $where);
                 }
@@ -195,7 +197,9 @@ class Mage_Catalog_Model_Resource_Product_Option_Value extends Mage_Core_Model_R
                 $bind  = array(
                     'option_type_id'    => (int)$object->getId(),
                     'store_id'          => Mage_Catalog_Model_Abstract::DEFAULT_STORE_ID,
-                    'title'             => $object->getTitle()
+                    'title'             => $object->getTitle(),
+                    'note'             => $object->getNote(),
+                    'is_default' => $object->getIsDefault(),
                 );
                 $this->_getWriteAdapter()->insert($titleTable, $bind);
             }
@@ -210,7 +214,9 @@ class Mage_Catalog_Model_Resource_Product_Option_Value extends Mage_Core_Model_R
 
             if ($optionTypeId) {
                 $bind  = array(
-                    'title' => $object->getTitle()
+                    'title' => $object->getTitle(),
+                    'note'  => $object->getNote(),
+                    'is_default' => $object->getIsDefault(),
                 );
                 $where = array(
                     'option_type_id = ?'    => (int)$optionTypeId,
@@ -221,7 +227,9 @@ class Mage_Catalog_Model_Resource_Product_Option_Value extends Mage_Core_Model_R
                 $bind  = array(
                     'option_type_id'    => (int)$object->getId(),
                     'store_id'          => (int)$object->getStoreId(),
-                    'title'             => $object->getTitle()
+                    'title'             => $object->getTitle(),
+                    'note'             => $object->getNote(),
+                    'is_default' => $object->getIsDefault(),
                 );
                 $this->_getWriteAdapter()->insert($titleTable, $bind);
             }
@@ -334,7 +342,7 @@ class Mage_Catalog_Model_Resource_Product_Option_Value extends Mage_Core_Model_R
             $titleTable = $this->getTable('catalog/product_option_type_title');
             $columns = array(
                 new Zend_Db_Expr($newTypeId),
-                'store_id', 'title'
+                'store_id', 'title','note','is_default'
             );
 
             $select = $this->_getReadAdapter()->select()
@@ -342,7 +350,7 @@ class Mage_Catalog_Model_Resource_Product_Option_Value extends Mage_Core_Model_R
                 ->where('option_type_id = ?', $oldTypeId)
                 ->columns($columns);
             $insertSelect = $writeAdapter->insertFromSelect($select, $titleTable,
-                array('option_type_id', 'store_id', 'title'));
+                array('option_type_id', 'store_id', 'title','note','is_default'));
             $writeAdapter->query($insertSelect);
         }
 

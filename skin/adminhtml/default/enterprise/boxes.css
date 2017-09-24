@@ -1234,17 +1234,19 @@ tr.qty-not-available td input[name="qty"] { background-color: #faebe7; color: #d
 .custom-options .opt-req {width:80px; }
 .custom-options .opt-order {width:60px; }
 
-.custom-options  .option-box  .border {width:615px; }
+.custom-options  .option-box  .border { max-width:900px; }
 
 .custom-options th {white-space:nowrap; }
-.custom-options  .type-title  {width:auto; }
+.custom-options  .type-title  {  max-width: 150px; }
 .custom-options  .type-price  {width:60px; }
 .custom-options  .type-type  {width:80px; }
 .custom-options  .type-uqty  {width:100px; }
-.custom-options  .type-sku  {width:150px; }
+.custom-options  .type-sku  {width:100px; }
 .custom-options  .type-order  {width:60px; }
 .custom-options  .type-butt  {width:33px; }
 .custom-options  .type-last  {width:auto; }
+.custom-options  .type-note  {width:auto; }
+.custom-options .type-is-default{ width:40px; }
 
 .custom-options .option-box .border input.input-text,
 .custom-options .option-box .border select.select { width:90% !important; }

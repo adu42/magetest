@@ -2,6 +2,7 @@
 
 class Dock_CloudZoom_Block_Product_View_Media extends Mage_Catalog_Block_Product_View_Media
 {
+
     public function renderCloudOptions()
     {
         $output = "";
@@ -44,6 +45,11 @@ class Dock_CloudZoom_Block_Product_View_Media extends Mage_Catalog_Block_Product
     public function getCloudConfig($name)
     {
         return Mage::getStoreConfig('cloudzoom/' . $name);
+    }
+
+    public function getCloudConfigFlag($name)
+    {
+        return Mage::getStoreConfigFlag('cloudzoom/' . $name);
     }
 
     public function getCloudImage($product, $imageFile=null)

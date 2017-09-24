@@ -573,37 +573,3 @@ button.swiper-pagination-bullet {
     transform: rotate(360deg);
   }
 }
-
-.swiper-container-product-main-image.swiper-container-horizontal{
-  max-width: 620px;
-  overflow: hidden;
-  float: right;
-    margin-right: 20px;
-}
-.swiper-container-thumbnail{
-  max-width: 90px;
-  max-height: 600px;
-  /* overflow-y: scroll; */
-  float: left;
-
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
-  -webkit-justify-content: flex-start;
-  justify-content: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  -webkit-align-items: flex-start;
-  align-items: start;
-}
-.swiper-container-thumbnail .swiper-slide{
-  max-width: 76px;
-  max-height: 98px;
-  float: left;
-}
-.swiper-button-prev, .swiper-container-rtl .swiper-button-next{
-  left: inherit;
-}

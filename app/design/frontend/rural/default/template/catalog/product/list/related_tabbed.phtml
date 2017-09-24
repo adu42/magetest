@@ -3,7 +3,7 @@
  * Related products slider
  */
 ?>
-<?php if($_collectionSize = $this->getItems()->getSize()): ?>
+<?php if($this->getItems() && $_collectionSize = $this->getItems()->getSize()): ?>
 <?php
     $_productCollection = $this->getItems();
     $theme = $this->helper('rural');

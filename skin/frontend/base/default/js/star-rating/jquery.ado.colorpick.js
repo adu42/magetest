@@ -5,34 +5,24 @@
  * 切换无图，显示选中的颜色名称
  * 图片的label中请带上show as picture的选项
  */
-function doPickColor(color) {
+function doPickColor(event) {
     var _label = 'Color:';
+    var color = jQuery(event).data('color');
     var elementId = '#pis-'+color;
-    // data 可以添加 可以获取   获取当前选中的value值
-
+    var _key = jQuery(event).data('optionkey');
+    var _value = jQuery(event).data('optionvalue');
+    var _alt = jQuery(event).data('alt');
+    if(jQuery('#select_'+_key) && jQuery('#select_'+_key).length>0){
+        jQuery('#select_'+_key).val(_value);
+        if(opConfig)opConfig.reloadPrice();
+    }
     // 设置当前选中元素的样式 先清除 后设置
-    jQuery('.pis-color-a .pis-color').each(function(){
+    jQuery('.pis-color-a.pis-color').each(function(){
         jQuery(this).removeClass('on');
     });
-    jQuery(elementId+' .pis-color').addClass('on');
+    jQuery(event).addClass('on');
+    if(jQuery('.color-chart-value') && jQuery('.color-chart-value').length>0)jQuery('.color-chart-value').html(_label+_alt);
 
-    // 之前只是隐藏 select 选项  此处才是获取值。
-    jQuery('select[title=color],select[title=colour]').each(function(){
-        var _that = jQuery(this);
-        var options = jQuery(_that).find('option');
-        if(options && options.length>0){
-            jQuery(options).each(function () {
-                if(jQuery(this).attr('as') == color){
-                    jQuery(this).prop('selected',true);
-                   if(opConfig)opConfig.reloadPrice();
-                   var _lab = jQuery(this).text();
-                   if(jQuery('.color-chart-value') && jQuery('.color-chart-value').length>0)jQuery('.color-chart-value').html(_label+_lab);
-                }else{
-                    jQuery(this).prop('selected',false);
-                }
-            });
-        }
-    });
     // 切换大图
     if(color) {
         /**
@@ -44,7 +34,8 @@ function doPickColor(color) {
         var _slideElement = '#slidecontent45 .ado-navigator li';
         //get img index
         jQuery(_slideElement+' img').each(function(index){
-            var _alt = jQuery(this).attr('alt');
+            var _alt = jQuery(this).data('color');
+            if(!_alt)_alt=jQuery(this).attr('alt');
             _alt = _alt.replace(new RegExp(/( )/g),'_');
             _alt=_alt.toLowerCase();
             if(_alt.indexOf(color)>-1) {
@@ -81,10 +72,23 @@ function doPickColor(color) {
     }
 }
 
-function doPickSize(selectElem,optionValue) {
-    if(jQuery('#'+selectElem) && jQuery('#'+selectElem).length>0){
-        jQuery('#'+selectElem).val(optionValue);
-        console.log(selectElem,optionValue);
+function doPickSize(event) {
+    if(event){
+        var _key = jQuery(event).data('optionkey');
+        var _value = jQuery(event).data('optionvalue');
+        var _alt = jQuery(event).data('alt');
+        if(jQuery('#select_'+_key) && jQuery('#select_'+_key).length>0){
+            jQuery('#select_'+_key).val(_value);
+            jQuery('.pick-option').removeClass('on');
+        }
+        if(jQuery('.select-box-description') && jQuery('.select-box-description').length>0){
+            if(_alt){
+                jQuery('.select-box-description').html(_alt).show();
+            }else{
+                jQuery('.select-box-description').html('').hide();
+            }
+        }
+        jQuery(event).addClass('on');
     }
     if(opConfig)opConfig.reloadPrice();
 }

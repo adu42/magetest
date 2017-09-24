@@ -1147,7 +1147,7 @@ img.mfp-img {
 .pis-color-a, .pis-color-pic {
     color: black;
     float: left;
-    height: 20px;
+    height: 26px;
     position: relative;
     width: 26px;
     padding: 3px;
@@ -1155,10 +1155,16 @@ img.mfp-img {
 }
 .pis-color span {
     display: block;
-    height: 20px;
-    width: 26px;
-    border-radius: 10px;
+    height: 25px;
+    width: 25px;
+    border-radius: 5px;
     border: 1px solid #eee;
+}
+.pis-color.on{
+    height: 27px;
+    width: 27px;
+    border-radius: 5px;
+    border: 1px solid #ee001c;
 }
 .show.as {
     background: rgba(0, 0, 0, 0) url("images/colorlumps.png") no-repeat scroll -518px -12px!important;
@@ -1326,4 +1332,65 @@ img.mfp-img {
 }
 .review-product-form .liar-label{
     margin-left:0;
+}
+.input-box ul{
+    display: block;
+    clear: both;
+}
+.input-box ul.color-chart-box li{
+    padding: 0px;
+}
+.input-box ul li{
+    float: left;
+    display: block;
+    height: 27px;
+    border-radius: 5px;
+    border: 1px solid #eee;
+    vertical-align: middle;
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.input-box ul li.on{
+    height: 27px;
+    border-radius: 5px;
+    border: 1px solid #ee001c;
+}
+.select-box-description{padding-left: 10px; margin-top: 10px;background-color: rgba(255, 0, 0, 0.02);
+    clear: both; border: dotted 1px #eee; border-radius: 5px;
+    line-height: 26px;
+}
+.pis-box-img {
+    position: absolute;
+    z-index: 1004;
+    height: 150px;
+    width: 132px;
+    bottom: 30px;
+    overflow: hidden;
+    background: #ececec;
+    display: none;
+
+}
+.pis-box-img img{
+    position: absolute;
+    height: 120px;
+    width: 120px;
+    padding: 5px;
+}
+.pis-box-img p{
+    bottom: -7px;
+    color: #333;
+    font: 500 13px/26px "Arial";
+    /*margin: 0 auto 7px;*/
+    position: absolute;
+    text-align: center;
+    text-transform: capitalize;
+    width: 100%;
+}
+.pis-color-a:hover .pis-box-img {
+    display: block!important;
 }

@@ -38,6 +38,8 @@ OptionTemplateSelect = '<table class="border" cellpadding="0" cellspacing="0">'+
             <?php endif; ?>
             '<th class="type-sku"><?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__('SKU')) ?></th>'+
             '<th class="type-order"><?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__('Sort Order')) ?></th>'+
+            '<th class="type-note"><?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__('Note')) ?></th>'+
+            '<th class="type-is-default"><?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__('Is Default')) ?></th>'+
             '<th class="type-butt last">&nbsp;</th>'+
         '</tr>'+
         '</thead>'+
@@ -50,10 +52,11 @@ OptionTemplateSelect = '<table class="border" cellpadding="0" cellspacing="0">'+
         '</tfoot>'+
     '</table>';
 
-OptionTemplateSelectRow = '<tr id="product_option_{{id}}_select_{{select_id}}">'+
+OptionTemplateSelectRow = '<tr id="product_option_{{id}}_select_{{select_id}}" class="product_option_{{id}}">'+
             '<td>'+
             '<input type="hidden" name="product[options][{{id}}][values][{{select_id}}][option_type_id]" value="{{option_type_id}}">'+
             '<input type="hidden" id="product_option_{{id}}_select_{{select_id}}_is_delete" name="product[options][{{id}}][values][{{select_id}}][is_delete]" value="">'+
+            '<input type="hidden" class="product_option_{{id}}_title_is_default" id="product_option_{{id}}_select_{{select_id}}_is_default" name="product[options][{{id}}][values][{{select_id}}][is_default]" value="">'+
             '<input type="text" class="required-entry input-text select-type-title" id="product_option_{{id}}_select_{{select_id}}_title" name="product[options][{{id}}][values][{{select_id}}][title]" value="{{title}}">{{checkboxScopeTitle}}</td>'+
             <?php if ($this->getCanReadPrice() !== false) : ?>
             '<td><input type="text" class="input-text validate-number product-option-price" id="product_option_{{id}}_select_{{select_id}}_price" name="product[options][{{id}}][values][{{select_id}}][price]" value="{{price}}"<?php if ($this->getCanEditPrice() === false) : ?> disabled="disabled"<?php endif; ?>></td>' +
@@ -64,6 +67,8 @@ OptionTemplateSelectRow = '<tr id="product_option_{{id}}_select_{{select_id}}">'
             <?php endif; ?>
             '<td><input type="text" class="input-text" name="product[options][{{id}}][values][{{select_id}}][sku]" value="{{sku}}"></td>'+
             '<td><input type="text" class="validate-zero-or-greater input-text" name="product[options][{{id}}][values][{{select_id}}][sort_order]" value="{{sort_order}}"></td>'+
+            '<td><input type="text" class="input-text select-type-note" id="product_option_{{id}}_select_{{select_id}}_note" name="product[options][{{id}}][values][{{select_id}}][note]" value="{{note}}">{{checkboxScopeNote}}</td>'+
+            '<td><input type="radio" class="select-type-is-default" id="product_option_{{id}}_select_{{select_id}}_is-default" name="product[options][{{id}}][values][is_default]" value="{{select_id}}">{{checkboxScopeIsDefault}}</td>'+
             '<td class="last"><span title="Delete row"><?php echo $this->getDeleteButtonHtml() ?></span></td>'+
         '</tr>';
 
@@ -98,6 +103,18 @@ selectOptionType = {
                 $('product_option_'+data.id+'_select_'+data.select_id+'_title').disable();
             }
         }
+        if (data.checkboxScopeNote) {
+            //set disabled
+            if ($('product_option_'+data.id+'_select_'+data.select_id+'_note') && data.scopeNoteDisabled) {
+                $('product_option_'+data.id+'_select_'+data.select_id+'_note').disable();
+            }
+        }
+        if (data.checkboxScopeIsDefault) {
+            //set disabled
+            if ($('product_option_'+data.id+'_select_'+data.select_id+'_is_default') && data.scopeIsDefaultDisabled) {
+                $('product_option_'+data.id+'_select_'+data.select_id+'_is_default').disable();
+            }
+        }
         if (data.checkboxScopePrice) {
             //set disabled
             if ($('product_option_'+data.id+'_select_'+data.select_id+'_price') && data.scopePriceDisabled) {
@@ -112,8 +129,15 @@ selectOptionType = {
             });
         }
 
+        if (data.is_default==1) {
+      
+            $('product_option_'+data.id+'_select_'+data.select_id+'_is-default').checked=true;
+            $('product_option_'+data.id+'_select_'+data.select_id+'_is_default').value=1;
+        }
+
         this.itemCount++;
         this.bindRemoveButtons();
+        this.bindRadioSelects();
     },
     remove : function(event){
         var element = $(Event.findElement(event, 'tr'));
@@ -123,6 +147,27 @@ selectOptionType = {
             element.addClassName('no-display');
             element.addClassName('ignore-validate');
             element.hide();
+        }
+    },
+    radioSelect : function(event){
+        var element = $(Event.findElement(event, 'tr'));
+        if(element){
+            var elements = $$('.'+element.readAttribute('class')+'_title_is_default');
+            if(elements){
+                for(var i=0;i<elements.length;i++){
+                    $(elements[i]).value=0;
+                }
+            }
+            $(element.readAttribute('id')+'_is_default').value = '1';
+        }
+    },
+    bindRadioSelects : function(){
+        var radios = $$('.select-type-is-default');
+        for(var i=0;i<radios.length;i++){
+            if(!$(radios[i]).binded){
+                $(radios[i]).binded = true;
+                Event.observe(radios[i], 'click', this.radioSelect.bind(this));
+            }
         }
     },
     bindRemoveButtons : function(){
@@ -151,6 +196,7 @@ if ($('option_panel_type_select')) {
 }
 
 selectOptionType.bindRemoveButtons();
+selectOptionType.bindRadioSelects();
 
 Validation.addAllThese([
     ['required-option-select-type-rows', <?php echo $this->helper('core')->jsonEncode(Mage::helper('catalog')->__('Please add rows to option.')); ?>, function(v, elm) {
