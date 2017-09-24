@@ -19,7 +19,9 @@ $searchHtml = $this->getChildHtml('search_wrapper');
 $accountLinksHtml = $this->getChildHtml('account_links');
 $userMenuHtml = $this->getChildHtml('user_menu');
 $menuHtml = $this->getChildHtml('topMenu');
-
+$welcomeHtml = '<div class="item item-left hide-below-960">'.
+                                '<p class="welcome-msg">'. $this->getChildHtml('welcome').  $this->getAdditionalHtml().'</p>'.
+'</div>';
 //Layout settings and basic flags
 //**************************************************************
 
@@ -119,6 +121,12 @@ if ($mobileHeaderMode) {
     if (!empty($accountLinksHtml)) {
         $html[$position['account-links']][] = '<div id="account-links-marker-regular"></div>' . $accountLinksHtml;
     }
+
+    //welcome
+    if (!empty($welcomeHtml)) {
+        $html[$position['welcome_position']][] = '<div id="welcome-message-marker-regular"></div>' . $welcomeHtml;
+    }
+
 }
 
 //User menu
@@ -337,9 +345,7 @@ if (!empty($menuHtml)) {
                             <?php if ($tmpHtml = $this->getChildHtml('block_header_top_left2')): ?>
                                 <div class="item item-left block_header_top_left2"><?php echo $tmpHtml; ?></div>
                             <?php endif; ?>
-                            <div class="item item-left hide-below-960">
-                                <p class="welcome-msg"><?php echo $this->getChildHtml('welcome'); ?><?php echo $this->getAdditionalHtml(); ?></p>
-                            </div>
+
 
                         </div> <!-- end: left column -->
 
@@ -390,7 +396,7 @@ if (!empty($menuHtml)) {
                                     <?php echo $this->getChildHtml('container_header_primary_left_1'); ?>
                                     <?php if (isset($html['primLeftCol'])): ?>
                                         <?php foreach ($html['primLeftCol'] as $element): ?>
-                                            <div class="item"><?php echo $element; ?></div>
+                                            <div class="item item-left"><?php echo $element; ?></div>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
                                 </div> <!-- end: left column -->
@@ -414,7 +420,7 @@ if (!empty($menuHtml)) {
                                     <?php echo $this->getChildHtml('container_header_primary_right_1'); ?>
                                     <?php if (isset($html['primRightCol'])): ?>
                                         <?php foreach ($html['primRightCol'] as $element): ?>
-                                            <div class="item"><?php echo $element; ?></div>
+                                            <div class="item item-right"><?php echo $element; ?></div>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
                                 </div> <!-- end: right column -->

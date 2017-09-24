@@ -41,6 +41,7 @@ class Dock_Rural_Helper_Template_Page_Html_Header extends Mage_Core_Helper_Abstr
         $this->position['cart']             = $this->theme->getCfg('header/cart_position');
         $this->position['currency']         = $this->theme->getCfg('header/currency_switcher_position');
         $this->position['language']         = $this->theme->getCfg('header/lang_switcher_position');
+        $this->position['welcome']         = $this->theme->getCfg('header/welcome_position');
     }
 
     /**

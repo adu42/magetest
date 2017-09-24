@@ -403,11 +403,9 @@
 
             <!-- Search box wrapper -->
             <block type="page/html_header" name="search_wrapper" template="page/html/search_wrapper.phtml">
-
                 <action method="insert">
                     <block>top.search</block>
                 </action>
-
             </block>
 
             <!-- Mini cart -->
@@ -470,8 +468,8 @@
             <block type="page/html_header" name="user_menu" template="page/html/user_menu.phtml">
 
                 <!-- TODO: Remove un-needed blocks inserts -->
-                <!-- <action method="insert">
-                    <block>search_wrapper</block>
+             <!--    <action method="insert">
+                    <block>top.search</block>
                 </action>
                 <action method="insert">
                     <block>account_links</block>
@@ -484,8 +482,8 @@
                     <siblingName></siblingName>
                     <after>0</after>
                     <alias>compareMini</alias>
-                </action> -->
-
+                </action>
+                -->
             </block>
 
             <!-- Custom static blocks and block containers: -->

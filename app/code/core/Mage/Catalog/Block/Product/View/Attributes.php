@@ -104,7 +104,7 @@ class Mage_Catalog_Block_Product_View_Attributes extends Mage_Core_Block_Templat
                         'label' => $attribute->getStoreLabel(),
                         'value' => $value,
                         'code' => $attribute->getAttributeCode(),
-                        'as' => $_as
+                    //    'as' => $_as
                     );
                 }
             }
