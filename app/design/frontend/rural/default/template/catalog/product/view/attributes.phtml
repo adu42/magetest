@@ -11,17 +11,9 @@
 ?>
 <?php if($_additional = $this->getAdditionalData()): ?>
     <strong class="section-title"><?php echo $this->__('Additional Information') ?></strong>
-    <table class="data-table" id="product-attribute-specs-table">
-        <col width="25%" />
-        <col />
-        <tbody>
+    <ul id="product-attribute-specs-table" class="product-attribute-specs-table">
         <?php foreach ($_additional as $_data): ?>
-            <tr>
-                <th class="label"><?php echo $this->escapeHtml($this->__($_data['label'])) ?></th>
-                <td class="data"><?php echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></td>
-            </tr>
+           <li class="data"><?php echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></li>
         <?php endforeach; ?>
-        </tbody>
-    </table>
-    <script type="text/javascript">decorateTable('product-attribute-specs-table')</script>
+    </ul>
 <?php endif;?>
