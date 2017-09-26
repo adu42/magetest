@@ -1,12 +1,14 @@
 <?php
 @header('Content-Type:text/html;charset=utf-8');
 @header('Access-Control-Allow-Origin:*');
+$pwd = 'doit';
 @Error_Reporting(E_ALL);
 @session_start();
 $pfile=isset($_GET["pfile"])?$_GET["pfile"]:'';
 $cfile=isset($_GET["cfile"])?$_GET["cfile"]:'';
 $do=isset($_GET["do"])?$_GET["do"]:'';
 $store=isset($_GET["store"])?$_GET["store"]:'';
+$catalog=isset($_GET["c"])?$_GET["c"]:'';
 if(!empty($pfile)){
     $product=new appendProduct($pfile);
     $product->run();
@@ -21,58 +23,24 @@ if(!empty($cfile)){
     $obj->run('c'); //清空 flat 表
     //_processAll();
 }
-//获得m范围内的n个随机数
-function get_rand_n($n,$m){
-    for($i=0;$i<$n;$i++){
-        $rands[] = rand(1,$m);
-    }
-    $sum = array_sum($rands);   
-    $rate = $n/$sum;
-    foreach($rands as &$rand){
-        $rand = ceil($rate * $rand);
-        if($rand<1)$rand=1;
-    }
-    $sum = array_sum($rands);
-    $rands[$n-1] = $rands[$n-1]+($m-$sum);
-    return $rands;
-} 
-//一级摩斯
-function _password_hash($str){
-    $char=array();
-    $per = 3;
-	$str = strtoupper($str);
-    $len = strlen($str);
-    $hash = base64_encode(rand(1,999));
-    $len2 = strlen($hash);
-    $rand_subs = get_rand_n($per,$len);
-    $rand_pos = get_rand_n($per,$len2);
-    $po = 0;
-    $lens = 0;
-    foreach($rand_subs as $i=>$rand){ 
-        if($i>0)$rand_pos[$i]=$rand_pos[$i-1]+$lens;
-        $_char=$rand_pos[$i].$rand.substr($str,$po,$rand);
-        $lens=strlen($_char);
-        $char[]=$_char;
-        $po += $rand;
-    }
-    foreach($rand_pos as $i=>$pos){
-        $hash = substr($hash,0,$pos).$char[$i].substr($hash,$pos);
-    }       
-    return base64_encode($hash);
-}
-//获取一次密码
-function get_password_hash($passwd){
-	if(!isset($_SESSION['password_hash']) || empty($_SESSION['password_hash'])){
-		$_SESSION['password_hash']=_password_hash($passwd);
-	}
-	return $_SESSION['password_hash'];
-}
+
 //检查密码，提示密码明文
 function chkcls(){
-	$passwd = 'mill9ba';
-	$passwd_hash = get_password_hash($passwd);
-    if(!isset($_GET['pwd']) || strtolower($_GET['pwd'])!=$passwd)die('====pwd====<span style="display:none">'.$passwd_hash.'</span>');
+    global  $pwd ;
+    $pass =  isset($_POST['pwd'])?$_POST['pwd']:'';
+    $validated = ($pass == $pwd);
+
+    if (!$validated && (!isset($_SESSION['auth']) ||  !$_SESSION['auth'])) {
+        echo "<form action='{$_SERVER['REQUEST_URI']}' METHOD='post'>\n";
+        echo "<input type='text' name='pwd' value='' />\n";
+        echo "<input type='submit' value='Re Authenticate' />\n";
+        echo "</form></p>\n";
+        die();
+    }else{
+        $_SESSION['auth']=true;
+    }
 }
+
 if(!empty($do)){
     if($do=='clsp'){
         chkcls();
@@ -80,24 +48,24 @@ if(!empty($do)){
         $obj->runClsProduct();
         $obj = new cleanDbCacheCatalogAndProduct();
         $obj->run('p'); //清空 flat 表
-        _processAll();
+       // _processAll();
     }else if($do=='clsc'){
         chkcls();
         $obj=new clsCataOrProduct();
         $obj->runClsCatalog();
         $obj = new cleanDbCacheCatalogAndProduct();
         $obj->run('c'); //清空 flat 表
-        _processAll();
+      //  _processAll();
     }else if($do=='clso'){
         chkcls();
         $obj=new clsCataOrProduct();
         $obj->runClsOrder();
-        _processAll();
+      // _processAll();
     }else if($do=='clscu'){
         chkcls();
         $obj=new clsCataOrProduct();
         $obj->runClsCustomer();
-        _processAll();
+       // _processAll();
     }else if($do=='clslog'){
         chkcls();
         $obj=new clsCataOrProduct();
@@ -105,18 +73,25 @@ if(!empty($do)){
         $obj = new cleanDbCacheCatalogAndProduct();
         $obj->run('c'); //清空 flat 表
        // _processAll();
+    }else if($do=='clsemaillog'){
+        chkcls();
+        $obj=new clsCataOrProduct();
+        $obj->runEmailClsLog();
+       // $obj = new cleanDbCacheCatalogAndProduct();
+       // $obj->run('c'); //清空 flat 表
+        // _processAll();
     }else if($do=='clsr'){
         chkcls();
         $obj=new clsCataOrProduct();
         $obj->runClsReview();
-        _processAll();
+        //_processAll();
     }else if($do=='maxid'){
         $obj=new clsCataOrProduct();
         $obj->runGetCatalogMaxId();
         die();
     }else if($do=='expro'){
         $obj=new exportProduct();
-        $obj->run($store);
+        $obj->run($catalog,$store);
         die();
 	 }else if($do=='clspro'){
 	    chkcls();
@@ -137,6 +112,7 @@ if(!empty($do)){
 		$obj->runClsCustomer();
 		//$obj->runClsReview();
 		$obj->runClsLog();
+        $obj->runEmailClsLog();
         $id=(isset($_GET['id'])&&!empty($_GET['id']))?$_GET['id']:'';
         $obj->initOrderId($id);
         $obj = new cleanDbCacheCatalogAndProduct();
@@ -144,8 +120,11 @@ if(!empty($do)){
         die();
     }else if($do=='impview'){
         $code=isset($_GET['code'])?substr($_GET['code'],0,2):'';
+        $del=isset($_GET['notdel'])?false:true;
+        $sku=isset($_GET['sku'])?trim($_GET['sku']):'';
         $obj=new importReview();
-        $obj->run($code);
+        if($sku)$obj->setSku($sku);
+        $obj->run($code,$del);
         die();
     }else if($do=='copyview'){
         $code=isset($_GET['code'])?substr($_GET['code'],0,2):'';
@@ -219,7 +198,7 @@ class appendProduct{
   private $_subAttributeIdsSimple;  //商品属性id集
   private $_subAttributeBackendTypes;  //商品属性写入方式类别集
   
-  
+  private $_checkColumnExist;
   private $_subAttributeValues; //商品属性id集值
   
   private $db;
@@ -230,6 +209,18 @@ class appendProduct{
 	Mage::app(); //加载……
 	$this->db=Mage::getSingleton('core/resource')->getConnection('core_read');
     return $this->db;
+  }
+
+    /**
+     * 检查列是否存在
+     * @param $table
+     * @param $column
+     * @return bool
+     */
+  protected function checkColumnExist($table,$column){
+      if($this->_checkColumnExist && isset($this->_checkColumnExist[$table]) && isset($this->_checkColumnExist[$table][$column]))return $this->_checkColumnExist[$table][$column];
+      $r = $this->db->fetchOne("show COLUMNS from $table like '$column'");
+      return $this->_checkColumnExist[$table][$column] = !empty($r);
   }
 
   
@@ -444,6 +435,7 @@ private function isMustAttribute($attr){
     'image',
     'gallimg',
     'gallimg_label',
+    'gallimg_color',
     'typecsvname',
     'type',
     'category_ids',
@@ -455,6 +447,7 @@ private function isMustAttribute($attr){
     'meta_description',
     'small_image',
     'thumbnail',
+    'thumbimg',
     'url_path',
     'price',
     'special_price',
@@ -490,33 +483,46 @@ private function _getRow($rowHead,$row){
                     $_options=explode('||',$val);
                     $product[$rowHead[$key]['optionLabel']]=$rowHead[$key];
                     $product[$rowHead[$key]['optionLabel']]['store_id']=$product['store_id'];
-                    foreach($_options as $k=>$_option){
-                        $_optionArr=explode(':',$_option);
+                    if(!empty($_options)){
+                     foreach($_options as $k=>$_option){
+                        $_optionArr=explode(':',$_option,7);
                         if(count($_optionArr)>=1){
-                            if($rowHead[$key]['optionType']=='field'){
-                             if(stripos($rowHead[$key]['optionLabel'],$_optionArr[0])!==false)
-                              $product[$rowHead[$key]['optionLabel']]=$rowHead[$key]['optionLabel'].' '.$_optionArr[0];
-                            }else{
-                            $product['has_options']=1;
+                            $_title = isset($_optionArr[0])?$_optionArr[0]:'';
                             $_priceType=isset($_optionArr[1])?$_optionArr[1]:'fixed';
                             $_price=isset($_optionArr[2])?$_optionArr[2]:'0.00';
                             $_sort=isset($_optionArr[3])?$_optionArr[3]:($k+1);
                             $_sku=isset($_optionArr[4])?$_optionArr[4]:'';
+                            $_isDefault=isset($_optionArr[5])?$_optionArr[5]:'';
+                            $_note=isset($_optionArr[6])?$_optionArr[6]:'';
                             //$_file_ext=isset($_optionArr[5])?$_optionArr[5]:'';
-                           // $_image_x=isset($_optionArr[6])?$_optionArr[6]:'';
-                           // $_image_y=isset($_optionArr[7])?$_optionArr[7]:'';
-                            $product[$rowHead[$key]['optionLabel']]['options'][]=array(
-                                'title'=>$_optionArr[0],
+                            // $_image_x=isset($_optionArr[6])?$_optionArr[6]:'';
+                            // $_image_y=isset($_optionArr[7])?$_optionArr[7]:'';
+                           $product['has_options']=1;
+                           $product[$rowHead[$key]['optionLabel']]['options'][]=array(
+                                'title'=>$_title,
                                 'price'=>$_price,
-                                'priceType'=>$_priceType, 
+                                'priceType'=>$_priceType,
                                 'sort'=>$_sort,
                                 'sku'=>$_sku,
-                              //  'file_extension'=>$_file_ext,
-                              //  'image_size_x'=>$_image_x,
-                              //  'image_size_y'=>$_image_y,
+                                'is_default'=>$_isDefault,
+                                'note'=>$_note
+                                //  'file_extension'=>$_file_ext,
+                                //  'image_size_x'=>$_image_x,
+                                //  'image_size_y'=>$_image_y,
                             );
-                           }
                         }
+                    }
+                    }else if($rowHead[$key]['optionType']=='field'||$rowHead[$key]['optionType']=='area'){
+                        $product[$rowHead[$key]['optionLabel']]['options'][]=array(
+                            'title'=>'20',
+                            'price'=>'0.00',
+                            'priceType'=>'fixed',
+                            'sort'=>0,
+                            'sku'=>'',
+                            //  'file_extension'=>$_file_ext,
+                            //  'image_size_x'=>$_image_x,
+                            //  'image_size_y'=>$_image_y,
+                        );
                     }
                 }   
             }
@@ -541,7 +547,7 @@ private function checkCatalogIds($product){
         $rs=$this->db->fetchCol($sql);
         $_ids=explode(',',$product['category_ids']);
         if(count($_ids)!=count($rs)){
-            die('<p>category_ids 购物后台不存在，请重新填写准确!</p>');  
+            die('<p>category_ids 购物站后台不存在，请重新填写准确!</p>');
         }
     }
 }
@@ -563,6 +569,8 @@ private function initAttributeIds(){
  * @写进一条商品数据，返回商品实体ID
  */
 private function setProduct($product){
+    $sql="SET FOREIGN_KEY_CHECKS=0";
+    $this->db->query($sql);
     $sql = "select entity_id from `catalog_product_entity`  where sku ='".$product['sku']."' limit 1";
     $productId=$this->db->fetchOne($sql);
     if($productId===false){
@@ -662,8 +670,12 @@ private function setProduct($product){
     {
         $gimg=explode(";",$product['gallimg']);
         $gimg_labels = array();
-        if(!empty($product['gallimg_label'])){
+        if(isset($product['gallimg_label']) && !empty($product['gallimg_label'])){
             $gimg_labels=explode(";",$product['gallimg_label']);
+        }
+
+        if(isset($product['gallimg_color']) && !empty($product['gallimg_color'])){
+            $gimg_colors=explode(";",$product['gallimg_color']);
         }
 
         for($i=0;$i<count($gimg);$i++)
@@ -676,7 +688,15 @@ private function setProduct($product){
             $position=$i+1;
             $value_id = $this->db->lastInsertId();
             $gimg_label=isset($gimg_labels[$i])?$gimg_labels[$i]:$product['name'];
-            $psql = "replace into catalog_product_entity_media_gallery_value(value_id,store_id,label,position) value (".$value_id.",0,'$gimg_label',".$position.")";
+            if($this->checkColumnExist('catalog_product_entity_media_gallery_value','title')){
+                $gimg_color=isset($gimg_colors[$i])?$gimg_colors[$i]:'';
+                $_gimg_color = explode(':',$gimg_color);
+                $gimg_color = $_gimg_color[0];
+                $_gimg_color_show = isset($_gimg_color[1])?1:0;
+                $psql = "replace into catalog_product_entity_media_gallery_value(value_id,store_id,label,title,position,`show`) value (".$value_id.",0,'$gimg_label','$gimg_color',".$position.",'".$_gimg_color_show."')";
+            }else{
+                $psql = "replace into catalog_product_entity_media_gallery_value(value_id,store_id,label,position) value (".$value_id.",0,'$gimg_label',".$position.")";
+            }
             $this->db->query($psql);
             
         }
@@ -723,6 +743,12 @@ private function setProduct($product){
     $this->db->query($psql);
     $psql = "replace into catalog_product_entity_varchar(entity_type_id,attribute_id,store_id,entity_id,value) values (4,'".$this->attrs['thumbnail']."','".$product['store_id']."',".$productId.",'".$imagename."')";
     $this->db->query($psql);
+
+    if(isset($product['thumbimg']) && !empty($product['thumbimg'])){
+        $product['thumbimg']=$this->imgname($product['thumbimg']);
+        $psql = "replace into catalog_product_entity_varchar(entity_type_id,attribute_id,store_id,entity_id,value) values (4,'".$this->attrs['thumbimg']."','".$product['store_id']."',".$productId.",'".$product['thumbimg']."')";
+        $this->db->query($psql);
+    }
     
     
     $psql = "replace into catalog_product_entity_varchar(entity_type_id,attribute_id,store_id,entity_id,value) values (4,'".$this->attrs['options_container']."','".$product['store_id']."',".$productId.",'container1')";
@@ -842,6 +868,8 @@ private function setProduct($product){
             $_other_attributes=implode(';',$product['other_attributes']);
             $this->setAttribute($productId,$product['entity_type_id'],$_other_attributes,$product['store_id']);
         }
+    $sql="SET FOREIGN_KEY_CHECKS=1";
+    $this->db->query($sql);
     return $productId;
 }
 
@@ -853,24 +881,26 @@ private function setProduct($product){
  */
 private function imgname($file)
 {
-	if($file<>"")
+    $file=ltrim($file,'/');
+	if(!empty($file))
 	{
-        $file = '/'.ltrim($file,'/');
 		$strlen=strlen($file);
 		if($strlen>5){
-			$first_character = substr($file,1,1);
-			$second_character = substr($file,2,1);
-			$filenew="/".$first_character."/".$second_character.$file;
+		    if(stripos($file,'/')!==false){
+                $filenew = '/'.$file;
+            }else{
+                $file='/'.$file;
+                $first_character = substr($file,1,1);
+                $second_character = substr($file,2,1);
+                $filenew="/".$first_character."/".$second_character.$file;
+            }
 		}else{
 			$first_character = substr($file,0,1);
 			$filenew="/".$first_character."/".$file;
 		}
 		return $filenew;
 	}
-	else
-	{
-		return "";
-	}
+	return "";
 }
 /**
  * @拷贝图片
@@ -975,7 +1005,7 @@ private function setConfigurableAttribute($db,$productId,$attrName){
         $sql = "replace into catalog_product_super_attribute(product_id,attribute_id,position) values ('".$productId."','$attributeId',0)";
         $this->db->query($sql);
     }else{
-        echo "购物站缺少$attrName 属性，请在后台手工添加\n";
+        echo "<br>购物站缺少$attrName 属性，请在后台手工添加\n";
     }
 }
 
@@ -1100,6 +1130,8 @@ private function setCustomOptions($productId,$options){
                 'priceType'=>'fixed', //<option value="percent">Percent</option>
                 'sku'=>'1',
                 'sort'=>'1',
+                'is_default'=>'1',
+                'note'=>'',
             ),
             array(
                 'title'=>'M',
@@ -1107,6 +1139,8 @@ private function setCustomOptions($productId,$options){
                 'priceType'=>'fixed', 
                 'sku'=>'1',
                 'sort'=>'1',
+                'is_default'=>'1',
+                'note'=>'',
             ),
         ),
     );
@@ -1172,8 +1206,12 @@ private function setCustomOptions($productId,$options){
                     $this->db->query($sql);
 			        $option_type_id=$this->db->lastInsertId();
         			if($option_type_id){
-	                    $sql = "insert into catalog_product_option_type_title (option_type_id,store_id,title) values ('$option_type_id',".$options['store_id'].",'".$option['title']."')"; //根据option_type_id添加title和price
-            			$this->db->query($sql);
+                        if($this->checkColumnExist('catalog_product_option_type_title','note')) {
+                            $sql = "insert into catalog_product_option_type_title (option_type_id,store_id,title,note,is_default) values ('$option_type_id'," . $options['store_id'] . ",'" . $option['title'] . "','" . $option['note'] . "','" . $option['is_default'] . "')"; //根据option_type_id添加title和price
+                        }else{
+                            $sql = "insert into catalog_product_option_type_title (option_type_id,store_id,title) values ('$option_type_id'," . $options['store_id'] . ",'" . $option['title'] . "')"; //根据option_type_id添加title和price
+                        }
+                        $this->db->query($sql);
             			$sql = "insert into catalog_product_option_type_price (option_type_id,store_id,price,price_type) values ('$option_type_id',".$options['store_id'].",'".$option['price']."','".$option['priceType']."')";
             			$this->db->query($sql);
         			}
@@ -1322,6 +1360,8 @@ class clsCataOrProduct{
     "TRUNCATE table `sales_invoiced_aggregated`",
     "TRUNCATE table `sales_invoiced_aggregated_order`",
     "TRUNCATE table `sales_order_aggregated_created`",
+      "TRUNCATE table `sales_ddc_order`",
+      "TRUNCATE table `sales_ddc_quote`",
     "SET FOREIGN_KEY_CHECKS=1",
   );
   
@@ -1372,6 +1412,22 @@ class clsCataOrProduct{
     "TRUNCATE TABLE adminnotification_inbox",
     "SET FOREIGN_KEY_CHECKS=1", 
   );
+   // email logs
+    private $clsEmailLogSqls=array(
+        "SET FOREIGN_KEY_CHECKS=0",
+        "TRUNCATE TABLE `m_emailreport_aggregated`",
+        "TRUNCATE TABLE `m_emailreport_click`",
+        "TRUNCATE TABLE `m_emailreport_open`",
+        "TRUNCATE TABLE `m_emailreport_order`",
+        "TRUNCATE TABLE `m_emailreport_review`",
+        "TRUNCATE TABLE `m_emailsmtp_mail`",
+        "TRUNCATE TABLE `m_email_event`",
+        "TRUNCATE TABLE `m_email_event_trigger`",
+        "TRUNCATE TABLE `m_email_queue`",
+        "TRUNCATE TABLE `m_email_unsubscription`",
+        "TRUNCATE TABLE `m_mstcore_logger",
+        "SET FOREIGN_KEY_CHECKS=1",
+    );
   
   public function initOrderId($id=''){
      if(empty($id)){
@@ -1447,6 +1503,15 @@ where eav_entity_type.entity_type_code='order'";
         echo '执行清除日志完毕<br>';
     }
     /**
+     * 清除邮件日志
+     */
+    public function runEmailClsLog(){
+        foreach($this->clsEmailLogSqls as $sql){
+            $this->db->query($sql);
+        }
+        echo '执行清除邮件日志完毕<br>';
+    }
+    /**
      * @获得最大的分类id号
      */
      public function runGetCatalogMaxId(){
@@ -1459,10 +1524,10 @@ where eav_entity_type.entity_type_code='order'";
      */
     public function runGetHelp(){
         $site=Mage::getBaseUrl();
-        $site=str_replace('http://','||||',$site);
+        $site=str_replace('://','||||',$site);
         $_site=explode('/',$site);
         $site=$_site[0];
-        $site=str_replace('||||','http://',$site);
+        $site=str_replace('||||','://',$site);
         $str="<style>body{font-size:12px;} p{padding-bottom: 2px;}</style>";
         $str.="<p>清除分类：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=clsc\">$site/product/manage.php?do=clsc</a> </p>";
 		$str.="<p>清除商品订单评论客户留言日志：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=clspro\">$site/product/manage.php?do=clspro</a> </p>";
@@ -1471,16 +1536,18 @@ where eav_entity_type.entity_type_code='order'";
         $str.="<p>清除客户资料：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=clscu\">$site/product/manage.php?do=clscu</a></p>";
         $str.="<p>清除商品留言：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=clsr\">$site/product/manage.php?do=clsr</a></p>";
         $str.="<p>清除日志：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=clslog\">$site/product/manage.php?do=clslog</a></p>";
-        $str.="<p>初始化：清除订单，装起始订单号，清除客户、清除日志<br><a target=\"_blank\" href=\"$site/product/manage.php?do=init\">$site/product/manage.php?do=init</a></p>";
+        $str.="<p>清除邮件日志：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=clsemaillog\">$site/product/manage.php?do=clslog</a></p>";
+        $str.="<p>初始化：清除订单，装起始订单号，清除客户、清除日志、邮件日志<br><a target=\"_blank\" href=\"$site/product/manage.php?do=init\">$site/product/manage.php?do=init</a></p>";
         $str.="<p>获得最大的分类ID：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=maxid\">$site/product/manage.php?do=maxid</a></p>";
-        $str.="<p>导出商品：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=expro&store=\">$site/product/manage.php?do=expro&store=en</a></p>";
+        $str.="<p>导出商品：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=expro&c=2&store=\">$site/product/manage.php?do=expro&c=2&store=en</a>(c=分类id或url，默认全部)</p>";
         $str.="<p>导入分类：<br>$site/product/manage.php?cfile=xxxx.csv</p>";
         $str.="<p>导入商品：<br>$site/product/manage.php?pfile=xxxx.csv</p>";
         $str.="<p>商品upsell：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=upsell\">$site/product/manage.php?do=upsell</a></p>";
+        $str.="<p>导评论(已清理带url,错误标题的,不删则重复利用)：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=impview&code=fr&notdel=1&sku=xxx\">$site/product/manage.php?do=impview&code=fr&amp;notdel=1&sku=xxx</a><br>";
         $str.="<p>导评论：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=impview&code=fr\">$site/product/manage.php?do=impview&code=fr</a><br>复制英文评论到店(vote=1只复制评分)：<a target=\"_blank\" href=\"$site/product/manage.php?do=copyview&code=fr\">$site/product/manage.php?do=copyview&code=fr&vote=1</a></p>";
         $str.="<p>清除评论：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=clsreview\">$site/product/manage.php?do=clsreview</a></p>";
         $str.="<p>分类产品对拷：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=copycatalogproduct&ctc=\">$site/product/manage.php?do=copycatalogproduct&ctc=sTd</a></p>";
-        $str.="<p>清除flat缓存表：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=clsDbCache&ctc=all\">$site/product/manage.php?do=clsDbCache&ctc=all(cat|pro|url)</a></p>";
+        $str.="<p>清除数据库缓存表（url|flat）：<br><a target=\"_blank\" href=\"$site/product/manage.php?do=clsDbCache&ctc=all\">$site/product/manage.php?do=clsDbCache&ctc=all(cat|pro|url|)</a></p>";
         $str.="<p>帮助 for magentoEE1.4：<br>$site/product/manage.php?do=help</p>";
         echo $str;
     }
@@ -1852,7 +1919,10 @@ class exportProduct{
   private $db;
   private $defaultStoreId='0';
   private $storeId='1';
-  
+  private $catalog='';
+  private $fileName='';
+  private $head=array();
+  private $data=array();
 
   
   private function setDb(){
@@ -1866,19 +1936,42 @@ class exportProduct{
   /**
    * 主入口
    */
-  public function run($storeCode){
+  public function run($catalog,$storeCode=0){
      $this->setDb();
      $this->setStoreId($storeCode);
-     $this->export();
+     $this->setCatalog($catalog);
+     if(!$this->exportHasFile()){
+         $this->dataExport();
+         $this->exportData();
+         $this->exportHasFile();
+     }
   }
   //if(isset($data['backend_type'])&&$data['backend_type']!='static'){
-  
+
+    /**
+     * 设置店铺
+     * @param $storeCode
+     * @return int|string
+     */
   protected function setStoreId($storeCode){
      if(empty($storeCode))return $this->storeId=0;
      $sql="select store_id from core_store where code='$storeCode' limit 1";
      $r=$this->db->fetchOne($sql);
      $this->storeId = (int)$r;
      return $this->storeId;
+  }
+
+    /**
+     * 设置分类
+     * @param $catalog
+     * @return int|string
+     */
+  protected function setCatalog($catalog){
+      if(empty($catalog))return $this->catalog=2;
+      $sql="select entity_id from catalog_category_entity_varchar where `value`='$catalog' or entity_id='$catalog' limit 1";
+      $r=$this->db->fetchOne($sql);
+      $this->catalog=(int)$r;
+      return $this->catalog;
   }
   
   private $exportNotStaticAttributes=array();
@@ -1920,7 +2013,7 @@ class exportProduct{
       'special_price','price','short_description',
       'description','weight','meta_title',
       'meta_keyword','meta_description','url_key',
-      'media_gallery','image','small_image','thumbnail','url_path'
+      'media_gallery','image','small_image','thumbnail','thumbimg','url_path'
       );
       foreach($exportNotStaticAttributes as $attr){
             $sql=vsprintf($this->attrsSql,array($attr));
@@ -1984,48 +2077,131 @@ class exportProduct{
   private $sql="select `value` from catalog_product_entity_%s where attribute_id='%s' and entity_id='%s' and store_id='%s' limit 1";
   
   private $imageSql="select `value` from catalog_product_entity_media_gallery where attribute_id='%s' and entity_id='%s'"; //images
-        
-  
-  protected function export($slimit=0,$num=20){
+
+    /**
+     * 从数据库读取数据
+     * @param int $slimit
+     * @param int $num
+     * @return array
+     */
+  protected function dataExport($slimit=0,$num=20){
      $data=array();
-     $sql="select entity_id,sku,(select attribute_set_name from eav_attribute_set where attribute_set_id=catalog_product_entity.attribute_set_id limit 1) as attribute_set from catalog_product_entity limit $slimit,$num";
+     $sql="select a.entity_id,a.sku,(select attribute_set_name from eav_attribute_set where attribute_set_id=a.attribute_set_id limit 1) as attribute_set from catalog_product_entity a RIGHT join catalog_category_product b on a.entity_id=b.product_id and b.category_id='".$this->catalog."' limit $slimit,$num";
      $rs= $this->db->fetchAll($sql);
-     $flag=1;
      if(!empty($rs)){
         $this->setDefaultValues();
         $this->getAttributeIdAndType();
         foreach($rs as $row){
             $data =$this->getDefaultValues($row);
             $data2=$this->getAttributeValues($row);
-            $data=array_merge($data,$data2);
-            
-           if($flag==1 && $slimit<$num){
-              $flag=-1;
-              $this->setExportHead($data);
-           }
-           $this->exportData($data);
+            $data3=$this->getCustomOptions($row);
+            $data=array_merge($data,$data2,$data3);
+            $this->setHead($data);
+            $this->setData($data);
         }
         if(count($rs)==$num){
             $slimit+=$num;
-            list($slimit,$num)=$this->export($slimit,$num);
+            list($slimit,$num)=$this->dataExport($slimit,$num);
         }
      }
      return array($slimit,$num);
   }
-  private function setExportHead($row){
-        header("Content-type:text/csv"); 
-        header("Content-Disposition:attachment;filename=P".date('Ymd').".csv"); 
-        header('Cache-Control:must-revalidate,post-check=0,pre-check=0'); 
-        header('Expires:0'); 
-        header('Pragma:public'); 
-        $_h=array();
+
+    /**
+     * 暂存csv头
+     * @param $row
+     */
+  private function setHead($row){
         foreach($row as $key=>$val){
-            $_h[]=$key;
+            if(!in_array($key,$this->head))
+                $this->head[]=$key;
         }
-        echo implode(',',$_h)."\n";
   }
-  private function exportData($row){
-      echo '"'.implode('","',$row)."\"\n";
+
+    /**
+     * 暂存数据
+     * @param $row
+     */
+  private function setData($row){
+      $this->data[] = $row;
+      // $this->data[]= '"'.implode('","',$row)."\"\n";
+  }
+
+    /**
+     * 获取文件名称
+     * @return string
+     */
+  private function getFileName(){
+      if(empty($this->fileName))
+      $this->fileName = $fileName ='export'. $this->catalog.$this->storeId.'.csv';
+      return $this->fileName;
+  }
+
+    /**
+     * 处理行
+     */
+  private function setLines(){
+      $newData = array_flip($this->head);
+      foreach ($newData as &$v)$v='';
+      foreach ($this->data as &$row){
+          $row = array_merge($newData,$row);
+      }
+  }
+
+    /**
+     * 生成csv文件
+     */
+  private function exportData(){
+        $this->setLines();
+        $str = implode(',',$this->head)."\n";
+        foreach ($this->data as $row){
+            $str.='"'.implode('","',$row)."\"\n";
+        }
+        @file_put_contents(dirname(__FILE__).'/'.$this->getFileName(),$str);
+  }
+
+    /**
+     * 输出csv文件
+     * @return bool
+     */
+  private function exportHasFile(){
+      if(file_exists(dirname(__FILE__).'/'.$this->getFileName())){
+          echo '<a href="'.$this->getFileName().'">'.$this->getFileName().'</a>';
+          return true;
+      }
+      return false;
+  }
+
+    /**
+     * 获取自定义属性
+     * @param $row
+     * @return mixed
+     */
+  protected function getCustomOptions($row){
+      $data=array();
+      $args[]=$row['entity_id'];
+      $sql = "select a.title,b.type,b.sort_order,b.is_require,b.option_id from catalog_product_option b LEFT JOIN catalog_product_option_title a on a.option_id=b.option_id and a.store_id=0 where b.product_id='%s'";
+      $sql=vsprintf($sql,$args);
+      $options = $this->db->fetchAll($sql);
+      if(!empty($options)){
+      foreach ($options as $option){
+          $_title = $option['title'].':'.$option['type'].':'.$option['sort_order'].':'.$option['is_require'];
+          $_values = '';
+          $args=array();
+          $args[]=$option['option_id'];
+          $sql = "select a.title,c.price,c.price_type,b.sort_order from catalog_product_option_type_value b LEFT JOIN catalog_product_option_type_title a on a.option_type_id=b.option_type_id and a.store_id=0 LEFT join catalog_product_option_type_price c ON c.option_type_id=b.option_type_id and c.store_id=0 where b.option_id='%s'";
+          $sql=vsprintf($sql,$args);
+          $option_values = $this->db->fetchAll($sql);
+          if(!empty($option_values)){
+          $_value=array();
+          foreach ($option_values as $option_value){
+              $_value[] = $option_value['title'].':'.$option_value['price_type'].':'.round($option_value['price'],2).':'.$option_value['sort_order'];
+          }
+          $_values = implode('||',$_value);
+          }
+          $data[$_title]=$_values;
+      }}
+       return  $data;
   }
 }
 
@@ -2038,9 +2214,13 @@ class exportProduct{
     private $db;
     private $catalogs=array();
     private $replyColumnName='';
+    private $ratingColumnName='';
     private $defaultStoreId=0;
     private $randnum=5;
     private $productSelectType='';
+    private $del;
+    private $valueOptions;
+    private $skus;
     private function setDb(){
         if(is_object($this->db))return $this->db;
         $magento_bootstrap=dirname(__FILE__).'/../app/Mage.php';
@@ -2051,13 +2231,16 @@ class exportProduct{
    }
    
    private $sqls=array(
-        'getReviews'=>"select * from site_review_pp where titler!='' and catalog='%s' and store_id='%s' limit %s",
+        'getReviews'=>"select * from site_review_pp where titler!='' and catalog='%s' and store_id='%s' order by rand() limit %s",
+        'getRandReviews'=>"select * from site_review_pp where titler!='' order by rand() limit %s",
         'getReviewsCatalog'=>"select store_id,catalog from site_review_pp where catalog!='' group by store_id,catalog",
         'getInformationSchemaAsReply'=>"select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME='review_detail'",
         'getInformationSchemaAsPp'=>"select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME='site_review_pp'",
-        'getCatalogIdByName'=>"select entity_id from catalog_category_entity_varchar where `value` like '%%s%' and attribute_id=(select attribute_id from eav_attribute where attribute_code='name' and entity_type_id=3 limit 1) limit 1",
+        'getCatalogIdByName'=>"select entity_id from catalog_category_entity_varchar where `value` like '%%s%' and entity_type_id=3 limit 1",
         'getProductIdByCatalogId'=>"select product_id,(select count(*) from review where entity_pk_value=catalog_category_product.product_id) as num from catalog_category_product where category_id='%s' order by num limit 250",
-        
+       'getRatingIds'=>"select rating_id from rating where entity_id=1",
+       'getValueOptions'=>"select option_id,`value` from rating_option where rating_id='%s'",
+
         'setTableReview'=>"insert into review(`created_at`,`entity_id`,`entity_pk_value`,`status_id`) values('%s',1,'%s',1)",
         'setTableReviewDetail'=>"insert into review_detail(review_id,`store_id`,`title`,`detail`,`nickname`,`%s`) values('%s','%s','%s','%s','%s','%s')",
         'setTableReviewDetailNoReply'=>"insert into review_detail(review_id,`store_id`,`title`,`detail`,`nickname`) values('%s','%s','%s','%s','%s')",
@@ -2068,33 +2251,49 @@ class exportProduct{
         'getSummaryByProdutId'=>"select primary_id from review_entity_summary  where store_id='%s' and entity_pk_value='%s' limit 1",
         'setTableSummary'=>"UPDATE review_entity_summary set reviews_count='%s',rating_summary='%s' where entity_pk_value='%s' and store_id='%s' limit 1",
         'setTableSummaryNew'=>"insert into review_entity_summary set reviews_count='%s',rating_summary='%s',entity_pk_value='%s',store_id='%s',entity_type='%s'",
+        'setDetailSummaryNew'=>"update review_detail set review_rating='%s' where review_id='%s'",
         
-        'getReviewTimes'=>"select count(*) as num from review a inner join review_detail b on a.review_id=b.review_id where a.entity_pk_value='%s' and b.store_id='%s' and a.status_id=1 limit 1",
+        'getReviewTimes'=>"select count(*) as num from review a inner join review_detail b on a.review_id=b.review_id where a.entity_pk_value='%s' and a.status_id=1 limit 1",//and (b.store_id=0 or b.store_id='%s')
         'delSitePPSrc'=>"delete from site_review_pp where review_id='%s' limit 1",
         
         'alterStoreId'=>"alter table site_review_pp add column store_id int",
-        'setDefaultStoreId'=>"update site_review_pp set store_id=1",
-        'setDefaultStoreId1'=>"update site_review_pp set catalog=replace(`catalog`,' dresses','')",
-        'setDefaultStoreId2'=>"update site_review_pp set catalog=replace(`catalog`,' Dresses','')",
-        'setDefaultStoreId3'=>"update site_review_pp set catalog=replace(`catalog`,' dress','')",
-        'setDefaultStoreId4'=>"update site_review_pp set catalog=replace(`catalog`,' Dress','')",
+        'setDefaultStoreId0'=>"update site_review_pp set store_id=1",
+       // 'setDefaultStoreId1'=>"update site_review_pp set catalog=replace(`catalog`,' dresses','')",
+     //   'setDefaultStoreId2'=>"update site_review_pp set catalog=replace(`catalog`,' Dresses','')",
+     //   'setDefaultStoreId3'=>"update site_review_pp set catalog=replace(`catalog`,' dress','')",
+     //   'setDefaultStoreId4'=>"update site_review_pp set catalog=replace(`catalog`,' Dress','')",
         'setDefaultStoreId5'=>"UPDATE site_review_pp set date_added=date_add(NOW(), interval -FLOOR(RAND()*350) hour)",
         'setDefaultStoreId6'=>"delete from site_review_pp where titler like '%title%'",
         'setDefaultStoreId7'=>"delete from site_review_pp where titler ='' or text=''",
+       'setDefaultStoreId8'=>"delete from site_review_pp where text LIKE '%http%'",
+       'setDefaultStoreId9'=>"delete from site_review_pp where text LIKE '%.com%'",
+       'setDefaultStoreId10'=>"delete from site_review_pp where titler LIKE '%.com%'",
+       'setDefaultStoreId11'=>"update site_review_pp set catalog= 'prom dress' where catalog='Special Occasion Dresses'",
         'getCount'=>"select count(*) as num from site_review_pp",
+       'getReviewCount'=>"select count(*) as num from review",
    );
    
    
    
-   public function run($storeCode=''){
+   public function run($storeCode='',$del=true){
+        $this->del = $del;
         $this->setDb();
         $this->getAlterTable();
         $this->initDefault($storeCode);
         echo $this->getCount();
-        echo '<br> ----- <br>';
+        echo '<br> ---sitepp-- <br>';
         $this->setReviews();
         echo $this->getCount();
+        echo '<br> ---review-- <br>';
+        echo $this->getReviewCount();
         echo '<br>the end';
+   }
+
+   public function setSku($str=''){
+       $str = str_replace(array('，','|','；',';','、'),',',$str);
+       $skue = explode(',',$str);
+       $skue = array_unique($skue);
+       $this->skus = $skue;
    }
    
    private function getAlterTable(){
@@ -2112,20 +2311,22 @@ class exportProduct{
             
           }
       }
-	  $this->db->query($this->sqls['setDefaultStoreId']);
-      $this->db->query($this->sqls['setDefaultStoreId6']);
-      $this->db->query($this->sqls['setDefaultStoreId7']);
-      $this->db->query($this->sqls['setDefaultStoreId1']);
-      $this->db->query($this->sqls['setDefaultStoreId2']);
-      $this->db->query($this->sqls['setDefaultStoreId3']);
-      $this->db->query($this->sqls['setDefaultStoreId4']);
-      $this->db->query($this->sqls['setDefaultStoreId5']);
+      for($i=0;$i<12;$i++){
+          $sqltemp = "setDefaultStoreId$i";
+          if(isset($this->sqls[$sqltemp])){
+              $this->db->query($this->sqls[$sqltemp]);
+          }
+      }
    }
    
    private function getCount(){
       return  $this->db->fetchOne($this->sqls['getCount']);
    }
-   
+
+     private function getReviewCount(){
+         return  $this->db->fetchOne($this->sqls['getReviewCount']);
+     }
+
    protected function initDefault($storeCode){
         $catalog=$this->getReviewsCatalog();
         if(!empty($catalog)){
@@ -2142,6 +2343,9 @@ class exportProduct{
             if($r['COLUMN_NAME']=='response'){
                 $this->replyColumnName='response'; break;  
             }
+            if($r['COLUMN_NAME']=='review_rating'){
+                $this->ratingColumnName='review_rating'; break;
+            }
         }
         
         $rs=$this->getInformationSchemaAsPp();
@@ -2151,7 +2355,6 @@ class exportProduct{
                 $this->productSelectType='sku'; break;   
             }
         }
-        
         $this->_setDefaultStoreId($storeCode);
    }
    
@@ -2164,7 +2367,12 @@ class exportProduct{
       $sql="select * from site_review_pp where titler!='' and sku!='' limit 100";
       return $this->db->fetchAll($sql);
    }
-   
+
+     /**
+      * 根据已经设置好的review-sku设定
+      * @param int $i
+      * @return int
+      */
    protected function setReviewsBySku($i=0){
         $reviews = $this->getHaveSkuReviews();
         if(!empty($reviews)){
@@ -2179,13 +2387,48 @@ class exportProduct{
                 }
             }
         }
-        echo "add $i items";
+        return $i;
+   }
+
+     /**
+      * 根据get方法传递过来的sku来设定评论
+      * @return int
+      */
+   protected function setReviewsForSkus(){
+       $i = 0;
+       if(!empty($this->skus)){
+           foreach ($this->skus as $sku){
+               if(empty($sku))continue;
+               $sql="select entity_id from catalog_product_entity where sku ='$sku' limit 1";
+               $productId=$this->db->fetchOne($sql);
+               if($productId){
+                   $num=rand(1,$this->randnum);
+                   $reviews=$this->getRandReviews($num);
+                   if(!empty($reviews)){
+                       foreach($reviews as $review){
+                           $ck = $this->check($productId,$review);
+                           if($ck)continue;
+                           list($review_count,$vote_precet)= $this->setReview($productId,$review);
+                           if($this->del)$this->delSitePPSrc($review['review_id']);
+                           $i++;
+                       }
+                       $this->setTableSummary($productId,$review_count,$vote_precet);
+                   }
+               }else{
+                   echo "<br>没有找到商品 $sku<br>";
+               }
+           }
+           echo "<br>add $i items<br>";
+           return 1;
+       }
+       return 0;
    }
    
    protected function setReviews(){
         $i=0;
+        $forSku = $this->setReviewsForSkus();
+        if($forSku)return;
         if(!empty($this->catalogs)){
-            
             foreach($this->catalogs as $storeId=>$catalogs){
             foreach($catalogs as $catalog=>$catalogId){
                  $products=$this->getProductIdByCatalogId($catalogId);
@@ -2194,8 +2437,10 @@ class exportProduct{
                     $reviews=$this->getReviews($catalog,$storeId,$num);
                     if(!empty($reviews)){
                         foreach($reviews as $review){
+                           $ck = $this->check($product['product_id'],$review);
+                           if($ck)continue;
                            list($review_count,$vote_precet)= $this->setReview($product['product_id'],$review);
-                           $this->delSitePPSrc($review['review_id']);
+                           if($this->del)$this->delSitePPSrc($review['review_id']);
                            $i++;
                         }
                         $this->setTableSummary($product['product_id'],$review_count,$vote_precet);
@@ -2207,8 +2452,9 @@ class exportProduct{
             }}
         }
         if($this->productSelectType=='sku'){
-            $this->setReviewsBySku($i);
+            $i = $this->setReviewsBySku($i);
         }
+       echo "<br>add $i items<br>";
    }
    
    protected function getStoreIds(){
@@ -2225,8 +2471,38 @@ class exportProduct{
          }
          return $this->_storeIds;
    }
-   
+
+   private function getRatingIds(){
+       $sql=$this->sqls['getRatingIds'];
+       return  $this->db->fetchCol($sql);
+   }
+
+   private function getValueOptions($ratingId,$value){
+       if(!isset($this->valueOptions[$ratingId])){
+           $sql=vsprintf($this->sqls['getValueOptions'],array($ratingId));
+           $rows = $this->db->fetchAll($sql);
+           if(!empty($rows)){
+               foreach ($rows as $row){
+                   $this->valueOptions[$ratingId][$row['value']]=$row['option_id'];
+               }
+           }
+       }
+       if(isset($this->valueOptions[$ratingId])&&isset($this->valueOptions[$ratingId][$value]))
+           return $this->valueOptions[$ratingId][$value];
+       return 0;
+   }
+
+   private function check($productId,$review){
+       $review['titler']=   mysql_escape_string($review['titler']);
+       $review['text']=   mysql_escape_string($review['text']);
+       $sql = "select review.review_id from review_detail INNER  JOIN review on review_detail.review_id=review.review_id where review_detail.title='${review['titler']}' and review_detail.detail='${review['text']}' and review.entity_pk_value='$productId' limit 1";
+       return $this->db->fetchOne($sql);
+   }
+
+
    protected function setReview($productId,$review){
+       $sql="SET FOREIGN_KEY_CHECKS=0";
+       $this->db->query($sql);
         $sql=vsprintf($this->sqls['setTableReview'],array($review['date_added'],$productId));
         $this->db->query($sql);
         $reviewId=$this->db->lastInsertId();
@@ -2247,26 +2523,37 @@ class exportProduct{
        $vote_count=$this->getReviewTimes($productId);
        $_vote_precet=90;
        $_count_rate=0;
-       for($i=0;$i<3;$i++){
-            $_rateing=rand($review['rateing'] ,5);
-    		$_option_id=$i*5+$_rateing;
-            $_rateing_id=$i+1;
-            $_count_rate+=$_rateing;
-    		$_vote_precet=ceil($_rateing/5*100);
-            $_ip='218.22.27.226';
-            $_iplong=2147483647;
-            $sql=vsprintf($this->sqls['setTableVote'],array($_option_id,$_ip,$_iplong,$productId,$_rateing_id,$reviewId,$_vote_precet,$_rateing));
-            $this->db->query($sql);
-            $sql=vsprintf($this->sqls['setTableVoteAggregated'],array($_rateing_id,$productId,$vote_count,$_option_id,$_count_rate,$_count_rate,0));
-            $this->db->query($sql);
-            $storeIds=$this->getStoreIds();
-            if(!empty($storeIds)){
-                foreach($storeIds as $storeId){
-                    $sql=vsprintf($this->sqls['setTableVoteAggregated'],array($_rateing_id,$productId,$vote_count,$_option_id,$_count_rate,$_count_rate,$storeId));
-                    $this->db->query($sql);
-                }
-            }
+       $_rateing = 5;
+       $ratingIds = $this->getRatingIds();
+       foreach ($ratingIds as $index=>$id){
+           $_rateing=rand($review['rateing'] ,5);
+           $_option_id= $this->getValueOptions($id,$_rateing);// $index*5+$_rateing;  //与表中的对应关系必须是12345对应value12345
+           if(!$_option_id)continue;
+           $_rateing_id=$id;
+           $_count_rate+=$_rateing;
+           $_vote_precet=ceil($_rateing/5*100);
+           $_ip='218.22.27.226';
+           $_iplong=2147483647;
+        //   'setTableVote'=>"insert into rating_option_vote(`option_id`,`remote_ip`,`remote_ip_long`,`entity_pk_value`,`rating_id`,`review_id`,`percent`,`value`) values ('%s','%s','%s','%s','%s','%s','%s','%s')",
+           $sql=vsprintf($this->sqls['setTableVote'],array($_option_id,$_ip,$_iplong,$productId,$_rateing_id,$reviewId,$_vote_precet,$_rateing));
+           $this->db->query($sql);
+           $sql=vsprintf($this->sqls['setTableVoteAggregated'],array($_rateing_id,$productId,$vote_count,$_option_id,$_count_rate,$_count_rate,0));
+           $this->db->query($sql);
+           $storeIds=$this->getStoreIds();
+           if(!empty($storeIds)){
+               foreach($storeIds as $storeId){
+                   $sql=vsprintf($this->sqls['setTableVoteAggregated'],array($_rateing_id,$productId,$vote_count,$_option_id,$_count_rate,$_count_rate,$storeId));
+                   $this->db->query($sql);
+               }
+           }
        }
+       if($this->ratingColumnName){
+       $sql=vsprintf($this->sqls['setDetailSummaryNew'],array($_rateing,$reviewId));
+       $this->db->query($sql);
+       }
+
+       $sql="SET FOREIGN_KEY_CHECKS=1";
+       $this->db->query($sql);
        return array($vote_count,$_vote_precet);
    }
    
@@ -2278,11 +2565,11 @@ class exportProduct{
    protected function setTableSummary($productId,$review_count,$vote_count){
         $pkeyid=$this->getSummaryByProdutId($productId);  //store_id = 0 
         if(!empty($pkeyid)){
-         $sql=vsprintf($this->sqls['setTableSummary'],array($review_count,$vote_count,$productId,0));    //store_id = 0 
+           $sql=vsprintf($this->sqls['setTableSummary'],array($review_count,$vote_count,$productId,0));    //store_id = 0
          $this->db->query($sql);
         }else{
          $sql=vsprintf($this->sqls['setTableSummaryNew'],array($review_count,$vote_count,$productId,0,1));   //store_id = 0 
-         $this->db->query($sql);   
+         $this->db->query($sql);
         }
         $this->setTableSummaryOther($productId,$review_count,$vote_count);  //store_id > 0
    }
@@ -2324,10 +2611,11 @@ class exportProduct{
    }
    
    private function setTableSummaryOtherRow($productId,$review_count,$vote_count,$storeId){
+       if($storeId==0)return;
         $r=$this->getSummaryByProdutId($productId,$storeId);
         if($r){
-          // $sql=vsprintf($this->sqls['setTableSummary'],array($review_count,$vote_count,$productId,$storeId));
-          // $this->db->query($sql);
+           $sql=vsprintf($this->sqls['setTableSummary'],array($review_count,$vote_count,$productId,$storeId));
+           $this->db->query($sql);
         }else{
            $sql=vsprintf($this->sqls['setTableSummaryNew'],array($review_count,$vote_count,$productId,$storeId,1));
            $this->db->query($sql);
@@ -2336,7 +2624,7 @@ class exportProduct{
    
    
    private function getReviewTimes($productId){
-       $sql=vsprintf($this->sqls['getReviewTimes'],array($productId,0));
+       $sql=vsprintf($this->sqls['getReviewTimes'],array($productId));
         return $this->db->fetchOne($sql);
    }
    
@@ -2369,12 +2657,7 @@ class exportProduct{
        $sql="insert into review_store(`review_id`,`store_id`) values('$reviewId','$storeId')";
        $this->db->query($sql);
    }
-   
-   private function getRatingIds(){
-        $sql="select rating_id from rating";
-        return $this->db->fetchAll($sql);
-   }
-   
+
    private function getProductIdByCatalogId($catalogId){
         return $this->db->fetchAll(vsprintf($this->sqls['getProductIdByCatalogId'],array($catalogId)));
    }
@@ -2404,6 +2687,12 @@ class exportProduct{
      //  echo vsprintf($this->sqls['getReviews'],array($catalogName,$storeId,$num))."<br>";
        return $this->db->fetchAll(vsprintf($this->sqls['getReviews'],array($catalogName,$storeId,$num)));
    }
+
+
+     private function getRandReviews($num){
+         //  echo vsprintf($this->sqls['getRandReviews'],array($num))."<br>";
+         return $this->db->fetchAll(vsprintf($this->sqls['getRandReviews'],array($num)));
+     }
    
    
    
@@ -2652,7 +2941,7 @@ class appendUpSell
     private $catalogIds = array();
     private $count=0;
     private $countName='';
-    private $_log=true;
+    private $log=false;
     
     private $attributeCode='position';
     private $attributeTypeId=0;
@@ -3181,7 +3470,7 @@ textarea{
     }
     protected function log($str, $sper = '')
     {
-        if($this->_log)
+        if($this->log)
         @file_put_contents(dirname(__file__) . '/log' . date('mdHi') . '.txt', "\n\n ==== $sper ====\n" .
             print_r($str, true), FILE_APPEND);
     }
