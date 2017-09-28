@@ -1,15 +1,9 @@
 <?xml version="1.0"?>
 <config>
-	<tabs>
-		<dock translate="label">
-			<label>Dock Extensions</label>
-			<sort_order>152</sort_order>
-		</dock>
-	</tabs>
 	<sections>
 		<cloudzoom translate="label">
 			<label>Zoom</label>
-			<tab>dock</tab>
+			<tab>rural</tab>
 			<frontend_type>text</frontend_type>
 			<sort_order>200</sort_order>
 			<show_in_default>1</show_in_default>

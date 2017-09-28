@@ -2751,7 +2751,9 @@ strong.product-name {
 .category-products-grid .product-image img /* Grid only in category view */
 {
     -moz-transform: translateZ(0);
+    max-width: 100%;
 }
+
 
 /* View type: list
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2862,6 +2864,7 @@ strong.product-name {
    (common for all types of product grids)
 -------------------------------------------------------------- */
 .products-grid {
+
 }
 
 .products-grid .item {
@@ -2882,6 +2885,7 @@ strong.product-name {
 
 .products-grid .product-image {
     display: block;
+    position: relative;
 }
 
 .products-grid .price-box {
@@ -2975,7 +2979,22 @@ strong.product-name {
 	-------------------------------------------------------------- */
 .products-grid.centered .item {
     text-align: center;
+    margin-bottom: 30px;
+    border: 1px solid #f2f2f2;
+    padding: 0px;
+    margin-right: 17px;
+    margin-left: 0px;
 }
+.products-grid.hover-effect .item:hover{
+    z-index: 10;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    border-color: transparent;
+    transition: box-shadow 400ms ease-out;
+    -moz-transition: box-shadow 400ms ease-out;
+    -webkit-transition: box-shadow 400ms ease-out;
+    -o-transition: box-shadow 400ms ease-out;
+}
+
 
 .products-grid.centered .item .ratings .rating-box,
 .products-grid.centered .item .btn-cart {
@@ -3021,10 +3040,6 @@ strong.product-name {
 /* Hover effect
 	-------------------------------------------------------------- */
 .category-products-grid.hover-effect .item:hover {
-    margin-left: -1%;
-    margin-right: -1%;
-    padding-left: 2%;
-    padding-right: 2%;
     z-index: 10;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     border-color: transparent;

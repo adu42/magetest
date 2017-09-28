@@ -3,7 +3,6 @@ $_product = $this->getProduct();
 $_helper = $this->helper('catalog/output');
 $helpZoom = $this->helper('dock_cloudzoom');
 $helpImg = $this->helper('dock/image');
-
 //Get image sizes. If height is not specified, aspect ratio will be kept.
 $imgWidth = intval($helpZoom->getCfg('images/main_width'));
 $imgHeight = intval($helpZoom->getCfg('images/main_height'));
@@ -31,6 +30,7 @@ if ($helpZoom->getCfg('images/aspect_ratio')) {
     $bigImageHeight = 0;
     $thumbImgHeight = 0;
 }
+$_currentColor = Mage::getSingleton('core/app')->getRequest()->getParam(Ado_SEO_Block_Catalog_Product_List_Colors::COLOR_ATTRIBUTE_CODE,'');
 $defailtSelectedIndex=0;
 ?>
 
@@ -52,7 +52,7 @@ $defailtSelectedIndex=0;
                     }
                     ?>
                     <div class="swiper-slide">
-                        <a class="thumb-link" href="#" title="<?php echo $this->escapeHtml($_image->getLabel()) ?>" data-image-index="<?php echo $i; ?>">
+                        <a class="thumb-link" href="javascript:void(0);" title="<?php echo $this->escapeHtml($_image->getLabel()) ?>" data-image-index="<?php echo $i; ?>">
                             <img src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize($thumbImgWidth,$thumbImgHeight); ?>"
                                  width="62" height="85"  alt="<?php echo $this->escapeHtml($_image->getLabel()) ?>" />
                         </a>
@@ -70,7 +70,7 @@ $defailtSelectedIndex=0;
             <?php $i=0; foreach ($this->getGalleryImages() as $_image): ?>
                 <?php if ($this->isGalleryImageVisible($_image)): ?>
                     <div class="swiper-slide">
-                        <a class="thumb-link" href="#" title="<?php echo $this->escapeHtml($_image->getLabel()) ?>" data-image-index="<?php echo $i; ?>">
+                        <a class="thumb-link" href="javascript:void(0);" title="<?php echo $this->escapeHtml($_image->getLabel()) ?>" data-image-index="<?php echo $i; ?>">
                             <img src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'image', $_image->getFile())->resize($bigImageWidth,$bigImageHeight); ?>"
                                  alt="<?php echo $this->escapeHtml($_image->getLabel()) ?>" />
                         </a>

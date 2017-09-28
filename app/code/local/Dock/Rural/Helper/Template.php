@@ -89,6 +89,11 @@ class Dock_Rural_Helper_Template extends Mage_Core_Helper_Abstract
 	public function getCategoryAddtoLinksIcons($_product, $_compareUrl, $wrapperClasses = '')
 	{
 		$html = '';
+        $quickView = Mage::getStoreConfigFlag('ado_seo/catalog/quick_view');
+
+        if($quickView && !$_product->isSuper()){
+            $html .= '<li><a href="'.Mage::getUrl('catalog/category/quick/id/' . $_product->getId()).'" title="'.$this->escapeHtml($_product->getName()).'" class="ajax link-quick-view">'.$this->__('Quick View').'</a></li>';
+        }
 
 		if (Mage::helper('wishlist')->isAllow())
 		{			

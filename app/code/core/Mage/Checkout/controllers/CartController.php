@@ -709,4 +709,156 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
         $this->getResponse()->setHeader('Content-type', 'application/json');
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
     }
+    
+    
+    /**
+     * addAjax
+     */
+    public function addAjaxAction(){
+        $cart   = $this->_getCart();
+        $params = $this->getRequest()->getParams();
+        if($params['isAjax'] == 1 || $this->getRequest()->isAjax()){
+            $response = array();
+            try {
+                if(!empty($params['cart_quantity'])){
+                    foreach($params['cart_quantity'] as $key=>$v){
+                        if(!in_array($key,$params['product_id'])){
+                            unset($params['cart_quantity'] [$key]);
+                            unset($params['option'] [$key]);
+                        }
+                    }
+                }
+                $this->addCart($params);
+                $params = $this->getRequest()->getParams();
+                if(isset($params['cart_quantity']))unset($params['cart_quantity']);
+                if(isset($params['product_id']))unset($params['product_id']);
+                if(isset($params['option']))unset($params['option']);
+                $this->getRequest()->setParams($params);
+                if (isset($params['qty'])) {
+                    $filter = new Zend_Filter_LocalizedToNormalized(
+                        array('locale' => Mage::app()->getLocale()->getLocaleCode())
+                    );
+                    $params['qty'] = $filter->filter($params['qty']);
+                }
+
+                $product = $this->_initProduct();
+                $related = $this->getRequest()->getParam('related_product');
+
+                /**
+                 * Check product availability
+                 */
+                if (!$product){
+                    $response['status'] = 'ERROR';
+                    $response['message'] = $this->__('Unable to find Product ID');
+                }
+                $cart->addProduct($product, $params);
+                if (!empty($related)) {
+                    $cart->addProductsByIds(explode(',', $related));
+                }
+
+                $cart->save();
+
+                $this->_getSession()->setCartWasUpdated(true);
+
+                /**
+                 * @todo remove wishlist observer processAddToCart
+                 */
+                Mage::dispatchEvent('checkout_cart_add_product_complete',
+                    array('product' => $product, 'request' => $this->getRequest(), 'response' => $this->getResponse())
+                );
+
+                if (!$cart->getQuote()->getHasError()){
+                    $message = $this->__('%s was added to your shopping cart.', Mage::helper('core')->htmlEscape($product->getName()));
+                    $response['status'] = 'SUCCESS';
+                    $response['message'] = $message;
+
+                    $sidebar='';
+                    /**/
+                    //New Code Here
+                    $this->loadLayout();
+                  //  $url = Mage::helper('checkout/cart')->getCartUrl();
+                   // Mage::register('referrer_url', $this->_getRefererUrl());
+                    $sidebar = $this->getLayout()->getBlock('cart_sidebar')->toHtml();
+                    //$sidebar = $this->getLayout()->getBlock('cart.sidebar')->toHtml();
+                    //$cart_total=Mage::helper('checkout/cart')->getSummaryCount();
+                    //$cart_total="Shopping Cart (<span>$cart_total</span>) items";
+                   //  $cart_total="($cart_total) items";
+                    //	$cart_total="<a href=\"{$url}\" id=\"cart_total\" class=\"cart-links\">&nbsp;<strong>$cart_total <span> </span></strong></a>";
+                    //$response['num'] = $cart_total;
+                    $response['mini_cart'] = $sidebar;
+                }
+            } catch (Mage_Core_Exception $e) {
+                $msg = "";
+                if ($this->_getSession()->getUseNotice(true)) {
+                    $msg = $e->getMessage();
+                } else {
+                    $messages = array_unique(explode("\n", $e->getMessage()));
+                    foreach ($messages as $message) {
+                        $msg .= $message.'<br/>';
+                    }
+                }
+
+                $response['status'] = 'ERROR';
+                $response['message'] = $msg;
+            } catch (Exception $e) {
+                $response['status'] = 'ERROR';
+                $response['message'] = $this->__('Cannot add the item to shopping cart.');
+                Mage::logException($e);
+            }
+            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+            return;
+        }else{
+            return $this->addAction();
+        }
+    }
+
+    /**
+     * add to cart
+     * ======by@ado======
+     *
+     */
+    public function addCart($params)
+    {
+        $products = array();
+        $session = $this->_getSession();
+        $cart = $this->_getCart();
+
+        if(!empty($params['product_id'])){
+            foreach($params['product_id'] as $key=>$v){
+                $products[$key]['product'] = $v;
+            }
+            foreach($params['cart_quantity'] as $key=>$v){
+                if(isset($products[$key]))
+                    $products[$key]['qty'] = $v;
+            }
+            foreach($params['option'] as $key=>$v){
+                if(isset($products[$key])){
+                    $products[$key]['options'] = $v;
+                    if(is_array($v)){
+                        foreach($v as $_key=>$_val){
+                            if(is_array($_val) && isset($_val['date'])){
+                                $products[$key]['validate_datetime_'.$_key]=$_val['date'];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $filter = new Zend_Filter_LocalizedToNormalized(
+            array('locale' => Mage::app()->getLocale()->getLocaleCode())
+        );
+        foreach ($products as $product_data)
+        {
+            if(isset($product_data['product'])){
+                if (isset($product_data['qty'])) {
+                    $product_data['qty'] = $filter->filter($product_data['qty']);
+                }
+                $product = Mage::getModel('catalog/product')
+                    ->setStoreId(Mage::app()->getStore()->getId())
+                    ->load((int)$product_data['product']);
+                $cart->addProduct($product,$product_data);
+            }
+        }
+    }
 }

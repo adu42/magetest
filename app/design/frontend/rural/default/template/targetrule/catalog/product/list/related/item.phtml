@@ -26,6 +26,8 @@
 /** @var $this Enterprise_TargetRule_Block_Catalog_Product_Item */
 $_item = $this->getItem();
 if ($_item):
+    $width=$this->getWidth();
+    $height=$this->getHeight();
 ?>
     <?php if(!$_item->isComposite() && $_item->isSaleable()): ?>
         <?php if (!$_item->getRequiredOptions()): ?>
@@ -33,7 +35,7 @@ if ($_item):
         <?php endif; ?>
     <?php endif; ?>
     <div class="item-info">
-        <a href="<?php echo $this->getProductUrl($_item) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'small_image')->resize(100) ?>" width="100" height="100" alt="<?php echo $this->escapeHtml($_item->getName()) ?>" title="<?php echo $this->escapeHtml($_item->getName()) ?>" /></a>
+        <a href="<?php echo $this->getProductUrl($_item) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_item, 'small_image')->resize($width,$height) ?>" alt="<?php echo $this->escapeHtml($_item->getName()) ?>" title="<?php echo $this->escapeHtml($_item->getName()) ?>" /></a>
         <div class="product-details">
             <h3 class="product-name"><a href="<?php echo $this->getProductUrl($_item) ?>"><?php echo $this->escapeHtml($_item->getName()) ?></a></h3>
             <?php echo $this->getPriceHtml($_item, true, '-related') ?>

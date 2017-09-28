@@ -26,27 +26,25 @@
 /* @var $this Enterprise_TargetRule_Block_Catalog_Product_List_Related */
 ?>
 <?php if ($this->hasItems()):?>
-<?php
-    $width = (int)Mage::getStoreConfig('rural/image_size/related_image_width');
-    $height = (int)Mage::getStoreConfig('rural/image_size/related_image_height');
-    $width = max($width,294);
-    $height = max($height,392);
-?>
 <div class="box-collateral box-related">
     <div class="box-title">
         <h2><?php echo $this->__('Related Products') ?></h2>
     </div>
     <p class="note"><?php echo $this->__('Check items to add to the cart or') ?>&nbsp;<a href="#" onclick="selectAllRelated(this); return false;"><strong><?php echo $this->__('select all') ?></strong></a></p>
-    <ul class="box-content products-grid itemgrid-adaptive centered itemgrid hover-effect">
     <?php $i=0; foreach($this->getItemCollection() as $_item): ?>
+        <?php if ($i++ % $this->getColumnCount() == 0): ?>
+        <ul class="box-content products-grid itemgrid-adaptive centered itemgrid">
+        <?php endif ?>
         <li class="item<?php if (($i - 1) % $this->getColumnCount() == 0):?> first<?php elseif ($i % $this->getColumnCount() == 0): ?> last<?php endif; ?>">
             <?php
-                $itemBlock = $this->getChild('catalog.product.related.item')->setItem($_item)->setWidth($width)->setHeight($height)->setPosition($i);
+                $itemBlock = $this->getChild('catalog.product.related.item')->setItem($_item)->setPosition($i);
                 echo $itemBlock->toHtml();
             ?>
         </li>
+        <?php if ($i % $this->getColumnCount() == 0 || $i == $this->getItemsCount()): ?>
+        </ul>
+        <?php endif ?>
     <?php endforeach ?>
-    </ul>
     <script type="text/javascript">decorateGeneric($$('.box-related ul.box-content'), ['odd','even','first','last'])</script>
 
     <script type="text/javascript">

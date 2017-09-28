@@ -360,6 +360,7 @@
                                 jQuery('#add_to_cart_err').html('').hide();
                                 if(result.mini_cart && jQuery('#mini-cart')){jQuery('#mini-cart').replaceWith(result.mini_cart);}
                                 jQuery('#add_to_cart_err').html('').addClass('hidden');
+                                if(jQuery('#quick-window'))jQuery('#quick-window').hide();
                             }else{
                                 jQuery('#add_to_cart_err').html(result.message).removeClass('hidden');
                             }
@@ -372,11 +373,8 @@
             jQuery('#product_addtocart_form').attr('action',oldUrl);
         }
     }.bind(productAddToCartForm);
-
 	//]]>
 	</script>
-
-
 
 	<?php // Lower primary column ?>
 	<div class="product-lower-primary-column box-additional <?php echo $grid['lowerPrimCol']; ?>">

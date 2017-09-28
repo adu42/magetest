@@ -100,4 +100,44 @@ class Ado_Seo_CategoryController extends Mage_Catalog_CategoryController
         }
     }
 
+    /**
+     * 获取
+     * @return mixed
+     */
+    protected function _initProduct()
+    {
+        $categoryId = (int) $this->getRequest()->getParam('category', false);
+        $productId  = (int) $this->getRequest()->getParam('id');
+
+        $params = new Varien_Object();
+        $params->setCategoryId($categoryId);
+
+        return Mage::helper('catalog/product')->initProduct($productId, $this, $params);
+    }
+
+    /**
+     * catalog_catgory_quick
+     * quick_view 快速查看商品信息
+     * 可配置商品不能使用，因为整合组可配置产品的js、css等资源及计算都比较繁琐。
+     */
+    public function quickAction(){
+      //  if (!$this->getRequest()->isAjax()) {
+       //     echo Mage::helper('catalog')->__('Product not found');
+        //    die();
+      //  }
+
+        if (!$this->_initProduct()) {
+            echo Mage::helper('catalog')->__('Product not found');
+            die();
+        }
+       $product =  Mage::registry('product');
+       if($product->isSuper()){
+            echo Mage::helper('catalog')->__('Product not found');
+            die();
+       }
+       $this->loadLayout();
+       $this->renderLayout();
+    }
+
+
 }

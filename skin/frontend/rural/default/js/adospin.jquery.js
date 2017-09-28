@@ -231,7 +231,7 @@ jQuery(function($){
         direction		: 'opacity',
         easing			: 'easeOutBounce',//easeInOutExpo   easeOutBounce
         duration		: 96,
-        startItem      : currentNo?currentNo:0,
+        startItem      : (typeof currentNo !== 'undefined')?currentNo:0,
         navPosition	: 'horizontal',
         auto		 	: false,
         maxItemDisplay  : 5,

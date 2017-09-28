@@ -1,4 +1,7 @@
-<?php $_product = $this->getProduct(); ?>
+<?php
+$_product = $this->getProduct();
+$_useAjax = (bool)$this->getUseAjax();
+?>
 <?php $buttonTitle = $this->__('Add to Cart'); ?>
 <?php if ($_product->isSaleable()): ?>
     <div class="add-to-cart left-side">
@@ -8,7 +11,8 @@
                 <input type="text" name="qty" id="qty" maxlength="12" value="<?php echo $this->getProductDefaultQty() * 1 ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Qty')) ?>" class="input-text qty" />
             </div>
         <?php endif; ?>
-        <button type="button" title="<?php echo $buttonTitle ?>" id="product-addtocart-button" class="button btn-cart" onclick="productAddToCartForm.submit(this)"><span><span><?php echo $buttonTitle ?></span></span></button>
+        <button type="button" title="<?php echo $buttonTitle ?>" id="product-addtocart-button" class="button btn-cart" onclick="<?php if($_useAjax): ?>productAddToCartForm.submitAjax(this)<?php else: ?>productAddToCartForm.submit(this)<?php endif; ?>"><span><span><?php echo $buttonTitle ?></span></span></button>
+        <div id="add_to_cart_err" class="hidden"></div>
     </div>
     <div class="paypal-wrapper"><?php echo $this->getChildHtml('', true, true) ?></div>
     <script type="text/javascript">

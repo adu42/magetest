@@ -1,5 +1,5 @@
 <?php
-if($this->getCloudConfigFlag('general/use_sideshow')){
+if($this->getCloudConfigFlag('general/use_sideshow')||$this->getMustUseSilde()){
     include_once dirname(__FILE__).'/media-silde.phtml';
 }else{
     include_once dirname(__FILE__).'/media-cloudzoom.phtml';

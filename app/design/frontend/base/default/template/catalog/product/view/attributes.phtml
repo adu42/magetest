@@ -47,9 +47,9 @@
                 <td class="data"><?php echo $_helper->productAttribute($_product, $this->__($_data['value']), $_data['code']) ?></td>
             </tr>
         <?php  
-            if($this->escapeHtml($this->__($_data['label'])) == 'Fabric')
+            if($_data['label'] == 'Fabric')
             {
-                $_fabric =  $_helper->productAttribute($_product, $_data['value'], $_data['code']) ;
+                $_fabric =  $_helper->productAttribute($_product, $_data['value'], $_data['code']);
             }
          ?>
         <?php endforeach; ?>

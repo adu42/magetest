@@ -13,7 +13,10 @@
     <strong class="section-title"><?php echo $this->__('Additional Information') ?></strong>
     <ul id="product-attribute-specs-table" class="product-attribute-specs-table">
         <?php foreach ($_additional as $_data): ?>
-           <li class="data"><?php echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></li>
+           <li class="data">
+               <div class="product-attribute-label"><?php echo $this->htmlEscape($this->__($_data['label'])) ?></div>
+               <div class="product-attribute-value"><?php echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></div>
+           </li>
         <?php endforeach; ?>
     </ul>
 <?php endif;?>

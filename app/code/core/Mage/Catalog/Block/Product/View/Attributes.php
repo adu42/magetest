@@ -61,6 +61,7 @@ class Mage_Catalog_Block_Product_View_Attributes extends Mage_Core_Block_Templat
             if ($attribute->getIsVisibleOnFront() && !in_array($attribute->getAttributeCode(), $excludeAttr)) {
                 $value = $attribute->getFrontend()->getValue($product);
                 $value = trim($value);
+                if($value=='No')continue;
                 if (!$product->hasData($attribute->getAttributeCode())) {
                     continue;
                     $value = Mage::helper('catalog')->__('N/A');

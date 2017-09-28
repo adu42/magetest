@@ -2,7 +2,7 @@
 <config>
     <tabs>
         <rural translate="label" module="rural">
-            <label>Rural (1.18.1)</label>
+            <label>Dock (final)</label>
             <sort_order>151</sort_order>
             <class>rural</class>
         </rural>
@@ -460,6 +460,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </image_width>
+                        <image_height translate="label">
+                            <label>Image Width</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-number</validate>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </image_height>
                         <alt_image translate="label">
                             <label>Alternative Image</label>
                             <comment>Show alternative image on mouse hover over the product image.</comment>
@@ -753,6 +762,54 @@
                         </addtolinks_simple>
                     </fields>
                 </category_list>
+                <image_size>
+                    <label>Image Size</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>105</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                    <upsell_image_width translate="label">
+                        <label>Upsell Image Width</label>
+                        <comment>
+                            <![CDATA[Width of the product image. If width is not specified, default width will be used (295 pixels). Remember that in the category view the visual size of the product image depends on the number of columns. For example, if you increase the number of columns, columns will be narrower so there will be less space for product image in each column.<br/><strong style="color:red;">Important:</strong> in Magento 1.9.1.0 (or later) enter exactly the same value in the <em>"Small Image Width"</em> field which can be found under</br><em>System &gt; Catalog &gt; Product Image</em>.]]></comment>
+                        <frontend_type>text</frontend_type>
+                        <validate>validate-number</validate>
+                        <sort_order>20</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </upsell_image_width>
+                    <upsell_image_height translate="label">
+                        <label>Upsell Image Height</label>
+                        <frontend_type>text</frontend_type>
+                        <validate>validate-number</validate>
+                        <sort_order>20</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </upsell_image_height>
+                    <related_image_width translate="label">
+                        <label>Upsell Image Width</label>
+                        <frontend_type>text</frontend_type>
+                        <validate>validate-number</validate>
+                        <sort_order>20</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </related_image_width>
+                    <related_image_height translate="label">
+                        <label>Upsell Image Height</label>
+                        <frontend_type>text</frontend_type>
+                        <validate>validate-number</validate>
+                        <sort_order>20</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </related_image_height>
+                    </fields>
+                </image_size>
                 <product_page translate="label">
                     <label>Product Page</label>
                     <comment><![CDATA[<strong>IMPORTANT:</strong><br/>Width of the product page columns is specified in <strong style="color:red;">grid units</strong>.<br/>If you want to display three main columns (<strong>Image Column</strong>, <strong>Primary Column</strong>, <strong>Secondary Column</strong>) in a single row,<br/>sum of these three columns has to be <strong>equal 12 grid units</strong> (for example: 4 + 5 + 3).

@@ -1342,10 +1342,12 @@ img.mfp-img {
     float: left;
     display: block;
     height: 28px;
+    min-width: 27px;
+    text-align: center;
+    line-height: 27px;
     border-radius: 5px;
     border: 1px solid #eee;
     vertical-align: middle;
-    padding-top: 10px;
     padding-left: 5px;
     padding-right: 5px;
     cursor: pointer;
@@ -1361,6 +1363,7 @@ img.mfp-img {
 .select-box-description{padding-left: 10px; margin-top: 10px;background-color: rgba(255, 0, 0, 0.02);
     clear: both; border: dotted 1px #eee; border-radius: 5px;
     line-height: 26px;
+    display: none;
 }
 .pis-box-img {
     position: absolute;
@@ -1418,4 +1421,7 @@ ul.review-list li{
 .review-detail-content{
     clear: both;
     line-height: 30px;
+}
+.product-options ul.options-list li{
+    border: none;
 }

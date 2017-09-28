@@ -8,3 +8,7 @@ Mage_GoogleCheckout
 增加表结构列：    
 ALTER TABLE `catalog_product_option_type_title` ADD `is_default` TINYINT( 1 ) NULL DEFAULT '0';
 ALTER TABLE `catalog_product_option_type_title` ADD `note` VARCHAR( 200 ) NULL ;    
+
+
+quick view js执行处理：
+尽量使用jquery，prototype.js在这方面就比较弱。。

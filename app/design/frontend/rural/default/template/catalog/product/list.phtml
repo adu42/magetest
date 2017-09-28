@@ -31,19 +31,15 @@ $_collectionSize = $_productCollection->count();
     $helpImg = $this->helper('dock/image');
 
     //Image size
-    $imgWidth = intval($theme->getCfg('category/image_width'));
-    $imgHeight = $imgWidth;
-
-    //If image width is not specified, use default values
-    if ($imgWidth <= 0) {
-        $imgWidth = 295;
-        $imgHeight = 295;
-    }
+    $imgWidth = (int)$theme->getCfg('category/image_width');
+    $imgHeight = (int)$theme->getCfg('category/image_height');
+    $imgWidth = max($imgWidth,294);
+    $imgHeight = max($imgHeight,392);
 
     //Image aspect ratio settings
     $keepAspectRatio = $theme->getCfg('category/aspect_ratio');
     if ($keepAspectRatio) {
-        $imgHeight = 0; //Height will be calculated automatically (based on width) to keep the aspect ratio
+        // $imgHeight = 0; //Height will be calculated automatically (based on width) to keep the aspect ratio
         $catViewKeepFrame = FALSE;
     } else {
         $catViewKeepFrame = TRUE;
@@ -85,7 +81,6 @@ $_collectionSize = $_productCollection->count();
 
                         <?php //Product Image ?>
                         <div class="product-image-wrapper grid12-4 mobile-grid-half">
-
                             <a href="<?php echo $_product->getProductUrl() ?>"
                                title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>"
                                class="product-image" style="max-width:<?php echo $imgWidth; ?>px;">
@@ -221,9 +216,7 @@ $_collectionSize = $_productCollection->count();
             <ul class="products-grid category-products-grid itemgrid itemgrid-adaptive itemgrid-<?php echo $columnCount; ?>col<?php if ($gridClasses) echo $gridClasses; ?>">
                 <?php foreach ($_productCollection as $_product): ?>
                     <li class="item">
-
                         <div class="product-image-wrapper" style="max-width:<?php echo $imgWidth; ?>px;">
-
                             <a href="<?php echo $_product->getProductUrl() ?>"
                                title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>"
                                class="product-image">

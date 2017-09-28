@@ -1,15 +1,9 @@
 <?xml version="1.0"?>
 <config>
-    <tabs>
-        <dock translate="label">
-            <label>Dock Extensions</label>
-            <sort_order>152</sort_order>
-        </dock>
-    </tabs>
     <sections>
         <ultramegamenu translate="label">
             <label>Menu</label>
-            <tab>dock</tab>
+            <tab>rural</tab>
             <frontend_type>text</frontend_type>
             <sort_order>100</sort_order>
             <show_in_default>1</show_in_default>

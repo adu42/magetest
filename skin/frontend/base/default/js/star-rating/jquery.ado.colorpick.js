@@ -15,7 +15,7 @@ function doPickColor(event) {
     var _title =jQuery(event).data('label');
     if(jQuery('#select_'+_key) && jQuery('#select_'+_key).length>0){
         jQuery('#select_'+_key).val(_value);
-        if(opConfig)opConfig.reloadPrice();
+        if(typeof opConfig !== "undefined" )opConfig.reloadPrice();
     }
     if(jQuery('#value-'+_key) && jQuery('#value-'+_key).length>0){
         if(_title){
