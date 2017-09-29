@@ -40,7 +40,7 @@ ProductInfo.prototype = {
     showButton: function(e)
     {
         el = this;
-        while (el.tagName != 'li') {
+        while (el.tagName != 'LI') {
             el = el.up();
         }
         if($(el).getElementsBySelector('.ajax').length>0){
@@ -53,7 +53,7 @@ ProductInfo.prototype = {
     hideButton: function(e)
     {
         el = this;
-        while (el.tagName != 'li') {
+        while (el.tagName != 'LI') {
             el = el.up();
         }
         if($(el).getElementsBySelector('.ajax').length>0) {

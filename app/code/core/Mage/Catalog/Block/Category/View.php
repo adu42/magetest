@@ -90,6 +90,11 @@ class Mage_Catalog_Block_Category_View extends Mage_Core_Block_Template
         return $this->getChildHtml('product_list');
     }
 
+    public function getLayerHtml()
+    {
+        return $this->getChildHtml('catalog_leftnav');
+    }
+
     /**
      * Retrieve current category model object
      *
@@ -166,7 +171,7 @@ class Mage_Catalog_Block_Category_View extends Mage_Core_Block_Template
 
 
 
-    // 判断用户是否已在当前分类评过分
+    //
     function  getRatingStatues($currentCatId){
         $cookieRating = Mage::getSingleton('core/cookie')->get('rating');
         $_inRating = explode(',', $cookieRating);
@@ -178,25 +183,26 @@ class Mage_Catalog_Block_Category_View extends Mage_Core_Block_Template
         }
     }
 
-// 计算返回结果的星星个数
+//
      protected function _countratingrang($count)
     {
         $counts = explode('.', $count);
-        // 判断余数
-        $remainder_y = $counts[1] ; //余数
+        $_rangTemplete='';
+        $_rcount_y=0;
+        $remainder_y = $counts[1] ; //
         if($remainder_y >= 0 && $remainder_y < 0.5){
             $_rcount_y = 0;
         }elseif(($remainder_y >= 5 &&  $remainder_y < 10) || ($remainder_y >= 50 &&  $remainder_y < 100)){
             $_rcount_y = 0.5 ;
         }
 
-        // 组装星星
-        $remainder_z = $counts[0] ;  //整数
-        $remainder_z = $remainder_z * 2 + $_rcount_y * 2 ; // 4*2=8 0.5*2=1   合计9 深色星星的div个数
-        $_rcount_z = max(0,(10 - $remainder_z)) ; //浅色星星的div个数
+
+        $remainder_z = $counts[0] ;  //
+        $remainder_z = $remainder_z * 2 + $_rcount_y * 2 ; // 4*2=8 0.5*2=1
+        $_rcount_z = max(0,(10 - $remainder_z)) ; //
 
        
-        // 组装深色星星
+
         $j=1;
         for($i=1;$i <= $remainder_z ; $i++ ) {
             $j++;
@@ -209,7 +215,7 @@ class Mage_Catalog_Block_Category_View extends Mage_Core_Block_Template
             $_rangTemplete .= '<div class=" rate_pink_medium_heart_gd_bdazzle star_pink_medium_gd_bdazzle '.$class.'"></div>';
         }
 
-        // 组装浅色星星
+
         for($i=1;$i <= $_rcount_z ; $i++ ) {
             $j++;
             if($j%2 == 0) {
@@ -243,28 +249,28 @@ class Mage_Catalog_Block_Category_View extends Mage_Core_Block_Template
 
 
 
-    // 计算当前星星（没有cokies值的时候）
+    //
     public function _defaultcountratingrang($countRating,$currentCatId)
     {
 
 
         $counts = explode('.', $countRating);
-        // 判断余数
-        $remainder_y = $counts[1] ; //余数
+        $_rcount_y=0;$_rangTemplete='';
+        $remainder_y = $counts[1] ;
         if($remainder_y >= 0 && $remainder_y < 0.5){
             $_rcount_y = 0;
         }elseif(($remainder_y >= 5 &&  $remainder_y < 10) || ($remainder_y >= 50 &&  $remainder_y < 100)){
             $_rcount_y = 0.5 ;
         }
 
-        // 组装星星
-        $remainder_z = $counts[0] ;  //整数
-        $remainder_z = $remainder_z * 2 + $_rcount_y * 2 ; // 4*2=8 0.5*2=1   合计9 深色星星的div个数
-        $_rcount_z = max(0,(10 - $remainder_z)) ; //浅色星星的div个数
+
+        $remainder_z = $counts[0] ;  //
+        $remainder_z = $remainder_z * 2 + $_rcount_y * 2 ; // 4*2=8 0.5*2=1
+        $_rcount_z = max(0,(10 - $remainder_z)) ; //
 
 
 
-         // 组装深色星星
+
         $j=1;
         $n=0;
         for($i=1;$i <= $remainder_z ; $i++ ) {
@@ -287,7 +293,7 @@ class Mage_Catalog_Block_Category_View extends Mage_Core_Block_Template
 
 
 
-        // 组装浅色星星
+
         for($i=1;$i <= $_rcount_z ; $i++ ) {
             $j++;
             $n++;

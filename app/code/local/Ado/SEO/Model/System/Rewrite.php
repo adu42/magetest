@@ -38,6 +38,7 @@ class Ado_SEO_Model_System_Rewrite extends Enterprise_UrlRewrite_Model_Url_Rewri
     public function loadByRequestPath($paths)
     {
         $this->setId(null);
+        if(empty($paths['request']))return $this;
         $rewriteRows = $this->_getResource()->getRewrites($paths);
         $matchers = $this->_factory->getSingleton('enterprise_urlrewrite/system_config_source_matcherPriority')
             ->getRewriteMatchers();

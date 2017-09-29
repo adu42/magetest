@@ -31,30 +31,43 @@
  * @see Mage_Catalog_Block_Layer_View
  */
 ?>
-<?php if ($this->canShowBlock()): ?>
+<?php if ($this->canShowBlock()):
+
+    $selectedFilters = $this->getLayer()->getState()->getFilters();
+    $_selected = array();
+    if(!empty($selectedFilters)){
+        foreach ($selectedFilters as $selectedFilter){
+            $_selected[$selectedFilter->getName()][]=$selectedFilter->getLabel();
+        }
+    }
+
+    ?>
     <div id="layered-nav-marker"></div>
     <div class="block block-layered-nav<?php if (!$this->getLayer()->getState()->getFilters()): ?> block-layered-nav--no-filters<?php endif; ?>">
-        <div class="block-title">
-            <strong><span><?php echo $this->__('Shop By') ?></span></strong>
-        </div>
         <div class="block-content toggle-content">
-            <?php echo $this->getStateHtml() ?>
-            <?php if ($this->getLayer()->getState()->getFilters()): ?>
-                <div class="actions"><a
-                            href="<?php echo $this->getClearUrl() ?>"><?php echo $this->__('Clear All') ?></a></div>
-            <?php endif; ?>
             <?php if ($this->canShowOptions()): ?>
-                <p class="block-subtitle block-subtitle--filter"><?php echo $this->__('Filter') ?></p>
-                <dl id="narrow-by-list">
+                <ul id="narrow-by-list">
                     <?php $_filters = $this->getFilters() ?>
                     <?php foreach ($_filters as $_filter): ?>
-                        <?php if ($_filter->getItemsCount()): ?>
-                            <dt><?php echo $this->__($_filter->getName()) ?></dt>
-                            <dd><?php echo $_filter->getHtml() ?></dd>
+                        <?php if ($_filter->getItemsCount()):
+                            $class='';$selected='';$selectedFilters = array();
+                            if(isset($_selected[$_filter->getName()])){
+                                $class=' class="on"';
+                                $selected = array_pop($_selected[$_filter->getName()]);
+                                $selectedFilters = $_selected[$_filter->getName()];
+                            }else{
+                                $selected = $_filter->getName();
+                            }
+                            ?>
+                            <li<?php echo $class; ?>>
+                                <div class="filter-title"><?php echo $this->__($selected); ?><span class="caret"></span>
+                                    <div class="filter-body"><?php echo $_filter->setSelectedFilters($selectedFilters)->getHtml(); ?></div>
+                                </div>
+                            </li>
                         <?php endif; ?>
                     <?php endforeach; ?>
-                </dl>
-                <script type="text/javascript">decorateDataList('narrow-by-list')</script>
+                    <li><div class="filter-title"><a href="<?php echo $this->getClearUrl() ?>"><?php echo $this->__('RESET') ?></a></div></li>
+                </ul>
             <?php endif; ?>
         </div>
     </div>

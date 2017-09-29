@@ -31,10 +31,11 @@
  * @see Mage_Catalog_Block_Layer_Filter
  */
 ?>
-
-<ol>
+<?php $selectedFilters = $this->getSelectedFilters(); if(empty($selectedFilters))$selectedFilters=array(); ?>
+<ul>
 <?php foreach ($this->getItems() as $_item): ?>
-    <li>
+    <?php $class=''; if(in_array($_item->getLabel(),$selectedFilters))$class=' class="on"'; ?>
+    <li<?php echo $class; ?>>
         <?php if ($_item->getCount() > 0): ?>
         <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>"><?php echo $_item->getLabel() ?></a>
         <?php else: echo $_item->getLabel() ?>
@@ -44,4 +45,4 @@
         <?php endif; ?>
     </li>
 <?php endforeach ?>
-</ol>
+</>

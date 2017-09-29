@@ -963,18 +963,18 @@ class Mage_Catalog_Model_Category extends Mage_Catalog_Model_Abstract
 
 
 
-    // ÉèÖÃ¶ÁÈ¡ÊÊÅäÆ÷
+    // ï¿½ï¿½ï¿½Ã¶ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     protected function _getReadAdapter()
     {
         return  Mage::getSingleton('core/resource')->getConnection('core_read');    
     }
-    // ÉèÖÃÐ´ÈëÊÊÅäÆ÷
+    // ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     protected function _getWriteAdapter()
     {
         return Mage::getSingleton('core/resource')->getConnection('core_write');
     }  
 
-     // »ñÈ¡ÆÀ·Ö ×Ö¶ÎÊôÐÔ£¬·ÖÀàid£¬ÉÌµêid£¬µ±Ç°Ìá½»µÄÆÀ·Ö
+     // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½Ô£ï¿½ï¿½ï¿½ï¿½ï¿½idï¿½ï¿½ï¿½Ìµï¿½idï¿½ï¿½ï¿½ï¿½Ç°ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public function _getRatingValue($attribute_id,$cat_id,$store_id,$table_name)
     {
 
@@ -991,7 +991,7 @@ class Mage_Catalog_Model_Category extends Mage_Catalog_Model_Abstract
         $value = $this->_getReadAdapter()->fetchOne($select);  
 
 
-        //Èç¹û²»´æÔÚÊý¾Ý ÔòÄ¬ÈÏÊ¹ÓÃstore_id 0 
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¬ï¿½ï¿½Ê¹ï¿½ï¿½store_id 0 
         if (!$value) {
              $select = $this->_getReadAdapter()
                     ->select()
@@ -1008,7 +1008,7 @@ class Mage_Catalog_Model_Category extends Mage_Catalog_Model_Abstract
 
     }
 
-    // ±£´æÖµ  ÆÀ·Ö/Í¶Æ±Êý
+    // ï¿½ï¿½ï¿½ï¿½Öµ  ï¿½ï¿½ï¿½ï¿½/Í¶Æ±ï¿½ï¿½
     public function _saveRatingValue($value,$attribute_id,$cat_id,$store_id,$table_name)
     {
 
@@ -1024,7 +1024,7 @@ class Mage_Catalog_Model_Category extends Mage_Catalog_Model_Abstract
 
         $result_count = $this->_getReadAdapter()->fetchOne($select);  
 
-        //Èç¹û²»´æÔÚÊý¾Ý ÔòÄ¬ÈÏÊ¹ÓÃstore_id 0 
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¬ï¿½ï¿½Ê¹ï¿½ï¿½store_id 0 
         if ($result_count) {
                  $result = $this->_getWriteAdapter()
                     ->update(
@@ -1053,7 +1053,7 @@ class Mage_Catalog_Model_Category extends Mage_Catalog_Model_Abstract
 
 
 
-    // »ñµÃ×Ö¶ÎÊôÐÔid
+    // ï¿½ï¿½ï¿½ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½ï¿½id
     public function getAttributeId($attribute_code)
     {
         $table = Mage::getSingleton('core/resource')->getTableName('eav/attribute');

@@ -1245,7 +1245,7 @@
 
         <reference name="root">
             <action method="setTemplate">
-                <template>page/2columns-left.phtml</template>
+                <template>page/2columns-left-category-only.phtml</template>
             </action>
         </reference>
 
@@ -1279,9 +1279,10 @@
 
         <reference name="root">
             <action method="setTemplate">
-                <template>page/2columns-left.phtml</template>
+                <template>page/2columns-left-category-only.phtml</template>
             </action>
         </reference>
+
 
         <reference name="product_list">
 

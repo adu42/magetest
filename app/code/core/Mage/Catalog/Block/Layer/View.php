@@ -219,7 +219,6 @@ class Mage_Catalog_Block_Layer_View extends Mage_Core_Block_Template
                 return true;
             }
         }
-
         return false;
     }
 

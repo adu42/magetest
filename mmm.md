@@ -12,3 +12,8 @@ ALTER TABLE `catalog_product_option_type_title` ADD `note` VARCHAR( 200 ) NULL ;
 
 quick view js执行处理：
 尽量使用jquery，prototype.js在这方面就比较弱。。
+
+
+1、左侧筛选去掉、隐藏掉
+2、快速注册
+3、会员制

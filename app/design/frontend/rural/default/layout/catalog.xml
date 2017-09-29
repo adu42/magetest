@@ -73,19 +73,19 @@ Category default layout
 
     <catalog_category_default translate="label">
         <label>Catalog Category (Non-Anchor)</label>
-        <reference name="head">
-            <action method="addItem"><type>skin_js</type><name>js/productInfo.js</name></action>
-            <action method="addCss"><stylesheet>css/quick-view.css</stylesheet></action>
-        </reference>
-        <reference name="left">
+      <!--  <reference name="left">
             <block type="catalog/navigation" name="catalog.leftnav" before="-" template="catalog/navigation/left.phtml"/>
-        </reference>
+        </reference>  -->
         <reference name="breadcrumbs.container">
             <block type="catalog/category_view" name="category.title" after="breadcrumbs" template="catalog/category/title.phtml"/>
         </reference>
         <reference name="content">
             <block type="catalog/category_view" name="category.products" template="catalog/category/view.phtml">
+                <block type="enterprise_search/catalog_layer_view" name="enterprisecatalog.leftnav"  as="catalog_leftnav" before="-" template="catalog/layer/view.phtml">
+                    <block type="core/text_list" name="catalog.leftnav.state.renderers" as="state_renderers" />
+                </block>
                 <block type="catalog/product_list" name="product_list" template="catalog/product/list.phtml">
+
                     <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
                         <block type="page/html_pager" name="product_list_toolbar_pager"/>
                         <!-- The following code shows how to set your own pager increments -->
@@ -116,19 +116,19 @@ Category layered navigation layout
 
     <catalog_category_layered translate="label">
         <label>Catalog Category (Anchor)</label>
-        <reference name="head">
-            <action method="addItem"><type>skin_js</type><name>js/productInfo.js</name></action>
-            <action method="addCss"><stylesheet>css/quick-view.css</stylesheet></action>
-        </reference>
-        <reference name="left">
+      <!--  <reference name="left">
             <block type="catalog/layer_view" name="catalog.leftnav" before="-" template="catalog/layer/view.phtml"/>
-        </reference>
+        </reference> -->
         <reference name="breadcrumbs.container">
             <block type="catalog/category_view" name="category.title" after="breadcrumbs" template="catalog/category/title.phtml"/>
         </reference>
         <reference name="content">
             <block type="catalog/category_view" name="category.products" template="catalog/category/view.phtml">
+                <block type="enterprise_search/catalog_layer_view" name="enterprisecatalog.leftnav"  as="catalog_leftnav" before="-" template="catalog/layer/view.phtml">
+                    <block type="core/text_list" name="catalog.leftnav.state.renderers" as="state_renderers" />
+                </block>
                 <block type="catalog/product_list" name="product_list" template="catalog/product/list.phtml">
+
                     <!-- <action method="addReviewSummaryTemplate"><type>default</type><template>review/helper/su.phtml</template></action> -->
                     <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
                         <block type="page/html_pager" name="product_list_toolbar_pager"/>

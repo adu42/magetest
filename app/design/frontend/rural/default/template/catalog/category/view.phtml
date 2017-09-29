@@ -57,9 +57,13 @@
 
     <?php elseif($this->isMixedMode()): ?>
         <?php echo $this->getCmsBlockHtml() ?>
+        <div id="block-layer-nav"><?php echo $this->getLayerHtml(); ?></div>
         <?php echo $this->getProductListHtml() ?>
 
     <?php else: ?>
+        <div id="block-layer-nav">
+        <?php echo $this->getLayerHtml(); ?>
+        </div>
         <?php echo $this->getProductListHtml() ?>
     <?php endif; ?>
 </div>

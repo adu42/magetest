@@ -14,13 +14,13 @@
  */
 class Ado_SEO_Model_System_Rewrite_Request extends Enterprise_UrlRewrite_Model_Url_Rewrite_Request
 {
-    const SHOPBY_ROUTING_SUFFIX = 'filter'; //shopby
+    const SHOPBY_ROUTING_SUFFIX = 'filter';
     //const SHOPBY_ROUTING_SUFFIX_SHOPBY = 'shopby';
-    const MULTIPLE_FILTERS_DELIMITER = ','; //??????????????????
-    const MULTIPLE_FILTERS_SIBLING_DELIMITER = '_'; //????????????????��??
-    const FILTERS_WORDS_DELIMITER = '-'; //??????????-???
-    const FILTERS_TEMP_DELIMITER = '|'; //????????????????
-    const NOFOLLOW_FILTER_PREFIX = 'n/';  //????????????/n/??
+    const MULTIPLE_FILTERS_DELIMITER = ',';
+    const MULTIPLE_FILTERS_SIBLING_DELIMITER = '_';
+    const FILTERS_WORDS_DELIMITER = '-';
+    const FILTERS_TEMP_DELIMITER = '|';
+    const NOFOLLOW_FILTER_PREFIX = 'n/';
     protected $_filterTags = null;
     protected $storeCodes = null;
     protected $_params = null;
@@ -31,7 +31,7 @@ class Ado_SEO_Model_System_Rewrite_Request extends Enterprise_UrlRewrite_Model_U
     protected $_nrewriteTags = null;
 
     /**
-     * @??��??????
+     *
      */
     protected function _getRequestPath()
     {
@@ -49,7 +49,7 @@ class Ado_SEO_Model_System_Rewrite_Request extends Enterprise_UrlRewrite_Model_U
     }
 
     /**
-     * @??��??????
+     *
      */
     protected function _getRequestCases()
     {
@@ -57,7 +57,6 @@ class Ado_SEO_Model_System_Rewrite_Request extends Enterprise_UrlRewrite_Model_U
         $pathInfo = $this->_request->getPathInfo();
         $requestCases = array();
 
-        //======by ado =======//
         $resolved = $this->resolvePathInfo($this->_request);
         $cata = '';
         $catafull = '';
@@ -66,7 +65,7 @@ class Ado_SEO_Model_System_Rewrite_Request extends Enterprise_UrlRewrite_Model_U
             list($cata, $catafull, $ishome) = $this->getALlRequestParams($this->_request);
         }
 
-        if ($ishome) {  //???
+        if ($ishome) {
             $requestCases[] = '/';
             $requestCases[] = '';
         } else {
@@ -102,11 +101,12 @@ class Ado_SEO_Model_System_Rewrite_Request extends Enterprise_UrlRewrite_Model_U
             }
             $requestCases = array_unique($requestCases);
         }
+
         return $requestCases;
     }
 
     /**
-     * @??��??????
+     *
      */
     protected function _getQueryString()
     {
