@@ -13,9 +13,8 @@ $_collectionSize = $_productCollection->count();
 
 <?php if ($_collectionSize && $tmpHtml = $this->getChildHtml('block_category_above_collection')): ?>
     <div class="block_category_above_collection std"><?php echo $tmpHtml; ?></div>
+    <div id=""></div>
 <?php endif; ?>
-
-
 
 <?php if (!$_collectionSize): ?>
     <?php if ($tmpHtml = $this->getChildHtml('block_category_above_empty_collection')): ?>
@@ -61,7 +60,7 @@ $_collectionSize = $_productCollection->count();
 
     <div class="category-products">
         <?php if (!$hideToolbar): ?>
-            <?php echo $this->getToolbarHtml() ?>
+            <?php echo $this->getTopToolbarHtml() ?>
         <?php endif; ?>
 
         <?php if ($this->getMode() != 'grid'): //List mode  ?>
@@ -219,7 +218,8 @@ $_collectionSize = $_productCollection->count();
                 <?php foreach ($_productCollection as $_product): ?>
                     <li class="item">
                         <div class="product-image-wrapper" style="max-width:<?php echo $imgWidth; ?>px;">
-                            <a href="<?php echo $_product->getProductUrl() ?>"
+                            <?php echo $helpTemplate->getCategoryQuickView($_product); ?>
+                            <a href="<?php echo $_product->getProductUrl($_product) ?>"
                                title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>"
                                class="product-image">
                                 <img id="product-collection-image-<?php echo $_product->getId(); ?>"
@@ -232,6 +232,8 @@ $_collectionSize = $_productCollection->count();
 
                                 <?php echo $helpLabels->getLabels($_product); //Product labels ?>
                             </a>
+                        </div> <!-- end: product-image-wrapper -->
+                        <div class="product-grid-footer">
 
                             <?php //Add-to links
                             if ($gc['display_addtolinks'] != 0 && $gc['addtolinks_simple']) {
@@ -241,8 +243,6 @@ $_collectionSize = $_productCollection->count();
                                     echo $helpTemplate->getCategoryAddtoLinksIcons($_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage');
                             }
                             ?>
-
-                        </div> <!-- end: product-image-wrapper -->
 
                         <?php if ($gc['display_name'] != 0): ?>
                             <h2 class="product-name<?php echo $productNameClasses; ?>"><a
@@ -274,6 +274,8 @@ $_collectionSize = $_productCollection->count();
                                 <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
                             <?php endif; ?>
                         <?php endif; ?>
+
+
 
                         <?php if ($gc['display_price'] == 1): //Display on hover ?>
                             <div class="display-onhover"><?php echo $this->getPriceHtml($_product, true); ?></div>
@@ -319,6 +321,7 @@ $_collectionSize = $_productCollection->count();
                             }
                             ?>
                         </div> <!-- end: actions -->
+                        </div>
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -326,7 +329,7 @@ $_collectionSize = $_productCollection->count();
 
         <?php if (!$hideToolbar): ?>
             <div class="toolbar-bottom">
-                <?php echo $this->getToolbarHtml() ?>
+                <?php echo $this->getBottomToolbarHtml() ?>
             </div>
         <?php endif; ?>
     </div>

@@ -461,7 +461,7 @@
                             <show_in_store>1</show_in_store>
                         </image_width>
                         <image_height translate="label">
-                            <label>Image Width</label>
+                            <label>Image Height</label>
                             <frontend_type>text</frontend_type>
                             <validate>validate-number</validate>
                             <sort_order>20</sort_order>

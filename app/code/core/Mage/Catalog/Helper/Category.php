@@ -184,7 +184,7 @@ class Mage_Catalog_Helper_Category extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * ¼ÆËãÆÀ·Ö
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      * @return 
      */
     public function countrating($_count,$cat_id,$store_id)
@@ -193,7 +193,7 @@ class Mage_Catalog_Helper_Category extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * ¼ÆËã·µ»Ø½á¹ûµÄÐÇÐÇ¸öÊý
+     * ï¿½ï¿½ï¿½ã·µï¿½Ø½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½ï¿½ï¿½
      * @return 
      */    
     public function countratingrang($count)
@@ -206,7 +206,7 @@ class Mage_Catalog_Helper_Category extends Mage_Core_Helper_Abstract
     {
         $counts = explode('.', $count);
         $_rangTemplete = '';
-        $remainder_y = $counts[1] ; //ÓàÊý
+        $remainder_y = $counts[1] ; //ï¿½ï¿½ï¿½ï¿½
         $_rcount_y = 0.5;
         if($remainder_y >= 0 && $remainder_y < 0.5){
             $_rcount_y = 0;
@@ -214,13 +214,13 @@ class Mage_Catalog_Helper_Category extends Mage_Core_Helper_Abstract
             $_rcount_y = 0.5 ;
         }
 
-        // ×é×°ÐÇÐÇ
-        $remainder_z = $counts[0] ;  //ÕûÊý
-        $remainder_z = $remainder_z * 2 + $_rcount_y * 2 ; // 4*2=8 0.5*2=1   ºÏ¼Æ9 ÉîÉ«ÐÇÐÇµÄdiv¸öÊý
-        $_rcount_z = max(0,(10 - $remainder_z)) ; //Ç³É«ÐÇÐÇµÄdiv¸öÊý
+        // ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
+        $remainder_z = $counts[0] ;  //ï¿½ï¿½ï¿½ï¿½
+        $remainder_z = $remainder_z * 2 + $_rcount_y * 2 ; // 4*2=8 0.5*2=1   ï¿½Ï¼ï¿½9 ï¿½ï¿½É«ï¿½ï¿½ï¿½Çµï¿½divï¿½ï¿½ï¿½ï¿½
+        $_rcount_z = max(0,(10 - $remainder_z)) ; //Ç³É«ï¿½ï¿½ï¿½Çµï¿½divï¿½ï¿½ï¿½ï¿½
 
         
-        // ×é×°ÉîÉ«ÐÇÐÇ
+        // ï¿½ï¿½×°ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½
         $j=1;
         for($i=1;$i <= $remainder_z ; $i++ ) {
             $j++;
@@ -233,7 +233,7 @@ class Mage_Catalog_Helper_Category extends Mage_Core_Helper_Abstract
             $_rangTemplete .= '<div class=" rate_pink_medium_heart_gd_bdazzle star_pink_medium_gd_bdazzle '.$class.'"></div>';
         }
 
-        // ×é×°Ç³É«ÐÇÐÇ
+        // ï¿½ï¿½×°Ç³É«ï¿½ï¿½ï¿½ï¿½
         for($i=1;$i <= $_rcount_z ; $i++ ) {
             $j++;
             if($j%2 == 0) {
@@ -267,24 +267,24 @@ class Mage_Catalog_Helper_Category extends Mage_Core_Helper_Abstract
   
     protected function _countrating($rating,$cat_id,$store_id)
     {
-        // »ñÈ¡ÆÀ·Ö      
+        // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
         $_getRating = $this->_getCountRating($cat_id);
 
-        // »ñÈ¡Í¶Æ±ÈËÊý 
+        // ï¿½ï¿½È¡Í¶Æ±ï¿½ï¿½ï¿½ï¿½
         $_getCountTotal = $this->_getCountTotal($cat_id);
 
         
-        // ¼ÆËãÆ½¾ù·Ö ÏÈ¼ÆËã×Ü·Ö£¬ÔÚ¼ÓÉÏµ±Ç°·Ö£¬¼ÆËãÏÖÔÚµÄÆ½¾ù·Ö
-        $_defaultTotal = ( $_getRating * $_getCountTotal ) +  $rating ;  //µ±Ç°×Ü·Ö
-        $_ratingNow = $_defaultTotal / ( $_getCountTotal + 1) ;  //»ñµÃµ±Ç°ÆÀ·Ö
+        // ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½ ï¿½È¼ï¿½ï¿½ï¿½ï¿½Ü·Ö£ï¿½ï¿½Ú¼ï¿½ï¿½Ïµï¿½Ç°ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Æ½ï¿½ï¿½ï¿½ï¿½
+        $_defaultTotal = ( $_getRating * $_getCountTotal ) +  $rating ;  //ï¿½ï¿½Ç°ï¿½Ü·ï¿½
+        $_ratingNow = $_defaultTotal / ( $_getCountTotal + 1) ;  //ï¿½ï¿½Ãµï¿½Ç°ï¿½ï¿½ï¿½ï¿½
         $_ratingNow = substr($_ratingNow,0,3) ;
 
 
 
-        // ±£´æÈËÊý 
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         $this->saveCountTotal(($_getCountTotal+1),$cat_id,$store_id) ;
 
-        // ±£´æÆÀ·Ö
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         $this->saveCountRating($_ratingNow,$cat_id,$store_id) ;
 
         $_final_result = array('rating'=>$_ratingNow ,'total'=>($_getCountTotal+1) );
@@ -294,7 +294,7 @@ class Mage_Catalog_Helper_Category extends Mage_Core_Helper_Abstract
 
 
     /**
-     * »ñÈ¡ÆÀ·Ö
+     * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
      * @return 
      */  
     protected function _getCountRating($cat_id)
@@ -311,7 +311,7 @@ class Mage_Catalog_Helper_Category extends Mage_Core_Helper_Abstract
 
 
     /**
-     * »ñÈ¡Í¶Æ±Êý
+     * ï¿½ï¿½È¡Í¶Æ±ï¿½ï¿½
      * @return 
      */  
     protected function _getCountTotal($cat_id)
@@ -327,7 +327,7 @@ class Mage_Catalog_Helper_Category extends Mage_Core_Helper_Abstract
 
 
     /**
-     * ±£´æÍ¶Æ±Êý
+     * ï¿½ï¿½ï¿½ï¿½Í¶Æ±ï¿½ï¿½
      * @return 
      */ 
     protected function saveCountTotal($total,$cat_id,$store_id)
@@ -343,7 +343,7 @@ class Mage_Catalog_Helper_Category extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * ±£´æÆÀ·Ö
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      * @return 
      */ 
     protected function saveCountRating($rating,$cat_id,$store_id)

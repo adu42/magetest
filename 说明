@@ -41,9 +41,4 @@ rural  dock
 4、
 
 
-jQuery('p.menu-head.hasChildren').on('click',function(){
-		jQuery(this).toggleClass('current');
-		jQuery(this).next('div.menu-body').slideToggle('300');
-});
-
 

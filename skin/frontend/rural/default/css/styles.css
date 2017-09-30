@@ -1260,7 +1260,12 @@ p.required,
     float: left;
     margin-right: 15px;
 }
-
+.category-products .toolbar{
+    border: none;
+}
+.category-products .toolbar .amount,.category-products .toolbar .sort-by,.category-products .toolbar .pager{
+    float: right;
+}
 /* Data Table
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
@@ -2729,12 +2734,21 @@ strong.product-name {
     /*font-size:1.3333em;
 	line-height:1.25em;*/
 }
-
+.products-grid .price-box{
+    display: block; float: left; line-height: 36px; }
 .products-list .price-box.map-info a,
 .products-grid .price-box.map-info a {
     margin-left: 3px;
 }
-
+.products-grid .price-box .price-label{
+    display: none;
+}
+.products-grid .price-box p,.products-grid .price-box .regular-price{
+    float: left;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.products-grid .price-box .regular-price{color: red}
 /* Product image
 -------------------------------------------------------------- */
 /* Product alternative image */
@@ -2789,8 +2803,6 @@ strong.product-name {
     line-height: 24px;
 }
 
-.products-list .product-image-wrapper {
-}
 
 .products-list .product-image {
     display: block;
@@ -2903,6 +2915,8 @@ strong.product-name {
 .products-grid .ratings-wrapper .ratings { margin-top:0; margin-bottom:0; }*/
 .products-grid .actions {
     margin: 10px 0 0;
+    display: block;
+    clear: both;
 }
 
 .products-grid .availability {
@@ -2941,6 +2955,12 @@ strong.product-name {
 	-------------------------------------------------------------- */
 .products-grid .item .display-onhover {
     display: none;
+}
+.display-onhover.ratings-wrapper{
+    margin-left: 20px;
+    margin-top: 20px;
+    max-width: 140px;
+    height: 10px;
 }
 
 /* Display grid item elements only on hover: fade-in (for sliders) */
@@ -2982,8 +3002,7 @@ strong.product-name {
     margin-bottom: 30px;
     border: 1px solid #f2f2f2;
     padding: 0px;
-    margin-right: 17px;
-    margin-left: 0px;
+    margin: 0 auto;
 }
 .products-grid.hover-effect .item:hover{
     z-index: 10;
@@ -3016,7 +3035,32 @@ strong.product-name {
 }
 
 /*.products-grid.centered .item .actions .add-to-links li:last-child { margin-right:0; }*/
-
+.quick-view-icon{
+    display: none;
+    max-width: 200px;
+    max-height: 30px;
+    white-space: nowrap;
+    padding: 0 30px;
+    background-color: #fff;
+    opacity: .85;
+    color: #222;
+    font-size: 14px;
+    text-transform: uppercase;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    left: 50%;
+    top: 65%;
+    transform: translate(-50%,0);
+    -ms-transform: translate(-50%,0);
+    -moz-transform: translate(-50%,0);
+    -webkit-transform: translate(-50%,0);
+    -o-transform: translate(-50%,0);
+    z-index: 1;
+}
+.products-grid.centered .item:hover .quick-view-icon{display: block;}
 /* Grid: only in category view
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
@@ -3504,6 +3548,7 @@ a.availability-only {
 /* Add-to links: simple icons (with no text)
 -------------------------------------------------------------- */
 .addto-links-icons {
+    background-color: transparent;
 }
 
 /* If displayed in a group: add margin between icons */
@@ -3522,13 +3567,13 @@ a.availability-only {
 /* If displayed on product image */
 .addto-links-icons.addto-onimage {
     float: right;
-    margin-top: -44px; /* Move up */
+    /*  margin-top: -44px;  Move up */
     position: relative;
     z-index: 1;
     padding-bottom: 4px; /* Use padding to cover the bottom part of the product image below icons */
     padding-right: 4px;
 }
-
+.addto-links-icons.addto-onimage span:hover{ background-color: transparent; color: red;}
 /* Add to Cart box
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
@@ -6853,4 +6898,17 @@ body.cms-index-index .breadcrumbs {
     line-height: 0;
     height: 0;
     overflow: hidden;
+}
+
+.itemgrid{
+   /* text-align-last: justify; */
+    text-align: justify;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
 }

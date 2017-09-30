@@ -155,7 +155,12 @@ class Mage_Catalog_Block_Product_List extends Mage_Catalog_Block_Product_Abstrac
         // set collection to toolbar and apply sort
         $toolbar->setCollection($collection);
 
+
         $this->setChild('toolbar', $toolbar);
+        if (Mage::getStoreConfigFlag('catalog/frontend/toolbar_part')) {
+            $this->setChild('toolbar-top', $toolbar);
+            $this->setChild('toolbar-bottom', $toolbar);
+        }
         Mage::dispatchEvent('catalog_block_product_list_collection', array(
             'collection' => $this->_getProductCollection()
         ));
@@ -190,7 +195,6 @@ class Mage_Catalog_Block_Product_List extends Mage_Catalog_Block_Product_Abstrac
     {
         return $this->getChildHtml('additional');
     }
-
     /**
      * Retrieve list toolbar HTML
      *
@@ -199,6 +203,16 @@ class Mage_Catalog_Block_Product_List extends Mage_Catalog_Block_Product_Abstrac
     public function getToolbarHtml()
     {
         return $this->getChildHtml('toolbar');
+    }
+
+    public function getTopToolbarHtml()
+    {
+        return $this->getChild('toolbar-top')->setTemplate('catalog/product/list/toolbar-top.phtml')->tohtml();
+    }
+
+    public function getBottomToolbarHtml()
+    {
+        return $this->getChild('toolbar-bottom')->setTemplate('catalog/product/list/toolbar-bottom.phtml')->tohtml();
     }
 
     public function setCollection($collection)

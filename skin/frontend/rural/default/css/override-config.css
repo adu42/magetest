@@ -29,7 +29,7 @@
 .products-grid .addto-links-icons span.icon { border-radius: 0; }
 
 /* Pager */
-.pager .pages li a { background-color:#f5f5f5; }
+.pager .pages li a:hover { text-decoration: underline;  }
 
 /* Add-to links */
  .addto-links-icons .ic { border-radius: 20% }

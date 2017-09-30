@@ -38,7 +38,7 @@
         <reference name="head">
             <!-- Added in Magento 1.9.3.0 -->
             <action method="addJs" ifconfig="configswatches/general/product_list_price_change">
-                <name>varien/product_options.js</name>
+                <script>varien/product_options.js</script>
             </action>
             <action method="addItem" ifconfig="configswatches/general/product_list_price_change">
                 <type>skin_js</type>

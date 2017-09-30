@@ -1,23 +1,17 @@
-var ProductInfo = Class.create();
-ProductInfo.prototype = {
+var QuickView = Class.create();
+QuickView.prototype = {
     settings: {
         'loadingMessage': 'Please wait ...'
     },
     
-    initialize: function(selector, x_image, settings)
+    initialize: function(selector, settings)
     {
         Object.extend(this.settings, settings);
-        this.createWindow();  
-        
+        this.createWindow();
         var that = this;
         $$(selector).each(function(el, index){
             el.observe('click', that.loadInfo.bind(that));
         })
-        $$(x_image).each(function(el, index){
-            el.observe('mouseover', that.showButton);
-            el.observe('mouseout', that.hideButton);
-        })
-        
     },
     
     createLoader: function()
@@ -40,7 +34,7 @@ ProductInfo.prototype = {
     showButton: function(e)
     {
         el = this;
-        while (el.tagName != 'LI') {
+        while (el.tagName != 'DIV') {
             el = el.up();
         }
         if($(el).getElementsBySelector('.ajax').length>0){
@@ -53,7 +47,7 @@ ProductInfo.prototype = {
     hideButton: function(e)
     {
         el = this;
-        while (el.tagName != 'LI') {
+        while (el.tagName != 'DIV') {
             el = el.up();
         }
         if($(el).getElementsBySelector('.ajax').length>0) {
@@ -68,16 +62,34 @@ ProductInfo.prototype = {
         var qWindow = new Element('div', {id: 'quick-window'});
         qWindow.innerHTML = '<div id="quickview-header"><a href="javascript:void(0)" id="quickview-close">close</a></div><div class="quick-view-content"></div>';
         document.body.appendChild(qWindow);
-        $('quickview-close').observe('click', this.hideWindow.bind(this)); 
+        $('quickview-close').observe('click', this.hideWindow.bind(this));
+        $('quick-window').observe('click', this.hideWindow.bind(this));
     },
     
     showWindow: function()
     {
         $('quick-window').setStyle({
-            top:  document.viewport.getScrollOffsets().top + 100 + 'px',
-            left:  document.body.clientWidth/2 - $('quick-window').getWidth()/2 + 'px',
-            display: 'block'
+            'position': 'fixed',
+            'z-index': 99999,
+            'top':0,
+            'left':0,
+            'bottom': 0,
+            'right':0,
+            'display': 'block'
         });
+        $$('.quick-view-content')[0].setStyle({
+            'display': 'block',
+            'z-index': 99999,
+            'position': 'relative',
+            'margin': '50px auto',
+            'width': '90%',
+            'max-width': '1040px',
+            'background-color': '#fff',
+            'padding': '28px 0 35px 30px',
+            'transition': 'all ease .5s',
+            'overflow': 'auto'
+        });
+        $$('.quick-view-content')[0].observe('click', this.stopHideWindowEvent.bind(this));
     },
     
     setContent: function(content)
@@ -95,13 +107,18 @@ ProductInfo.prototype = {
         this.clearContent();
         $('quick-window').hide();
     },
-
+    stopHideWindowEvent: function (e) {
+      e.stopPropagation();
+    },
     loadInfo: function(e)
     {
-        e.stop();
+         e.stop();
         var that = this;
         this.createLoader();
-        new Ajax.Request(e.element().href, {
+        var id = e.element().readAttribute('data-id');
+        if(!id)return;
+        var url = '/catalog/category/quick/id/'+id;
+        new Ajax.Request(url, {
             onComplete: function(response) {
                 that.clearContent();
                 that.setContent(response.responseText);
@@ -113,6 +130,5 @@ ProductInfo.prototype = {
 }
 
 Event.observe(window, 'load', function() {
-    new ProductInfo('.ajax', '.product-image-wrapper', {
-    });
+    new QuickView('.ajax',{});
 });

@@ -2,6 +2,7 @@
 
 class Dock_Rural_Helper_Template extends Mage_Core_Helper_Abstract
 {
+    protected $_useQuickView = null;
 	/**
 	 * Render "Add to" links for category view.
 	 *
@@ -89,11 +90,6 @@ class Dock_Rural_Helper_Template extends Mage_Core_Helper_Abstract
 	public function getCategoryAddtoLinksIcons($_product, $_compareUrl, $wrapperClasses = '')
 	{
 		$html = '';
-        $quickView = Mage::getStoreConfigFlag('ado_seo/catalog/quick_view');
-
-        if($quickView && !$_product->isSuper()){
-            $html .= '<li><a href="'.Mage::getUrl('catalog/category/quick/id/' . $_product->getId()).'" title="'.$this->escapeHtml($_product->getName()).'" class="ajax link-quick-view">'.$this->__('Quick View').'</a></li>';
-        }
 
 		if (Mage::helper('wishlist')->isAllow())
 		{			
@@ -131,5 +127,25 @@ class Dock_Rural_Helper_Template extends Mage_Core_Helper_Abstract
 	{
 		return $this->getCategoryAddtoLinksIcons($_product, $_compareUrl, $wrapperClasses);
 	}
+
+    /**
+     * quick view
+     * @param $_product
+     * @return string
+     */
+	public function getCategoryQuickView($_product){
+        $html_quick_view = '';
+        if($this->isUseQuickView() && !$_product->isSuper()){
+            $html_quick_view .= '<div class="quick-view-icon"><div data-id="'.$_product->getId().'" class="ajax link-quick-view">'.$this->__('Quick View').'</div></div>';
+        }
+        return $html_quick_view;
+    }
+
+    protected function isUseQuickView(){
+        if(is_null($this->_useQuickView)){
+            $this->_useQuickView = Mage::getStoreConfigFlag('ado_seo/catalog/quick_view');
+        }
+        return $this->_useQuickView;
+    }
 
 }

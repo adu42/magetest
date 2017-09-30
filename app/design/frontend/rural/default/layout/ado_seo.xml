@@ -23,14 +23,13 @@
             <action method="addItem"><type>skin_js</type><name>js/swiper.jquery.min.js</name></action>
             <action method="addItem"><type>skin_css</type><name>css/swiper.css</name></action>
             <action method="addItem"><type>skin_js</type><name>js/adospin.jquery.js</name><params/></action>
-            <action method="addItem"><type>skin_js</type><script>js/star-rating/jquery.ado.colorpick.js</script></action>
+            <action method="addItem"><type>skin_js</type><name>js/star-rating/jquery.ado.colorpick.js</name></action>
             <action method="addItem"><type>skin_css</type><name>css/dock/_shared/colorbox.css</name></action>
-
+            <action method="addItem"><type>skin_js</type><name>js/productInfo.js</name><params/></action>
         </reference>
     </catalog_category_default>
     <catalog_category_layered translate="label">
         <reference name="head">
-
             <action method="addJs"><script>varien/product.js</script></action>
             <action method="addJs"><script>varien/product_options.js</script></action>
             <action method="addJs"><script>varien/configurable.js</script></action>
@@ -51,9 +50,9 @@
             <action method="addItem"><type>skin_js</type><name>js/swiper.jquery.min.js</name></action>
             <action method="addItem"><type>skin_css</type><name>css/swiper.css</name></action>
             <action method="addItem"><type>skin_js</type><name>js/adospin.jquery.js</name><params/></action>
-            <action method="addItem"><type>skin_js</type><script>js/star-rating/jquery.ado.colorpick.js</script></action>
+            <action method="addItem"><type>skin_js</type><name>js/star-rating/jquery.ado.colorpick.js</name></action>
             <action method="addItem"><type>skin_css</type><name>css/dock/_shared/colorbox.css</name></action>
-
+            <action method="addItem"><type>skin_js</type><name>js/productInfo.js</name><params/></action>
         </reference>
     </catalog_category_layered>
     <catalog_category_quick>
