@@ -60,8 +60,8 @@ $defailtSelectedIndex=0;
                 <?php endif; ?>
                 <?php $i++; endforeach; ?>
         </div>
-        <div class="swiper-button-next">&nbsp;</div>
-        <div class="swiper-button-prev">&nbsp; </div>
+        <div class="swiper-button-next swiper-button-black">&nbsp;</div>
+        <div class="swiper-button-prev swiper-button-black">&nbsp; </div>
     </div>
 
 
@@ -78,10 +78,9 @@ $defailtSelectedIndex=0;
                 <?php endif; ?>
                 <?php $i++; endforeach; ?>
         </div>
-        <div class="swiper-button-next">&nbsp;</div>
-        <div class="swiper-button-prev">&nbsp;</div>
+        <div class="swiper-button-next swiper-button-black">&nbsp;</div>
+        <div class="swiper-button-prev swiper-button-black">&nbsp;</div>
     </div>
-<?php endif; ?>
     <script>
         var galleryTop = new Swiper('.swiper-container-product-main-image', {
             nextButton: '.swiper-button-next',
@@ -100,27 +99,16 @@ $defailtSelectedIndex=0;
         });
         galleryTop.params.control = galleryThumbs;
         galleryThumbs.params.control = galleryTop;
-        /*
-        // 轮播
-        var  mySwiper = new Swiper('.swiper-container-products', {
-            loop : false,
-            pagination: '.swiper-pagination',
-            effect: 'coverflow',
-            grabCursor: true,
-            centeredSlides: true,
-            nextButton: '.swiper-button-next',
-            prevButton: '.swiper-button-prev',
-            slidesPerView: 'auto',
-            coverflow: {
-                rotate: -10,// 旋转的角度
-                stretch: 2,// 拉伸   图片间左右的间距和密集度
-                depth: 70,// 深度   切换图片间上下的间距和密集度
-                modifier: 5,// 修正值 该值越大前面的效果越明显
-                slideShadows : false// 页面阴影效果
-            }
-        });
-        */
     </script>
+<?php else: ?>
+    <div class="swiper-container-thumbnail swiper-container">
+        <div class="swiper-wrapper">
+        </div></div>
+    <div class="swiper-container-product-main-image swiper-container">
+        <div class="swiper-wrapper">
+        </div></div>
+<?php endif; ?>
+
     <script type="text/javascript">
         var currentNo=<?php echo $defailtSelectedIndex; ?>;
     </script>

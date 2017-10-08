@@ -133,17 +133,19 @@
 						<?php if (!empty($b['primary_bottom']['right'])): ?>
 							<div class="item item-right clearer block_footer_primary_bottom_right">
 								<?php echo $b['primary_bottom']['right']; ?>
+                                <?php if (!empty($b['primary_bottom']['newsletter'])): ?>
+                                    <div class="item item-right newsletter-wrapper clearer">
+                                        <?php echo $b['primary_bottom']['newsletter']; ?>
+                                    </div>
+                                <?php endif; ?>
 							</div>
 						<?php endif; ?>
 						
-						<?php if (!empty($b['primary_bottom']['newsletter'])): ?>
-							<div class="item item-right newsletter-wrapper clearer">
-								<?php echo $b['primary_bottom']['newsletter']; ?>
-							</div>
-						<?php endif; ?>
+
 						
 					</div> 
 				</div> <!-- end: footer-primary-bottom -->
+
 				<?php endif; ?>
 			
 			</div> <!-- end: inner-container -->

@@ -17,3 +17,19 @@ quick view js执行处理：
 1、左侧筛选去掉、隐藏掉
 2、快速注册
 3、会员制
+
+
+footer_links  top
+block_footer_links  top
+block_footer_links2  top
+
+block_footer_column   primary
+block_footer_primary_bottom_left  primary_bottom
+block_footer_primary_bottom_right  primary_bottom
+newsletter  primary_bottom
+bottomContainer   primary_top
+
+block_footer_row2_column  secondary
+copyright bottom
+block_footer_payment bottom
+store_switcher  bottom

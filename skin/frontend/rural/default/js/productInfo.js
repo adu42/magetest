@@ -60,7 +60,7 @@ QuickView.prototype = {
     createWindow: function()
     {
         var qWindow = new Element('div', {id: 'quick-window'});
-        qWindow.innerHTML = '<div id="quickview-header"><a href="javascript:void(0)" id="quickview-close">close</a></div><div class="quick-view-content"></div>';
+        qWindow.innerHTML = '<div id="quickview-mask"></div><div class="quick-view-content"><div id="quickview-header"><a href="javascript:void(0)" id="quickview-close">close</a></div></div>';
         document.body.appendChild(qWindow);
         $('quickview-close').observe('click', this.hideWindow.bind(this));
         $('quick-window').observe('click', this.hideWindow.bind(this));
@@ -70,18 +70,35 @@ QuickView.prototype = {
     {
         $('quick-window').setStyle({
             'position': 'fixed',
-            'z-index': 99999,
+            'z-index': 9999,
             'top':0,
             'left':0,
             'bottom': 0,
             'right':0,
-            'display': 'block'
+            'display': 'block',
+        });
+        $('quickview-mask').setStyle({
+            'position': 'fixed',
+            'z-index': 9999,
+            'top':0,
+            'left':0,
+            'bottom': 0,
+            'right':0,
+            'width':'100%',
+            'height':'100%',
+            'display': 'block',
+            'background-color':'#000',
+            'opacity': .5
+        });
+        $('quickview-header').setStyle({
+            'text-align': 'right',
+            'padding-right': '30px'
         });
         $$('.quick-view-content')[0].setStyle({
             'display': 'block',
             'z-index': 99999,
             'position': 'relative',
-            'margin': '50px auto',
+            'margin': '0px auto',
             'width': '90%',
             'max-width': '1040px',
             'background-color': '#fff',
@@ -94,12 +111,15 @@ QuickView.prototype = {
     
     setContent: function(content)
     {
+        content='<div id="quickview-header"><a href="javascript:void(0)" id="quickview-close">close</a></div>'+content;
         $$('.quick-view-content')[0].update(content);
+        $('quickview-close').observe('click', this.hideWindow.bind(this));
     },
     
     clearContent: function()
     {
-        $$('.quick-view-content')[0].replace('<div class="quick-view-content"></div>');
+        $$('.quick-view-content')[0].replace('<div class="quick-view-content"><div id="quickview-header"><a href="javascript:void(0)" id="quickview-close">close</a></div></div>');
+        $('quickview-close').observe('click', this.hideWindow.bind(this));
     },
     
     hideWindow: function()

@@ -82,6 +82,7 @@ class Mage_Core_Model_Translate
      * @var array
      */
     protected $_data = array();
+    protected $_words;
 
     /**
      * Translation data for data scope (per module)
@@ -423,7 +424,7 @@ class Mage_Core_Model_Translate
                 $result = '{{{'.$result.'}}{{'.$translated.'}}{{'.$text.'}}{{'.$module.'}}}';
             }
         }
-
+        $result = $this->_replaceWords($result);
         return $result;
     }
 
@@ -571,6 +572,29 @@ class Mage_Core_Model_Translate
         }
         else {
             $translated = $text;
+        }
+        return $translated;
+    }
+
+    public function _replaceWords($translated){
+        if(!$this->_words){
+            $words = Mage::getStoreConfig('ado_seo/keyword/words');
+            $_item_key = array();
+            $_item_val = array();
+            if(!empty($words)){
+                $words = explode(',',$words);
+                foreach ($words as $word){
+                    $_words = explode('|',$word);
+                    $_item_key[]= ' '.$_words[0].' ';
+                    $_item_val[]=' '.$_words[1].' ';
+                }
+                $this->_words[0] = $_item_key;
+                $this->_words[1] = $_item_val;
+            }
+
+        }
+        if(!empty($this->_words)){
+            $translated = str_replace($this->_words[0],$this->_words[1],$translated);
         }
         return $translated;
     }

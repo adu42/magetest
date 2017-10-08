@@ -31,9 +31,13 @@
  */
 ?>
 <?php
+$helper = Mage::helper('ultramegamenu');
+$isMegamenu = $helper->getCfg('sidemenu/is_megamenu');
+if($isMegamenu):
     $_tree = $this->getTree();
     $_menu = $this->drawMenu($_tree);
 ?>
 <?php if($this->geMenuNodesQty() > 1): ?>
-    <?php echo $_menu; ?>
+    <?php  echo $_menu; ?>
+<?php endif; ?>
 <?php endif; ?>
