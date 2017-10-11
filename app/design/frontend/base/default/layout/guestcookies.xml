@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * by@ado
+ * add auto login js "guest.js" and need jquery support.
+ * next add person tags from custom
+ */
+-->
+<layout version="0.1.0">
+    <default>
+        <reference name="head" after="-">
+            <action method="addItem"><type>skin_js</type><name>js/guest.js</name></action>
+        </reference>
+    </default>
+</layout>

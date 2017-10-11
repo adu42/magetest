@@ -621,7 +621,6 @@ class Mage_Checkout_Model_Type_Onepage
         }
         $this->getQuote()->getShippingAddress()
             ->setShippingMethod($shippingMethod);
-
         $this->getCheckout()
             ->setStepData('shipping_method', 'complete', true)
             ->setStepData('payment', 'allow', true);

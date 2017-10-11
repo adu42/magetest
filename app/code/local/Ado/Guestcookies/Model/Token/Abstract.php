@@ -65,9 +65,16 @@ abstract class Ado_Guestcookies_Model_Token_Abstract
 	public function generateToken($length = null)
 	{
 		$length = $length ? $length : $this->_tokenLength;
+		$length = $length * 0.75;
 		// replace '+' because it doesn't URL encode neatly
-		return strtr(base64_encode(openssl_random_pseudo_bytes($length * 0.75)),
-			'+/', '..');
+		if (function_exists('openssl_random_pseudo_bytes')) {
+           return strtr(base64_encode(openssl_random_pseudo_bytes($length)),'+/', '..');
+        } else {	
+            $randomString = Mage::helper('core')->getRandomString(
+                $length, Mage_Core_Helper_Data::CHARS_DIGITS . Mage_Core_Helper_Data::CHARS_LOWERS
+            );
+			return strtr(base64_encode($randomString),'+/', '..');
+		}
 	}
 
 	public function readCookie()

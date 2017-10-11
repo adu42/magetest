@@ -59,7 +59,6 @@
         			<module>Ado_Guestcookies</module>
         		</setup>
         	</guestcookies_setup>
-        	<!-- Not necessary to specify these defaults, but keep for backwards compatibility. -->
         	<guestcookies_read>
         		<connection>
         			<use>core_read</use>
@@ -135,6 +134,7 @@
 		</routers>
     </frontend>
 
+
     <default>
     	<web>
     		<guestcookies>
@@ -147,7 +147,6 @@
     		</guestcookies>
     	</web>
     </default>
-
     <adminhtml>
     	<translate>
     		<modules>

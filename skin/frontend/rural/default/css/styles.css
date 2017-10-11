@@ -5126,6 +5126,7 @@ a.availability-only {
 .opc .section {
     margin: 0 0 10px;
     padding: 0;
+    display: none;
 }
 
 .opc .step-title {
@@ -5162,6 +5163,7 @@ a.availability-only {
 
 .opc .section.allow.active {
     cursor: auto;
+    display: block;
 }
 
 .opc .allow .step-title {
@@ -5169,11 +5171,11 @@ a.availability-only {
 }
 
 .opc .allow .step-title:hover {
-    background-color: #e5e5e5;
+    background-color: rgba(61, 61, 61, 0.73);
 }
 
 .opc .allow .step-title h2 {
-    color: #333;
+    color: #ffffff;
 }
 
 .opc .allow .step-title a {
@@ -5181,13 +5183,19 @@ a.availability-only {
 }
 
 .opc .active .step-title {
-    background-color: #e5e5e5;
+    background-color: #000000;
     cursor: default;
 }
 
 .opc .active .step-title .number {
     color: #fff;
-    background-color: #333;
+    background-color: #fff;
+    border-radius: 50%;
+    margin-top: 8px;
+    padding: 5px;
+    width: 6px;
+    height: 6px;
+    line-height: 6px;
 }
 
 .opc .active .step-title h2 {
@@ -6957,3 +6965,25 @@ body.cms-index-index .breadcrumbs {
     border: 1px solid #000;
 }
 .swiper-container-thumbnail .swiper-slide{width: auto;}
+
+.opc-block-progress .block-content{}
+.opc-block-progress .block-content > dl > div{
+    background-color: #fafafa;
+    padding-left: 20px;
+    padding-right: 20px;
+    max-height: 189px;
+    padding-bottom: 20px;
+    overflow-x: hidden;
+}
+.opc-block-progress .block-content > dl > div > dt{margin: 15px 0;
+    line-height: 1.3em;
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #000;
+    color: #fff;}
+div#col-right-opcheckout {
+    float: right;
+}
+ol#checkoutSteps {
+    float: left;
+}

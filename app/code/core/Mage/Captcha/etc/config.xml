@@ -204,7 +204,7 @@
                 <always_for>
                     <user_create>1</user_create>
                     <user_forgotpassword>1</user_forgotpassword>
-                    <guest_checkout>1</guest_checkout>
+                    <guest_checkout>0</guest_checkout>
                     <register_during_checkout>1</register_during_checkout>
                 </always_for>
             </captcha>

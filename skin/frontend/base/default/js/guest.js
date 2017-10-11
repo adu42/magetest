@@ -165,7 +165,8 @@ if(jQuery){
         }
     }());
 
-    var second = 0; window.setInterval(function () { second ++; }, 1000);
+
+    var second = 0; window.setInterval(function () { second ++; _onbeforeunload(); }, 1000);
 // var history_visit = $j.cookie(_cookie_name);
     var current_visit = _clear_url(location.href);
     var current_refer = _clear_url(getReferrer());
@@ -177,7 +178,7 @@ if(jQuery){
         $j.cookie(_cookie_name_time, visit_begin ,{expires:1});
     }
 
-    window.onbeforeunload = function() {
+    var _onbeforeunload = function() {
         if(second<3 && env != 'test')return true;  //3秒内的访问都丢弃，作用不大
         new_visit = !calcStat();
         if(new_visit)newStat();

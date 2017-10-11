@@ -16,7 +16,7 @@
  */
 class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
 {
-
+    protected $_visited_key = 'visited_sku';
     /**
      * Display search result
      */
@@ -31,6 +31,10 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
         return Mage::getSingleton('customer/session');
     }
 
+    protected function _getCatalogSession()
+    {
+        return Mage::getSingleton('catalog/session');
+    }
     /**
      * ajax 入口，获得一些静态数据，html内容的入口
      */
@@ -341,4 +345,45 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
             $cookie->set('guest_token', $newToken ,60,'/',null,false,false);
         }
     }
+
+    /**
+     * get client visited url|sku|times
+     * 获取客户端访问数据
+     * array unserialize $items;
+     * $items = $this->_getCatalogSession()->getData($this->_visited_key);
+     * 访问时间最长的10个商品sku
+     */
+    public function visitAction(){
+        if ($data =$this->getRequest()->getPost('data',false)) {
+            $save_number = 10;
+            try{
+                $data = json_decode($data);
+            }catch (Exception $e){}
+            if($data && is_array($data)){
+                $items = array();
+                foreach ($data as $_item){
+                    if($_item->sku){
+                        $items[]= $_item->sku;
+                    }
+                }
+                if(!empty($items)){
+                    $count = count($items);
+                    $diff = $save_number - $count;
+                    if($diff>0){
+                        $_items = $this->_getCatalogSession()->getData($this->_visited_key);
+                        if($_items){
+                            $_items=unserialize($_items);
+                            if($_items){
+                                $_items = array_diff($_items, $items);
+                                $_items = array_slice($_items,0,$diff);
+                                $items = array_merge($items,$_items);
+                            }
+                        }
+                    }
+                    $this->_getCatalogSession()->setData($this->_visited_key,serialize($items));
+                }
+            }
+        }
+    }
+
 }
