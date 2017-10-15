@@ -62,6 +62,7 @@ QuickView.prototype = {
         var qWindow = new Element('div', {id: 'quick-window'});
         qWindow.innerHTML = '<div id="quickview-mask"></div><div class="quick-view-content"><div id="quickview-header"><a href="javascript:void(0)" id="quickview-close">close</a></div></div>';
         document.body.appendChild(qWindow);
+        $('quick-window').setStyle({'display': 'none'});
         $('quickview-close').observe('click', this.hideWindow.bind(this));
         $('quick-window').observe('click', this.hideWindow.bind(this));
     },
@@ -75,7 +76,7 @@ QuickView.prototype = {
             'left':0,
             'bottom': 0,
             'right':0,
-            'display': 'block',
+            'display': 'block'
         });
         $('quickview-mask').setStyle({
             'position': 'fixed',

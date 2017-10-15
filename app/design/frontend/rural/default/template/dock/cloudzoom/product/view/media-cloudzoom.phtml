@@ -102,7 +102,7 @@ if ($helpZoom->getCfg('images/aspect_ratio')) {
         <p class="product-image product-image-zoom<?php echo $zoomClasses; ?>" style=" z-index: 100;">
             <a rel="<?php echo $this->renderCloudOptions(); ?>" gallery="<?php echo $mainImagePath; ?>" href="<?php echo $this->helper('catalog/image')->init($_product, 'image',$_currentColor); ?>" class="cloud-zoom lightbox-group" id="cloudZoom">
                 <?php
-                $_img = '<img id="image" src="'.$this->getCloudImage($_product,$_currentColor).'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel($_product,'image',$_currentColor)).'" width="420" height="560"/>';
+                $_img = '<img id="image" src="'.$this->getCloudImage($_product,$_currentColor).'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel($_product,'image',$_currentColor)).'"/>';
                 echo $_helper->productAttribute($_product, $_img, 'image');
                 ?>
             </a>

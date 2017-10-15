@@ -26,6 +26,7 @@
             <action method="addItem"><type>skin_js</type><name>js/star-rating/jquery.ado.colorpick.js</name></action>
             <action method="addItem"><type>skin_css</type><name>css/dock/_shared/colorbox.css</name></action>
             <action method="addItem"><type>skin_js</type><name>js/productInfo.js</name><params/></action>
+            <action method="addItem"><type>skin_css</type><name>css/quick-view.css</name></action>
         </reference>
     </catalog_category_default>
     <catalog_category_layered translate="label">
@@ -53,6 +54,7 @@
             <action method="addItem"><type>skin_js</type><name>js/star-rating/jquery.ado.colorpick.js</name></action>
             <action method="addItem"><type>skin_css</type><name>css/dock/_shared/colorbox.css</name></action>
             <action method="addItem"><type>skin_js</type><name>js/productInfo.js</name><params/></action>
+            <action method="addItem"><type>skin_css</type><name>css/quick-view.css</name></action>
         </reference>
     </catalog_category_layered>
     <catalog_category_quick>

@@ -136,8 +136,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
 .img-box-style1 .product-image {
-	border:1px solid #eee;
-	padding:5px;
+	padding:0px;
 	float: right;
 }
 .itemslider-thumbnails.count-4, .itemslider-thumbnails.count-5, .itemslider-thumbnails.count-multi{
@@ -178,8 +177,6 @@
 .ado-slidecontent{
 	position:relative;
 	overflow:hidden;
-	width:90px;
-	height:500px;
 	padding-top:12px;
 }
 .ado-navigator {
@@ -238,4 +235,28 @@ ul.ado-navigator li{cursor:hand;cursor:pointer;list-style:none;padding:0;margin:
 .product-view .product-img-box .more-views li.active a {
     background: #f76793 none repeat scroll 0 0;
     border: 0 none;padding:3px;
+}
+@media (min-width: 1440px){
+	.ado-slidecontent{
+		width:68px;
+		height:100%;
+	}
+	.product-view .product-img-box .product-image{max-width: 460px;
+		margin-left: 18px;}
+}
+@media (max-width: 1440px){
+	.ado-slidecontent{
+		width:100%;
+		height:auto;
+		overflow: visible;
+	}
+	.ado-next,.ado-previous{ display: none;}
+	.ado-navigator-wapper,.ado-navigator-outer{width: 100%;height: auto;overflow: visible;}
+	.product-view .product-img-box .more-views ul{position: relative;    height: auto;}
+}
+@media (min-width: 767px) and (max-width: 1024px) {
+	.product-view .product-img-box{float: none;}
+}
+@media (max-width: 767px){
+	.product-view .product-img-box{float: left;}
 }
