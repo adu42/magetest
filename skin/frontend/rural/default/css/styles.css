@@ -3116,6 +3116,9 @@ strong.product-name {
 .products-grid.size-s .product-name {
     font-size: 1.1666em; /*14px*/
     line-height: 1.2307em; /*16px*/
+    width: 90%;
+    text-align: center;
+    margin: 10px auto;
 }
 
 .products-grid.size-xs .product-name {
@@ -7136,220 +7139,179 @@ li.parent ul{margin-bottom: 20px;margin-left: 10px;}
 
 
 
-@media only screen and (min-width: 480px) {
-    /* Config: Three columns + flexible gutter */
-    .products-grid {
-        /* Undo two-column config */
-        /* Set three-column config */
-    }
-    .products-grid > li:nth-child(odd) {
-        clear: none;
-    }
-
-    .products-grid > li:nth-child(odd) .comment-attr{
-        right: auto;
-        left: -52px;
-    }
-    .products-grid > li:nth-child(odd)  .comment-attr  .top-arrow {
-        right: auto;
-        left: 52px;
-    }
-
-
-    .products-grid > li:nth-child(even) {
-        margin-right: 3.7037%;
-    }
-
-    .products-grid  > li:nth-child(even)  .comment-attr{
-        right: auto;
-        left: -52px;
-    }
-    .products-grid  > li:nth-child(even)  .comment-attr  .top-arrow {
-        right: auto;
-        left: 59px;
-    }
-
-
-    .products-grid > li {
-        width: 30.8642%;
-        margin-right: 3.7037%;
-    }
-    .products-grid > li:nth-child(3n+1) {
-        clear: left;
-    }
-    .products-grid > li:nth-child(3n+1) .comment-attr{
-        right: auto;
-        left: 0;
-    }
-    .products-grid > li:nth-child(3n+1)  .comment-attr  .top-arrow {
-        right: auto;
-        left: 10px;
-    }
-
-    .products-grid > li:nth-child(3n) {
-        margin-right: 0;
-    }
-
-    .products-grid > li:nth-child(3n)  .comment-attr{
-        right: -52px;
-        left: auto;
-    }
-
-    .products-grid > li:nth-child(3n)  .comment-attr  .top-arrow {
-        right: 64px;
-        left: auto;
-    }
-
-
-
+.comment-attr-tb {
+    display: table;
+    width: 100%
 }
-@media only screen and (min-width: 960px) {
-    /* Config: Columns + flexible gutter */
-    /* Undo three-column config */
-    .products-grid--max-4-col > li:nth-child(odd) {
-        clear: none;
-    }
 
-    .products-grid--max-4-col > li:nth-child(odd)  .comment-attr{
-        right: auto;
-        left: -52px;
-    }
-    .products-grid--max-4-col > li:nth-child(odd)  .comment-attr  .top-arrow {
-        right: auto;
-        left: 64px;
-    }
+.pj-new-comment:hover .comment-attr,.comment-attr:hover{display: block;}
+.pj-new-comment .ic-info{margin-left: 20px; }
+.comment-attr {
+    text-align: left;
+    width: 400px;
+    max-height: 300px;
+    background-color: #fff;
+    border: 1px solid #f4f4f4;
+    border-radius: 4px;
+    line-height: 14px;
+    padding: 20px;
+    position: absolute;
+    z-index: 2;
+    bottom: 50px;
+    display: none;
+}
 
-    .products-grid--max-4-col > li:nth-child(3n+1) {
-        clear: none;
-    }
+.comment-attr em.top_arrow {
+    right: 180px;
+    top: -6px;
+    box-sizing: content-box;
+    background-clip: content-box;
+    padding: 20px 60px 0;
+    background-position: -40px -110px
+}
 
-    .products-grid--max-4-col > li:nth-child(3n+1)  .comment-attr{
-        right: auto;
-        left: -52px;
-    }
-    .products-grid--max-4-col > li:nth-child(3n+1)  .comment-attr  .top-arrow {
-        right: auto;
-        left: 64px;
-    }
+.top-arrow {
+    background-color: #fff;
+    position: absolute;
+    bottom: -7px;
+    width: 11px;
+    height: 11px;
+    border-bottom: 1px solid #e5e5e5;
+    border-left: 1px solid #e5e5e5;
+    transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+}
+.comment-info{
+    display: table-cell;
+    width: 40%;
+    padding-right: 10px;
+    vertical-align: top;
+}
+.comment-info .comment-img {
+    margin-bottom: 15px;
+    white-space: nowrap
+}
 
+.comment-info .comment-img img {
+    display: inline-block;
+    width: 94px;
+    margin-right: 10px;
+    vertical-align: top
+}
 
-    .products-grid--max-4-col > li:nth-child(even),
-    .products-grid--max-4-col > li:nth-child(3n) {
-        margin-right: 1%;
-    }
+.comment-info .comment-img-right span {
+    font-weight: 700
+}
 
-    .products-grid--max-4-col > li:nth-child(even)  .comment-attr,
-    .products-grid--max-4-col > li:nth-child(3n)  .comment-attr{
-        right: auto;
-        left: -52px;
-    }
-    .products-grid--max-4-col > li:nth-child(even)  .comment-attr  .top-arrow ,
-    .products-grid--max-4-col > li:nth-child(3n)  .comment-attr  .top-arrow {
-        right: auto;
-        left: 64px;
-    }
+.comment-info .comment-by {
+    display: block;
+    margin-bottom: 5px
+}
 
-    /* Set column config */
-    .products-grid--max-4-col > li {
-        margin-right: 2.22222%;
-    }
+.comment-info .comment-by em {
+    font-style: italic
+}
+.comment-info .she-btn-black {
+    margin-top: 6px
+}
+.comment-info .she-btn-s {
+    height: 30px !important;
+    line-height: 28px !important;
+    padding: 0 14px !important;
+    font-size: 14px !important
+}
 
-    .products-grid--max-4-col > li {
-        width: 24.2%;
-        margin-right: 1%;
-    }
+.pj-new-no-comment .comment-attr {
+    width: 371px;
+    padding: 15px
+}
+p.coment-content{
+    max-height: 100px;
+    max-width: 200px;
+    overflow:  hidden;  -o-text-overflow: ellipsis; text-overflow:  ellipsis;
+}
+.comment-detail-info {
+    width: 250px;
+    float: left;
+    border-right: 1px dotted #737373;
+    margin-right: -1px
+}
 
-    .products-grid--max-4-col > li:nth-child(4n+1) {
-        clear: left;
-    }
+.product-detail-name {
+    margin-bottom: 20px;
+    line-height: 20px
+}
 
-    .products-grid--max-4-col > li:nth-child(4n+1)  .comment-attr{
-        right: auto;
-        left: 0;
-    }
+.comment-writer {
+    display: block;
+    margin: 5px 0 10px
+}
 
-    .products-grid--max-4-col > li:nth-child(4n+1)  .comment-attr  .top-arrow {
-        right: auto;
-        left: 11px;
-    }
+.show-more-comment {
+    margin-top: 15px
+}
+.seo-attr {
+    width: 100%;
+    border: none;
+    display: table-cell;
+}
 
+.seo-attr-name {
+    width: 35%;
+    margin-left: 0
+}
 
-    .products-grid--max-4-col > li:nth-child(4n) {
-        margin-right: 0;
-    }
+.seo-attr-value {
+    width: 58%
+}
+.show-more-comment .see-all-btn {
+    min-width: 184px;
+    height: 44px;
+    background-color: #222;
+    color: #fff;
+    line-height: 44px;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer
+}
 
-    .products-grid--max-4-col > li:nth-child(4n)  .comment-attr{
-        right: -52px;
-        left: auto;
-    }
+.pj-new-con .seo-attr {
+    border-left: 1px dotted #737373
+}
 
-    .products-grid--max-4-col > li:nth-child(4n)  .comment-attr  .top-arrow {
-        right: 64px;
-        left: auto;
-    }
-    /* Config: Columns + flexible gutter */
-    /* Undo three-column config */
-    .products-grid--max-5-col > li:nth-child(odd) {
-        clear: none;
-    }
+.seo-attr-name {
+    width: 35%
+}
 
-    .products-grid--max-5-col > li:nth-child(3n+1) {
-        clear: none;
-    }
+.seo-attr-name, .seo-attr-value {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 4px;
+    margin-left: 15px;
+    word-break: break-all
+}
 
-    .products-grid--max-5-col > li:nth-child(even),
-    .products-grid--max-5-col > li:nth-child(3n) {
-        margin-right: 2.22222%;
-    }
+.seo-attr-value {
+    width: 50%;
+    color: #aaa
+}
 
-    /* Set column config */
-    .products-grid--max-5-col > li {
-        margin-right: 2.22222%;
-    }
+.pj-new-no-comment .seo-attr {
+    width: 100%;
+    border: none
+}
 
-    .products-grid--max-5-col > li {
-        width: 18.22222%;
-        margin-right: 2.22222%;
-    }
+.pj-new-no-comment .seo-attr-name {
+    width: 35%;
+    margin-left: 0
+}
 
-    .products-grid--max-5-col > li:nth-child(5n+1) {
-        clear: left;
-    }
-
-    .products-grid--max-5-col > li:nth-child(5n) {
-        margin-right: 0;
-    }
-
-    /* Config: Columns + flexible gutter */
-    /* Undo three-column config */
-    .products-grid--max-6-col > li:nth-child(odd) {
-        clear: none;
-    }
-
-    .products-grid--max-6-col > li:nth-child(3n+1) {
-        clear: none;
-    }
-
-    .products-grid--max-6-col > li:nth-child(even),
-    .products-grid--max-6-col > li:nth-child(3n) {
-        margin-right: 2.22222%;
-    }
-
-    /* Set column config */
-    .products-grid--max-6-col > li {
-        margin-right: 2.22222%;
-    }
-
-    .products-grid--max-6-col > li {
-        width: 14.81481%;
-        margin-right: 2.22222%;
-    }
-
-    .products-grid--max-6-col > li:nth-child(6n+1) {
-        clear: left;
-    }
-
-    .products-grid--max-6-col > li:nth-child(6n) {
-        margin-right: 0;
-    }
+.pj-new-no-comment .seo-attr-value {
+    width: 58%
 }

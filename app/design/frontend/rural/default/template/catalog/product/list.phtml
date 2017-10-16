@@ -132,6 +132,7 @@ $_collectionSize = $_productCollection->count();
                         <div class="right-column grid12-3 mobile-grid-half">
                             <?php echo $this->getPriceHtml($_product, true) ?>
 
+                            <?php if(false): ?>
                             <?php if (!$_product->canConfigure() && $_product->isSaleable()): ?>
                                 <p>
                                     <button type="button"
@@ -147,6 +148,7 @@ $_collectionSize = $_productCollection->count();
                             <?php else: ?>
                                 <p class="availability out-of-stock">
                                     <span><?php echo $this->__('Out of stock') ?></span></p>
+                            <?php endif; ?>
                             <?php endif; ?>
 
                             <?php
@@ -285,7 +287,9 @@ $_collectionSize = $_productCollection->count();
                             <?php echo $this->getPriceHtml($_product, true); ?>
                         <?php endif; ?>
 
-                        <?php
+
+                            <?php if(false): // disabled  ?>
+                                <?php
                         //If at least one element was set as "Display on hover" but no element was set as "Display":
                         //aggregate classes from those elements and apply them to the "actions" container.
                         $actionsClasses = '';
@@ -297,10 +301,10 @@ $_collectionSize = $_productCollection->count();
                         }
                         ?>
 
+
+
                         <div class="actions clearer<?php echo $actionsClasses; ?>">
-
                             <?php if ($gc['display_addtocart'] != 0): //Cart button ?>
-
                                 <?php if (!$_product->canConfigure() && $_product->isSaleable()): ?>
                                     <button type="button"
                                             title="<?php echo Mage::helper('core')->quoteEscape($this->__('Add to Cart')) ?>"
@@ -323,6 +327,7 @@ $_collectionSize = $_productCollection->count();
                             }
                             ?>
                         </div> <!-- end: actions -->
+                        <?php endif; ?>
                         </div>
                     </li>
                 <?php endforeach; ?>
