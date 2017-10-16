@@ -97,6 +97,9 @@ abstract class Mage_Catalog_Block_Product_Abstract extends Mage_Core_Block_Templ
      */
     protected $_columnCountLayoutDepend = array();
 
+    protected $_detailAttributeHelperBlock;
+    protected $_detailAttributeDefaultTemplate = 'catalog/product/list/detail.phtml';
+
     /**
      * Default MAP renderer type
      *
@@ -673,14 +676,52 @@ abstract class Mage_Catalog_Block_Product_Abstract extends Mage_Core_Block_Templ
 
     /**
      * by@ado
-     * 本文件中使用这个方法
      *
-     * 取带颜色的产品label
+     *
+     *
      */
     public function getColorImageLabel($color){
         $image = Mage::helper('catalog/image')->getColorImage($color);
         if($image && isset($image['label']))return $image['label'];
         return '';
+    }
+
+    /**
+     * Add/replace reviews summary template by type
+     *
+     * @param object $product
+     * @param string $template
+     * @return string
+     */
+    public function getChildDetailAttributeHtml($product,$template='')
+    {
+
+        if ($this->_initDetialHelperBlock()) {
+            $this->_detailAttributeHelperBlock->setProduct($product);
+            if(!empty($template)){
+                $this->_detailAttributeHelperBlock->setTemplate($template);
+            }
+            return $this->_detailAttributeHelperBlock->toHtml();
+        }
+        return '';
+    }
+
+    /**
+     * Create reviews summary helper block once
+     *
+     * @return boolean
+     */
+    protected function _initDetialHelperBlock()
+    {
+        if (!$this->_detailAttributeHelperBlock) {
+            if (!Mage::helper('catalog')->isModuleEnabled('Ado_SEO')) {
+                return false;
+            } else {
+                $this->_detailAttributeHelperBlock = $this->getLayout()->createBlock('ado_seo/catalog_product_list_detail')
+                    ->setTemplate($this->_detailAttributeDefaultTemplate);
+            }
+        }
+        return true;
     }
 
 }

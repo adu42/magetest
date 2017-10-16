@@ -267,6 +267,8 @@ $_collectionSize = $_productCollection->count();
                         }
                         ?>
 
+                        <?php echo $this->getChildDetailAttributeHtml($_product); ?>
+
                         <?php if ($_product->getRatingSummary()): ?>
                             <?php if ($gc['display_rating'] == 1): //Display on hover ?>
                                 <div class="display-onhover ratings-wrapper"><?php echo $this->getReviewsSummaryHtml($_product, 'short') ?></div>

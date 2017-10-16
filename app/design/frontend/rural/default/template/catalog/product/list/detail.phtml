@@ -1,0 +1,58 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2017-10-14
+ * Time: 9:41
+ *  by@ado
+ *  格式抄自 shein.com
+ */
+?>
+<div class="fl pj-new-con pj-new-comment caluted-pos-left caluted-pos">
+    <span class="pj-new j-pj-new-hover">
+	<img src="<?php echo $this->getSkinUrl('images/p_method/tag-star.png') ?>" style="    width: 25px;" ></span>
+    <div class="comment-attr" >
+	    <div class="top-arrow">
+        <em  class="sanjiao_down"></em>
+		</div>
+        <div class="comment-attr-tb">
+            <div class="comment-info">
+                <div class="comment-img">
+                    <img src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'small_image')->resize(450,600); ?>"
+                         alt="<?php echo $this->stripTags($this->getImageLabel($this->getProduct(), 'small_image'), null, true) ?>" border="0" />
+                    <div class="comment-img-right">
+                        <?php echo $this->getReviewSummaryHtml(); ?>
+                      </div>
+                </div>
+				<div class="none">
+                <?php if($review = $this->getLastReview()): ?>
+                    <div><?php echo $review->getTitle(); ?></div>
+                    <div><?php echo $review->getDetail(); ?></div>
+                    <div><a href="<?php echo $this->getProduct()->getProductUrl();?>#customer-reviews"><?php echo $this->__('see all reviews') ?></a></div>
+                <?php endif; ?>
+				</div>
+                <div class="comment-exm">
+                                    <span class="comment-by">
+                                       <?php echo $this->__('By'); ?> &nbsp;<em><?php echo $review->getNickname(); ?></em>
+                                    </span>
+                    <p class="top-coment-ctn coment-content coment-content-defult">
+                       <?php echo $review->getDetail(); ?>
+                    </p>
+                </div>
+                <a class="she-btn-black she-btn-s" href="<?php echo $this->getProduct()->getProductUrl();?>#customer-reviews" target="_blank"><?php echo $this->__('See All Reviews') ?></a>
+            </div>
+
+            <?php  $attributes = $this->getAdditionalData(); ?>
+            <?php if(!empty($attributes)): ?>
+            <div class="seo-attr">
+                <?php foreach ($attributes as $item): ?>
+                <div class="seo-attr-tr">
+                    <div class="seo-attr-name"><?php echo $item['label'];?></div>
+                    <div class="seo-attr-value"><?php echo $item['value'];?></div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
