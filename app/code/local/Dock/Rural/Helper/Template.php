@@ -143,7 +143,13 @@ class Dock_Rural_Helper_Template extends Mage_Core_Helper_Abstract
 
     protected function isUseQuickView(){
         if(is_null($this->_useQuickView)){
-            $this->_useQuickView = Mage::getStoreConfigFlag('ado_seo/catalog/quick_view');
+            $currentCategory = Mage::helper('catalog')->getCategory();
+            $quickEnable = Mage::getStoreConfigFlag('ado_seo/catalog/quick_view');
+            if($quickEnable && $currentCategory && $currentCategory->getUseQuickView()){
+                $this->_useQuickView = true;
+            }else{
+                $this->_useQuickView = false;
+            }
         }
         return $this->_useQuickView;
     }

@@ -69,11 +69,13 @@
    Otherwise, the logo would scale up to fill the entire container. */
 .header .logo-wrapper .logo {
     display: inline-block;
-    max-width: 94%;
-    margin: 10px 0;
     text-decoration: none !important;
 }
-
+.logo-wrapper.logo-wrapper--regular{
+    width: 100px;
+    height: 30px;
+    margin: 0 auto;
+}
 /* Fix for Firefox and IE. In regular header, stretch the image to full width.
    Thanks to that, on small screens when logo is scaled down it will not expand its container. */
 .header-regular .logo-wrapper .logo img {
