@@ -24,14 +24,14 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
-<div id="subscribe-form" class="clearer">
+<div id="subscribe-form" class="clearer grid12-12">
     <form action="<?php echo $this->getFormActionUrl() ?>" method="post" id="newsletter-validate-detail">
         <label for="newsletter" class="newsletter-label"><?php echo Mage::helper('core')->quoteEscape($this->__('Sign up for our newsletter')) ?></label>
         <div class="subscribe-row">
-           <div class="input-box">
+           <div class="input-box grid12-8">
                 <input type="text" name="email" id="newsletter" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Sign up for our newsletter')) ?>" class="input-text required-entry validate-email" />
             </div>
-            <button type="submit" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Subscribe')) ?>" class="button btn-inline"><span><span><?php echo $this->__('Subscribe') ?></span></span></button>
+            <button type="submit" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Subscribe')) ?>" class="button btn-inline grid12-12"><span><span><?php echo $this->__('Subscribe') ?></span></span></button>
         </div>
     </form>
 </div>

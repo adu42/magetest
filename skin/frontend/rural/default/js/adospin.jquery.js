@@ -56,13 +56,9 @@
     $.adoMooLeft.fn.extend({
         startUp:function( obj ) {
             seft = this;
-            this.navigatorItems.each( function(index, item ){
-                $(item).click( function(){
-                    seft.jumping( index, true );
-                    seft.setNavActive( index, item );
-                } );
-                //$(item).css( {'height': seft.settings.navigatorHeight, 'width':  seft.settings.navigatorWidth} );
-            })
+            this.navigratorStep = this.__getPositionMode( this.settings.navPosition );
+
+            this.registerItemControl(this.navigatorItems,this);
 
             this.setNavActive(this.currentNo);
 
@@ -104,6 +100,8 @@
             if( (this.navigatorItems) ){
                 this.navigatorItems.removeClass( 'active' );
                 $(this.navigatorItems.get(index)).addClass( 'active' );
+                console.log(index);
+                console.log(this.currentNo);
                 this.navivationAnimate( this.currentNo );
             }
         },
@@ -114,11 +112,22 @@
             return ['top', this.settings.navigatorHeight];
         },*/
         __getPositionMode:function( position ){
+            var _position = this.__getNavPosition();
+            if(_position){
+                return ['top', this.settings.navigatorHeight];
+            }else{
+                return ['left', this.settings.navigatorWidth];
+            }
             if(	position  == 'horizontal' ){
                 return ['top', this.settings.navigatorHeight];
             }
             return ['left', this.settings.navigatorWidth];
 
+        },
+        __getNavPosition:function(){
+              var _width = $(this.settings.navOuterSelector).width();
+              var _height = $(this.settings.navOuterSelector).height();
+              return (_width<_height);
         },
         /*__getDirectionMode:function(){
             switch( this.settings.direction ){
@@ -149,6 +158,20 @@
             }
             return this;
         },
+
+        registerItemControl:function (objects, self) {
+            $(objects).each( function(index, item ){
+                $(item).click(function(){
+                    // seft.jumping( index, true );
+
+                    console.log( index );
+                    self.currentNo = index;
+                    self.setNavActive( index, item );
+                    console.log( self.currentNo );
+                });
+            });
+        },
+
         onProcessing:function( manual, start, end ){
             this.previousNo = this.currentNo + (this.currentNo>0 ? -1 : this.slides.length-1);
             this.nextNo 	= this.currentNo + (this.currentNo < this.slides.length-1 ? 1 : 1- this.slides.length);
