@@ -176,6 +176,7 @@
             this.previousNo = this.currentNo + (this.currentNo>0 ? -1 : this.slides.length-1);
             this.nextNo 	= this.currentNo + (this.currentNo < this.slides.length-1 ? 1 : 1- this.slides.length);
             this.setCloudZoom();
+            this.setNavActive(this.currentNo);
             return this;
         },
 
@@ -184,6 +185,7 @@
             var _item = $(this.navigatorItems.get(_index));
             if(_item && _item.length>0){
                 try{
+                    console.log(this.currentNo);
                     $(_item).children('a').trigger('click');
                 }catch(e){
                 }
