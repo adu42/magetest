@@ -17,7 +17,7 @@
             <show_in_store>1</show_in_store>
             <groups>
                 <catalog translate="label">
-                    <label>Catalog Layered Navigation</label>
+                    <label>Catalog Layered Setting</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>2</sort_order>
                     <show_in_default>1</show_in_default>
@@ -158,32 +158,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </jscached>
-                        <sizetype translate="label">
-                            <label>Size Split</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>ado_seo/system_config_source_sizetype</source_model>
-                            <comment><![CDATA[product view options type size type]]></comment>
-                            <sort_order>120</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <enabled>1</enabled>
-                            </depends>
-                        </sizetype>
-                        <sizetypeprex translate="label">
-                            <label>Hide Size Prex</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment><![CDATA[Hide size prex like 6 not US6]]></comment>
-                            <sort_order>130</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <enabled>1</enabled>
-                            </depends>
-                        </sizetypeprex>
                         <shipping_days_total_template translate="label">
                             <label>Delivery:Standard Total Time</label>
                             <frontend_type>text</frontend_type>
@@ -227,6 +201,138 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </url_nrewrite_flag>
+                    </fields>
+                </catalog>
+            </groups>
+            <groups>
+                <product translate="label">
+                    <label>Product Setting</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <count_down_enabled translate="label">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>ado_seo/system_config_backend_seo_catalog</backend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </count_down_enabled>
+                        <count_down_time translate="label">
+                            <label>Count Down:Time</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </count_down_time>
+                        <count_down_info translate="label">
+                            <label>Count Down:Information</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </count_down_info>
+                        <sizetype translate="label">
+                            <label>Size Split</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ado_seo/system_config_source_sizetype</source_model>
+                            <comment><![CDATA[product view options type size type]]></comment>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </sizetype>
+                        <sizetypeprex translate="label">
+                            <label>Hide Size Prex</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment><![CDATA[Hide size prex like 6 not US6]]></comment>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </sizetypeprex>
+                    </fields>
+                </product>
+            </groups>
+            <groups>
+                <cart translate="label">
+                    <label>Cart Default Setting</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <coupon translate="label">
+                            <label>Default Coupon</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </coupon>
+                        <country translate="label">
+                            <label>Default country</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </country>
+                        <shippingmethod translate="label">
+                            <label>Default ShippingMethod</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_shipping_allmethods</source_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shippingmethod>
+                        <add_cart_discount>
+                            <label>Default Discount</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[<1 use percent,else use fixed amount.]]></comment>
+                        </add_cart_discount>
+                        <add_cart_discount_categories>
+                            <label>Discount Exclude Categories</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[ex: 2,3]]></comment>
+                        </add_cart_discount_categories>
+                    </fields>
+                </cart>
+            </groups>
+            <groups>
+                <conversion translate="label">
+                    <label>Conversion Code</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
                         <conversion_code translate="label">
                             <label>Conversion Code 1</label>
                             <frontend_type>textarea</frontend_type>
@@ -282,109 +388,11 @@
                             <show_in_store>1</show_in_store>
                         </conversion_code_third_pages>
                     </fields>
-                </catalog>
+                </conversion>
             </groups>
             <groups>
-                <product translate="label">
-                    <label>Product Count Donw</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>3</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-
-                    <fields>
-                        <count_down_enabled translate="label">
-                            <label>Enable</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <backend_model>ado_seo/system_config_backend_seo_catalog</backend_model>
-                            <sort_order>1</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </count_down_enabled>
-                        <count_down_time translate="label">
-                            <label>Count Down:Time</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>2</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </count_down_time>
-                        <count_down_info translate="label">
-                            <label>Count Down:Information</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>3</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </count_down_info>
-                    </fields>
-                </product>
-            </groups>
-            <groups>
-                <cart translate="label">
-                    <label>Cart Default Setting</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>5</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-
-                    <fields>
-                        <coupon translate="label">
-                            <label>Default Coupon</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>1</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </coupon>
-                        <country translate="label">
-                            <label>Default country</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_country</source_model>
-                            <sort_order>3</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </country>
-                        <shippingmethod translate="label">
-                            <label>Default ShippingMethod</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_shipping_allmethods</source_model>
-                            <sort_order>7</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </shippingmethod>
-                        <add_cart_discount>
-                            <label>Default Discount</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment><![CDATA[<1 use percent,else use fixed amount.]]></comment>
-                        </add_cart_discount>
-                        <add_cart_discount_categories>
-                            <label>Discount Exclude Categories</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment><![CDATA[ex: 2,3]]></comment>
-                        </add_cart_discount_categories>
-
-
-                    </fields>
-                </cart>
-            </groups>
-            <groups>
-                <keyword translate="label">
-                    <label>Site Keyword Replace</label>
+                <site translate="label">
+                    <label>Site Setting</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>50</sort_order>
                     <show_in_default>1</show_in_default>
@@ -401,7 +409,7 @@
                             <show_in_store>1</show_in_store>
                         </words>
                     </fields>
-                </keyword>
+                </site>
             </groups>
         </ado_seo>
     </sections>

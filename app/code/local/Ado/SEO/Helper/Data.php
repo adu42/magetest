@@ -790,28 +790,28 @@ class Ado_SEO_Helper_Data extends Mage_Core_Helper_Data
 
 
         if (isset($paths[$path])) {
-            $conversionPage1 = Mage::getStoreConfig('ado_seo/catalog/conversion_code_pages');
-            $conversionPage2 = Mage::getStoreConfig('ado_seo/catalog/conversion_code_other_pages');
-            $conversionPage3 = Mage::getStoreConfig('ado_seo/catalog/conversion_code_third_pages');
+            $conversionPage1 = Mage::getStoreConfig('ado_seo/conversion/conversion_code_pages');
+            $conversionPage2 = Mage::getStoreConfig('ado_seo/conversion/conversion_code_other_pages');
+            $conversionPage3 = Mage::getStoreConfig('ado_seo/conversion/conversion_code_third_pages');
             $conversionPage1s = explode(',', $conversionPage1);
             $conversionPage2s = explode(',', $conversionPage2);
             $conversionPage3s = explode(',', $conversionPage3);
             if (in_array($paths[$path], $conversionPage1s)) {
-                $conversionCode1 = Mage::getStoreConfig('ado_seo/catalog/conversion_code');
+                $conversionCode1 = Mage::getStoreConfig('ado_seo/conversion/conversion_code');
                 if (!empty($conversionCode1)) {
                     $result .= str_replace('#total#', $total, $conversionCode1);
                 }
             }
 
             if (in_array($paths[$path], $conversionPage2s)) {
-                $conversionCode2 = Mage::getStoreConfig('ado_seo/catalog/conversion_code_other');
+                $conversionCode2 = Mage::getStoreConfig('ado_seo/conversion/conversion_code_other');
                 if (!empty($conversionCode2)) {
                     $result .= str_replace('#total#', $total, $conversionCode2);
                 }
             }
 
             if (in_array($paths[$path], $conversionPage3s)) {
-                $conversionCode3 = Mage::getStoreConfig('ado_seo/catalog/conversion_code_third');
+                $conversionCode3 = Mage::getStoreConfig('ado_seo/conversion/conversion_code_third');
                 if (!empty($conversionCode3)) {
                     $result .= str_replace('#total#', $total, $conversionCode3);
                 }
@@ -890,8 +890,8 @@ class Ado_SEO_Helper_Data extends Mage_Core_Helper_Data
         $value_array = explode('-', $value);
         if (count($value_array) < 3) return $value;
         $flag = $flag2 = '';
-        $sizeType = Mage::getStoreConfig('ado_seo/catalog/sizetype');
-        $hidePrex = Mage::getStoreConfigFlag('ado_seo/catalog/sizetypeprex');
+        $sizeType = Mage::getStoreConfig('ado_seo/product/sizetype');
+        $hidePrex = Mage::getStoreConfigFlag('ado_seo/product/sizetypeprex');
         if (!$sizeType) return $value;
         if ($sizeType == 1) {
             $flag = 'US';

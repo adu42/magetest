@@ -33,3 +33,23 @@ block_footer_row2_column  secondary
 copyright bottom
 block_footer_payment bottom
 store_switcher  bottom
+
+
+随机促销商品===好像直接取不可行，可以分开取，
+1、取客户浏览过的商品，随机再插入到列表页里 list m个数 
+    取ids数据，需要反序列化（$items = $this->_getCatalogSession()->getData($this->_visited_key);）
+2、促销商品，随机插入到列表页里 list n个数
+    $collection = Mage::getResourceModel('catalog/product_collection');
+                Mage::getModel('catalog/layer')->prepareProductCollection($collection);
+    // your custom filter
+                $collection->addAttributeToFilter('promotion', 1)
+                    ->addStoreFilter();
+3、补足商品数随机插入到列表里 list d个数
+    有上一页就取上一页数据，一般是这种情况
+    有下一页就相当于数据完整，不需要补足.
+    拿什么来补足一页数据？
+计算规则优化：
+    针对会话级别做缓存
+    
+    
+   

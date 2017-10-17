@@ -351,7 +351,7 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
      * 获取客户端访问数据
      * array unserialize $items;
      * $items = $this->_getCatalogSession()->getData($this->_visited_key);
-     * 访问时间最长的10个商品sku
+     * 访问时间最长的10个商品id
      */
     public function visitAction(){
         if ($data =$this->getRequest()->getPost('data',false)) {

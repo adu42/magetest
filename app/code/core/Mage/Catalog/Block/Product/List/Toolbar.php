@@ -116,7 +116,7 @@ class Mage_Catalog_Block_Product_List_Toolbar extends Mage_Core_Block_Template
      *
      * @var string
      */
-    protected $_direction           = 'asc';
+    protected $_direction           = 'desc';
 
     /**
      * Default View mode
@@ -824,7 +824,6 @@ class Mage_Catalog_Block_Product_List_Toolbar extends Mage_Core_Block_Template
 
             return $pagerBlock->toHtml();
         }
-
         return '';
     }
 }

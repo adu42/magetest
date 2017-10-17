@@ -46,7 +46,7 @@
 if(jQuery){
     var env = 'test';
     var $j = jQuery.noConflict();
-    var sku_id = 'sku'; // hidden field
+    var sku_id = 'product'; // hidden field
     var save_number = 10;  //只保存10个url
     var faceback = '/catalog/viewed/visit';
     var _cookie_name = 'last_url';

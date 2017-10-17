@@ -137,7 +137,6 @@ class Mage_Catalog_Block_Product_List extends Mage_Catalog_Block_Product_Abstrac
 
         // called prepare sortable parameters
         $collection = $this->_getProductCollection();
-
         // use sortable parameters
         if ($orders = $this->getAvailableOrders()) {
             $toolbar->setAvailableOrders($orders);

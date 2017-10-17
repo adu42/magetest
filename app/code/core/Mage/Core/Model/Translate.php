@@ -578,7 +578,7 @@ class Mage_Core_Model_Translate
 
     public function _replaceWords($translated){
         if(!$this->_words){
-            $words = Mage::getStoreConfig('ado_seo/keyword/words');
+            $words = Mage::getStoreConfig('ado_seo/site/words');
             $_item_key = array();
             $_item_val = array();
             if(!empty($words)){
