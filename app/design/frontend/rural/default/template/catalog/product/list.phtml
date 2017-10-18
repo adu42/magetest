@@ -236,16 +236,6 @@ $_collectionSize = $_productCollection->count();
                             </a>
                         </div> <!-- end: product-image-wrapper -->
                         <div class="product-grid-footer">
-
-                            <?php //Add-to links
-                            if ($gc['display_addtolinks'] != 0 && $gc['addtolinks_simple']) {
-                                if ($gc['display_addtolinks'] == 1) //Display on hover
-                                    echo $helpTemplate->getCategoryAddtoLinksIcons($_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage display-onhover');
-                                else //Always display
-                                    echo $helpTemplate->getCategoryAddtoLinksIcons($_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage');
-                            }
-                            ?>
-
                         <?php if ($gc['display_name'] != 0): ?>
                             <h2 class="product-name<?php echo $productNameClasses; ?>"><a
                                         href="<?php echo $_product->getProductUrl() ?>"
@@ -269,7 +259,7 @@ $_collectionSize = $_productCollection->count();
                         }
                         ?>
 
-                        <?php echo $this->getChildDetailAttributeHtml($_product); ?>
+
 
                         <?php if ($_product->getRatingSummary()): ?>
                             <?php if ($gc['display_rating'] == 1): //Display on hover ?>
@@ -281,12 +271,23 @@ $_collectionSize = $_productCollection->count();
 
 
 
+
                         <?php if ($gc['display_price'] == 1): //Display on hover ?>
                             <div class="display-onhover"><?php echo $this->getPriceHtml($_product, true); ?></div>
                         <?php elseif ($gc['display_price'] == 2): //Always display ?>
                             <?php echo $this->getPriceHtml($_product, true); ?>
                         <?php endif; ?>
 
+
+                            <?php //Add-to links
+                            if ($gc['display_addtolinks'] != 0 && $gc['addtolinks_simple']) {
+                                if ($gc['display_addtolinks'] == 1) //Display on hover
+                                    echo $helpTemplate->getCategoryAddtoLinksIcons($_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage display-onhover');
+                                else //Always display
+                                    echo $helpTemplate->getCategoryAddtoLinksIcons($_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage');
+                            }
+                            ?>
+                            <?php echo $this->getChildDetailAttributeHtml($_product); ?>
 
                             <?php if(false): // disabled  ?>
                                 <?php

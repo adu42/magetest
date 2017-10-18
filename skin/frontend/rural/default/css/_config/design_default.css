@@ -434,7 +434,7 @@ h3.product-name, /*TODO:remove*/
 }
 
 .header-primary-container {
-
+    border-bottom: 1px solid #e8e8e8;
 }
 
 .header-primary {

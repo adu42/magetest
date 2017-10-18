@@ -1266,6 +1266,7 @@ p.required,
 }
 .category-products .toolbar .amount,.category-products .toolbar .sort-by,.category-products .toolbar .pager{
     float: right;
+    color: #999;
 }
 /* Data Table
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2730,8 +2731,8 @@ p.product-name a {
 h3.product-name,
 strong.product-name {
     /* Sizes are modified for different number of columns */
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 12px;
+    line-height: 18px;
     /*font-size:1.3333em;
 	line-height:1.25em;*/
 }
@@ -2746,8 +2747,8 @@ strong.product-name {
 }
 .products-grid .price-box p,.products-grid .price-box .regular-price{
     float: left;
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-right: 20px;
+    margin-left: 0px;
 }
 .products-grid .price-box .regular-price{color: red}
 /* Product image
@@ -2902,7 +2903,6 @@ strong.product-name {
 }
 
 .products-grid .price-box {
-    margin: 10px 0 10px;
     font-size: 1em;
 }
 
@@ -2923,10 +2923,6 @@ strong.product-name {
 .products-grid .availability {
     float: none;
     margin: 5px 0;
-}
-
-.products-grid .add-to-links {
-    margin: 10px 0 0;
 }
 
 /* Prices old/special: inline */
@@ -2993,21 +2989,19 @@ strong.product-name {
 
 .products-grid.single-line-name .item:hover .product-name {
     overflow: visible;
-    white-space: normal;
+    white-space: nowrap;
 }
 
 /* Align to the center
 	-------------------------------------------------------------- */
 .products-grid.centered .item {
-    text-align: center;
-
-    border: 1px solid #f2f2f2;
+    /*  text-align: center;
+    border: 1px solid #f2f2f2; */
     padding: 0px;
-    margin: 0 auto;
+    margin: 0px 10px;
     margin-bottom: 30px;
-    display:inline-block;
-    float: none;
-  /*  flex:auto; */
+    display: inline-block;
+    float: left;
     border-radius: 2px;
 }
 .products-grid.centered .item:after{
@@ -3079,7 +3073,7 @@ strong.product-name {
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
 .category-products-grid .item {
-    border-top: 1px solid #e5e5e5;
+   /* border-top: 1px solid #e5e5e5; */
     border-left: none;
     border-right: none;
     zoom: 1;
@@ -6922,7 +6916,7 @@ body.cms-index-index .breadcrumbs {
 }
 
 .itemgrid{
-   /* text-align-last: justify; */
+   /* text-align-last: justify;
     text-align: justify;
 
     -webkit-box-pack: justify;
@@ -6936,8 +6930,14 @@ body.cms-index-index .breadcrumbs {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    */
 }
-
+.itemgrid .addto-links-icons.addto-onimage a span{
+    color: #fff;
+}
+.itemgrid .addto-links-icons.addto-onimage:hover a span{
+    color: #777;
+}
 .item.item-left.clearer.block_footer_primary_bottom_left {
     padding: 0px;
     margin: 0px;
@@ -7089,7 +7089,7 @@ li.parent ul{margin-bottom: 20px;margin-left: 10px;}
 
 #narrow-by-list li{
     position:relative;
-    font-size:1.3em;
+    font-size:1.1em;
     display: inline-block;
     margin-right: 7px;
 }
@@ -7137,15 +7137,13 @@ li.parent ul{margin-bottom: 20px;margin-left: 10px;}
     width: 100%;
 }
 
-
-
 .comment-attr-tb {
     display: table;
     width: 100%
 }
-
+.pj-new-comment{margin-top: 20px; }
 .pj-new-comment:hover .comment-attr,.comment-attr:hover{display: block;}
-.pj-new-comment .ic-info{margin-left: 20px; }
+.pj-new-comment .ic-info{margin-left: 2px; }
 .comment-attr {
     text-align: left;
     width: 400px;
@@ -7157,8 +7155,9 @@ li.parent ul{margin-bottom: 20px;margin-left: 10px;}
     padding: 20px;
     position: absolute;
     z-index: 2;
-    bottom: 50px;
+    bottom: 55px;
     display: none;
+    margin-left: -20px;
 }
 
 .comment-attr em.top_arrow {
@@ -7183,6 +7182,7 @@ li.parent ul{margin-bottom: 20px;margin-left: 10px;}
     -moz-transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
     -o-transform: rotate(-45deg);
+    margin-left: 14%;
 }
 .comment-info{
     display: table-cell;

@@ -244,7 +244,7 @@
             clearTimeout(this.isRun);
             this.isRun = null;
         }
-    })
+    });
 })(window.jQuery || window.Zepto);
 
 jQuery(function($){
@@ -264,4 +264,28 @@ jQuery(function($){
         navigatorWidth  : 74,
         mainWidth		: 74,
         buttons		: buttons});
+
+    $('#header-container').dFixed('.main-container');
 });
+
+;(function($) {
+    $.fn.dFixed = function(ele) {
+        self = this;
+        var offset_top=$(self).offset().top;
+        var offset_left=$(self).offset().left;
+        var relative_left=$(self).position().left;
+        var limitTop=$(ele).offset().top + $(ele).outerHeight()- $(self).outerHeight();
+        $(window).scroll(function(){
+            var top=$(window).scrollTop();
+            if($(window).scrollTop() > offset_top){
+                $(self).css({'position':'fixed','top':'0px','left':offset_left+'px','zIndex':'1'});
+            }else{ //如果滚动的高度不大于 moveObj就不动
+                $(self).removeAttr('style');
+            }
+            if($(window).scrollTop()> limitTop && limitTop>=0 ){ //限定最大的scroll高度
+                $(self).css({'position':'absolute','top':limitTop-offset_top+'px','left':relative_left+'px'});
+            }
+        })
+    };
+})(window.jQuery || window.Zepto);
+

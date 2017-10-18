@@ -18,7 +18,6 @@ require_once 'Mage/Catalog/controllers/CategoryController.php';
 
 class Ado_Seo_CategoryController extends Mage_Catalog_CategoryController
 {
-
     public function viewAction()
     {
         if ($curency = (string)$this->getRequest()->getParam('currency')) {
@@ -138,6 +137,4 @@ class Ado_Seo_CategoryController extends Mage_Catalog_CategoryController
        $this->loadLayout();
        $this->renderLayout();
     }
-
-
 }

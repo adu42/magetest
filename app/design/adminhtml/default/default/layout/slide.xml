@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout>
+    <mapi_adminhtml_slide_index>
+        <reference name="content">
+            <block type="mapi/adminhtml_slide" name="slide" />
+        </reference>
+    </mapi_adminhtml_slide_index>
+    <mapi_adminhtml_slideitem_index>
+        <reference name="content">
+            <block type="mapi/adminhtml_slideitem" name="slideitem" />
+        </reference>
+    </mapi_adminhtml_slideitem_index>
+</layout>
