@@ -88,6 +88,16 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
+                        <show_name_fields translate="label comment">
+                            <label>Show Name Fields</label>
+                            <comment>Show name fields on create customer page.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_name_fields>
                         <auto_group_assign translate="label comment">
                             <label>Enable Automatic Assignment to Customer Group</label>
                             <comment>To show VAT number on frontend, set Show VAT Number on Frontend option to Yes.</comment>

@@ -1,0 +1,16 @@
+<div class="checkout-onepage-header">
+    <div class="header-top-container">
+        <div class="header-top header container clearer">
+            <div class="inner-container">
+        <div class="header_logo">
+            <a class="logo onpage_head" href="<?php echo $this->getUrl('') ?>"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+            <span class="checkout-header-title">
+      <i class=" secure-icon"></i>
+      secure checkout
+    </span>
+        </div>
+        <button type="button" title="<?php echo $this->quoteEscape($this->__('Continue Shopping')) ?>" class="header-right" onclick="setLocation('<?php echo Mage::helper('core')->quoteEscape($this->getContinueShoppingUrl()) ?>')"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+        </div>
+        </div>
+    </div>
+</div>

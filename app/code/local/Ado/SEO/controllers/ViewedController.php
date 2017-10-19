@@ -47,6 +47,7 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
         } else {
             $help = trim($help, '/');
         }
+        $ajaxResponse = false;
         $html = '';
         switch ($help):
             case('color'):
@@ -72,6 +73,16 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
                     $html = $this->_getReviewHtml();
                 }
                 break;
+            case('reviewlist'):
+                if ($this->setProduct()) {
+                    $html = $this->_getReviewListHtml();
+                }
+                break;
+            case('reviewform'):
+                if ($this->setProduct()) {
+                    $html = $this->_getReviewFormHtml();
+                }
+                break;
             case('history'):
                 $html = $this->_getHistoryHtml();
                 break;
@@ -81,12 +92,26 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
             case('nin'):
                 $html = $this->createPostAction();
                 break;
+            case('user'):
+                $ajaxResponse = true;
+                $html = $this->userAction();
+                break;
+            case('wishlist'):
+                $html = $this->wishlist();
+                break;
              case('guest'):
                  $this->checkGuestLogin();
                  break;
             default:
         endswitch;
-        $this->getResponse()->setBody($html);
+        if($ajaxResponse){
+            $this->getResponse()
+            ->clearHeaders()
+            ->setHeader('Content-Type', 'application/json')
+            ->setBody(Mage::helper('core')->jsonEncode($html));
+        }else{
+            $this->getResponse()->setBody($html);
+        }
     }
 
     /**
@@ -119,6 +144,32 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
     {
         $layout = Mage::getModel('core/layout');
         $layout->getUpdate()->load('catalog_viewed_review_ajax');
+        $layout->generateXml();
+        $layout->generateBlocks();
+        return $layout->getOutput();
+    }
+
+    /**
+     * 获取评论数据
+     * @return mixed
+     */
+    protected function _getReviewListHtml()
+    {
+        $layout = Mage::getModel('core/layout');
+        $layout->getUpdate()->load('catalog_viewed_review_list_ajax');
+        $layout->generateXml();
+        $layout->generateBlocks();
+        return $layout->getOutput();
+    }
+
+    /**
+     * 获取评论数据
+     * @return mixed
+     */
+    protected function _getReviewFormHtml()
+    {
+        $layout = Mage::getModel('core/layout');
+        $layout->getUpdate()->load('catalog_viewed_review_form_ajax');
         $layout->generateXml();
         $layout->generateBlocks();
         return $layout->getOutput();
@@ -249,6 +300,7 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
                     $customer->setPassword($this->getRequest()->getPost('password'));
                     $customer->setConfirmation($this->getRequest()->getPost('confirmation'));
 					$customer->setPasswordConfirmation($this->getRequest()->getPost('confirmation'));
+                    $customer->setEmailName();
                     $customerErrors = $customer->validate();
                     if (is_array($customerErrors)) {
                         $errors = array_merge($customerErrors, $errors);
@@ -345,6 +397,128 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
             $cookie->set('guest_token', $newToken ,60,'/',null,false,false);
         }
     }
+    
+    /**
+     * wishlist
+     */
+    protected function wishlist()
+    {
+        if (!$this->_validateFormKey()) {
+            return '0';
+        }
+        $wishlist = $this->_getWishlist();
+        if (!$wishlist) {
+            return ''; //$this->norouteAction();
+        }
+
+        $session = Mage::getSingleton('customer/session');
+
+        $productId = (int)$this->getRequest()->getParam('product');
+        if (!$productId) {
+            return '-1';
+            //  $this->_redirect('*/');
+            //  return;
+        }
+
+        $product = Mage::getModel('catalog/product')->load($productId);
+        if (!$product->getId() || !$product->isVisibleInCatalog()) {
+            return '-2';
+            //  $session->addError($this->__('Cannot specify product.'));
+            //   $this->_redirect('*/');
+            //   return;
+        }
+
+        try {
+            $requestParams = $this->getRequest()->getParams();
+            if ($session->getBeforeWishlistRequest()) {
+                $requestParams = $session->getBeforeWishlistRequest();
+                $session->unsBeforeWishlistRequest();
+            }
+            $buyRequest = new Varien_Object($requestParams);
+
+            $result = $wishlist->addNewItem($product, $buyRequest);
+            if (is_string($result)) {
+                return '-3';
+                // Mage::throwException($result);
+            }
+            $wishlist->save();
+
+            Mage::dispatchEvent(
+                'wishlist_add_product',
+                array(
+                    'wishlist' => $wishlist,
+                    'product' => $product,
+                    'item' => $result
+                )
+            );
+
+            $referer = $session->getBeforeWishlistUrl();
+            if ($referer) {
+                $session->setBeforeWishlistUrl(null);
+            } else {
+                $referer = $this->_getRefererUrl();
+            }
+
+            /**
+             *  Set referer to avoid referring to the compare popup window
+             */
+            $session->setAddActionReferer($referer);
+
+            Mage::helper('wishlist')->calculate();
+
+            $message = $this->__('%1$s has been added to your wishlist. Click <a href="%2$s">here</a> to continue shopping.',
+                $product->getName(), Mage::helper('core')->escapeUrl($referer));
+            $session->addSuccess($message);
+        } catch (Mage_Core_Exception $e) {
+            return '-4';
+            //  $session->addError($this->__('An error occurred while adding item to wishlist: %s', $e->getMessage()));
+        } catch (Exception $e) {
+            return '-5';
+            // $session->addError($this->__('An error occurred while adding item to wishlist.'));
+        }
+        return '1';
+        // $this->_redirect('*', array('wishlist_id' => $wishlist->getId()));
+    }
+
+    protected function _getWishlist($wishlistId = null)
+    {
+        $wishlist = Mage::registry('wishlist');
+        if ($wishlist) {
+            return $wishlist;
+        }
+
+        try {
+            if (!$wishlistId) {
+                $wishlistId = $this->getRequest()->getParam('wishlist_id');
+            }
+            $customerId = Mage::getSingleton('customer/session')->getCustomerId();
+            /* @var Mage_Wishlist_Model_Wishlist $wishlist */
+            $wishlist = Mage::getModel('wishlist/wishlist');
+            if ($wishlistId) {
+                $wishlist->load($wishlistId);
+            } else {
+                $wishlist->loadByCustomer($customerId, true);
+            }
+
+            if (!$wishlist->getId() || $wishlist->getCustomerId() != $customerId) {
+                $wishlist = null;
+                return false;//Mage::helper('wishlist')->__("Requested wishlist doesn't exist");
+            }
+            Mage::register('wishlist', $wishlist);
+        } catch (Mage_Core_Exception $e) {
+            // Mage::getSingleton('wishlist/session')->addError($e->getMessage());
+            return false;
+        } catch (Exception $e) {
+            /*
+            Mage::getSingleton('wishlist/session')->addException($e,
+                Mage::helper('wishlist')->__('Wishlist could not be created.')
+            );
+            */
+            return false;
+        }
+
+        return $wishlist;
+    }
 
     /**
      * get client visited url|sku|times
@@ -386,4 +560,105 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
         }
     }
 
+    /**
+     * 用邮箱创建用户
+     * use email create user
+     * 用户名用邮箱的@前缀
+     * 密码由系统注册密码
+     * 其他不填，不数据验证
+     *  逻辑验证：
+     *  没有登陆
+     *  没有注册过
+     * 邮箱发送一封账户密码邮件，客户要确认
+     */
+    public function userAction()
+    {
+        $result=array('code'=>0,'message'=>'');
+        $message = '';
+        $session = $this->_getSession();
+        if ($session->isLoggedIn()) {
+            $result=array('code'=>1,'message'=>$this->__('You are logged in.'));
+        }else{
+
+            $session->setEscapeMessages(true); // prevent XSS injection in user input
+            if ($this->getRequest()->isPost()) {
+                $email = $this->getRequest()->getParam('email', false);
+                $email=$this->checkEmail($email);
+                if (!empty($email)) {
+                    $customer = Mage::getModel('customer/customer')->loadByEmail($email);
+                    if(!$customer && !$customer->getId()){
+
+                        if (!$customer = Mage::registry('current_customer')) {
+                            $customer = Mage::getModel('customer/customer')->setId(null);
+                        }
+                        //邮箱没有验证，不用订阅
+                        $customer->setIsSubscribed(0);
+                        $customer->getGroupId();
+                        $newPassword = $customer->generatePassword();
+                        $customer->setPassword($newPassword);
+                        $customer->setConfirmation($newPassword);
+                        $customer->setPasswordConfirmation($newPassword);
+                        $customer->setEmailName();
+                        /**
+                         * Initialize customer group id
+                         */
+                        $customer->getGroupId();
+                        $customer->save();
+
+                        /**
+                         * 这里必须要发邮件确认客户
+                         * 这里登陆
+                         */
+                        try{
+                            $customer->sendNewAccountEmail(
+                                'confirmation',
+                                $session->getBeforeAuthUrl(),
+                                Mage::app()->getStore()->getId()
+                            );
+                            $message = $this->__('Account confirmation is required. Please, check your email for the confirmation link. To resend the confirmation email please <a href="%s">click here</a>.', Mage::helper('customer')->getEmailConfirmationUrl($customer->getEmail()));
+                            $session->addSuccess($message);
+                        }catch (Exception $e){
+                            Mage::logException($e);
+                        }
+
+                        Mage::dispatchEvent('customer_register_success',
+                            array('account_controller' => $this, 'customer' => $customer)
+                        );
+                        $session->setCustomerAsLoggedIn($customer);
+                        Mage::getSingleton('core/cookie')->set('u_u_in', '1', 86400, '/', null, false, false);
+                        $result['code']=0;
+                    }else{
+                        $result['code']=1;
+                        $url = Mage::getUrl('customer/account/forgotpassword');
+                        $message = $this->__('There is already an account with this email address. If you are sure that it is your email address, <a href="%s">click here</a> to get your password and access your account.', $url);
+                    }
+                }
+            }
+        }
+        $result['message']=$message;
+        return $result;
+    }
+
+    /**
+     * 验证邮箱中的特殊单词，不要出现网址标识
+     * @param $email
+     * @return bool
+     */
+    protected function checkEmail($email){
+        $email=trim($email);
+        $isOk = true;
+        if(empty($email))return false;
+        $blackWords = array(
+            'http','.co','.uk','www.','script','"',"'"
+        );
+        $prex = explode('@',$email);
+        $prex = $prex[0];
+        foreach ($blackWords as $word){
+            if(stripos($prex,$word)!==false){
+                $isOk=false;
+                break;
+            }
+        }
+        return $isOk?$email:$isOk;
+    }
 }

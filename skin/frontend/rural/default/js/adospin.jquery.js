@@ -271,6 +271,7 @@ jQuery(function($){
 ;(function($) {
     $.fn.dFixed = function(ele) {
         self = this;
+        if($(self).length<1)return true;
         var offset_top=$(self).offset().top;
         var offset_left=$(self).offset().left;
         var relative_left=$(self).position().left;
@@ -278,7 +279,7 @@ jQuery(function($){
         $(window).scroll(function(){
             var top=$(window).scrollTop();
             if($(window).scrollTop() > offset_top){
-                $(self).css({'position':'fixed','top':'0px','left':offset_left+'px','zIndex':'1'});
+                $(self).css({'position':'fixed','top':'0px','left':offset_left+'px','zIndex':'100000'});
             }else{ //如果滚动的高度不大于 moveObj就不动
                 $(self).removeAttr('style');
             }

@@ -348,7 +348,8 @@ h3.product-name, /*TODO:remove*/
 }
 
 .header-container {
-
+    width: 100%;border-bottom: 1px solid #fafafa;
+    box-shadow: 1px 1px 1px #fafafa;
 }
 
 .header {

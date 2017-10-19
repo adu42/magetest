@@ -392,6 +392,12 @@ One page checkout main layout
             </block>
         </reference>
         <update handle="customer_form_template_handle"/>
+        <reference name="header">
+            <action method="setTemplate"><template>checkout/onepage/header.phtml</template></action>
+        </reference>
+        <reference name="footer">
+            <action method="setTemplate"><template>checkout/onepage/footer.phtml</template></action>
+        </reference>
     </checkout_onepage_index>
 
 <!--

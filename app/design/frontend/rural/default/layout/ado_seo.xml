@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout version="0.1.0">
+    <default translate="label"><reference name="head">
+        <action method="addItem"><type>skin_js</type><name>js/adospin.jquery.js</name><params/></action>
+    </reference></default>
     <catalog_category_default translate="label">
         <reference name="head">
 
@@ -22,7 +25,7 @@
 
             <action method="addItem"><type>skin_js</type><name>js/swiper.jquery.min.js</name></action>
             <action method="addItem"><type>skin_css</type><name>css/swiper.css</name></action>
-            <action method="addItem"><type>skin_js</type><name>js/adospin.jquery.js</name><params/></action>
+
             <action method="addItem"><type>skin_js</type><name>js/star-rating/jquery.ado.colorpick.js</name></action>
             <action method="addItem"><type>skin_css</type><name>css/dock/_shared/colorbox.css</name></action>
             <action method="addItem"><type>skin_js</type><name>js/productInfo.js</name><params/></action>
@@ -50,7 +53,7 @@
 
             <action method="addItem"><type>skin_js</type><name>js/swiper.jquery.min.js</name></action>
             <action method="addItem"><type>skin_css</type><name>css/swiper.css</name></action>
-            <action method="addItem"><type>skin_js</type><name>js/adospin.jquery.js</name><params/></action>
+
             <action method="addItem"><type>skin_js</type><name>js/star-rating/jquery.ado.colorpick.js</name></action>
             <action method="addItem"><type>skin_css</type><name>css/dock/_shared/colorbox.css</name></action>
             <action method="addItem"><type>skin_js</type><name>js/productInfo.js</name><params/></action>

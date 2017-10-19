@@ -172,6 +172,7 @@ class Mage_Core_Model_Resource_File_Storage_File
         $path = Mage::helper('core/file_storage_database')->getMediaBaseDir() . DS . str_replace('/', DS, $path);
 
         if (!file_exists($path) || !is_dir($path)) {
+            Mage::log($path,null,'aaa.txt');
             if (!@mkdir($path, 0777, true)) {
                 Mage::throwException(Mage::helper('core')->__('Unable to create directory: %s', $path));
             }

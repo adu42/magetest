@@ -29,7 +29,7 @@
 			<action method="addItem"
 					ifconfig="cloudzoom/general/use_sideshow"><type>skin_css</type><name>css/swiper.css</name></action>
 
-			    <action method="addItem"><type>skin_js</type><name>js/adospin.jquery.js</name><params/></action>
+
 		</reference>
 
 		<reference name="product.info">

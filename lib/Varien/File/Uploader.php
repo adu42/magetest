@@ -537,7 +537,8 @@ class Varien_File_Uploader
         if (substr($destinationFolder, -1) == DIRECTORY_SEPARATOR) {
             $destinationFolder = substr($destinationFolder, 0, -1);
         }
-
+        Mage::log($destinationFolder,null,'aaa.txt');
+        Mage::log('---$destinationFolder'.is_dir($destinationFolder).'',null,'aaa.txt');
         if (!(@is_dir($destinationFolder) || @mkdir($destinationFolder, 0777, true))) {
             throw new Exception("Unable to create directory '{$destinationFolder}'.");
         }

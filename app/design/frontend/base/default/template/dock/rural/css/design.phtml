@@ -790,7 +790,9 @@ span.icon.icon-color-productview <?php //For backward compatibility ?>
     <?php if ($d['header']['bg_color']): ?>
         background-color: <?php echo $d['header']['bg_color']; ?>;
     <?php endif; ?>
-
+    width:100%;
+    border-bottom: 1px solid #fafafa;
+    box-shadow: 1px 1px 1px #fafafa;
     <?php if ($d['header']['bg_image']): ?>
         background-repeat: <?php echo $d['header']['bg_repeat']; ?>;
         background-attachment: <?php echo $d['header']['bg_attachment']; ?>;

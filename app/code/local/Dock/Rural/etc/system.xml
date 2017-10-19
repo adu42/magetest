@@ -2446,9 +2446,7 @@
                             <label>Background Image</label>
                             <frontend_type>image</frontend_type>
                             <backend_model>adminhtml/system_config_backend_image</backend_model>
-                            <upload_dir config="system/filesystem/media" scope_info="1">
-                                wysiwyg/dock/rural/_backgrounds
-                            </upload_dir>
+                            <upload_dir config="system/filesystem/media" scope_info="1">wysiwyg/dock/rural/_backgrounds</upload_dir>
                             <base_url type="media" scope_info="1">wysiwyg/dock/rural/_backgrounds</base_url>
                             <!--
 							<upload_dir config="system/filesystem/skin" scope_info="1">frontend/rural/default/images/_backgrounds</upload_dir>
@@ -2617,9 +2615,7 @@
                             <label>Background Image</label>
                             <frontend_type>image</frontend_type>
                             <backend_model>adminhtml/system_config_backend_image</backend_model>
-                            <upload_dir config="system/filesystem/media" scope_info="1">
-                                wysiwyg/dock/rural/_backgrounds
-                            </upload_dir>
+                            <upload_dir config="system/filesystem/media" scope_info="1">wysiwyg/dock/rural/_backgrounds</upload_dir>
                             <base_url type="media" scope_info="1">wysiwyg/dock/rural/_backgrounds</base_url>
                             <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
@@ -4715,9 +4711,7 @@
                             <label>Background Image</label>
                             <frontend_type>image</frontend_type>
                             <backend_model>adminhtml/system_config_backend_image</backend_model>
-                            <upload_dir config="system/filesystem/media" scope_info="1">
-                                wysiwyg/dock/rural/_backgrounds
-                            </upload_dir>
+                            <upload_dir config="system/filesystem/media" scope_info="1">wysiwyg/dock/rural/_backgrounds</upload_dir>
                             <base_url type="media" scope_info="1">wysiwyg/dock/rural/_backgrounds</base_url>
                             <sort_order>220</sort_order>
                             <show_in_default>1</show_in_default>

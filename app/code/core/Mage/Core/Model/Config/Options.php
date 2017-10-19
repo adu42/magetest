@@ -195,7 +195,7 @@ class Mage_Core_Model_Config_Options extends Varien_Object
     public function getUploadDir()
     {
         //$dir = $this->getDataSetDefault('upload_dir', $this->getMediaDir().DS.'upload');
-        $dir = $this->_data['upload_dir'];
+        $dir = $this->_data['upload_dir'];$dir = str_replace(array("\n","\r","\t","\r\n",'',$dir));
         $this->createDirIfNotExists($dir);
         return $dir;
     }

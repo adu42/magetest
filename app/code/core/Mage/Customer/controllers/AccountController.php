@@ -295,7 +295,8 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
         }
 
         $customer = $this->_getCustomer();
-
+        $customer->setPassword($this->getRequest()->getPost('password'));
+        $customer->setConfirmation($this->getRequest()->getPost('confirmation'));
         try {
             $errors = $this->_getCustomerErrors($customer);
 
@@ -431,6 +432,7 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
             $customer->setPassword($request->getPost('password'));
             $customer->setPasswordConfirmation($request->getPost('confirmation'));
 	    $customer->setConfirmation($request->getPost('confirmation'));
+            $customer->setEmailName();
             $customerErrors = $customer->validate();
             if (is_array($customerErrors)) {
                 $errors = array_merge($customerErrors, $errors);
