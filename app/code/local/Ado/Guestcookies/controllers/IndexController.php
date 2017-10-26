@@ -25,6 +25,7 @@ class Ado_Guestcookies_IndexController extends Mage_Core_Controller_Front_Action
         $token = isset($_GET['token'])?$_GET['token']:'';
         if(!$w || !$h)die();
         $canLogin = false;
+        $canGetLogin = true;
         if(!empty($token)){
             $token = Mage::helper('core')->decrypt($token);
             $token = explode('|',$token);
@@ -49,6 +50,7 @@ class Ado_Guestcookies_IndexController extends Mage_Core_Controller_Front_Action
                     $newToken = $w.'|'.$h.'|'.$canLogin;
                     $newToken = Mage::helper('core')->encrypt($newToken);
                 }
+                $canGetLogin = false;
             }
         }
         if($session->isLoggedIn()){
@@ -56,8 +58,6 @@ class Ado_Guestcookies_IndexController extends Mage_Core_Controller_Front_Action
             $newToken = $w.'|'.$h.'|'.$canLogin;
             $newToken = Mage::helper('core')->encrypt($newToken);
         }
-        if(!empty($newToken)){
-            $cookie->set('guest_token', $newToken ,60,'/',null,false,false);
-        }
+        if($canGetLogin)$cookie->set('guest_token', $newToken ,60,'/',null,false,false);
     }
 }
