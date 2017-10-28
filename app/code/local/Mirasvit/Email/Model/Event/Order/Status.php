@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -41,7 +41,7 @@ class Mirasvit_Email_Model_Event_Order_Status extends Mirasvit_Email_Model_Event
     public function findEvents($eventCode, $timestamp)
     {
         $events = array();
-        $fromDate = date('Y-m-d H:i:s', $timestamp);
+        $fromDate = date('Y-m-d H:i:s', ($timestamp - (60 * 2))); // look for orders changed 2 minutes ago
         $resource = Mage::getSingleton('core/resource');
 
         $historyCollection = Mage::getModel('sales/order_status_history')->getCollection()

@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -61,8 +61,14 @@ class Mirasvit_Email_Adminhtml_Email_QueueController extends Mage_Adminhtml_Cont
     public function dropAction()
     {
         $model = $this->getModel();
+        $args = $model->getArgs();
+
+        $appEmulation = Mage::getSingleton('core/app_emulation');
+        $initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($args['store_id']);
 
         $this->getResponse()->setBody($model->getEmailContent());
+
+        $appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
     }
 
     public function sendAction()

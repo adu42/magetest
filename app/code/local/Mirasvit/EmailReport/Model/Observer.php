@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -27,14 +27,16 @@ class Mirasvit_EmailReport_Model_Observer extends Varien_Object
             $sessionId = Mage::getSingleton('core/session')->getSessionId();
             $triggerId = ($queue) ? $queue->getTriggerId() : null;
 
-            if ($queue && $queue->getId() && !$this->isReported('click', $queue->getId(), $triggerId, $sessionId)) {
-                Mage::getModel('emailreport/click')
-                    ->setQueueId($queue->getId())
-                    ->setTriggerId($triggerId)
-                    ->setSessionId($sessionId)
-                    ->save();
-
+            if ($queue && $queue->getId()) {
                 Mage::helper('emailreport')->setQueueId($queue->getId());
+
+                if (!$this->isReported('click', $queue->getId(), $triggerId, $sessionId)) {
+                    Mage::getModel('emailreport/click')
+                        ->setQueueId($queue->getId())
+                        ->setTriggerId($triggerId)
+                        ->setSessionId($sessionId)
+                        ->save();
+                }
             }
         }
     }

@@ -9,10 +9,11 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
+
 
 
 class Mirasvit_EmailDesign_Helper_Data extends Mage_Core_Helper_Abstract
@@ -44,11 +45,11 @@ class Mirasvit_EmailDesign_Helper_Data extends Mage_Core_Helper_Abstract
         if (preg_match('/<style[^>]*>(?:<\!--)?(.*)(?:-->)?<\/style>/ims', $html, $match)) {
             $css = $match[1];
 
-            $c2i = Mage::helper('emaildesign/cssToInline');
-            $c2i->setHtml($html);
-            $c2i->setCss($css);
+            $emogrifier = Mage::helper('emaildesign/pelago_emogrifier');
+            $emogrifier->setHtml($html);
+            $emogrifier->setCss($css);
 
-            $html = $c2i->css2inline();
+            $html = $emogrifier->emogrify();
         }
 
         return $html;

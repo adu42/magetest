@@ -330,7 +330,7 @@ class appendProduct{
         }
         if(!isset($dataRow['url_key'])||empty($dataRow['url_key'])){
             if(!empty($dataRow['name'])){
-                $dataRow['url_key']=str_replace(array('  ','&','+','#','_',' '),'-',$dataRow['name']);
+                $dataRow['url_key']=str_replace(array('  ','&','+','#','_',' ',"'",'"'),'-',$dataRow['name']);
                 $dataRow['url_path']=isset($dataRow['url_path'])?$dataRow['url_path']:$dataRow['url_key'].'.html';
             }  
         }

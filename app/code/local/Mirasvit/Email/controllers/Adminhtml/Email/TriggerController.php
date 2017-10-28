@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -88,6 +88,7 @@ class Mirasvit_Email_Adminhtml_Email_TriggerController extends Mage_Adminhtml_Co
 
                 return;
             } elseif ($back == 'generate') {
+                $model->setEventScheduleStrategy($this->getRequest()->getParam('event_schedule_strategy'));
                 $model->generate(Mage::app()->getLocale()->date($data['generate_from'])->get(Zend_Date::TIMESTAMP));
                 Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Generation of emails started'));
 
@@ -264,6 +265,11 @@ class Mirasvit_Email_Adminhtml_Email_TriggerController extends Mage_Adminhtml_Co
     protected function _filterPostData($data)
     {
         $data = $this->_filterDateTime($data, array('active_from', 'active_to'));
+        // Data is saved using the 'addData()' method, so if a cancellation event was deselect
+        // - we override it using an empty array
+        if (!isset($data['cancellation_event'])) {
+            $data['cancellation_event'] = array();
+        }
 
         return $data;
     }

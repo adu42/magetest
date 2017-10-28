@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mirasvit
  *
@@ -10,10 +9,13 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
+
+
+
 class Mirasvit_Email_Helper_ErrorHandler extends Mage_Core_Helper_Abstract
 {
     /**
@@ -30,10 +32,10 @@ class Mirasvit_Email_Helper_ErrorHandler extends Mage_Core_Helper_Abstract
     /**
      * Assign status "Error" to current queue.
      *
-     * @param int $errno
+     * @param int    $errno
      * @param string $errstr
      * @param string $errfile
-     * @param int $errline
+     * @param int    $errline
      *
      * @return bool
      */

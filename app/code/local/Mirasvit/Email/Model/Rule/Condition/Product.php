@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -25,6 +25,7 @@ class Mirasvit_Email_Model_Rule_Condition_Product extends Mage_SalesRule_Model_R
             'is_in_stock' => Mage::helper('email')->__('Stock Availability'),
             'type_id' => Mage::helper('email')->__('Product Type'),
             'qty' => Mage::helper('email')->__('Product stock quantity'),
+            'purchased_qty' => Mage::helper('email')->__('Product QTY in cart/order'),
         ));
     }
 
@@ -98,9 +99,29 @@ class Mirasvit_Email_Model_Rule_Condition_Product extends Mage_SalesRule_Model_R
     public function validate(Varien_Object $object)
     {
         /** @var Mage_Catalog_Model_Product $product */
+        // Magento uses a product for validation, not the object itself
         $product = $object->getProduct();
-        if ($product instanceof Mage_Catalog_Model_Product && $this->getAttribute() === 'qty') {
-            $product->setQty($product->getStockItem()->getQty());
+        if ($product instanceof Mage_Catalog_Model_Product && $product->getId()) {
+            $product->load($product->getId());
+        }
+
+        if ($product instanceof Mage_Catalog_Model_Product) {
+            switch ($this->getAttribute()) {
+                case 'qty':
+                    $product->setQty($product->getStockItem()->getQty());
+                    break;
+
+                case 'purchased_qty':
+                    $qty = 0;
+                    if ($object->getOrderId()) {
+                        $qty = $object->getQtyOrdered();
+                    } elseif ($object->getQuoteId()) {
+                        $qty = $object->getQty();
+                    }
+
+                    $product->setPurchasedQty($qty);
+                    break;
+            }
         }
 
         return parent::validate($object);

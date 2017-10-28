@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -50,6 +50,7 @@ class Mirasvit_Email_Helper_Variables_Crosssells
         Mage::getSingleton('catalog/product_visibility')->addVisibleInSearchFilterToCollection($collection);
 
         $collection->getSelect()->reset('order');
+        $collection->getSelect()->order(new Zend_Db_Expr('RAND()'));
 
         return $collection;
     }
@@ -98,12 +99,14 @@ class Mirasvit_Email_Helper_Variables_Crosssells
                                     $crossIds = $product->getRelatedProductIds();
                                 } elseif ($crossType == Mirasvit_Email_Model_System_Source_CrossSell::MAGE_UPSELLS) {
                                     $crossIds = $product->getUpSellProductIds();
-                                } else {
-                                    $crossIds = $this->getNewArrivalProductIds();
                                 }
                             }
 
                             $productIds = array_merge($crossIds, $productIds);
+                        }
+
+                        if ($crossType == Mirasvit_Email_Model_System_Source_CrossSell::MAGE_NEW) {
+                            $productIds = $this->getNewArrivalProductIds();
                         }
 
                     break;
@@ -124,7 +127,8 @@ class Mirasvit_Email_Helper_Variables_Crosssells
                     case Mirasvit_Email_Model_System_Source_CrossSell::AW_ARP2:
                         if (Mage::helper('email')->isARP2Installed()
                             && class_exists('AW_Autorelated_Model_Api')
-                            && $parent->getQuoteId()) {
+                            && ($parent->getQuoteId() || $parent->getOrderId())
+                        ) {
                             $arp2Collection = Mage::getModel('awautorelated/blocks')->getCollection()
                                 ->addTypeFilter(AW_Autorelated_Model_Source_Type::SHOPPING_CART_BLOCK)
                                 ->addStatusFilter()
@@ -132,10 +136,13 @@ class Mirasvit_Email_Helper_Variables_Crosssells
                                 ->setPriorityOrder('DESC');
                             $ids = $arp2Collection->getAllIds();
                             if (count($ids) > 0) {
+                                $quoteId = $parent->getQuoteId()
+                                    ? $parent->getQuoteId()
+                                    : $parent->getOrder()->getQuoteId();
                                 foreach ($ids as $arp2Block) {
                                     $block = Mage::getModel('awautorelated/blocks')->load($arp2Block);
                                     $productIds = array_merge($productIds, Mage::getModel('awautorelated/api')
-                                            ->getRelatedProductsForShoppingCartRule($arp2Block, $parent->getQuoteId()));
+                                            ->getRelatedProductsForShoppingCartRule($arp2Block, $quoteId));
                                 }
                             }
                         }

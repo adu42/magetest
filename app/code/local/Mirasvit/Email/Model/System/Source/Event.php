@@ -9,40 +9,39 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
+
 class Mirasvit_Email_Model_System_Source_Event
-{ 
+{
     public static function toArray()
     {
         $result = array();
 
         $path = Mage::getModuleDir('', 'Mirasvit_Email').DS.'Model'.DS.'Event';
-        $io   = new Varien_Io_File();
+        $io = new Varien_Io_File();
         $io->open();
         $io->cd($path);
-        
+
         foreach ($io->ls(Varien_Io_File::GREP_DIRS) as $entity) {
             $io->cd($entity['id']);
             foreach ($io->ls(Varien_Io_File::GREP_FILES) as $event) {
                 if ($event['filetype'] != 'php') {
                     continue;
-                } elseif (strtolower($entity['text']) === 'rma') {
-                    if (!Mage::helper('mstcore')->isModuleInstalled('Mirasvit_Rma')) {
-                        continue;
-                    }
                 }
 
-                $info      = pathinfo($event['text']);
-                $eventCode = strtolower($entity['text'].'_'.$info['filename']);
-                $event     = Mage::helper('email/event')->getEventModel($eventCode);
-                foreach ($event->getEvents() as $code => $name) {
-                    $result[$event->getEventsGroup()][$code] = $name;
-                }  
+                $info = pathinfo($event['text']);
+                $eventCode = strtolower($entity['text']).'_'.$info['filename'];
+                $event = Mage::helper('email/event')->getEventModel($eventCode);
+                if ($event->isActive()) {
+                    foreach ($event->getEvents() as $code => $name) {
+                        $result[$event->getEventsGroup()][$code] = $name;
+                    }
+                }
             }
         }
 
@@ -55,7 +54,7 @@ class Mirasvit_Email_Model_System_Source_Event
             $options = self::toArray();
         }
 
-        $result  = array();
+        $result = array();
 
         foreach ($options as $key => $value) {
             if (is_array($value)) {
@@ -70,7 +69,7 @@ class Mirasvit_Email_Model_System_Source_Event
                 );
             }
         }
- 
+
         return $result;
     }
 }

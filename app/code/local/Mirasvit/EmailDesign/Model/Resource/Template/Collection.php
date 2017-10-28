@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -20,5 +20,22 @@ class Mirasvit_EmailDesign_Model_Resource_Template_Collection extends Mage_Core_
     protected function _construct()
     {
         $this->_init('emaildesign/template');
+    }
+
+    /**
+     * Method joins design title used for the template
+     *
+     * @return $this
+     */
+    public function joinDesignTitle()
+    {
+		$this->getSelect()
+	        ->joinLeft(
+	            array('design' => $this->getResource()->getTable('emaildesign/design')),
+	            'design.design_id = main_table.design_id',
+	            array('design_title' => 'design.title')
+	        );
+
+        return $this;
     }
 }

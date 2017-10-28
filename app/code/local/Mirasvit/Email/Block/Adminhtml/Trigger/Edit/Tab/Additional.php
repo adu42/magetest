@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -22,7 +22,7 @@ class Mirasvit_Email_Block_Adminhtml_Trigger_Edit_Tab_Additional extends Mage_Ad
         $this->setChild('generate',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
-                    'label'     => __('Generate Email Queue'),
+                    'label'     => $this->__('Generate Email Queue'),
                     'onclick'   => "saveAndGenerate()",
                     'class'     => 'save'
                     ))
@@ -40,7 +40,7 @@ class Mirasvit_Email_Block_Adminhtml_Trigger_Edit_Tab_Additional extends Mage_Ad
         $additonal = $form->addFieldset('additonal', array('legend' => __('Additional')));
 
         $additonal->addField('generate_from', 'date', array(
-            'label'        => __('Generate Email Queue From'),
+            'label'        => $this->__('Generate Email Queue From'),
             'required'     => false,
             'name'         => 'generate_from',
             'image'        => $this->getSkinUrl('images/grid-cal.gif'),
@@ -49,10 +49,19 @@ class Mirasvit_Email_Block_Adminhtml_Trigger_Edit_Tab_Additional extends Mage_Ad
             'time'         => true,
         ));
 
+        $additonal->addField('schedule_strategy', 'checkbox', array(
+            'label'     => $this->__('Check to schedule the emails starting from event creation date'),
+            'required'  => false,
+            'name'      => 'event_schedule_strategy',
+            'checked'   => false,
+            'value'     => Mirasvit_Email_Model_Service_EventGenerateService::SCHEDULE_STRATEGY_EVENT,
+            'note'      => $this->__('By default the extension schedules the emails from generation date (current date).')
+        ));
+
         $additonal->addField('generate', 'note', array(
             'text' => $this->getChildHtml('generate'),
-            'note' => 'Extension will schedule emails for all past events related with current trigger.<br>
-                All scheduled emails related with current trigger will be removed.'
+            'note' => $this->__('Extension will schedule emails for all past events related with current trigger.<br>
+                All scheduled emails related with current trigger will be removed.')
         ));
 
         return parent::_prepareForm();

@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -20,6 +20,11 @@ class Mirasvit_EmailSmtp_Model_Email_Template extends Mage_Core_Model_Email_Temp
 {
     public function send($email, $name = null, array $variables = array())
     {
+        if (!$this->isValidForSend()) {
+            Mage::logException(new Exception('This letter cannot be sent.')); // translation is intentionally omitted
+            return false;
+        }
+
         $storeId = null;
         if (isset($variables['store']) && is_object($variables['store'])) {
             $storeId = $variables['store']->getStoreId();
@@ -113,13 +118,16 @@ class Mirasvit_EmailSmtp_Model_Email_Template extends Mage_Core_Model_Email_Temp
         } catch (Exception $e) {
             $this->_mail = null;
             Mage::logException($e);
+            Mage::dispatchEvent('email_template_send_after', array('variables' => $variables, 'object' => $this, 'trace' => Varien_Debug::backtrace(true, false, false)));
 
             if (Mage::getSingleton('emailsmtp/config')->isSmtpLoggingEnabled()) {
                 $mailModel->setMessage($e)->save();
             }
 
             return false;
-        }
+        };
+
+        Mage::dispatchEvent('email_template_send_after', array('variables' => $variables, 'object' => $this, 'trace' => Varien_Debug::backtrace(true, false, false)));
 
         return true;
     }

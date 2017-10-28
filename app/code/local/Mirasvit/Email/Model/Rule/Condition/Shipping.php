@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -26,6 +26,7 @@ class Mirasvit_Email_Model_Rule_Condition_Shipping extends Mirasvit_Email_Model_
             'region_id' => Mage::helper('email')->__('Shipping: State/Province'),
             'region' => Mage::helper('email')->__('Shipping: Region'),
             'postcode' => Mage::helper('email')->__('Shipping: Postcode'),
+            'shipping_amount' => Mage::helper('email')->__('Shipping: Amount'),
         );
 
         asort($attributes);
@@ -92,7 +93,8 @@ class Mirasvit_Email_Model_Rule_Condition_Shipping extends Mirasvit_Email_Model_
             $order = Mage::getModel('sales/order')->load($object->getOrderId());
             $address = $order->getShippingAddress();
         } elseif ($object->hasData('quote_id')) {
-            $quote = Mage::getModel('sales/quote')->load($object->getQuoteId());
+            $quote = Mage::getModel('sales/quote')->setSharedStoreIds(array_keys(Mage::app()->getStores()))
+                ->load($object->getQuoteId());
             $address = $quote->getShippingAddress();
         } elseif ($object->hasData('customer_id')) {
             $customer = Mage::getModel('customer/customer')->load($object->getCustomerId());

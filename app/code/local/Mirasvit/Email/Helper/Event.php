@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mirasvit
  *
@@ -10,10 +9,13 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
+
+
+
 class Mirasvit_Email_Helper_Event extends Mage_Core_Helper_Abstract
 {
     /**
@@ -26,7 +28,7 @@ class Mirasvit_Email_Helper_Event extends Mage_Core_Helper_Abstract
         $arr = explode('|', $eventCode);
 
         try {
-            $model = Mage::getModel('email/event_' . $arr[0]);
+            $model = Mage::getModel('email/event_'.$arr[0]);
         } catch (Exception $e) {
             Mage::logException($e);
             $model = false;
@@ -49,15 +51,25 @@ class Mirasvit_Email_Helper_Event extends Mage_Core_Helper_Abstract
         return $result;
     }
 
-    public function getRandomEventArgs()
+    public function getRandomEventArgs($storeId = null)
     {
+        $args = array();
         $customerCollection = Mage::getModel('customer/customer')->getCollection();
         $customerCollection->getSelect()->limit(1, rand(0, $customerCollection->getSize() - 1));
         $customer = Mage::getModel('customer/customer')->load($customerCollection->getFirstItem()->getId());
 
+        // Retrieve quote ID
         $quoteCollection = Mage::getModel('sales/quote')->getCollection()
             ->addFieldToFilter('items_qty', array('gt' => 0));
-        $quoteCollection->getSelect()->limit(1, rand(0, $quoteCollection->getSize() - 1));
+        $quoteCollection->getSelect()
+            ->joinLeft(
+                array('quote_item' => $quoteCollection->getResource()->getTable('sales/quote_item')),
+                'main_table.entity_id = quote_item.quote_id',
+                array()
+            )
+            ->where('quote_item.item_id IS NOT NULL')
+            ->limit(1, rand(0, $quoteCollection->getSize() - 1));
+
         $quote = Mage::getModel('sales/quote')->setSharedStoreIds(array_keys(Mage::app()->getStores()))
             ->load($quoteCollection->getFirstItem()->getId());
 
@@ -80,13 +92,21 @@ class Mirasvit_Email_Helper_Event extends Mage_Core_Helper_Abstract
             $wishlist->load($wishlistCollection->getFirstItem()->getId());
         }
 
+        if (Mage::helper('mstcore')->isModuleInstalled('Mirasvit_Giftr')) {
+            $registryCollection = Mage::getModel('giftr/registry')->getCollection();
+            $registryCollection->getSelect()->order('RAND()')->limit(1);
+            if ($registryCollection->getSize() > 0) {
+                $args['registry_id'] = $registryCollection->getFirstItem()->getId();
+            }
+        }
+
         $testEmail = Mage::getSingleton('email/config')->getTestEmail();
 
         $store = $defaultStoreId = Mage::app()->getWebsite(true)
             ->getDefaultGroup()
             ->getDefaultStore();
 
-        $args = array(
+        $args = array_merge($args, array(
             'customer_id' => $customer->getId(),
             'customer_email' => $testEmail,
             'customer_name' => $customer->getName(),
@@ -95,7 +115,7 @@ class Mirasvit_Email_Helper_Event extends Mage_Core_Helper_Abstract
             'wishlist_id' => $wishlist->getId(),
             'time' => time(),
             'store_id' => $store->getId(),
-        );
+        ));
 
         return $args;
     }

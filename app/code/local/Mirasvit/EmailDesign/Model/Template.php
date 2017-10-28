@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -108,7 +108,7 @@ class Mirasvit_EmailDesign_Model_Template extends Mage_Core_Model_Abstract
         return $result;
     }
 
-    public function getProcessedTemplate($variables = null)
+    public function getProcessedTemplate(array $variables = array())
     {
         $tpl = $this->getDesign()->getTemplate();
 
@@ -121,7 +121,7 @@ class Mirasvit_EmailDesign_Model_Template extends Mage_Core_Model_Abstract
         return $result;
     }
 
-    public function getProcessedTemplateSubject($variables = null)
+    public function getProcessedTemplateSubject(array $variables = array())
     {
         return $this->_render($this->getSubject(), $variables);
     }
@@ -139,6 +139,8 @@ class Mirasvit_EmailDesign_Model_Template extends Mage_Core_Model_Abstract
         $block = Mage::app()->getLayout()->createBlock('emaildesign/template');
 
         $result = $block->render($tpl, $variables);
+        // Path rendered result through the transactional email template processor to render Magento variables
+        $result = Mage::getModel('emaildesign/email_template')->applyDefaultFilter($result, $variables);
 
         return $result;
     }
@@ -198,6 +200,27 @@ class Mirasvit_EmailDesign_Model_Template extends Mage_Core_Model_Abstract
         }
 
         return $code;
+    }
+
+    /**
+     * Return template type consistent with Magento
+     *
+     * @return null|int
+     */
+    public function getTemplateType()
+    {
+        $templateType = null;
+        switch ($this->getDesign()->getTemplateType()) {
+            case Mirasvit_EmailDesign_Model_Design::TEMPLATE_TYPE_HTML:
+                $templateType = Mage_Core_Model_Template::TYPE_HTML;
+                break;
+            case Mirasvit_EmailDesign_Model_Design::TEMPLATE_TYPE_TEXT:
+                $templateType = Mage_Core_Model_Template::TYPE_TEXT;
+                break;
+
+        }
+
+        return $templateType;
     }
 
     /**

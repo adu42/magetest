@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -30,5 +30,38 @@ class Mirasvit_Email_Model_Resource_Trigger_Chain_Collection extends Mage_Core_M
     	}
 
     	return $this;
+    }
+
+    /**
+     * Method used as the callback to sort email chains by delay
+     *
+     * @var $itemA Mirasvit_Email_Model_Trigger_Chain
+     * @var $itemB Mirasvit_Email_Model_Trigger_Chain
+     *
+     * @return int
+     */
+    protected function sortByDelay($itemA, $itemB)
+    {
+        if ($itemA->getDelayTimestamp() == $itemB->getDelayTimestamp()) {
+            return 0;
+        }
+
+        return $itemA->getDelayTimestamp() > $itemB->getDelayTimestamp() ? 1 : -1;
+    }
+
+    /**
+     * Sort chain collection by delay
+     *
+     * @return $this
+     */
+    public function orderByDelay()
+    {
+        foreach ($this->_items as $itemKey => $item) {
+            $item->setDelayTimestamp($item->getDays() * 60 * 60 * 24 + $item->getHours() * 60 * 60 + $item->getMinutes() * 60);
+        }
+
+        usort($this->_items, array($this, 'sortByDelay'));
+
+        return $this;
     }
 }

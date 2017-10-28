@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -54,6 +54,11 @@ class Mirasvit_EmailDesign_Helper_Variables_Store
     public function getStoreAddress($parent, $args)
     {
         return Mage::getStoreConfig('general/store_information/address', $this->getStore($parent, $args)->getId());
+    }
+
+    public function getStoreHours($parent, $args)
+    {
+        return Mage::getStoreConfig('general/store_information/hours', $this->getStore($parent, $args)->getId());
     }
 
     public function getStoreUrl($parent, $args)

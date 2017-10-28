@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mirasvit
  *
@@ -10,10 +9,13 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
+
+
+
 class Mirasvit_Email_IndexController extends Mage_Core_Controller_Front_Action
 {
     public function unsubscribeAction()
@@ -31,6 +33,15 @@ class Mirasvit_Email_IndexController extends Mage_Core_Controller_Front_Action
             Mage::getSingleton('email/unsubscription')->unsubscribe($queue->getRecipientEmail(true), $queue->getTriggerId());
 
             Mage::getSingleton('core/session')->addSuccess($this->__('You have been successfully unsubscribed from receiving these emails.'));
+
+            if ($to = $this->getRequest()->getParam('to')) {
+                if (base64_decode($to)) {
+                    $to = base64_decode($to);
+                }
+
+                $this->getResponse()->setRedirect($this->_getUrl($to));
+                return;
+            }
         }
 
         $this->getResponse()->setRedirect($this->_getUrl('/', true));
@@ -51,6 +62,15 @@ class Mirasvit_Email_IndexController extends Mage_Core_Controller_Front_Action
             Mage::getSingleton('email/unsubscription')->unsubscribe($queue->getRecipientEmail(true), null);
 
             Mage::getSingleton('core/session')->addSuccess($this->__('You have been successfully unsubscribed from receiving these emails.'));
+
+            if ($to = $this->getRequest()->getParam('to')) {
+                if (base64_decode($to)) {
+                    $to = base64_decode($to);
+                }
+
+                $this->getResponse()->setRedirect($this->_getUrl($to));
+                return;
+            }
         }
 
         $this->getResponse()->setRedirect($this->_getUrl('/', true));
@@ -72,6 +92,15 @@ class Mirasvit_Email_IndexController extends Mage_Core_Controller_Front_Action
             Mage::getSingleton('email/unsubscription')->unsubscribeNewsletter($queue->getRecipientEmail(true));
 
             Mage::getSingleton('core/session')->addSuccess($this->__('You have been successfully unsubscribed from receiving these emails.'));
+
+            if ($to = $this->getRequest()->getParam('to')) {
+                if (base64_decode($to)) {
+                    $to = base64_decode($to);
+                }
+
+                $this->getResponse()->setRedirect($this->_getUrl($to));
+                return;
+            }
         }
 
         $this->getResponse()->setRedirect($this->_getUrl('/', true));
@@ -104,14 +133,7 @@ class Mirasvit_Email_IndexController extends Mage_Core_Controller_Front_Action
                 $to = base64_decode($to);
             }
 
-            $url = $this->_getUrl($to);
-            // Place hash to the end of URL
-            if (($hashPos = strpos($url, '#')) && strpos($url, '?') > $hashPos) {
-                $fragment = substr($url, $hashPos, strpos($url, '?') - $hashPos);
-                $url = str_replace($fragment, '', $url) . $fragment;
-            }
-
-            $this->getResponse()->setRedirect($url);
+            $this->getResponse()->setRedirect($this->_getUrl($to));
         } else {
             $this->getResponse()->setRedirect($this->_getUrl('/', true));
         }
@@ -171,20 +193,16 @@ class Mirasvit_Email_IndexController extends Mage_Core_Controller_Front_Action
             $url = $url->resize(intval($size));
         }
 
-        $path = $url->__toString();
+        $urlParts = parse_url($url->__toString());
+        // Remove base path from $urlParts to ignore duplicate of a base path, getBaseDir() already includes it
+        $path = Mage::getBaseDir() . str_replace($this->getRequest()->getBaseUrl(), '', $urlParts['path']);
 
         $info = pathinfo($path);
         $ext = $info['extension'];
-        $headers = get_headers($path, true);
-
-        if (isset($headers['Content-Length'])) {
-            $length = $headers['Content-Length'];
-        } elseif (filesize($path)) {
-            $length = filesize($path);
-        }
+        $length = filesize($path);
 
         $this->getResponse()
-            ->setHeader('Content-Type', 'image/' . $ext)
+            ->setHeader('Content-Type', 'image/'.$ext)
             ->setHeader('Content-Length', $length)
             ->setBody(file_get_contents($path));
     }
@@ -205,11 +223,17 @@ class Mirasvit_Email_IndexController extends Mage_Core_Controller_Front_Action
 
             if ($query) {
                 if (strpos($url, '?') !== false) {
-                    $url .= '&' . $query;
+                    $url .= '&'.$query;
                 } else {
-                    $url .= '?' . $query;
+                    $url .= '?'.$query;
                 }
             }
+        }
+
+        // Place hash to the end of URL
+        if (($hashPos = strpos($url, '#')) && strpos($url, '?') > $hashPos) {
+            $fragment = substr($url, $hashPos, strpos($url, '?') - $hashPos);
+            $url = str_replace($fragment, '', $url).$fragment;
         }
 
         return $url;

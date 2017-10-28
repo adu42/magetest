@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -28,6 +28,20 @@ class Mirasvit_EmailDesign_Helper_Variables_Customer
         }
 
         return $name;
+    }
+
+    public function getFirstname($parent, $args)
+    {
+        $name = $this->getCustomerName($parent, $args);
+
+        return substr($name, 0, strpos($name, ' ') ? strpos($name, ' ') : 1000);
+    }
+
+    public function getLastname($parent, $args)
+    {
+        $name = $this->getCustomerName($parent, $args);
+
+        return substr($name, strpos($name, ' ') ? strpos($name, ' ') + 1 : 0);
     }
 
     public function getCustomer($parent, $args)

@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -86,4 +86,72 @@ class Mirasvit_Email_Adminhtml_Email_EventController extends Mage_Adminhtml_Cont
 	{
 		return Mage::getSingleton('admin/session')->isAllowed('email/email_system/email_event');
 	}
+
+    public function massDeleteAction()
+    {
+        $eventIds = $this->getRequest()->getParam('event_id');
+
+        if (!is_array($eventIds)) {
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('email')->__('Please select event(s)'));
+        } else {
+            try {
+                foreach ($eventIds as $eventId) {
+                    $event = Mage::getModel('email/event')->load($eventId);
+                    $event->delete();
+                }
+
+                Mage::getSingleton('adminhtml/session')->addSuccess(
+                    Mage::helper('email')->__('Total of %d record(s) were deleted', count($eventIds))
+                );
+            } catch (Exception $e) {
+                Mage::logException($e);
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+            }
+        }
+
+        $this->_redirect('*/*/');
+    }
+
+    /**
+     * Action allows to validate event by selected trigger's rules.
+     */
+    public function massValidateAction()
+    {
+        $eventIds = $this->getRequest()->getParam('event_id');
+        $triggerId = $this->getRequest()->getParam('trigger_id');
+
+        if (!is_array($eventIds)) {
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('email')->__('Please select event(s)'));
+        } else {
+            $passed = 0;
+            $failed = 0;
+            try {
+                foreach ($eventIds as $eventId) {
+                    $event = Mage::getModel('email/event')->load($eventId);
+                    $trigger = Mage::getModel('email/trigger')->load($triggerId);
+                    if ($trigger->validateRules($event->getArgs())) {
+                        $passed++;
+                        Mage::getSingleton('adminhtml/session')->addSuccess(
+                            $this->__('The event ID %s passed validation', $eventId)
+                        );
+                    } else {
+                        $failed++;
+                        Mage::getSingleton('adminhtml/session')->addSuccess(
+                            $this->__('The event ID %s failed validation', $eventId)
+                        );
+                    }
+                }
+            } catch (Exception $e) {
+                Mage::logException($e);
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+            }
+            Mage::getSingleton('adminhtml/session')->addSuccess(
+                $this->__(
+                    'Total of %d event(s) were validated. Passed: %s, failed: %s', count($eventIds), $passed, $failed
+                )
+            );
+        }
+
+        $this->_redirect('*/*/');
+    }
 }

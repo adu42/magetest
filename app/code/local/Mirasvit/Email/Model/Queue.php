@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mirasvit
  *
@@ -10,10 +9,13 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
+
+
+
 class Mirasvit_Email_Model_Queue extends Mage_Core_Model_Abstract
 {
     const STATUS_PENDING = 'pending';
@@ -75,6 +77,7 @@ class Mirasvit_Email_Model_Queue extends Mage_Core_Model_Abstract
             $this->_args['trigger'] = $this->getTrigger();
             $this->_args['chain'] = $this->getChain();
             $this->_args['queue'] = $this;
+            $this->_args['subject'] = $this->getEmailSubject();
         }
 
         return $this->_args;
@@ -178,8 +181,7 @@ class Mirasvit_Email_Model_Queue extends Mage_Core_Model_Abstract
         }
 
         if ($this->getTemplate()->getDesign()
-            && $this->getTemplate()->getDesign()->getTemplateType() == Mirasvit_EmailDesign_Model_Design::TEMPLATE_TYPE_TEXT
-        ) {
+            && $this->getTemplate()->getDesign()->getTemplateType() == Mirasvit_EmailDesign_Model_Design::TEMPLATE_TYPE_TEXT) {
             $email->setTemplateType(Mage_Core_Model_Template::TYPE_TEXT);
         }
 
@@ -189,7 +191,7 @@ class Mirasvit_Email_Model_Queue extends Mage_Core_Model_Abstract
 
         $email->setTemplateSubject($this->getEmailSubject());
         if ($this->getTest()) {
-            $email->setTemplateSubject($this->getEmailSubject() . ' [' . 'Test Store #' . $this->_args['store_id'] . ' ' . microtime(true) . ']');
+            $email->setTemplateSubject($this->getEmailSubject().' ['.'Test Store #'.$this->_args['store_id'].' '.microtime(true).']');
         }
         $email->setTemplateText($this->getEmailContent());
 

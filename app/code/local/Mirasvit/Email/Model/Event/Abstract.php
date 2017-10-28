@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -19,9 +19,14 @@
 abstract class Mirasvit_Email_Model_Event_Abstract
 {
     /**
-     * @var null|int
+     * @var Mirasvit_Email_Model_Service_EventSaveProcessorInterface
      */
-    private $triggerId = null;
+    protected $eventSaveProcessor;
+
+    public function __construct()
+    {
+         $this->eventSaveProcessor = Mage::getModel('email/service_eventSaveProcessor_defaultSaveProcessor');
+    }
 
     abstract public function getEvents();
 
@@ -44,7 +49,7 @@ abstract class Mirasvit_Email_Model_Event_Abstract
      * @param string|bool - timestamp or false
      * @param object - object associated with the occured event - only for events observed by observer (not by cron)
      *
-     * @return bool - true on success otherwise false
+     * @return array - IDs of saved events
      */
     public function check($eventCode, $timestamp = false, $observer = null)
     {
@@ -71,21 +76,16 @@ abstract class Mirasvit_Email_Model_Event_Abstract
 
         foreach ($events as $event) {
             $uniqKey = $this->getEventUniqKey($event);
+            $savedEvent = $this->eventSaveProcessor->saveEvent($eventCode, $uniqKey, $event);
 
-            if (($savedEvent = $this->saveEvent($eventCode, $uniqKey, $event))) {
+            if ($savedEvent) {
                 $savedEvents[$savedEvent->getId()] = $savedEvent->getId();
             }
         }
 
         Mage::helper('email')->setVar($timeVar, Mage::getSingleton('core/date')->gmtTimestamp());
-        Mage::dispatchEvent('after_check_m_email_events', array(
-                'event_model' => $this,
-                'new_events' => $savedEvents,
-                'event_code' => $eventCode,
-            )
-        );
 
-        return true;
+        return $savedEvents;
     }
 
     /**
@@ -95,41 +95,16 @@ abstract class Mirasvit_Email_Model_Event_Abstract
      * ! store_id
      * ? customer_id
      * ? customer
-     * ? order.
+     * ? order
+     * ? order_item_id
+     * ? wishlist_id
+     * ? registry_id
+     * ? review_id
      *
-     * @param string $code
-     * @param string $uniqKey
-     * @param array  $args
+     * @param array $args
      *
-     * @return Mirasvit_Email_Model_Event|null
+     * @return array
      */
-    public function saveEvent($code, $uniqKey, $args)
-    {
-        $args = $this->prepareArgs($args);
-        $event = $this->checkSimilarEvent($code, $uniqKey, $args['time'] - $args['expire_after']);
-
-        if ($this->getTriggerId()) { // Return existing event only for manual generation
-            $args['time'] = time();
-            if ($event) {
-                // Re-save event with new scheduled at time
-                $event->setArgs(array_merge($event->getArgs(), array('time' => $args['time'])))->save();
-
-                return $event;
-            }
-        } elseif ($event) { // Return null if similar event exists only for auto generation
-            return;
-        }
-
-        $event = Mage::getModel('email/event')->setCode($code)
-            ->setUniqKey($uniqKey)
-            ->setArgs($args)
-            ->setStoreIds($args['store_id'])
-            ->setCreatedAt(date('Y-m-d H:i:s', $args['time']))
-            ->save();
-
-        return $event;
-    }
-
     public function getEventUniqKey($args)
     {
         $key = array();
@@ -141,6 +116,8 @@ abstract class Mirasvit_Email_Model_Event_Abstract
             'store_id',
             'wishlist_id',
             'review_id',
+            'order_item_id',
+            'registry_id',
         );
 
         foreach ($args as $k => $v) {
@@ -153,66 +130,27 @@ abstract class Mirasvit_Email_Model_Event_Abstract
     }
 
     /**
-     * Prepare event arguments.
+     * Set event save processor
      *
-     * @param array $args
-     *
-     * @return array
-     */
-    protected function prepareArgs($args)
-    {
-        if (!isset($args['expire_after'])) {
-            $args['expire_after'] = 3600;
-        }
-
-        if (!isset($args['time'])) {
-            $args['time'] = time();
-        }
-
-        return $args;
-    }
-
-    /**
-     * Check if not expired event with the same arguments exists yet.
-     *
-     * @param string     $code
-     * @param string     $uniqKey
-     * @param string|int $gmtExpireAt - timestamp, which indicates event expiration date
-     *
-     * @return Mirasvit_Email_Model_Event|void
-     */
-    protected function checkSimilarEvent($code, $uniqKey, $gmtExpireAt)
-    {
-        $event = Mage::getModel('email/event')->getCollection()
-            ->addFieldToFilter('uniq_key', $uniqKey)
-            ->addFieldToFilter('code', $code)
-            ->addFieldToFilter('created_at', array('gt' => date('Y-m-d H:i:s', $gmtExpireAt)))
-            ->getFirstItem();
-
-        if ($event->getId()) {
-            return $event;
-        }
-    }
-
-    /**
-     * Trigger ID is set only for manual generation of email queue.
-     *
-     * @return int|null
-     */
-    public function getTriggerId()
-    {
-        return $this->triggerId;
-    }
-
-    /**
-     * @param int|null $triggerId
+     * @param Mirasvit_Email_Model_Service_EventSaveProcessorInterface $eventSaveProcessor
      *
      * @return $this
      */
-    public function setTriggerId($triggerId)
+    public function setEventSaveProcessor(Mirasvit_Email_Model_Service_EventSaveProcessorInterface $eventSaveProcessor)
     {
-        $this->triggerId = $triggerId;
+        $this->eventSaveProcessor = $eventSaveProcessor;
 
         return $this;
+    }
+
+    /**
+     * Check can use event or not,
+     * override this method in child class in order to validate specific event.
+     *
+     * @return bool
+     */
+    public function isActive()
+    {
+        return true;
     }
 }

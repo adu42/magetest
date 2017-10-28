@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -47,10 +47,27 @@ class Mirasvit_Email_Model_Event_Customer_Groupchanged extends Mirasvit_Email_Mo
             'customer_email' => $customer->getEmail(),
             'customer_name' => $customer->getName(),
             'customer_id' => $customer->getId(),
-            'store_id' => $customer->getStoreId(),
+            'store_id' => $this->getCustomerStoreId($customer),
             'expire_after' => 300,
         );
 
         return array($event);
+    }
+
+    /**
+     * Get customer's store ID
+     *
+     * @param Mage_Core_Model_Abstract $customer
+     *
+     * @return int
+     */
+    private function getCustomerStoreId(Mage_Core_Model_Abstract $customer)
+    {
+        $storeId = $customer->getStoreId();
+        if (!$storeId) {
+            $storeId = Mage::app()->getWebsite($customer->getWebsiteId())->getDefaultStore()->getId();
+        }
+
+        return $storeId;
     }
 }

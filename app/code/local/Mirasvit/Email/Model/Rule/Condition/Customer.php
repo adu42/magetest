@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -30,6 +30,7 @@ class Mirasvit_Email_Model_Rule_Condition_Customer extends Mirasvit_Email_Model_
             'last_order_ago' => Mage::helper('email')->__('Customer: Last order was ago, days'),
             'subscription_status' => Mage::helper('email')->__('Customer: Newsletter subscription status'),
             'customer_email' => Mage::helper('email')->__('Customer: Recipient Email (which was registered with event)'),
+            'active_email' => Mage::helper('email')->__('Customer: Has "Ready to go" email in the mail queue for this trigger'),
         );
 
         $customerAttributes = Mage::getModel('customer/customer')->getAttributes();
@@ -63,6 +64,7 @@ class Mirasvit_Email_Model_Rule_Condition_Customer extends Mirasvit_Email_Model_
             case 'mss_rule':
             case 'store_id':
             case 'website_id':
+            case 'active_email':
                 $type = 'select';
             break;
 
@@ -104,6 +106,7 @@ class Mirasvit_Email_Model_Rule_Condition_Customer extends Mirasvit_Email_Model_
             case 'mss_rule':
             case 'store_id':
             case 'website_id':
+            case 'active_email':
                 $type = 'select';
             break;
 
@@ -166,10 +169,8 @@ class Mirasvit_Email_Model_Rule_Condition_Customer extends Mirasvit_Email_Model_
 
         switch ($this->getAttribute()) {
             case 'is_subscriber':
-                $options = array(
-                    array('value' => 0, 'label' => Mage::helper('email')->__('No')),
-                    array('value' => 1, 'label' => Mage::helper('email')->__('Yes')),
-                );
+            case 'active_email':
+                $options = Mage::getModel('adminhtml/system_config_source_yesno')->toOptionArray();
                 break;
 
             case 'subscription_status':
@@ -288,7 +289,7 @@ class Mirasvit_Email_Model_Rule_Condition_Customer extends Mirasvit_Email_Model_
                 }
 
                 $createdAt = ($orders->count() > 0) ? $orders->getFirstItem()->getCreatedAt() : 0;
-                $value = round((time() - strtotime($createdAt)) / 60 / 60 / 24);
+                $value = floor((time() - strtotime($createdAt)) / 60 / 60 / 24);
                 break;
 
             case 'subscription_status':
@@ -302,6 +303,15 @@ class Mirasvit_Email_Model_Rule_Condition_Customer extends Mirasvit_Email_Model_
                         $value = $this->getValue();
                     }
                 }
+                break;
+
+            case 'active_email':
+                $queueCollection = Mage::getResourceModel('email/queue_collection')
+                    ->addFieldToFilter('trigger_id', $object->getTriggerId())
+                    ->addFieldToFilter('recipient_email', $object->getCustomerEmail())
+                    ->addReadyFilter();
+
+                $value = $queueCollection->getSize() > 0 ? 1 : 0;
                 break;
 
             default:

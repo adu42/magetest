@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -51,18 +51,20 @@ class Mirasvit_Email_Model_Event_Email_Click extends Mirasvit_Email_Model_Event_
             
             if ($code == $eventCode) {
                 $queue = Mage::getModel('email/queue')->load($click->getQueueId());
-                $args = $queue->getArgs();
+                if ($queue->getId()) {
+                    $args = $queue->getArgs();
 
 
-                $event = array(
-                    'time'           => strtotime($click->getCreatedAt()),
-                    'customer_email' => $args['customer_email'],
-                    'customer_name'  => $args['customer_name'],
-                    'customer_id'    => $args['customer_id'],
-                    'store_id'       => $args['store_id'],
-                );
+                    $event = array(
+                        'time'           => strtotime($click->getCreatedAt()),
+                        'customer_email' => $args['customer_email'],
+                        'customer_name'  => $args['customer_name'],
+                        'customer_id'    => $args['customer_id'],
+                        'store_id'       => $args['store_id'],
+                    );
 
-                $events[] = $event;
+                    $events[] = $event;
+                }
             }
         }
 

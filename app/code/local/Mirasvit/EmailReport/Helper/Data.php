@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -27,7 +27,10 @@ class Mirasvit_EmailReport_Helper_Data extends Mirasvit_Email_Helper_Data
         $content = $this->addParamsToLinks($content, $info);
 
         $openLogUrl = Mage::getUrl('emailreport/index/open', array('emqo' => $queue->getUniqKeyMd5()));
-        $content .= '<img src="'.$openLogUrl.'">';
+        // HTML supported only by the email designs of type 'HTML'
+        if ($queue->getChain()->getTemplate()->getTemplateType() == Mage_Core_Model_Template::TYPE_HTML) {
+            $content .= '<img src="'.$openLogUrl.'">';
+        }
 
         $queue->setData('content', $content);
 

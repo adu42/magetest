@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -48,7 +48,12 @@ class Mirasvit_Email_Helper_Variables_Url
      */
     public function getUnsubscribeUrl($parent, $args)
     {
-        return $this->_getUrl($parent, 'eml/index/unsubscribe');
+        $query = array();
+        if (isset($args[0])) {
+            $query['to'] = base64_encode($args[0]);
+        }
+
+        return $this->_getUrl($parent, 'eml/index/unsubscribe', $query);
     }
 
     /**
@@ -56,7 +61,12 @@ class Mirasvit_Email_Helper_Variables_Url
      */
     public function getUnsubscribeAllUrl($parent, $args)
     {
-        return $this->_getUrl($parent, 'eml/index/unsubscribeAll');
+        $query = array();
+        if (isset($args[0])) {
+            $query['to'] = base64_encode($args[0]);
+        }
+
+        return $this->_getUrl($parent, 'eml/index/unsubscribeAll', $query);
     }
 
     /**
@@ -64,7 +74,12 @@ class Mirasvit_Email_Helper_Variables_Url
      */
     public function getUnsubscribeNewsletterUrl($parent, $args)
     {
-        return $this->_getUrl($parent, 'eml/index/unsubscribeNewsletter');
+        $query = array();
+        if (isset($args[0])) {
+            $query['to'] = base64_encode($args[0]);
+        }
+
+        return $this->_getUrl($parent, 'eml/index/unsubscribeNewsletter', $query);
     }
 
     /**
@@ -105,6 +120,16 @@ class Mirasvit_Email_Helper_Variables_Url
         }
 
         return $this->_getUrl($parent, 'eml/index/resume', $query);
+    }
+
+    public function getReorderUrl($parent, $args)
+    {
+        $query = array();
+        if (isset($args[0]) && ($order = $args[0])) {
+            $query['order_id'] = ($order instanceof Mage_Sales_Model_Order) ? $order->getId() : $order;
+        }
+
+        return $this->_getUrl($parent, 'sales/order/reorder', $query);
     }
 
     protected function _getUrl($parent, $path, $query = array())

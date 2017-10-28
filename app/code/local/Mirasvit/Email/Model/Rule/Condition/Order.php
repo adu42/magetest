@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -31,6 +31,7 @@ class Mirasvit_Email_Model_Rule_Condition_Order extends Mirasvit_Email_Model_Rul
             'is_order_shipped' => Mage::helper('email')->__('Order: Shipment created'),
             'tracking_code_exists' => Mage::helper('email')->__('Order: Shipment has tracking information'),
             'is_order_invoiced' => Mage::helper('email')->__('Order: Invoice created'),
+            'is_admin_order' => Mage::helper('email')->__('Order: Is order placed from admin'),
         );
 
         asort($attributes);
@@ -59,6 +60,7 @@ class Mirasvit_Email_Model_Rule_Condition_Order extends Mirasvit_Email_Model_Rul
                 case 'is_order_shipped':
                 case 'tracking_code_exists':
                 case 'is_order_invoiced':
+                case 'is_admin_order':
                     $options = Mage::getModel('adminhtml/system_config_source_yesno')->toOptionArray();
                     break;
                 default:
@@ -79,6 +81,7 @@ class Mirasvit_Email_Model_Rule_Condition_Order extends Mirasvit_Email_Model_Rul
             case 'is_order_shipped':
             case 'tracking_code_exists':
             case 'is_order_invoiced':
+            case 'is_admin_order':
                 return 'select';
         }
 
@@ -94,6 +97,7 @@ class Mirasvit_Email_Model_Rule_Condition_Order extends Mirasvit_Email_Model_Rul
             case 'is_order_shipped':
             case 'tracking_code_exists':
             case 'is_order_invoiced':
+            case 'is_admin_order':
                 return 'select';
         }
 
@@ -161,6 +165,10 @@ class Mirasvit_Email_Model_Rule_Condition_Order extends Mirasvit_Email_Model_Rul
 
                 case 'is_order_invoiced':
                     $value = $order->getInvoiceCollection()->getSize() ? 1 : 0;
+                    break;
+
+                case 'is_admin_order':
+                    $value = $order->getRemoteIp() ? 0 : 1;
                     break;
 
                 default:

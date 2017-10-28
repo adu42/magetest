@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mirasvit
  *
@@ -10,10 +9,13 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
+
+
+
 class Mirasvit_Email_Helper_Validator extends Mirasvit_MstCore_Helper_Validator_Abstract
 {
     public function testCustomerLogging()
@@ -27,7 +29,7 @@ class Mirasvit_Email_Helper_Validator extends Mirasvit_MstCore_Helper_Validator_
             if ($configValue != Mage_Log_Model_Adminhtml_System_Config_Source_Loglevel::LOG_LEVEL_ALL) {
                 $result = self::FAILED;
                 $description[] = 'Customer Logging: Disabled. Events "Customer Activity" and "Customer Logged In" cannot be tracked by extension.';
-                $description[] = 'To enable customer logging navigate to the <a href="' . Mage::helper('adminhtml')->getUrl('*/system_config/edit/', array('section' => 'system')) . '">Log Section</a> and set the setting "Enable Log" to "Yes".';
+                $description[] = 'To enable customer logging navigate to the <a href="'.Mage::helper('adminhtml')->getUrl('*/system_config/edit/', array('section' => 'system')).'">Log Section</a> and set the setting "Enable Log" to "Yes".';
             }
         }
 

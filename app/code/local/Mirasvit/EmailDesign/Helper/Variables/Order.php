@@ -9,14 +9,22 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
 class Mirasvit_EmailDesign_Helper_Variables_Order
 {
+    /**
+     * Get order object associated with the event.
+     *
+     * @param $parent
+     * @param $args
+     *
+     * @return bool|Mage_Core_Model_Abstract|Mage_Sales_Model_Order
+     */
     public function getOrder($parent, $args)
     {
         $order = false;
@@ -53,5 +61,31 @@ class Mirasvit_EmailDesign_Helper_Variables_Order
         }
 
         return false;
+    }
+
+    /**
+     * Get order item object associated with the event.
+     * Or get the first item from ordered items collection.
+     *
+     * @param $parent
+     * @param $args
+     *
+     * @return null|Mage_Core_Model_Abstract|Mage_Sales_Model_Order_Item
+     */
+    public function getOrderItem($parent, $args)
+    {
+        $item = null;
+        if ($parent->getData('order_item')) {
+            return $parent->getData('order_item');
+        } elseif ($parent->getData('order_item_id')) {
+            $item = Mage::getModel('sales/order_item')->load($parent->getData('order_item_id'));
+        } elseif($parent->getData('order_id')) {
+            // Filter items by `parent_item_id` IS NULL
+            $item = $this->getOrder($parent, $args)->getItemsCollection(array(), true)->getFirstItem();
+        }
+
+        $parent->setData('order_item', $item);
+
+        return $item;
     }
 }

@@ -9,10 +9,11 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
+
 
 
 class Mirasvit_EmailDesign_Block_Template extends Mage_Core_Block_Abstract
@@ -30,10 +31,9 @@ class Mirasvit_EmailDesign_Block_Template extends Mage_Core_Block_Abstract
         return parent::__call($method, $args);
     }
 
-
     public function area($area, $default = false)
     {
-        if ($this->hasData('area_'.$area)) {
+        if ($this->getData('area_'.$area)) {
             $tplContent = $this->getData('area_'.$area);
             $block = Mage::app()->getLayout()->createBlock('emaildesign/template');
 
@@ -48,7 +48,7 @@ class Mirasvit_EmailDesign_Block_Template extends Mage_Core_Block_Abstract
             return true;
         }
 
-        return "Area '$area' not defined";
+        return false;
     }
 
     public function render($tplContent, $variables = null)
@@ -60,47 +60,12 @@ class Mirasvit_EmailDesign_Block_Template extends Mage_Core_Block_Abstract
         file_put_contents($tplPath, $tplContent);
 
         ob_start();
-        
+
         include $tplPath;
 
         $html = ob_get_clean();
 
         unlink($tplPath);
-
-        $html = $this->_applyDefaultFilter($html);
-
-        return $html;
-    }
-
-    public function _applyDefaultFilter($html)
-    {
-        $storeId = intval($this->getStoreId());
-
-        $appEmulation = Mage::getSingleton('core/app_emulation');
-        $initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($storeId, 'frontend');
-        
-        $processor = Mage::getModel('core/email_template_filter');
-        $processor->setStoreId($storeId);
-
-        if (!method_exists($processor, 'setTemplateProcessor')) {
-            return $html;
-        }
-
-        $template = Mage::getModel('core/email_template');
-
-        $processor
-            ->setTemplateProcessor(array($template, 'getTemplateByConfigPath'))
-            ->setIncludeProcessor(array($template, 'getInclude'))
-            ->setVariables(array());
-
-        $html = $processor->filter($html);
-
-        $template->setInlineCssFile($processor->getInlineCssFile())
-            ->setTemplateType(2);
-
-        $html = $template->getPreparedTemplateText($html);
-
-        $appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
 
         return $html;
     }

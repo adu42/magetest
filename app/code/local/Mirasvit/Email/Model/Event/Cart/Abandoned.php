@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -66,6 +66,11 @@ class Mirasvit_Email_Model_Event_Cart_Abandoned extends Mirasvit_Email_Model_Eve
                     'i_updated_at' => new Zend_Db_Expr('MAX(qi.updated_at)')
                 )
             )
+            ->joinLeft(array('order' => $resource->getTableName('sales/order')),
+                'order.quote_id = q.entity_id',
+                array()
+            )
+            ->where('order.entity_id IS NULL')
             ->where('q.is_active = 1')
             ->where('q.items_count > 0')
             ->where('q.customer_email IS NOT NULL OR qa.email IS NOT NULL')

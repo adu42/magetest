@@ -9,27 +9,28 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
+
 
 
 class Mirasvit_EmailDesign_Helper_Variables_Image
 {
     public function getImageUrl($parent, $args)
     {
-        return $this->_getImageUrl('image', $args, $parent);   
+        return $this->_getImageUrl('image', $args, $parent);
     }
 
     public function getThumbnailUrl($parent, $args)
     {
-        return $this->_getImageUrl('thumbnail', $args, $parent);   
+        return $this->_getImageUrl('thumbnail', $args, $parent);
     }
 
     public function getSmallImageUrl($parent, $args)
     {
-        return $this->_getImageUrl('small_image', $args, $parent);   
+        return $this->_getImageUrl('small_image', $args, $parent);
     }
 
     protected function _getImageUrl($type, $args, $parent)
@@ -51,10 +52,24 @@ class Mirasvit_EmailDesign_Helper_Variables_Image
                 if (isset($args[1]) && intval($args[1]) > 0) {
                     $url = $url->resize(intval($args[1]));
                 }
-                
+
                 return $url->__toString();
             }
         }
     }
+
+    /**
+     * Allows to add favicon icon for page.
+     *
+     * @return bool|string
+     */
+    public function getFaviconFile($parent, $args)
+    {
+        $favicon = false;
+        if (($block = Mage::getBlockSingleton('page/html_head'))) {
+            $favicon = $block->getFaviconFile();
+        }
+
+        return $favicon;
+    }
 }
-?>

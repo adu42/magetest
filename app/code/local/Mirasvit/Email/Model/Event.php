@@ -9,10 +9,11 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
+
 
 
 /**
@@ -46,7 +47,7 @@ class Mirasvit_Email_Model_Event extends Mage_Core_Model_Abstract
     /**
      * Create new trigger related events.
      *
-     * @param array $events - array of IDs of newly created events
+     * @param array $events   - array of IDs of newly created events
      * @param array $triggers - triggers associated with passed events
      */
     public function addTriggerEvents($events, $triggers)

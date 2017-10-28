@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -47,15 +47,16 @@ class Mirasvit_Email_Model_Rule_Condition_Product_Subselect
         $this->setValue(1);
         $collection = null;
 
-        if ($object->getData('quote_id')) {
+        if ($object->getData('order_item_id')) {
+            $order = Mage::getModel('sales/order')->load($object->getData('order_id'));
+            $collection = $order->getItemsCollection()->addFieldToFilter('item_id', $object->getData('order_item_id'));
+        } elseif ($object->getData('quote_id')) {
             $quote = Mage::getModel('sales/quote')
                 ->setSharedStoreIds(array_keys(Mage::app()->getStores()))
                 ->load($object->getData('quote_id'));
-
             $collection = $quote->getItemsCollection();
         } elseif ($object->getData('order_id')) {
             $order = Mage::getModel('sales/order')->load($object->getData('order_id'));
-
             $collection = $order->getItemsCollection();
         }
         

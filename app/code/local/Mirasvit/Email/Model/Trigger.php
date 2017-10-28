@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mirasvit
  *
@@ -10,10 +9,13 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
+
+
+
 class Mirasvit_Email_Model_Trigger extends Mage_Core_Model_Abstract
 {
     protected $_chainCollection = null;
@@ -33,7 +35,8 @@ class Mirasvit_Email_Model_Trigger extends Mage_Core_Model_Abstract
         if ($this->_chainCollection == null) {
             $this->_chainCollection = Mage::getModel('email/trigger_chain')->getCollection()
                 ->addFieldToFilter('trigger_id', $this->getId())
-                ->setOrder('delay', 'asc');
+                ->load()
+                ->orderByDelay();
         }
 
         return $this->_chainCollection;
@@ -148,7 +151,7 @@ class Mirasvit_Email_Model_Trigger extends Mage_Core_Model_Abstract
      * Processing one event.
      *
      * @param object $event
-     * @param bool $isTest
+     * @param bool   $isTest
      *
      * @return $this
      */
@@ -167,7 +170,10 @@ class Mirasvit_Email_Model_Trigger extends Mage_Core_Model_Abstract
 
     public function validateRules($args)
     {
-        $objArgs = new Varien_Object($args);
+        $objArgs = new Varien_Object(array_merge(
+            $args,
+            array('trigger_id' => $this->getId())
+        ));
 
         $runRule = $this->getRunRule();
         $runRuleResult = $runRule->validate($objArgs);
@@ -181,7 +187,7 @@ class Mirasvit_Email_Model_Trigger extends Mage_Core_Model_Abstract
      * Generate mail chain.
      *
      * @param object $event
-     * @param bool $isTest
+     * @param bool   $isTest
      *
      * @return $this
      */
@@ -196,7 +202,7 @@ class Mirasvit_Email_Model_Trigger extends Mage_Core_Model_Abstract
         }
 
         foreach ($this->getChainCollection() as $chain) {
-            $uniqKey = $event->getUniqKey() . '|' . $this->getId() . '|' . $chain->getId();
+            $uniqKey = $event->getUniqKey().'|'.$this->getId().'|'.$chain->getId();
             $scheduledAt = $chain->getScheduledAt($args['time']);
 
             if ($isTest) {
@@ -255,11 +261,10 @@ class Mirasvit_Email_Model_Trigger extends Mage_Core_Model_Abstract
     {
         $this->removeTriggerQueue($timestamp);
 
-        foreach ($this->getEvents() as $eventCode) {
-            $eventModel = Mage::helper('email/event')->getEventModel($eventCode);
-            $eventModel->setTriggerId($this->getId())// Set trigger ID to use it later in observer
-            ->check($eventCode, $timestamp);
-        }
+        Mage::getModel('email/service_eventGenerateService')
+            ->setScheduleStrategy($this->getEventScheduleStrategy())
+            ->setTriggerId($this->getId())
+            ->generate($this->getEvents(), $timestamp);
 
         $this->processNewEvents();
     }
@@ -295,7 +300,7 @@ class Mirasvit_Email_Model_Trigger extends Mage_Core_Model_Abstract
         }
 
         foreach ($storeIds as $storeId) {
-            $args = Mage::helper('email/event')->getRandomEventArgs();
+            $args = Mage::helper('email/event')->getRandomEventArgs($storeId);
             $args['store_id'] = $storeId;
             if ($to !== null) {
                 $args['customer_email'] = $to;
@@ -303,7 +308,7 @@ class Mirasvit_Email_Model_Trigger extends Mage_Core_Model_Abstract
 
             $event = Mage::getModel('email/event')
                 ->setArgsSerialized(serialize($args))
-                ->setUniqKey('test_' . time());
+                ->setUniqKey('test_'.time());
 
             ini_set('display_errors', 1);
 

@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -30,6 +30,7 @@ class Mirasvit_EmailDesign_Block_Adminhtml_Template_Grid extends Mage_Adminhtml_
     protected function _prepareCollection()
     {
         $collection = Mage::getModel('emaildesign/template')->getCollection();
+        $collection->joinDesignTitle();
 
         $this->setCollection($collection);
 
@@ -50,6 +51,12 @@ class Mirasvit_EmailDesign_Block_Adminhtml_Template_Grid extends Mage_Adminhtml_
             'align' => 'left',
             'index' => 'title',
             'renderer' => 'Mirasvit_EmailDesign_Block_Adminhtml_Design_Grid_Renderer_Title',
+        ));
+
+        $this->addColumn('design', array(
+            'header' => Mage::helper('emaildesign')->__('Design'),
+            'align' => 'left',
+            'index' => 'design_title',
         ));
 
         $this->addColumn('action',

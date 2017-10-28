@@ -61,7 +61,7 @@
                 <observers>
                     <email>
                         <type>singleton</type>
-                        <class>email/observer</class>
+                        <class>email/observer_event</class>
                         <method>onWishlistShared</method>
                     </email>
                 </observers>
@@ -70,7 +70,7 @@
                 <observers>
                     <email>
                         <type>singleton</type>
-                        <class>email/observer</class>
+                        <class>email/observer_event</class>
                         <method>onNewsletterSubscriberSaveBefore</method>
                     </email>
                 </observers>
@@ -88,19 +88,19 @@
                 <observers>
                     <email>
                         <type>singleton</type>
-                        <class>email/observer</class>
+                        <class>email/observer_event</class>
                         <method>onCustomerSaveAfter</method>
                     </email>
                 </observers>
             </customer_save_after>
-            <after_check_m_email_events>
+            <email_template_send_after>
                 <observers>
                     <email>
-                        <class>email/observer</class>
-                        <method>afterCheckEvents</method>
+                        <class>email/observer_event</class>
+                        <method>afterSendEmail</method>
                     </email>
                 </observers>
-            </after_check_m_email_events>
+            </email_template_send_after>
         </events>
     </global>
     <adminhtml>
@@ -121,7 +121,7 @@
             <review_save_before>
                 <observers>
                     <email>
-                        <class>email/observer</class>
+                        <class>email/observer_event</class>
                         <method>onReviewBeforeSave</method>
                     </email>
                 </observers>
@@ -189,12 +189,12 @@
     <admin>
         <routers>
             <adminhtml>
-                <args>
-                    <modules>
-                        <email after="Mage_Adminhtml">Mirasvit_Email_Adminhtml</email>
-                    </modules>
-                </args>
-            </adminhtml>
+				<args>
+					<modules>
+						<email after="Mage_Adminhtml">Mirasvit_Email_Adminhtml</email>
+					</modules>
+				</args>
+			</adminhtml>
         </routers>
     </admin>
     <crontab>

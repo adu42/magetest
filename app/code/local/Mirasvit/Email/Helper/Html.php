@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mirasvit
  *
@@ -10,16 +9,18 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
+
+
 class Mirasvit_Email_Helper_Html extends Mage_Core_Helper_Abstract
 {
     public function getTemplateSelect($name, $value = null, $extra = array())
     {
         $values = Mage::helper('emaildesign')->getTemplates();
-
+        
         return $this->_getSelect($name, $value, $extra, $values);
     }
 
@@ -47,7 +48,7 @@ class Mirasvit_Email_Helper_Html extends Mage_Core_Helper_Abstract
     {
         $values = array(
             'after' => Mage::helper('email')->__('after'),
-            'at' => Mage::helper('email')->__('at')
+            'at'    => Mage::helper('email')->__('at')
         );
 
         return $this->_getSelect($name, $value, $extra, $values);

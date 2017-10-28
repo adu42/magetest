@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -110,6 +110,39 @@ class Mirasvit_Email_Block_Adminhtml_Event_Grid extends Mage_Adminhtml_Block_Wid
         );
 
         return parent::_prepareColumns();
+    }
+
+    protected function _prepareMassaction()
+    {
+        $this->setMassactionIdField('event_id');
+        $this->getMassactionBlock()->setFormFieldName('event_id');
+
+        $this->getMassactionBlock()->addItem('delete', array(
+            'label'    => Mage::helper('email')->__('Delete'),
+            'url'      => $this->getUrl('*/*/massDelete'),
+            'confirm'  => Mage::helper('email')->__('Are you sure?')
+        ));
+
+        $triggers = Mage::getResourceModel('email/trigger_collection')
+            ->addFieldToFilter('run_rule_id', array('notnull' => true))
+            ->toOptionArray();
+
+        $this->getMassactionBlock()->addItem('validate', array(
+            'label' => Mage::helper('email')->__('Validate'),
+            'url'   => $this->getUrl('*/*/massValidate', array('_current' => true)),
+            'additional' => array(
+                'trigger' => array(
+                    'name'   => 'trigger_id',
+                    'type'   => 'select',
+                    'class'  => 'required-entry',
+                    'label'  => Mage::helper('email')->__('Select Trigger'),
+                    'values' => $triggers
+                )
+            )
+        ));
+
+
+        return $this;
     }
 
     public function getRowUrl($row)

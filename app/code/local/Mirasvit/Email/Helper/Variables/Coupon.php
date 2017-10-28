@@ -9,9 +9,9 @@
  *
  * @category  Mirasvit
  * @package   Follow Up Email
- * @version   1.0.34
- * @build     705
- * @copyright Copyright (C) 2016 Mirasvit (http://mirasvit.com/)
+ * @version   1.1.23
+ * @build     800
+ * @copyright Copyright (C) 2017 Mirasvit (http://mirasvit.com/)
  */
 
 
@@ -83,5 +83,22 @@ class Mirasvit_Email_Helper_Variables_Coupon
     private function getCouponKey($parent)
     {
         return $parent->getChain()->getId().'_'.$parent->getQueue()->getId();
+    }
+
+    public function getCouponExpiryDate($parent, $args)
+    {
+        $date = null;
+
+        if ($parent->getPreview()) {
+            $date = now(true);
+        } elseif ($parent->getChain()) {
+            $expirationDate = 100000;
+            if ($parent->getChain()->getCouponExpiresDays()) {
+                $expirationDate = time() + $parent->getChain()->getCouponExpiresDays() * 24 * 60 * 60;
+            }
+            $date = date('Y-m-d', $expirationDate);
+        }
+
+        return $date;
     }
 }

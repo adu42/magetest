@@ -17,7 +17,7 @@
                     <show_in_store>1</show_in_store>
                     <sort_order>0</sort_order>
                     <fields>
-                        <max_email_heading translate="label">
+                         <max_email_heading translate="label">
                             <label>Limit number of emails per address</label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <show_in_default>1</show_in_default>
