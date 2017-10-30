@@ -8,4 +8,6 @@ class Ado_Api_Model_Slideitem extends Mage_Core_Model_Abstract
         parent::_construct();
         $this->_init('mapi/slideitem');
     }
+
+
 }
