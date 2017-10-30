@@ -513,6 +513,7 @@ private function _getRow($rowHead,$row){
                         }
                     }
                     }else if($rowHead[$key]['optionType']=='field'||$rowHead[$key]['optionType']=='area'){
+                        $product['has_options']=1;
                         $product[$rowHead[$key]['optionLabel']]['options'][]=array(
                             'title'=>'20',
                             'price'=>'0.00',
@@ -860,7 +861,7 @@ private function setProduct($product){
         if(!empty($this->_productOptions)){
             foreach($this->_productOptions as $_productOption){
                 if(isset($product[$_productOption])&&!empty($product[$_productOption])){
-                    $this->setCustomOptions($productId,$product[$_productOption]);
+                    $this->setCustomOptions($productId,$product[$_productOption],$product['has_options']);
                 }
             }    
         }
@@ -1077,7 +1078,6 @@ private function _getSubAttributeIds(){
                 $_subAttributeIdsSimple[$row['attribute_code']]=$row['attribute_id'];
             }
             $_subAttributeBackendTypes[$row['attribute_id']]=$row['backend_type'];
-            
         }
     }
     $this->_subAttributeIdsSimple=$_subAttributeIdsSimple;
@@ -1117,7 +1117,7 @@ private function _getSubAttributeValues(){
 /**
  * @写商品自定义属性
  */
-private function setCustomOptions($productId,$options){
+private function setCustomOptions($productId,$options,$has_options){
   /*
     $options=array(
         'optionLabel'=>'Size',
@@ -1185,7 +1185,7 @@ private function setCustomOptions($productId,$options){
             }
         }
       }
-      if($options['optionType']=='delete')return true;
+      if($options['optionType']=='delete'||!$has_options)return true;
        // if(empty($rs)){  //如果已写，则不再写
             $sql = "insert into catalog_product_option(product_id,type,is_require,sku,max_characters,file_extension,image_size_x,image_size_y,sort_order) values ('$productId','".$options['optionType']."','".$options['isRequired']."','','','','0','0','".$options['sort']."')";
             $this->db->query($sql);
@@ -1982,7 +1982,7 @@ class exportProduct{
     'type'=>'simple',
     'category_ids'=>'2,',
     'is_imported'=>'YES',
-    'has_options'=>'1',
+    'has_options'=>'0',
     'news_from_date'=>'',
     'status'=>'Enabled',
     'visibility'=>'Catalog, Search',

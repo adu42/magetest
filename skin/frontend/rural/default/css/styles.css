@@ -2986,12 +2986,6 @@ strong.product-name {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-
-.products-grid.single-line-name .item:hover .product-name {
-    overflow: visible;
-    white-space: nowrap;
-}
-
 /* Align to the center
 	-------------------------------------------------------------- */
 .products-grid.centered .item {
