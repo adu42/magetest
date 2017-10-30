@@ -19,7 +19,6 @@ class Ado_Api_Adminhtml_SlideitemController extends Mage_Adminhtml_Controller_ac
 	public function editAction() {
 		$id     = $this->getRequest()->getParam('id');
 		$model  = Mage::getModel('mapi/slideitem')->load($id);
-
 		if ($model->getId() || $id == 0) {
 			$data = Mage::getSingleton('adminhtml/session')->getFormData(true);
 			if (!empty($data)) {
@@ -73,7 +72,7 @@ class Ado_Api_Adminhtml_SlideitemController extends Mage_Adminhtml_Controller_ac
 					$result = $uploader->save($path, $_FILES['image']['name'] );
 					
 					//this way the name is saved in DB
-					$data['image'] = 'slide/'. $result['file'];
+					$data['image'] = Ado_Api_Model_Slideitem::BANNERITEM_MEDIA_PATH.'/'. $result['file'];
 				} catch (Exception $e) {
 		      
 		        }	        
