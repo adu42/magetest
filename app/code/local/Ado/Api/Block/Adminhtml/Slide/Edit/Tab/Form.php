@@ -71,7 +71,8 @@ class Ado_Api_Block_Adminhtml_Slide_Edit_Tab_Form extends Mage_Adminhtml_Block_W
           'name'      => 'active_from',
 		'image'  => Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'/adminhtml/default/default/images/grid-cal.gif',
 		'format' => $outputFormat,
-		'time' => true, 
+		'time' => true,
+          'value'=>date('Y-m-d H:i:s',strtotime('-1 day')),
       ));
 	 $fieldset->addField('active_to', 'date', array(
           'label'     => Mage::helper('mapi')->__('Active To'),
@@ -79,7 +80,8 @@ class Ado_Api_Block_Adminhtml_Slide_Edit_Tab_Form extends Mage_Adminhtml_Block_W
           'name'      => 'active_to',
 		'image'  => Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'/adminhtml/default/default/images/grid-cal.gif',
 		'format' => $outputFormat,
-		'time' => true, 
+		'time' => true,
+         'value'=>date('Y-m-d H:i:s',strtotime('+100 days')),
       ));
 
 	 $fieldset->addField('auto_play', 'select', array(
@@ -124,10 +126,10 @@ class Ado_Api_Block_Adminhtml_Slide_Edit_Tab_Form extends Mage_Adminhtml_Block_W
           'after_element_html' => '<br>if list about product,fill in "products:3,102,105,..."',
       ));
       
-      if ( Mage::getSingleton('adminhtml/session')->getMapiData() )
+      if ( Mage::getSingleton('adminhtml/session')->getFormData() )
       {
-          $form->setValues(Mage::getSingleton('adminhtml/session')->getMapiData());
-          Mage::getSingleton('adminhtml/session')->setMapiData(null);
+          $form->setValues(Mage::getSingleton('adminhtml/session')->getFormData());
+          Mage::getSingleton('adminhtml/session')->setFormData(null);
       } elseif ( Mage::registry('mapi_data') ) {
           $form->setValues(Mage::registry('mapi_data')->getData());
       }

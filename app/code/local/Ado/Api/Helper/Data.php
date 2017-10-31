@@ -8,7 +8,7 @@ class Ado_Api_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getImage($columnValue,$width,$height)
     {
-        $endPath = Ado_Api_Model_Banneritem::BANNERITEM_MEDIA_PATH . DS;
+        $endPath = Ado_Api_Model_Slideitem::SLIDEITEM_MEDIA_PATH . DS;
         $path = Mage::getBaseDir('media'). DS . $endPath;
         $resizedImage = Mage::getBaseUrl("media") . $columnValue;
         if (!empty($columnValue) && $width && $height) {
@@ -36,5 +36,32 @@ class Ado_Api_Helper_Data extends Mage_Core_Helper_Abstract
             }
         }
         return $resizedImage;
+    }
+
+    /**
+     * 获得link的url
+     *  category:10
+     *  product: 234
+     *  将获得对应店铺的url
+     * @param $link
+     * @return mixed
+     */
+    public function getUrlByLink($link){
+        $url = $link;
+        $link  = explode(':',$link);
+        if(count($link)==2){
+            $type = $link[0];
+            $id = $link[1];
+            $object = null;
+            if($type=='category'){
+                $object = Mage::getModel('catalog/category')->load($id);
+            }elseif ($type=='product'){
+                $object = Mage::getModel('catalog/product')->load($id);
+            }
+            if($object && $object->getId()){
+               $url = $object->setStoreId(Mage::app()->getStore()->getId())->getUrl();
+            }
+        }
+        return $url;
     }
 }

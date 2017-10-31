@@ -1,0 +1,42 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: by@ado 114458573@qq.com
+ * Date: 2017-10-31
+ * Time: 10:50
+ *  Ado_SEO_Block_Catalog_Categories
+ * ado_seo/catalog_categories
+ *  catalog/category/home.phtml
+ */
+?>
+<?php
+$slides = $this->getSlideConllection();
+$helper = Mage::helper('mapi');
+if($slides->count()): ?>
+<div class="container">
+    <div class="inner-container">
+<?php foreach ($slides as $slide): ?>
+    <?php if($slide->hasItems()): ?>
+            <?php foreach ($slide->getSlideItems() as $item): ?>
+                <div class="home-category grid12-4">
+                    <?php if($item->getImage()): ?>
+                        <a href="<?php echo $helper->getUrlByLink($item->getImageUrl()); ?>">
+                            <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).$item->getImage();  ?>">
+                        </a>
+                    <?php else: ?>
+                        <div class="home-category-content">
+                            <?php echo $item->getContent(); ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if($slide->getShowTitle()): ?>
+                    <div class="home-category-title"><?php echo $item->getTitle(); ?></div>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+    <?php endif; ?>
+<?php endforeach; ?>
+    </div></div>
+<?php endif; ?>
+
+
+

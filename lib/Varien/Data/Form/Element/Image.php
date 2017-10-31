@@ -52,7 +52,6 @@ class Varien_Data_Form_Element_Image extends Varien_Data_Form_Element_Abstract
     public function getElementHtml()
     {
         $html = '';
-
         if ((string)$this->getValue()) {
             $url = $this->_getUrl();
 

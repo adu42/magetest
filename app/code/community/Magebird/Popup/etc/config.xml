@@ -107,7 +107,7 @@
 				<use>standard</use>
 				<args>
 					<module>Magebird_Popup</module>
-					<frontName>magebird_popup</frontName>
+					<frontName>birdpop</frontName>
 				</args>
 			</magebird_popup>
 		</routers>

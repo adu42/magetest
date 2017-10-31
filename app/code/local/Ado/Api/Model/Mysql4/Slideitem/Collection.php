@@ -25,8 +25,8 @@ class Ado_Api_Model_Mysql4_Slideitem_Collection extends Mage_Core_Model_Mysql4_C
      */
     public function addActiveFilter(){
         $today = date('Y-m-d H:i:s', strtotime('+1 day'));
-        $this->getSelect()->where('item_active_from=null or item_active_from < ?',$today)
-            ->where('item_active_to=null or item_active_to >= ?',$today)
+        $this->getSelect()->where('ISNULL(item_active_from) or item_active_from < ?',$today)
+            ->where('ISNULL(item_active_to) or item_active_to >= ?',$today)
             ->where('status=1');
         return $this;
     }

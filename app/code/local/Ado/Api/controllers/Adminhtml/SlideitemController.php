@@ -52,6 +52,14 @@ class Ado_Api_Adminhtml_SlideitemController extends Mage_Adminhtml_Controller_ac
 	public function saveAction() {
 		if ($data = $this->getRequest()->getPost()) {
 			$data= $this->_filterPostData($data);
+
+            $width = $height = null;
+            if($slideId = (int)$this->getRequest()->getParam('slide_id')){
+                $slide = Mage::getModel('mapi/slide')->load($slideId);
+                $width = $slide->getWidth();
+                $height = $slide->getHeight();
+            }
+            $path = Mage::getBaseDir('media') . DS . Ado_Api_Model_Slideitem::SLIDEITEM_MEDIA_PATH . DS;
 			if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != '') {
 				try {	
 					/* Starting upload */	
@@ -68,24 +76,45 @@ class Ado_Api_Adminhtml_SlideitemController extends Mage_Adminhtml_Controller_ac
 					$uploader->setFilesDispersion(false);
 							
 					// We set media as the upload dir
-					$path = Mage::getBaseDir('media') . DS . Ado_Api_Model_Slideitem::BANNERITEM_MEDIA_PATH . DS;
-					$result = $uploader->save($path, $_FILES['image']['name'] );
+					
+					$result = $uploader->save($path, $_FILES['image']['name']);
+
+					if(file_exists($path. $result['file'])){
+                        $imageObj = new Varien_Image($path . $result['file']);
+                        $imageObj->constrainOnly(true);
+                        $imageObj->keepAspectRatio(true);
+                        $imageObj->keepFrame(true);
+                        $imageObj->backgroundColor(array(255, 255, 255));
+                        $imageObj->resize($width, $height);
+                        $imageObj->save($path. $result['file']);
+                    }
 					
 					//this way the name is saved in DB
-					$data['image'] = Ado_Api_Model_Slideitem::BANNERITEM_MEDIA_PATH.'/'. $result['file'];
+					$data['image'] = Ado_Api_Model_Slideitem::SLIDEITEM_MEDIA_PATH.'/'. $result['file'];
 				} catch (Exception $e) {
 		      
-		        }	        
+		        }
 			} else {
 				if(isset($data['image']['delete']) && $data['image']['delete'] == 1) {
-					 $data['image'] = '';
+				   if(file_exists($path.$data['image']['value']))@unlink($path.$data['image']['value']);
+				   $data['image'] = '';
 				} else {
-					unset($data['image']);
+				   if(empty($data['image']) && empty($data['image']['value'])){
+                      $image =  $this->setImageByLinkUrl($data['link_url'],$width,$height,$path);
+                      if($image){
+                          $data['image'] = Ado_Api_Model_Slideitem::SLIDEITEM_MEDIA_PATH.'/'.ltrim($image,'/');
+                      }else{
+                          unset($data['image']);
+                      }
+				   }else{
+                       $data['image'] = $data['image']['value'];
+                   }
 				}
 			}
 			
 			if(isset($data['slide_order'])){ $data['slide_order']= intval($data['slide_order']); }
 
+          //  $path = Mage::getBaseDir('media') . DS . Ado_Api_Model_Slideitem::SLIDEITEM_MEDIA_PATH . DS;
 			if(isset($_FILES['thumb_image']['name']) && $_FILES['thumb_image']['name'] != '') {
 				try {	
 					/* Starting upload */	
@@ -102,11 +131,20 @@ class Ado_Api_Adminhtml_SlideitemController extends Mage_Adminhtml_Controller_ac
 					$uploader->setFilesDispersion(false);
 							
 					// We set media as the upload dir
-					$path = Mage::getBaseDir('media') . DS . Ado_Api_Model_Slideitem::BANNERITEM_MEDIA_PATH . DS;
 					$result = $uploader->save($path, $_FILES['thumb_image']['name'] );
+
+                    if(file_exists($path. $result['file'])) {
+                        $imageObj = new Varien_Image($path . $result['file']);
+                        $imageObj->constrainOnly(true);
+                        $imageObj->keepAspectRatio(true);
+                        $imageObj->keepFrame(true);
+                        $imageObj->backgroundColor(array(255, 255, 255));
+                        $imageObj->resize($width, $height);
+                        $imageObj->save($path. $result['file']);
+                    }
 					
 					//this way the name is saved in DB
-					$data['thumb_image'] = 'slide/'. $result['file'];
+					$data['thumb_image'] = Ado_Api_Model_Slideitem::SLIDEITEM_MEDIA_PATH.'/'. $result['file'];
 				} catch (Exception $e) {
 		      
 		        }
@@ -124,6 +162,7 @@ class Ado_Api_Adminhtml_SlideitemController extends Mage_Adminhtml_Controller_ac
 			//$model->setData($data)
 			//	->setId($this->getRequest()->getParam('id'));
 			$model = Mage::getModel('mapi/slideitem');
+
 			$model->setData($data);
 			if($this->getRequest()->getParam('id')){
 				$model->setId($this->getRequest()->getParam('id'));
@@ -282,12 +321,49 @@ class Ado_Api_Adminhtml_SlideitemController extends Mage_Adminhtml_Controller_ac
         $response->sendResponse();
         die;
     }
-		protected function _filterPostData($data)
+
+    protected function _filterPostData($data)
     {
 		//var_dump($data);die;
 		$data = $this->_filterDateTime($data, array('item_active_from'));
 		$data =	$this->_filterDateTime($data, array('item_active_to'));	
         return $data;
-    } 
+    }
+
+    /**
+     *  获取商品资料
+     *  用商品图片
+     *  用link url去获取分类的url
+     *
+     * @return mixed
+     */
+    public function setImageByLinkUrl($cantent,$width, $height,$path){
+        if(!empty($cantent) && stripos($cantent,'product')!==false){
+            $productId = explode(':',$cantent);
+            $productId = isset($productId[1])?$productId[1]:0;
+            if($productId){
+                $product = Mage::getModel('catalog/product')->load($productId);
+                $mainImage = '';
+                foreach ($product->getMediaGallery('images') as $image) {
+                    if ($image['disabled']) {
+                        continue;
+                    }
+                    $mainImage = $product->getMediaConfig()->getMediaPath($image['file']);
+                    break;
+                }
+               if(!empty($mainImage) && file_exists($mainImage)){
+                   $imageObj = new Varien_Image($mainImage);
+                   $imageObj->constrainOnly(true);
+                   $imageObj->keepAspectRatio(true);
+                   $imageObj->keepFrame(true);
+                   $imageObj->backgroundColor(array(255, 255, 255));
+                   $imageObj->resize($width, $height);
+                   $imageObj->save($path. $image['file']);
+                   return $image['file'];
+               }
+            }
+        }
+        return false;
+    }
 
 }

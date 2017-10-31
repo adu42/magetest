@@ -49,6 +49,7 @@ class Ado_Api_Block_Adminhtml_Slideitem_Edit_Tab_Form extends Mage_Adminhtml_Blo
           'label'     => Mage::helper('mapi')->__('Image Url'),
           'required'  => false,
           'name'      => 'image_url',
+          'after_element_html' => '<br>Use Store URL Ex: category:3 | product:405 | url',
 	  ));
 
       $fieldset->addField('thumb_image', 'image', array(
@@ -61,13 +62,14 @@ class Ado_Api_Block_Adminhtml_Slideitem_Edit_Tab_Form extends Mage_Adminhtml_Blo
           'label'     => Mage::helper('mapi')->__('Thumnail Url'),
           'required'  => false,
           'name'      => 'thumb_image_url',
+          'after_element_html' => '<br>Use Store URL Ex: category:3 | product:405 | url',
 	  ));
 		
       $fieldset->addField('link_url', 'text', array(
           'label'     => Mage::helper('mapi')->__('Link Url'),
           'required'  => false,
           'name'      => 'link_url',
-          'after_element_html' => '<br>Mobile URL Ex: category:3 | product:405 | search:keyword | block:block_id',
+          'after_element_html' => '<br>Use Product Image Ex: product:405',
 	  ));
 		
 	  $fieldset->addField('status', 'select', array(
@@ -85,23 +87,26 @@ class Ado_Api_Block_Adminhtml_Slideitem_Edit_Tab_Form extends Mage_Adminhtml_Blo
               ),
           ),
       ));
-     /* $outputFormat = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM);	
+     $outputFormat = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM);
       $fieldset->addField('item_active_from', 'date', array(
           'label'     => Mage::helper('mapi')->__('Active From'),
           'required'  => false,
           'name'      => 'item_active_from',
 		'image'  => Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'/adminhtml/default/default/images/grid-cal.gif',
 		'format' => $outputFormat,
-		'time' => true, 
+		'time' => true,
+          'value'=>date('Y-m-d H:i:s',strtotime('-1 day')),
       ));
+
 	 $fieldset->addField('item_active_to', 'date', array(
           'label'     => Mage::helper('mapi')->__('Active To'),
           'required'  => false,
           'name'      => 'item_active_to',
 		'image'  => Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'/adminhtml/default/default/images/grid-cal.gif',
 		'format' => $outputFormat,
-		'time' => true, 
-      )); */
+		'time' => true,
+         'value'=>date('Y-m-d H:i:s',strtotime('+100 days')),
+      ));
 
       $fieldset->addField('content', 'editor', array(
           'name'      => 'content',
@@ -113,10 +118,10 @@ class Ado_Api_Block_Adminhtml_Slideitem_Edit_Tab_Form extends Mage_Adminhtml_Blo
       ));
           
      
-      if ( Mage::getSingleton('adminhtml/session')->getEasySlideItemData() )
+      if ( Mage::getSingleton('adminhtml/session')->getFormData() )
       {
-          $form->setValues(Mage::getSingleton('adminhtml/session')->getEasySlideItemData());
-          Mage::getSingleton('adminhtml/session')->setEasySlideItemData(null);
+          $form->setValues(Mage::getSingleton('adminhtml/session')->getFormData());
+          Mage::getSingleton('adminhtml/session')->setFormData(null);
       } elseif ( Mage::registry('slideitem_data') ) {
           $form->setValues(Mage::registry('slideitem_data')->getData());
       }

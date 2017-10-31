@@ -26,4 +26,12 @@ class Ado_Api_Model_Slide extends Mage_Core_Model_Abstract
             $this->_slideItems = Mage::getModel('mapi/slideitem')->getCollection()->addActiveFilter()->addSlideIdFilter($this->getId());
         return $this->_slideItems;
     }
+
+    /**
+     * 是否有条目
+     * @return int
+     */
+    public function hasItems(){
+        return count($this->_slideItems);
+    }
 }

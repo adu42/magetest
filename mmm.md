@@ -51,5 +51,7 @@ store_switcher  bottom
 计算规则优化：
     针对会话级别做缓存
     
+No Rewrite Url Tags:    
+checkout/,directory/,adminhtml,sociallogin/,/sales/,customer/,/oauth/,catalogsearch/, wishlist,newsletter,payment,paypal,orderPayment,globalcollect,alipay,masapay,detailedreview,magebird_popup/,birdpop/    
     
    

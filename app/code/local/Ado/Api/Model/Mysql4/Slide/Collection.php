@@ -23,8 +23,8 @@ class Ado_Api_Model_Mysql4_Slide_Collection extends Mage_Core_Model_Mysql4_Colle
     public function addActiveFilter()
     {
         $today = date('Y-m-d H:i:s', strtotime('+1 day'));
-        $this->getSelect()->where('active_from=null or active_from < ?',$today)
-            ->where('active_to=null or active_to >= ?',$today)
+        $this->getSelect()->where('ISNULL(active_from) or active_from <= ?',$today)
+            ->where('ISNULL(active_to) or active_to >= ?',$today)
             ->where('status=1');
         return $this;
     }
