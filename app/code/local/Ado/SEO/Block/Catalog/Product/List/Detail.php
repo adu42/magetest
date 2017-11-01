@@ -98,9 +98,7 @@ class Ado_SEO_Block_Catalog_Product_List_Detail extends Mage_Catalog_Block_Produ
      */
     public function getCacheTags()
     {
-        return array_merge(parent::getCacheTags(), $this->getItem()->getCacheIdTags());
+        return array_merge(parent::getCacheTags(), $this->getProduct()->getCacheIdTags());
     }
-
-
 
 }

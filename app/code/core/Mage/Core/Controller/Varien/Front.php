@@ -174,6 +174,7 @@ class Mage_Core_Controller_Varien_Front extends Varien_Object
                 }
             }
         }
+        Mage::log($i,null,'aaa.txt');
         Varien_Profiler::stop('mage::dispatch::routers_match');
         if ($i>100) {
             Mage::throwException('Front controller reached 100 router match iterations');
