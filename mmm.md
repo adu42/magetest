@@ -54,4 +54,27 @@ store_switcher  bottom
 No Rewrite Url Tags:    
 checkout/,directory/,adminhtml,sociallogin/,/sales/,customer/,/oauth/,catalogsearch/, wishlist,newsletter,payment,paypal,orderPayment,globalcollect,alipay,masapay,detailedreview,magebird_popup/,birdpop/    
     
+购物车加速：
+1. Disable shipping methods you don't use
+  关掉不用的货运方式
+2. Remove estimate shipping block from cart page
+  去掉计费块
+  <checkout_cart_index>
+     <remove name="checkout.cart.shipping"/>   
+  </checkout_cart_index>
+3. Optimize rates collecting
+   优化税费计算       
+   $quote->getShippingAddress()->setCollectShippingRates(false);                                                                                                            
+   $payment->importData($data);
+4. Disable gift message extension
+   禁用gift message扩展
+   System > Configuration > Advanced: Mage_GiftMessage
+5. Disable configurable swatches observer for checkout
+   禁用   configurable swatches 
+   app/code/core/Mage/ConfigurableSwatches/Model/Observer.php 
    
+   public function loadChildProductImagesOnMediaLoad(Varien_Event_Observer $observer) {
+    
+   +if(Mage::app()->getRequest()->getRouteName() == 'checkout') return;                                                                                                      
+     if (!Mage::helper('configurableswatches')->isEnabled()) { // functionality disabled
+       return; // exit without loading swatch functionality
