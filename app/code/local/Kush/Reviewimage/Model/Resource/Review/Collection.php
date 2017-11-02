@@ -120,6 +120,7 @@ class Kush_Reviewimage_Model_Resource_Review_Collection extends Mage_Review_Mode
                     'review_rating',
                     'review_video',
                     'review_video_thumb',
+                    '(review_image_a!="") as have_image'
                 ));
         return $this;
     }
@@ -277,7 +278,10 @@ class Kush_Reviewimage_Model_Resource_Review_Collection extends Mage_Review_Mode
      */
     public function setDateOrder($dir = 'DESC')
     {
-        $this->getSelect()->order("main_table.created_at $dir");
+        $this->getSelect()
+            ->order("have_image DESC")
+            ->order("main_table.created_at $dir")
+            ->order("detail.review_rating DESC");
         //$this->setOrder('main_table.created_at', $dir);
         return $this;
     }
