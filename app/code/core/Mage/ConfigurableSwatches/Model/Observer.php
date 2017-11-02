@@ -109,6 +109,7 @@ class Mage_ConfigurableSwatches_Model_Observer extends Mage_Core_Model_Abstract
      */
     public function loadChildProductImagesOnMediaLoad(Varien_Event_Observer $observer) {
 
+        if(Mage::app()->getRequest()->getRouteName() == 'checkout') return;
         if (!Mage::helper('configurableswatches')->isEnabled()) { // functionality disabled
             return; // exit without loading swatch functionality
         }
