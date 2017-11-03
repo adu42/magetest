@@ -20,6 +20,7 @@ class Ado_Seo_CategoryController extends Mage_Catalog_CategoryController
 {
     public function viewAction()
     {
+
         if ($curency = (string)$this->getRequest()->getParam('currency')) {
             Mage::app()->getStore()->setCurrentCurrencyCode($curency);
         }

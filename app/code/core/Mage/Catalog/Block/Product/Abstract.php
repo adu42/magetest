@@ -714,11 +714,13 @@ abstract class Mage_Catalog_Block_Product_Abstract extends Mage_Core_Block_Templ
     protected function _initDetialHelperBlock()
     {
         if (!$this->_detailAttributeHelperBlock) {
-            if (!Mage::helper('catalog')->isModuleEnabled('Ado_SEO')) {
+            if (!Mage::helper('catalog')->isModuleEnabled('Ado_SEO')){
                 return false;
-            } else {
+            } else if(Mage::getStoreConfigFlag('ado_seo/catalog/detail_list')){
                 $this->_detailAttributeHelperBlock = $this->getLayout()->createBlock('ado_seo/catalog_product_list_detail')
                     ->setTemplate($this->_detailAttributeDefaultTemplate);
+            }else{
+                return false;
             }
         }
         return true;

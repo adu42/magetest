@@ -18,6 +18,7 @@ class Ado_Guestcookies_Model_Viewed
  extends Ado_Guestcookies_Model_Cookie_Abstract
 {
 
+    protected $_ids=array();
 	protected function _construct()
 	{
 		$this->setName(Mage::getStoreConfig('web/guestcookies/viewed_name'));
@@ -33,6 +34,10 @@ class Ado_Guestcookies_Model_Viewed
 	{
 		if ($ids) {
 			foreach ($ids as $id) {
+                $this->_ids[] = $id;
+            }
+            $this->_ids = array_unique($this->_ids);
+			    /*
 			    try {
     				Mage::getModel('reports/product_index_viewed')
     					->setProductId($id)
@@ -44,6 +49,8 @@ class Ado_Guestcookies_Model_Viewed
 			}
 			Mage::getModel('reports/product_index_viewed')
 				->calculate();
+			    */
+
 		}
 		return $this;
 	}
@@ -55,6 +62,7 @@ class Ado_Guestcookies_Model_Viewed
 	 */
 	public function getProductIds()
 	{
+	    return $this->_ids;
 		$viewed = Mage::getResourceModel('reports/product_index_viewed_collection');
 		$viewed->addIndexFilter();
 		return $viewed->getColumnValues('product_id');
@@ -65,11 +73,13 @@ class Ado_Guestcookies_Model_Viewed
 	 */
 	public function getProductsCount()
 	{
+	    return count($this->_ids);
 		return Mage::getModel('reports/product_index_viewed')->getCount();
 	}
 
 	public function readCookie()
 	{
+
 		if ($this->getProductsCount()) {
 			// do not mix existing list with new data
 			return $this;
@@ -90,7 +100,6 @@ class Ado_Guestcookies_Model_Viewed
 		if (Mage::getStoreConfigFlag('web/guestcookies/viewed')) {
 			$this->_updateCookie(implode(' ', $this->getProductIds()));
 		}
-
 		return $this;
 	}
 

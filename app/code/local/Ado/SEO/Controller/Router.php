@@ -42,6 +42,7 @@ class Ado_SEO_Controller_Router extends Mage_Core_Controller_Varien_Router_Stand
         if (!$helper->isEnabled()) {
             return false;
         }
+
         $suffix = Mage::getStoreConfig('catalog/seo/category_url_suffix');
         $urlRewrite = Mage::getModel('core/url_rewrite');
         list($cata, $param) = $urlRewrite->checkIsTags($request->getPathInfo());

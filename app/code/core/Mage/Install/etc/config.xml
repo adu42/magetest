@@ -48,6 +48,7 @@
             </install>
         </blocks>
     </global>
+    <!--
     <default>
         <web>
             <routers>
@@ -70,6 +71,8 @@
             </web>
         </default>
     </stores>
+    -->
+    <!--
     <frontend>
         <secure_url>
             <install>/install/wizard/checkSecureHost</install>
@@ -83,7 +86,7 @@
                 </args>
             </install>
         </routers>
-    </frontend>
+    </frontend>-->
     <install>
         <databases>
             <mysql4>

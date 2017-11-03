@@ -287,7 +287,9 @@ $_collectionSize = $_productCollection->count();
                                     echo $helpTemplate->getCategoryAddtoLinksIcons($_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage');
                             }
                             ?>
-                            <?php echo $this->getChildDetailAttributeHtml($_product); ?>
+                            <?php
+                            // by@ado 1 sec slow
+                           // echo $this->getChildDetailAttributeHtml($_product); ?>
 
                             <?php if(false): // disabled  ?>
                                 <?php

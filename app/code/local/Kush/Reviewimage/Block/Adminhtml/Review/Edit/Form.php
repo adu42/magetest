@@ -88,6 +88,16 @@ class Kush_Reviewimage_Block_Adminhtml_Review_Edit_Form extends Mage_Adminhtml_B
         ));
 
 
+        $outputFormat = Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM);
+        $fieldset->addField('created_at', 'date', array(
+            'label'     => Mage::helper('review')->__('Created At'),
+            'required'  => false,
+            'name'      => 'created_at',
+            'image'  => Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'/adminhtml/default/default/images/grid-cal.gif',
+            'format' => $outputFormat,
+            'time' => true,
+        ));
+
         $fieldset->addField('status_id', 'select', array(
             'label' => Mage::helper('review')->__('Status'),
             'required' => true,

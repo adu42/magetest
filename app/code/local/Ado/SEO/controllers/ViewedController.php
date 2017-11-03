@@ -579,7 +579,6 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
         if ($session->isLoggedIn()) {
             $result=array('code'=>1,'message'=>$this->__('You are logged in.'));
         }else{
-
             $session->setEscapeMessages(true); // prevent XSS injection in user input
             if ($this->getRequest()->isPost()) {
                 $email = $this->getRequest()->getParam('email', false);
@@ -587,7 +586,6 @@ class Ado_Seo_ViewedController extends Mage_Core_Controller_Front_Action
                 if (!empty($email)) {
                     $customer = Mage::getModel('customer/customer')->loadByEmail($email);
                     if(!$customer && !$customer->getId()){
-
                         if (!$customer = Mage::registry('current_customer')) {
                             $customer = Mage::getModel('customer/customer')->setId(null);
                         }

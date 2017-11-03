@@ -278,7 +278,6 @@
                 <Mage_Core/>
             </depends>
         </Mage_Cms>
-      <!--
         <Mage_Reports>
             <active>true</active>
             <codePool>core</codePool>
@@ -289,7 +288,7 @@
                 <Mage_Cms/>
             </depends>
         </Mage_Reports>
-        -->
+
         <Mage_Newsletter>
             <active>true</active>
             <codePool>core</codePool>
