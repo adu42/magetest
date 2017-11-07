@@ -739,7 +739,11 @@ XML;
                     if (!file_exists($file)) {
                         continue;
                     }
-                    $contents = file_get_contents($file) . "\n";
+                    $contents = file_get_contents($file);
+                    $contents= trim($contents);
+                    if (preg_match('/\.js$/i', $file)) {
+                        $contents .= ';' . PHP_EOL;
+                    }
                     if ($beforeMergeCallback && is_callable($beforeMergeCallback)) {
                         $contents = call_user_func($beforeMergeCallback, $file, $contents);
                     }

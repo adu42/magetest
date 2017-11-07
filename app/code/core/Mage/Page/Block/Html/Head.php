@@ -257,9 +257,6 @@ class Mage_Page_Block_Html_Head extends Mage_Core_Block_Template
         // get static files from the js folder, no need in lookups
         foreach ($staticItems as $params => $rows) {
             foreach ($rows as $name) {
-                if($skin_version && $name){
-                    $name = $name.'?ver='.$skin_version;
-                }
                 $items[$params][] = $mergeCallback ? Mage::getBaseDir() . DS . 'js' . DS . $name : $baseJsUrl . $name;
             }
         }
@@ -283,10 +280,10 @@ class Mage_Page_Block_Html_Head extends Mage_Core_Block_Template
             $params = trim($params);
             $params = $params ? ' ' . $params : '';
             if ($mergedUrl) {
-                $html .= sprintf($format, $mergedUrl, $params);
+                $html .= sprintf($format, $mergedUrl.'?ver='.$skin_version, $params);
             } else {
                 foreach ($rows as $src) {
-                    $html .= sprintf($format, $src, $params);
+                    $html .= sprintf($format, $src.'?ver='.$skin_version, $params);
                 }
             }
         }

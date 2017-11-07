@@ -47,6 +47,7 @@
                 <rewrite>
                     <url_rewrite>Ado_SEO_Model_System_Rewrite</url_rewrite>
                     <url_rewrite_request>Ado_SEO_Model_System_Rewrite_Request</url_rewrite_request>
+                    <layout_update>Ado_SEO_Model_System_Layout_Update</layout_update>
                 </rewrite>
             </core>
             <enterprise_urlrewrite>

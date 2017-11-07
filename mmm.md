@@ -76,5 +76,16 @@ checkout/,directory/,adminhtml,sociallogin/,/sales/,customer/,/oauth/,catalogsea
    public function loadChildProductImagesOnMediaLoad(Varien_Event_Observer $observer) {
     
    +if(Mage::app()->getRequest()->getRouteName() == 'checkout') return;                                                                                                      
-     if (!Mage::helper('configurableswatches')->isEnabled()) { // functionality disabled
+     if (!Mage::helper('configurableswatches')->isEnabled()) {  // functionality disabled
        return; // exit without loading swatch functionality
+       
+   \app\code\local\Ado\SEO\etc\config.xml
+   <core>
+         <rewrite>
+             <layout_update>Ado_SEO_Model_System_Layout_Update</layout_update>
+         </rewrite>
+     </core>
+ </models>
+         
+         
+             
